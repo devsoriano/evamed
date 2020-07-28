@@ -1,0 +1,81 @@
+.header-row {
+  width: 100%;
+}
+
+mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
+  top: 0px;
+  left: 0px;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029 !important;
+  padding-right: 8%;
+  padding-left: 8%;
+}
+
+.container-title {
+  display: flex;
+
+  .title-header {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    text-align: left;
+    letter-spacing: 0px;
+    color: #A8D024;
+    margin-top: auto;
+  }
+  
+  .subtitle-header {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    text-align: left;
+    letter-spacing: 0px;
+    color: #767676;
+    line-height: 90%;
+    margin-left: 8px;
+    margin-top: 4px;
+  }
+}
+
+.container-icons {
+  display: flex;
+}
+
+.container-icon {
+  display: block;
+    text-align: -webkit-center;
+    width: 120px;
+    height: 54px;
+    padding-top: 10px;
+
+  &:hover {
+    background-color: #FDE47B; 
+
+    .title-icon { 
+      font-weight: bold;
+    }
+  }
+
+  .icon-bosquejo {
+    background: url('./../../../../assets/icons/bosquejo.svg');
+    width: 28px;
+    height: 28px;
+    background-size: 28px 28px;
+    display: block;
+  }
+
+  .icon-comparar {
+    background: url('./../../../../assets/icons/comparar.svg');
+    width: 28px;
+    height: 28px;
+    background-size: 28px 28px;
+    display: block;
+  }
+
+  .title-icon {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    color: #767676;
+  }
+}
+
