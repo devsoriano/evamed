@@ -1,21 +1,37 @@
 <form [formGroup]="form" (ngSubmit)="login($event)">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+  <div class="title-standard">
+    Iniciar sesión
+  </div>
+  <mat-card class="card-standard">
+    <mat-card-content class="card-content-standard">
       <div class="row">
         <div class="col-xs">
-          <mat-form-field>
-            <input placeholder="email" formControlName="email" matInput type="email">
-          </mat-form-field>
+          <div class="common-label"> 
+            email 
+          </div>
+          <div>
+            <input
+              class="common-input" 
+              placeholder="email" 
+              formControlName="email" 
+              matInput type="email"
+            >
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs">
-          <mat-form-field>
-            <input placeholder="password" formControlName="password" matInput type="password">
-          </mat-form-field>
+          <div class="common-label"> 
+            password
+          </div>
+          <div>
+            <input
+              class="common-input"  
+              placeholder="password" 
+              formControlName="password" 
+              matInput type="password"
+            >
+          </div>
         </div>
       </div>
     </mat-card-content>
@@ -23,5 +39,4 @@
       <button [disabled]="form.invalid" mat-raised-button type="submit">Ingresar</button>
     </mat-card-actions>
   </mat-card>
-  
 </form>

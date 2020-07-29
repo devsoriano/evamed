@@ -7,15 +7,14 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
   left: 0px;
   background: #FFFFFF 0% 0% no-repeat padding-box;
   box-shadow: 0px 3px 6px #00000029 !important;
-  padding-right: 8%;
-  padding-left: 8%;
+  padding-right: 4%;
+  padding-left: 4%;
 }
 
 .container-title {
   display: flex;
 
   .title-header {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
     font-size: 36px;
     text-align: left;
@@ -25,7 +24,6 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
   }
   
   .subtitle-header {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     text-align: left;
     letter-spacing: 0px;
@@ -72,7 +70,6 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
   }
 
   .title-icon {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px;
     text-align: center;
     color: #767676;
