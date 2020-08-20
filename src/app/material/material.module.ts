@@ -14,6 +14,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [],
@@ -31,7 +33,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatSidenavModule,
     MatListModule,
     LayoutModule,
-    MatStepperModule
+    MatStepperModule,
+    MatFormFieldModule,
+    MatGridListModule
   ],
   exports: [
     MatButtonModule,
@@ -46,7 +50,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatSidenavModule,
     MatListModule,
     LayoutModule,
-    MatStepperModule
+    MatStepperModule,
+    MatFormFieldModule,
+    MatGridListModule
   ]
 })
 export class MaterialModule { }

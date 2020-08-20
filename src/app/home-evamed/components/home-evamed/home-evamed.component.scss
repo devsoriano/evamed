@@ -1,0 +1,50 @@
+.mat-card-content.content-estadisticas {
+  display: flex;
+  justify-content: space-between;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-top: 10px;
+  border-top: 1px solid #CBCBCB;
+}
+
+.mat-card-content.content-estadisticas > div  {
+  padding: 14px;
+}
+
+.mat-card-content.content-estadisticas > div > div:first-child {
+  font-weight: bold;
+}
+
+.container-principal {
+  display: flex;
+  justify-content: center;
+  width: 98%;
+  height: 100%;
+  margin-top: 20px;
+
+  .btn-primer-producto {
+    padding-top: 18px;
+    background-color: #ffffff;
+    height: 60px;
+    width: 150px;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 14px;
+    text-align: center;
+    cursor: pointer;
+
+    .plus {
+      color: #A8D024;
+      font-size: 26px;
+      font-weight: bold;
+    }
+    
+    .message-plus {
+      color: #767676;
+      font-size: 12px;
+    }
+  }
+}
+
+.user-card {
+  height: 100%;
+}

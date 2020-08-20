@@ -34,16 +34,16 @@ const routes: Routes = [
       {
         path: 'order',
         loadChildren: () => import('./order/order.module').then(m => m.OrderModule)
-      },
-      {
-        path: 'auth',
-        loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
-      },
+      }
     ]
   },
   {
     path: 'demo',
     loadChildren: () => import('./demo/demo.module').then(m => m.DemoModule)
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: 'admin',

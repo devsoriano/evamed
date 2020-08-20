@@ -4,6 +4,14 @@
 //   padding: 0px;
 // }
 
+html, body { height: 100%; }
+body { 
+  background-color: #F8F8F8;
+  margin: 0; 
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important; 
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -27,13 +35,6 @@
     padding-right: 16px;
     padding-left: 16px;
   }
-}
-
-html, body { height: 100%; }
-body { 
-  background-color: #F8F8F8;
-  margin: 0; 
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
 }
 
 img {
@@ -71,4 +72,81 @@ img {
   border: 2px solid #7FA20B;
   border-radius: 10px;
   outline: none;
+}
+
+.principal-container {
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  
+  .content-container {
+    width: 75%;
+  }
+
+  .description-container {
+    width: 25%;
+    margin-top: 60px;
+  }
+}
+
+.content-header-container {
+  margin-top: 30px;
+  width: 98%;
+  display: flex;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #CBCBCB;
+
+  .title-standard-second {
+    font-size: 26px;
+    color: #7FA20B;
+    width: 70%;
+  }
+}
+
+.user-card {
+
+  text-align: center;
+
+  .image-container {
+    margin-top: -70px!important;
+    display: block;
+
+    .profile-image {
+      background-image: url('./assets/images/perfil.png');
+      background-size: cover;
+      width: 120px;
+      height: 120px;
+      margin: 0px auto;
+    }  
+  }
+
+  .content-standard-card {
+    margin-top: 32px;
+  }
+}
+
+.yellow-button {
+  background-color: #EDC903;
+  width: 70%;
+  font-size: 12px;
+}
+
+.melon-button {
+  background-color: #ED8484;
+  width: 70%;
+  font-size: 12px;
+}
+
+.green-button {
+  background-color: #A8D024;
+  width: 70%;
+  font-size: 12px;
+}
+
+.min-action {
+  width: 300px;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  padding: 0 !important;
 }

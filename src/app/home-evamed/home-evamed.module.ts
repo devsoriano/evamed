@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomeEvamedRoutingModule } from './home-evamed-routing.module';
 import { HomeEvamedComponent } from './components/home-evamed/home-evamed.component';
 import { SharedModule } from '../shared/shared.module';
+import { MaterialModule } from './../material/material.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    HomeEvamedRoutingModule
+    HomeEvamedRoutingModule,
+    MaterialModule
   ]
 })
 export class HomeEvamedModule { }

@@ -1,43 +1,55 @@
-<form [formGroup]="form" (ngSubmit)="register($event)">
-  <div class="title-standard">
-    Registro
+<div class="row">
+  <div class="side">
+    
   </div>
-  <mat-card class="card-standard">
-    <mat-card-content class="card-content-standard">
-      <div class="row">
-        <div class="col-xs">
-          <div class="common-label"> 
-            email 
+  <div class="main">
+    <section class="form-login">
+      <form [formGroup]="form" (ngSubmit)="register($event)">
+        <div class="title-context-login">
+          Registro
+        </div>
+        <div class="container-label-input">
+          <div class="label-context-login"> 
+            Correo electrónico 
           </div>
           <div>
             <input
-              class="common-input" 
-              placeholder="email" 
+              class="input-context-login" 
+              placeholder="Coloca aquí tu correo electrónico" 
               formControlName="email" 
               matInput type="email"
             >
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs">
-          <div class="common-label"> 
-            password
+        <div class="container-label-input">
+          <div class="label-context-login"> 
+            Contraseña
           </div>
           <div>
             <input
-              class="common-input"  
-              placeholder="password" 
+              class="input-context-login" 
+              placeholder="Coloca aquí tu contraseña" 
               formControlName="password" 
               matInput type="password"
             >
           </div>
         </div>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button [disabled]="form.invalid" mat-raised-button type="submit">Registro</button>
-    </mat-card-actions>
-  </mat-card>
-  
-</form>
+        <div class="container-label-button">
+          <button 
+            [disabled]="form.invalid" 
+            mat-raised-button 
+            type="submit" 
+            class="yellow-button-login"
+          >
+            Enviar registro
+          </button>
+        </div>
+        <div class="container-label-button">
+          <p class="p-context-login">
+            ¿Ya tienes cuenta? <a href="/auth/login">Iniciar sesión aquí</a>
+          </p>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

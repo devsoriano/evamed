@@ -40,10 +40,11 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
 
 .container-icon {
   display: block;
-    text-align: -webkit-center;
-    width: 120px;
-    height: 54px;
-    padding-top: 10px;
+  text-align: -webkit-center;
+  width: 120px;
+  height: 54px;
+  padding-top: 10px;
+  cursor: pointer;
 
   &:hover {
     background-color: #FDE47B; 
@@ -63,6 +64,14 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
 
   .icon-comparar {
     background: url('./../../../../assets/icons/comparar.svg');
+    width: 28px;
+    height: 28px;
+    background-size: 28px 28px;
+    display: block;
+  }
+  
+  .icon-acerca-de {
+    background: url('./../../../../assets/icons/informacion.svg');
     width: 28px;
     height: 28px;
     background-size: 28px 28px;
