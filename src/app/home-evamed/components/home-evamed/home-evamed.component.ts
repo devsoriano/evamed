@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home-evamed',
@@ -22,5 +23,9 @@ export class HomeEvamedComponent implements OnInit {
     .then(() => {
       this.router.navigate(['/auth/login']);
     });
+  }
+
+  openDialog(): void {
+    console.log('formulario de registro');
   }
 }
