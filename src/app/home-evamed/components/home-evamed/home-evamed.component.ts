@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewProjectComponent } from '../../../add-new-project/add-new-project.component';
 
 @Component({
   selector: 'app-home-evamed',
@@ -10,13 +11,16 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class HomeEvamedComponent implements OnInit {
 
+  animal: string;
+  name: string;
+
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   logout() {
     this.auth.logout()
@@ -26,6 +30,14 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   openDialog(): void {
-    console.log('formulario de registro');
+    const dialogRef = this.dialog.open(AddNewProjectComponent, {
+      width: '250px',
+      data: {name: this.name, animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
   }
 }
