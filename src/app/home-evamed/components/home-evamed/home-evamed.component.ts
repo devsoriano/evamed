@@ -29,7 +29,7 @@ export class HomeEvamedComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
+  openDialog() {
     const dialogRef = this.dialog.open(AddNewProjectComponent, {
       width: '250px',
       data: {name: this.name, animal: this.animal}
