@@ -47,6 +47,21 @@ body {
 }
 /**</Adecuaciones de Input>**/
 
+.side {
+  background-image: url("./assets/images/edificio.png");
+  width: 100%;
+  height: 100%;
+
+
+  .background-custom {
+    background: #A8D024 0% 0% no-repeat padding-box!important;
+    mix-blend-mode: multiply;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 /**<Header modal>**/
 .header-modal {
   display: flex;
