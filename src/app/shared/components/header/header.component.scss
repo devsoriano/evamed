@@ -2,13 +2,18 @@
   width: 100%;
 }
 
+.mat-toolbar-multiple-rows {
+  justify-content: center!important;
+  flex-direction: inherit!important;
+}
+
 mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
-  top: 0px;
-  left: 0px;
   background: #FFFFFF 0% 0% no-repeat padding-box;
   box-shadow: 0px 3px 6px #00000029 !important;
-  padding-right: 4%;
-  padding-left: 4%;
+}
+
+.mat-toolbar-row {
+  width: 1200px!important;
 }
 
 .container-title {
@@ -22,7 +27,7 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
     color: #A8D024;
     margin-top: auto;
   }
-  
+
   .subtitle-header {
     font-size: 14px;
     text-align: left;
@@ -47,9 +52,9 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
   cursor: pointer;
 
   &:hover {
-    background-color: #FDE47B; 
+    background-color: #FDE47B;
 
-    .title-icon { 
+    .title-icon {
       font-weight: bold;
     }
   }
@@ -69,7 +74,7 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
     background-size: 28px 28px;
     display: block;
   }
-  
+
   .icon-acerca-de {
     background: url('./../../../../assets/icons/informacion.svg');
     width: 28px;
