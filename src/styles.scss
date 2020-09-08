@@ -5,40 +5,86 @@
 // }
 
 html, body { height: 100%; }
-body { 
+body {
   background-color: #F8F8F8;
-  margin: 0; 
+  margin: 0;
   padding: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important; 
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: 50px 20px;
+/**<Adecuaciones de Input>**/
+.input-general {
+  border: 2px solid #CBCBCB !important;
+  height: 32px !important;
+  width: 100% !important;
+  font-size: 20px !important;
+  outline: none !important;
+  border-radius: 10px!important;
+  background-color: #EFEFEF!important;
 }
 
-.container {
-  width: 100%;
-  padding-right: 0px;
-  padding-left: 0px;
-  margin-right: auto;
-  margin-left: auto;
+.label-general {
+  color: #ACA8A8 !important;
+  font-size: 14px !important;
+  margin-top: 10px !important;
+  margin-bottom: -12px !important;
 }
 
-@media (min-width: 576px) {
-  .product-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .container {
-    max-width: 92%;
-    padding-right: 16px;
-    padding-left: 16px;
-  }
+.mat-form-field-label-wrapper {
+  display: none !important;
 }
 
-img {
-  max-width: 100%;
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: transparent !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: transparent !important;
+}
+
+.mat-form-field {
+  display: inline!important;
+}
+/**</Adecuaciones de Input>**/
+
+/**<Header modal>**/
+.header-modal {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 20px;
+}
+
+.close-modal {
+  font-size: 20px;
+  color: #A8D024;
+  cursor: pointer;
+}
+/**<Header modal>**/
+
+/**<Blur open modal>**/
+.cdk-overlay-dark-backdrop {
+  background: #0A0A0A67 0% 0% no-repeat padding-box !important;
+  backdrop-filter: blur(28px) !important;
+}
+/**</Blur open modal>**/
+
+/**<Col Row genérico>**/
+.Row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.Col {
+  margin-top: -12px;
+  width: 44%;
+}
+/**</Col Row genérico>**/
+
+.center {
+  display: flex;
+  justify-content: center;
 }
 
 .card-standard {
@@ -78,7 +124,7 @@ img {
   width: 100%;
   display: flex;
   margin-top: 20px;
-  
+
   .content-container {
     width: 75%;
   }
@@ -95,12 +141,18 @@ img {
   display: flex;
   padding-bottom: 10px;
   border-bottom: 2px solid #CBCBCB;
+}
 
-  .title-standard-second {
-    font-size: 26px;
-    color: #7FA20B;
-    width: 70%;
-  }
+.title-standard-second {
+  font-size: 26px;
+  color: #7FA20B;
+  width: 70%;
+}
+
+.title-standard-second-light {
+  font-size: 26px;
+  color: #A8D024;
+  width: 70%;
 }
 
 .user-card {
@@ -117,7 +169,7 @@ img {
       width: 120px;
       height: 120px;
       margin: 0px auto;
-    }  
+    }
   }
 
   .content-standard-card {
@@ -128,19 +180,19 @@ img {
 .yellow-button {
   background-color: #EDC903;
   width: 70%;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .melon-button {
   background-color: #ED8484;
   width: 70%;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .green-button {
   background-color: #A8D024;
   width: 70%;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .min-action {
