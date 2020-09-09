@@ -33,7 +33,7 @@ export class HomeEvamedComponent implements OnInit {
     });
   }
 
-  openDialog() {
+  openDialogANP() {
     const dialogRef = this.dialog.open(AddNewProjectComponent, {
       width: '680px',
       data: {
@@ -59,6 +59,7 @@ export class HomeEvamedComponent implements OnInit {
       } catch (e){
         console.log('close modal');
       }
+
     });
   }
 }
