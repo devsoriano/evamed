@@ -14,7 +14,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -35,7 +34,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatListModule,
     LayoutModule,
     MatStepperModule,
-    MatFormFieldModule,
     MatGridListModule,
     MatDialogModule
   ],
@@ -53,7 +51,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatListModule,
     LayoutModule,
     MatStepperModule,
-    MatFormFieldModule,
     MatGridListModule,
     MatDialogModule
   ]

@@ -1,0 +1,74 @@
+<!--Header modal-->
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Tu proyecto fue creado satisfactoriamente
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+<!-- Close Header modal-->
+<!--Cuerpo de modal-->
+<div mat-dialog-content class="dialog-content">
+  <h3 class="title-common">¿Qué tipo de evaluación deseas realizar?</h3>
+  <mat-radio-group
+    aria-labelledby="example-radio-group-label"
+    class="example-radio-group"
+    [(ngModel)]="data.optionSelected">
+    <mat-radio-button class="example-radio-button" *ngFor="let option of options" [value]="option">
+      {{option}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <div class="text-description">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+    sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+    sed diam voluptua. At vero
+  </div>
+  <!--Stepper-->
+  <div class="mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-stepper-horizontal-alternative">
+        <div class="mdl-stepper-step active-step step-done">
+          <div class="mdl-stepper-circle"><span class="factory"></span></div>
+          <div class="mdl-stepper-title">Etapa de producción</div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+        <div class="mdl-stepper-step active-step editable-step">
+          <div class="mdl-stepper-circle"><span>2</span></div>
+          <div class="mdl-stepper-title">Set location</div>
+          <div class="mdl-stepper-optional">Optional</div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+        <div class="mdl-stepper-step active-step">
+          <div class="mdl-stepper-circle"><span>3</span></div>
+          <div class="mdl-stepper-title">Invite friends</div>
+          <div class="mdl-stepper-optional">Optional</div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+        <div class="mdl-stepper-step">
+          <div class="mdl-stepper-circle"><span>4</span></div>
+          <div class="mdl-stepper-title">Share</div>
+          <div class="mdl-stepper-optional">Optional</div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CloseStepper-->
+</div>
+<!-- CloseCuerpo de modal-->
+<!--Botonera-->
+<div mat-dialog-actions class="center">
+  <button
+    mat-button
+    [mat-dialog-close]="data"
+    class="yellow-button"
+  >
+    Continuar
+  </button>
+</div>
+<!-- CloseBotonera-->

@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { HomeEvamedRoutingModule } from './home-evamed-routing.module';
 import { HomeEvamedComponent } from './components/home-evamed/home-evamed.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from './../shared/shared.module';
 import { MaterialModule } from './../material/material.module';
-import { AddNewProjectComponent } from '../add-new-project/add-new-project.component';
+import { AddNewProjectComponent } from './../add-new-project/add-new-project.component';
+import { ChooseTypeOfProjectComponent } from './../choose-type-of-project/choose-type-of-project.component';
 import { FormsModule } from '@angular/forms';
-
 
 @NgModule({
   declarations: [
     HomeEvamedComponent,
-    AddNewProjectComponent
+    AddNewProjectComponent,
+    ChooseTypeOfProjectComponent
   ],
   imports: [
     CommonModule,
@@ -23,8 +24,12 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
     HomeEvamedComponent,
-    AddNewProjectComponent
+    AddNewProjectComponent,
+    ChooseTypeOfProjectComponent
   ],
-  entryComponents: [AddNewProjectComponent]
+  entryComponents: [
+    AddNewProjectComponent,
+    ChooseTypeOfProjectComponent
+  ]
 })
 export class HomeEvamedModule { }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { AddNewProjectComponent } from '../../../add-new-project/add-new-project.component';
+import { AddNewProjectComponent } from './../../../add-new-project/add-new-project.component';
+import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/choose-type-of-project.component';
 
 @Component({
   selector: 'app-home-evamed',
@@ -17,6 +18,7 @@ export class HomeEvamedComponent implements OnInit {
   superficieHabitable: string;
   noNiveles: string;
   vidaUtil: string;
+  optionSelected: string;
 
   constructor(
     private auth: AuthService,
@@ -30,6 +32,25 @@ export class HomeEvamedComponent implements OnInit {
     this.auth.logout()
     .then(() => {
       this.router.navigate(['/auth/login']);
+    });
+  }
+
+  openDialogCTOP() {
+    const dialogRef = this.dialog.open(ChooseTypeOfProjectComponent, {
+      width: '760px',
+      data: {
+        optionSelected: 'Huella de carbono'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      try {
+        this.optionSelected = result.optionSelected;
+      } catch (e){
+        console.log('close modal');
+      }
     });
   }
 
@@ -56,10 +77,13 @@ export class HomeEvamedComponent implements OnInit {
         this.superficieHabitable = result.superficieHabitable;
         this.noNiveles = result.noNiveles;
         this.vidaUtil = result.vidaUtil;
+        this.openDialogCTOP();
       } catch (e){
         console.log('close modal');
       }
 
     });
   }
+
+
 }

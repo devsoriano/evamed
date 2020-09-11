@@ -47,6 +47,10 @@ body {
 }
 /**</Adecuaciones de Input>**/
 
+.mat-radio-container {
+  display: none!important;
+}
+
 /**<Side inicio>**/
 .side {
   flex: 50%;
@@ -125,9 +129,11 @@ section.part-side {
 }
 
 .close-modal {
-  font-size: 20px;
+  font-size: 28px;
   color: #A8D024;
   cursor: pointer;
+  font-weight: 300;
+  margin-top: 14px;
 }
 /**<Header modal>**/
 
@@ -218,9 +224,9 @@ section.part-side {
 }
 
 .title-standard-second-light {
-  font-size: 26px;
-  color: #A8D024;
-  width: 70%;
+  font-size: 30px!important;
+  font-weight: 300!important;
+  color: #7FA20B;
 }
 
 .user-card {

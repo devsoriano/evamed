@@ -61,6 +61,7 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
 
   .icon-bosquejo {
     background: url('./../../../../assets/icons/bosquejo.svg');
+    background-repeat: no-repeat;
     width: 28px;
     height: 28px;
     background-size: 28px 28px;
@@ -69,6 +70,7 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
 
   .icon-comparar {
     background: url('./../../../../assets/icons/comparar.svg');
+    background-repeat: no-repeat;
     width: 28px;
     height: 28px;
     background-size: 28px 28px;
@@ -77,6 +79,7 @@ mat-toolbar.mat-toolbar.header-app.mat-toolbar-multiple-rows {
 
   .icon-acerca-de {
     background: url('./../../../../assets/icons/informacion.svg');
+    background-repeat: no-repeat;
     width: 28px;
     height: 28px;
     background-size: 28px 28px;
