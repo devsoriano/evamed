@@ -23,11 +23,10 @@ mat-radio-group.mat-radio-group.example-radio-group {
   font-weight: 200 !important;
   color: #767676;
   border-bottom: 2px solid #CBCBCB;
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 .mat-radio-checked {
-  padding-bottom: 6px;
   color: #000;
   font-weight: 400;
   border-bottom: 3px solid #EDC903;
@@ -36,9 +35,10 @@ mat-radio-group.mat-radio-group.example-radio-group {
 .text-description {
   width: 50%;
   margin-left: 25%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 16px;
+  margin-bottom: 18px;
   text-align: left;
+  font-size: 12px;
 }
 
 /* Simple setup for this demo */
@@ -65,7 +65,7 @@ mat-radio-group.mat-radio-group.example-radio-group {
 .mdl-stepper-horizontal-alternative {
   display: table;
   width: 100%;
-  margin: 0 auto;
+  margin-top: -26px!important;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step {
@@ -106,23 +106,8 @@ mat-radio-group.mat-radio-group.example-radio-group {
   color: white;
 }
 
-.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-circle {
-  background-color: rgb(33, 150, 243);
-}
-
-.mdl-stepper-horizontal-alternative .mdl-stepper-step.editable-step .mdl-stepper-circle {
-  -moz-transform: scaleX(-1);
-  /* Gecko */
-  -o-transform: scaleX(-1);
-  /* Opera */
-  -webkit-transform: scaleX(-1);
-  /* Webkit */
-  transform: scaleX(-1);
-  /* Standard */
-}
-
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title {
-  margin-top: 16px;
+  margin-top: 4px;
   font-size: 14px;
   font-weight: normal;
 }
@@ -130,25 +115,12 @@ mat-radio-group.mat-radio-group.example-radio-group {
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title,
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
   text-align: center;
-  color: rgba(0, 0, 0, .26);
-}
-
-.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-title {
-  font-weight: 500;
-  color: rgba(0, 0, 0, .87);
-}
-
-.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step.step-done .mdl-stepper-title,
-.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step.editable-step .mdl-stepper-title {
-  font-weight: 300;
+  color: #000;
+  width: 140px;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
-  font-size: 12px;
-}
-
-.mdl-stepper-horizontal-alternative .mdl-stepper-step.active-step .mdl-stepper-optional {
-  color: rgba(0, 0, 0, .54);
+  font-size: 10px;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
@@ -172,11 +144,45 @@ mat-radio-group.mat-radio-group.example-radio-group {
 }
 
 /**Custom stepper**/
-div.step-done div.mdl-stepper-circle {
-  background-color: #CBCBCB !important;
-  background: url('./../../assets/icons/fabrica.svg');
-  width: 28px;
-  height: 28px;
-  background-repeat: no-repeat;
+div.step-one-selected div.mdl-stepper-circle {
+  background-color: #A8D024 !important;
+  background: url('./../../assets/icons/fabrica-bold.svg') no-repeat 50% 50%;
+  width: 40px!important;
+  height: 40px!important;
 }
 
+div.step-two div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../assets/icons/torton.svg') no-repeat 50% 50%;
+  width: 40px!important;
+  height: 40px!important;
+}
+
+div.step-three div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../assets/icons/uso.svg') no-repeat 50% 50%;
+  width: 40px!important;
+  height: 40px!important;
+}
+
+div.step-four div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../assets/icons/grua.svg') no-repeat 50% 50%;
+  width: 40px!important;
+  height: 40px!important;
+}
+
+
+/**Content Table**/
+table.table-container {
+  width: 160px;
+}
+
+td.td-title {
+  display: block;
+}
+
+td.td-text {
+  text-align: left;
+  padding-left: 2px!important;
+}
