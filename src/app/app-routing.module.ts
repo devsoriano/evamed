@@ -18,6 +18,11 @@ const routes: Routes = [
         path: 'home-evamed',
         canActivate: [AdminGuard],
         loadChildren: () => import('./home-evamed/home-evamed.module').then(m => m.HomeEvamedModule)
+      },
+      {
+        path: 'do-files',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./to-do-file/to-do-file.module').then(m => m.ToDoFileModule)
       }
     ]
   },

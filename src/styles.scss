@@ -12,6 +12,10 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
+.container {
+  max-width: 65rem !important;
+}
+
 /**<Adecuaciones de Input>**/
 .input-general {
   border: 2px solid #CBCBCB !important;
@@ -200,11 +204,11 @@ section.part-side {
   margin-top: 20px;
 
   .content-container {
-    width: 75%;
+    width: 70%;
   }
 
   .description-container {
-    width: 25%;
+    width: 30%;
     margin-top: 60px;
   }
 }
@@ -279,4 +283,14 @@ button.yellow-button.alf.mat-button.mat-button-base {
 
 .mat-toolbar-row, .mat-toolbar-single-row {
   padding: 0 !important;
+}
+
+h2.proyecto-title {
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+a.a-redirect {
+  text-decoration: none;
+  color: #92BE00;
 }
