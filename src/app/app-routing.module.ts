@@ -24,6 +24,11 @@ const routes: Routes = [
         canActivate: [AdminGuard],
         loadChildren: () => import('./acerca-de/acerca-de.module').then(m => m.AcercaDeModule)
       },
+      {
+        path: 'grafica-de-barras',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./grafica-de-barras/grafica-de-barras.module').then(m => m.GraficaDeBarrasModule)
+      },
     ]
   },
   {
