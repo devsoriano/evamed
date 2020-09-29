@@ -1,14 +1,16 @@
 <br>
 <br>
 <br>
+<br>
 <div style="display: block;">
-    <canvas baseChart 
+    <canvas #MyChart baseChart 
       [datasets]="barChartData"
       [labels]="barChartLabels"
       [options]="barChartOptions"
       [plugins]="barChartPlugins"
       [legend]="barChartLegend"
-      [chartType]="barChartType">
+      [chartType]="barChartType"
+      (chartClick)='onChartClick($event)'>
     </canvas>
 </div>
   
