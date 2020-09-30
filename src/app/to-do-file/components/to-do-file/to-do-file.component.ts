@@ -11,9 +11,7 @@ type AOA = any[][];
   styleUrls: ['./to-do-file.component.scss'],
 })
 export class ToDoFileComponent implements OnInit {
-  text = `{ "text": "This is text file!中文" }`;
   data: AOA = [];
-  wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string;
 
   constructor(
@@ -35,20 +33,18 @@ export class ToDoFileComponent implements OnInit {
       /* read workbook */
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
-
-      /* grab first sheet */
-      const wsname: string = wb.SheetNames[10];
-      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-
       /* save data */
-      this.data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      this.data = XLSX.utils.sheet_to_json(
+        wb.Sheets[wb.SheetNames[10]],
+        { raw: true, defval: null }
+      );
       console.log(this.data);
     };
     reader.readAsBinaryString(target.files[0]);
   }
 
   onDownload() {
-    const fileName = `save.xlsx`;
+    const fileName = `Formato REVIT.xlsx`;
     this.httpClient
       .get(`assets/files/Template-cuantificación-de-materialesv3.xlsx`, {
         observe: 'response',
