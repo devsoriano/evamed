@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
     SharedModule,
     HomeEvamedRoutingModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
   ],
   exports: [
     HomeEvamedComponent,

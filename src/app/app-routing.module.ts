@@ -18,7 +18,12 @@ const routes: Routes = [
         path: 'home-evamed',
         canActivate: [AdminGuard],
         loadChildren: () => import('./home-evamed/home-evamed.module').then(m => m.HomeEvamedModule)
-      }
+      },
+      {
+        path: 'comparar',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./comparar/comparar.module').then(m => m.CompararModule)
+      },
     ]
   },
   {

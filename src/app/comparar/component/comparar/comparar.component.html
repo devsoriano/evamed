@@ -1,0 +1,25 @@
+
+<div class="principal-container">
+  <div class="content-container">
+      <div class="content-header-container">
+      <div class="title-standard-second">
+          comparar
+      </div>
+      <div class="filter-options">
+      </div>
+      </div>
+      <div>
+        <button mat-stroked-button class="button-grafica" (click)="flag(1)">Pie</button>
+        <button mat-stroked-button class="button-grafica" (click)="flag(2)">Radar</button>
+      </div>
+      <div class="div-principal">
+      <ul>
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(1)">Producción</button> </li>
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(2)">Construcción</button> </li>
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(3)">Uso</button> </li>
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(4)">Fin de vida</button> </li>
+      </ul>
+      </div>
+  </div>
+  <div><router-outlet></router-outlet></div>
+</div>
