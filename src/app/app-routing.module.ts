@@ -23,6 +23,11 @@ const routes: Routes = [
         path: 'do-files',
         canActivate: [AdminGuard],
         loadChildren: () => import('./to-do-file/to-do-file.module').then(m => m.ToDoFileModule)
+      },
+      {
+        path: 'stages-dashboard',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./principal-dashboard/principal-dashboard.module').then(m => m.PrincipalDashboardModule)
       }
     ]
   },

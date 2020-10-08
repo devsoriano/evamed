@@ -37,6 +37,21 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  loginApi(event: Event) {
+    event.preventDefault();
+    if (this.form.valid) {
+      const value = this.form.value;
+      this.authService.loginCoreEVAMED(value.email, value.password)
+      .subscribe(data => {
+        if (data.token) {
+          this.router.navigate(['/']);
+        } else {
+          alert('no es válido');
+        }
+      });
+    }
+  }
+
   private buildForm() {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required]],
