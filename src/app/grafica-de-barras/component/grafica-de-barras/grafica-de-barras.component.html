@@ -3,14 +3,15 @@
 <br>
 <br>
 <div style="display: block;">
-    <canvas #MyChart baseChart 
+    <canvas #MyChart='base-chart' #canvas baseChart 
       [datasets]="barChartData"
       [labels]="barChartLabels"
       [options]="barChartOptions"
       [plugins]="barChartPlugins"
       [legend]="barChartLegend"
       [chartType]="barChartType"
-      (chartClick)='onChartClick($event)'>
+      (chartClick)='onChartClick($event)'
+      (chartHover)='onChartHover($event)'>
     </canvas>
 </div>
   
