@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataSets, ChartRenderProps } from 'chart.js';
 import { Label, BaseChartDirective } from 'ng2-charts';
 
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
@@ -21,6 +21,9 @@ export class GraficaDeBarrasComponent implements OnInit {
 
   private lastClick = 'Ninguno';
   private hovered = null;
+  private centrosX = {};
+  private proyectos = [];
+  private inicializado = false;
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -29,7 +32,7 @@ export class GraficaDeBarrasComponent implements OnInit {
     tooltips : {enabled : false},
     events: ['touchstart', 'mousemove', 'click'],
     // x_axis : {d},
-    plugins: {
+    plugins:{
       datalabels: {
         color : 'white',
         anchor: 'center',
@@ -49,18 +52,24 @@ export class GraficaDeBarrasComponent implements OnInit {
                                     'Indicador 7'];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  public barChartPlugins = [pluginDataLabels];
+  public barChartPlugins = [pluginDataLabels, {
+    afterDraw: this.agregaTitulosProyectos.bind(this)
+  }];
 
 
   public barChartData: ChartDataSets[] = [
-    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'a', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'a', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'a', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'a', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
-    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'b', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'b', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'b', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'b', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' }
+    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto1', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
+    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto1', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
+    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto1', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
+    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Proyecto1', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
+    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto2', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
+    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto2', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
+    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto2', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
+    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Proyecto2', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
+    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto3', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
+    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto3', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
+    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto3', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
+    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Proyecto3', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' }
   ];
 
   // public barChartData: ChartDataSets[] = [
@@ -77,25 +86,115 @@ export class GraficaDeBarrasComponent implements OnInit {
   }
 
   ngAfterViewInit(){
+    //Ya que se inicializa el componente
     this.canvas = this.elementRef.nativeElement.querySelector('canvas');
+
     this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
     this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
 
-    console.log(this.chartDir.chart);
+
+    // console.log(this.chartDir.chart);
+
+    // this.agregaTitulosProyectos();
+
   }
 
+  private iniciaPosiciones(chart: any){
+    //Se encuentran las posiciones de las barras
+    const labels = chart['$datalabels']['_labels'];
+    this.centrosX = {};
+    this.proyectos = [];
+    labels.some(label => {
+      const proyecto = label['$context']['dataset'].stack;
+      const elemento = label['_el'];
+      const x = elemento['_view'].x;
+
+      if (this.centrosX[proyecto] == undefined){
+        this.centrosX[proyecto] = [];
+        this.proyectos = [proyecto, ...this.proyectos];
+      }
+      if (!this.centrosX[proyecto].includes(x)){
+        this.centrosX[proyecto].push(x);
+      }
+    });
+    this.inicializado = true;
+  }
+
+  private agregaTitulosProyectos(chart: any){
+    // Se agrega los titulos de las barras de varios proyectos (solo cuando son más de uno)
+    const ctx = chart.canvas.getContext('2d');
+    const labels = chart['$datalabels']['_labels'];
+    const centroY = (chart['boxes'][1].height/2);
+
+    this.iniciaPosiciones(chart);
+
+    ctx.font = chart['$datalabels']['_labels'][0]['_ctx'].font;//'30px Comic Sans MS';
+    ctx.fillStyle = 'gray';
+    ctx.textAlign = 'center';
+    if (this.proyectos.length < 2){
+      return;
+    }
+    // ctx.clearRect( 0, 0,this.canvas.width, chart['boxes'][1].height*3/4 );
+
+    this.proyectos.forEach((proyecto, index) => {
+      this.centrosX[proyecto].forEach(x => {
+        ctx.fillText((index + 1).toString(), x, centroY);
+      });
+    });
+  }
+
+  // Control de eventos en la grafica
+
   public onMouseDown(e: any){
-    const limite = this.chartDir.chart.height - this.chartDir.chart['boxes'][2].height;
-    if (e.offsetY > limite){
+    const limiteInferior = this.chartDir.chart.height - this.chartDir.chart['boxes'][2].height;
+    const limiteSuperior = this.chartDir.chart['boxes'][1].height;
+
+    if (e.offsetY > limiteInferior){
       // Control de click en etiquetas
       const seleccion = this.getEtiquetaCercana(e);
       this.focusColumnas(seleccion);
-      console.log(e.offsetX, e.offsetY, seleccion);
+    }else if (e.offsetY < limiteSuperior){
+      // Control de click de Proyecto
+      this.focusProyecto(e);
+    }
+  }
+
+  private focusProyecto(e: any){
+    // Selecciona todas las barras de un proyecto cuando se hace click en el area superior de la grafica
+    const labels = this.chartDir.chart['$datalabels']['_labels'];
+    let stack = null;
+
+    labels.some(label => {
+      const elemento = label['_el'];
+      if (elemento.inXRange(e.offsetX)){
+        stack = label['$context']['dataset'].stack;
+        return true;
+      }
+    });
+
+    if (this.lastClick !== stack){
+      this.barChartData.forEach( (data , index) => {
+        let color = new Array(data.data.length);
+        if (data.stack == stack){
+          color.fill(this.colores[ index % this.colores.length ]);
+        }else{
+          color.fill(this.coloresBW[ index % this.colores.length ]);
+        }
+
+        this.barChartData[index].backgroundColor = color;
+        this.barChartData[index].hoverBackgroundColor = color;
+      });
+
+      this.chartDir.update();
+      this.lastClick = stack;
+    }else{
+      this.resetColores();
+      this.lastClick = null;
     }
   }
 
   private focusColumnas(seleccion: any){
-
+    // Selecciona las columnas deacuerdo con la etiqueta en el eje X De acuerdo a barChartLabels
     if (this.lastClick !== seleccion.label){
       this.barChartData.forEach( (e , index) => {
         let color = new Array(e.data.length);
@@ -116,6 +215,7 @@ export class GraficaDeBarrasComponent implements OnInit {
   }
 
   private getEtiquetaCercana(e: any){
+    // Obtiene la etiqueta mas cercana al click en el eje X de acuerdo con barChartLabels
     const etiquetas = this.chartDir.chart['boxes'][2]['_labelItems'];
     let max = this.chartDir.chart.width;
     let seleccion = '';
@@ -178,7 +278,6 @@ export class GraficaDeBarrasComponent implements OnInit {
     this.chartDir.update();
   }
 
-  // events
   public onChartHover(e: any): void {
     // Asigna el elemento de la grafica sobre el cual se hace hover
     this.hovered = this.chartDir.chart.getElementAtEvent(event)[0];
