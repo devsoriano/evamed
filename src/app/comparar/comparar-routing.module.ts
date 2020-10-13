@@ -10,10 +10,10 @@ const routes: Routes = [
     component: CompararComponent
   },
   {
-    path:'pie', component: PieChartComponent
+    path:'pie', component: PieChartComponent,
   },
   {
-    path: 'radial', component: RadialChartComponent
+    path: 'radial', component: RadialChartComponent,
   },
 ];
 

@@ -1,5 +1,5 @@
-<div class="div-principal">
-  <div class="chart-wrapper">
+<div class="div-principal" *ngIf="showMe">
+  <div>
       <canvas baseChart
       [datasets]="radarChartData"
       [options]="radarChartOptions"
@@ -7,16 +7,16 @@
       [chartType]="radarChartType">
     </canvas>
   </div>
-  <div class="chart-wrapper">
-      <canvas baseChart
+  <div>
+    <canvas baseChart
       [datasets]="radarChartData"
       [options]="radarChartOptions"
       [labels]="radarChartLabels"
       [chartType]="radarChartType">
     </canvas>
   </div>
-  <div class="chart-wrapper">
-      <canvas baseChart
+  <div>
+    <canvas baseChart
       [datasets]="radarChartData"
       [options]="radarChartOptions"
       [labels]="radarChartLabels"

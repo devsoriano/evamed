@@ -13,13 +13,21 @@
         <button mat-stroked-button class="button-grafica" (click)="flag(2)">Radar</button>
       </div>
       <div class="div-principal">
-      <ul>
-        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(1)">Producción</button> </li>
-        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(2)">Construcción</button> </li>
-        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(3)">Uso</button> </li>
-        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(4)">Fin de vida</button> </li>
+      <ul class="ul-botones">
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(1)">
+          <mat-icon class="uno">visibility_off</mat-icon>Producción</button>
+        </li>
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(2)">
+          <mat-icon class="dos">visibility_off</mat-icon>Construcción</button> </li>
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(3)">
+          <mat-icon class="tres">visibility_off</mat-icon>Uso</button> </li>
+        <li> <button mat-stroked-button class="button-grafica" (click)="grafica(4)">
+          <mat-icon class="cuatro">visibility_off</mat-icon>Fin de vida</button> </li>
       </ul>
       </div>
   </div>
-  <div><router-outlet></router-outlet></div>
+  <div>
+    <app-pie-chart [showMePartially]="showVar"></app-pie-chart>
+    <app-radial-chart [showMe]="showVar_1"></app-radial-chart>
+  </div>
 </div>

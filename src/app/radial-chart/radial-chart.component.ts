@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-radial-chart',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./radial-chart.component.scss']
 })
 export class RadialChartComponent implements OnInit {
+  @Input() showMe: boolean;
 
   public radarChartOptions = {
     responsive: true,

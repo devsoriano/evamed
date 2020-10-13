@@ -13,15 +13,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from './../environments/environment';
 import { ChartsModule } from 'ng2-charts';
-import { PieChartComponent } from './pie-chart/pie-chart.component';
-import { RadialChartComponent } from './radial-chart/radial-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutComponent,
-    PieChartComponent,
-    RadialChartComponent
+    LayoutComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 
 @Component({
   selector: 'app-comparar',
@@ -9,6 +10,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 export class CompararComponent implements OnInit {
 
   bandera:number;
+  showVar: boolean = false;
+  showVar_1: boolean = false;
 
   constructor(
     private router: Router,
@@ -23,9 +26,9 @@ export class CompararComponent implements OnInit {
 
   grafica(x: number) {
     if (this.bandera == 1) {
-        this.router.navigate(['pie'], { relativeTo: this.route });
+        this.showVar = !this.showVar;
     } else {
-      this.router.navigate(['radial'], { relativeTo: this.route });
+      this.showVar_1 = !this.showVar_1;
     }
   }
 

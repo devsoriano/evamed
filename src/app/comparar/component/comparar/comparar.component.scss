@@ -1,4 +1,33 @@
 .button-grafica {
   width: 150px;
   margin-left: 8px;
+  text-align: left;
 }
+
+.ul-botones{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+mat-icon{
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+}
+  .uno {
+    background: #4DBE89;
+  }
+
+  .dos {
+    background: #148A93;
+  }
+
+  .tres {
+    background: #8F5091;
+  }
+
+  .cuatro {
+    background: #DEA961;
+  }
+
