@@ -1,10 +1,12 @@
-<canvas #MyChart='base-chart' #canvas baseChart 
-    [datasets]="barChartData"
-    [labels]="barChartLabels"
-    [options]="barChartOptions"
-    [plugins]="barChartPlugins"
-    [legend]="barChartLegend"
-    [chartType]="barChartType"
-    (chartClick)='onChartClick($event)'
-    (chartHover)='onChartHover($event)'>
-</canvas>
+<div style="display: block">
+    <canvas #MyChart='base-chart' #canvas baseChart 
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [chartType]="barChartType"
+        (chartClick)='onChartClick($event)'
+        (chartHover)='onChartHover($event)'>
+    </canvas>
+</div>

@@ -8,9 +8,14 @@ import { MaterialModule } from './../material/material.module';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 
+import { BarChartComponent } from './../bar-chart/bar-chart.component';
+
 
 @NgModule({
-  declarations: [GraficaDeBarrasComponent],
+  declarations: [
+    GraficaDeBarrasComponent,
+    BarChartComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
@@ -20,7 +25,8 @@ import { ChartsModule } from 'ng2-charts';
     ChartsModule
   ],
   exports: [
-    GraficaDeBarrasComponent
+    GraficaDeBarrasComponent,
+    BarChartComponent
   ],
 })
 export class GraficaDeBarrasModule { }

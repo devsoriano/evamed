@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets, ChartRenderProps } from 'chart.js';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, BaseChartDirective } from 'ng2-charts';
 
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-bar-chart',
@@ -15,8 +14,11 @@ export class BarChartComponent implements OnInit {
   @ViewChild('MyChart') chartDir: BaseChartDirective;
   private canvas: any;
 
-  private colores: any[] = ['#DEA961', '#8F5091', '#148A93', '#4DBE89'];
-  private coloresBW: any[] = ['#B1B1B1', '#6A6A6A', '#686868', '#969696'];
+  @Input('proyectos') inputProyects : any;
+  @Input('porcentaje') porcentaje : any;
+
+  private colores = { Producción : '#DEA961', Construccion : '#8F5091', Uso : '#148A93', FinDeVida : '#4DBE89'};
+  private coloresBW = {Producción : '#B1B1B1', Construccion : '#6A6A6A', Uso : '#686868', FinDeVida : '#969696'};
 
   private lastClick = 'Ninguno';
   private hovered = null;
@@ -41,13 +43,15 @@ export class BarChartComponent implements OnInit {
       }
     }
   };
-  public barChartLabels: Label[] = ['Indicador 1',
-                                    'Indicador 2',
-                                    'Indicador 3',
-                                    'Indicador 4',
-                                    'Indicador 4',
-                                    'Indicador 6',
-                                    'Indicador 7'];
+  public barChartLabels: Label[]=[
+    'Indicador 1',
+    'Indicador 2',
+    'Indicador 3',
+    'Indicador 4',
+    'Indicador 5',
+    'Indicador 6',
+    'Indicador 7',
+  ];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels, {
@@ -55,20 +59,21 @@ export class BarChartComponent implements OnInit {
   }];
 
 
-  public barChartData: ChartDataSets[] = [
-    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto1', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto1', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto1', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Proyecto1', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
-    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto2', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto2', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto2', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Proyecto2', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
-    { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto3', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-    { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto3', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-    { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto3', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-    { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Proyecto3', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' }
-  ];
+  public barChartData: ChartDataSets[];
+  //  = [
+  //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto1', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
+  //   { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto1', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
+  //   { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto1', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
+  //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'FinDeVida', stack: 'Proyecto1', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
+  //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto2', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
+  //   { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto2', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
+  //   { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto2', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
+  //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'FinDeVida', stack: 'Proyecto2', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
+  //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto3', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
+  //   { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto3', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
+  //   { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto3', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
+  //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'FinDeVida', stack: 'Proyecto3', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' }
+  // ];
 
   // public barChartData: ChartDataSets[] = [
   //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Edificio 1', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
@@ -77,26 +82,91 @@ export class BarChartComponent implements OnInit {
   //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Edificio 1', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
   // ];
 
-  constructor(private elementRef:ElementRef) {}
+  constructor() {
+  }
 
   ngOnInit(): void {
-    // console.log(this);
+    // asigna indicadores
+    this.iniciaIndicadores();
+    this.iniciaDatos();
+    this.ajustaEjeY();
   }
 
   ngAfterViewInit(){
     // Ya que se inicializa el componente
-    this.canvas = this.elementRef.nativeElement.querySelector('#canvas');
+    this.canvas = this.chartDir.chart.canvas;
 
     this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
     this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
 
-
-    // console.log(this.chartDir.chart);
-
-    // this.agregaTitulosProyectos();
-
   }
 
+  // configuración de datos (lectura de datos de entrada)
+  private ajustaEjeY(){
+    // se se usan porcentajes, limita el eje y de 0 a 100
+    if (this.porcentaje){
+      this.barChartOptions.scales = {
+        yAxes: [{
+          display: true,
+          ticks: {
+              beginAtZero: true,
+              max: 100
+            }
+        }]
+      };
+    }
+  }
+
+  private iniciaIndicadores(){
+    // se obtienen todos los indicadores en los proyectos
+    this.barChartLabels = [];
+    this.inputProyects.forEach(proyecto => {
+      Object.keys(proyecto.Datos).forEach(indicador => {
+        if (!this.barChartLabels.includes(indicador)){
+          this.barChartLabels = [...this.barChartLabels, indicador];
+        }
+        proyecto.Datos[indicador].total = Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
+      });
+    });
+  }
+
+  private iniciaDatos(){
+    // le da el formato necesario a los datos para que se puedan graficar
+    let datos = [];
+
+    this.inputProyects.forEach(proyecto => {
+      const auxDatos = { Producción : [], Construccion : [], Uso : [], FinDeVida : []};
+
+      this.barChartLabels.forEach(indicador => {
+        Object.keys(auxDatos).forEach(etapa => {
+          const indicadores = Object.keys(proyecto.Datos);
+          if (!indicadores.includes(indicador.toString()) || !Object.keys(proyecto.Datos[indicador.toString()]).includes(etapa)){
+            auxDatos[etapa] = [...auxDatos[etapa], 0];
+          }else{
+            auxDatos[etapa] = [...auxDatos[etapa],
+              this.porcentaje ?
+              (proyecto.Datos[indicador.toString()][etapa] * 100 / proyecto.Datos[indicador.toString()].total).toFixed(2) :
+              proyecto.Datos[indicador.toString()][etapa].toFixed(2)
+            ];
+          }
+        });
+      });
+
+      Object.keys(auxDatos).forEach(etapa => {
+        datos = [...datos,
+          {
+            data: auxDatos[etapa],
+            label: etapa,
+            stack: proyecto.Nombre,
+            backgroundColor: this.colores[etapa],
+            hoverBackgroundColor: this.colores[etapa]
+          }];
+      });
+    });
+    this.barChartData = datos;
+  }
+
+  // configurcion de estilo (Titulos de proyectos)
   private iniciaPosiciones(chart: any){
     // Se encuentran las posiciones de las barras
     const labels = chart['$datalabels']['_labels'];
@@ -162,6 +232,7 @@ export class BarChartComponent implements OnInit {
     const labels = this.chartDir.chart['$datalabels']['_labels'];
     let stack = null;
 
+
     labels.some(label => {
       const elemento = label['_el'];
       if (elemento.inXRange(e.offsetX)){
@@ -174,9 +245,9 @@ export class BarChartComponent implements OnInit {
       this.barChartData.forEach( (data , index) => {
         let color = new Array(data.data.length);
         if (data.stack == stack){
-          color.fill(this.colores[ index % this.colores.length ]);
+          color.fill(this.colores[ data.label ]);
         }else{
-          color.fill(this.coloresBW[ index % this.colores.length ]);
+          color.fill(this.coloresBW[ data.label ]);
         }
 
         this.barChartData[index].backgroundColor = color;
@@ -194,11 +265,11 @@ export class BarChartComponent implements OnInit {
   private focusColumnas(seleccion: any){
     // Selecciona las columnas deacuerdo con la etiqueta en el eje X De acuerdo a barChartLabels
     if (this.lastClick !== seleccion.label){
-      this.barChartData.forEach( (e , index) => {
-        let color = new Array(e.data.length);
+      this.barChartData.forEach( (datos , index) => {
+        let color = new Array(datos.data.length);
 
-        color.fill(this.coloresBW[ index % this.colores.length ]);
-        color[seleccion.index] = this.colores[ index % this.colores.length ];
+        color.fill(this.coloresBW[ datos.label ]);
+        color[seleccion.index] = this.colores[ datos.label ];
 
         this.barChartData[index].backgroundColor = color;
         this.barChartData[index].hoverBackgroundColor = color;
@@ -249,8 +320,8 @@ export class BarChartComponent implements OnInit {
 
   private resetColores(){
     // Pone todas las series en color normal
-    this.barChartData.forEach( ( _ , index) => {
-      const color = this.colores[ index % this.colores.length ];
+    this.barChartData.forEach( ( data , index) => {
+      const color = this.colores[ data.label ];
       this.barChartData[index].backgroundColor = color;
       this.barChartData[index].hoverBackgroundColor = color;
     });
@@ -260,13 +331,13 @@ export class BarChartComponent implements OnInit {
 
   private focusSeries(serie){
     // Pone la serie seleccionada de color normal, el resto se pone en blanco y negro
-    this.barChartData.forEach( (e , index) => {
+    this.barChartData.forEach( (datos , index) => {
       let color: any;
 
-      if (e.label !== serie){
-        color = this.coloresBW[ index % this.colores.length ];
+      if (datos.label !== serie){
+        color = this.coloresBW[ datos.label ];
       }else{
-        color = this.colores[ index % this.colores.length ];
+        color = this.colores[ datos.label];
       }
 
       this.barChartData[index].backgroundColor = color;
