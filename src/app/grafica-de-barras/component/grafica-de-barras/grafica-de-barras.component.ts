@@ -13,8 +13,7 @@ import { element } from 'protractor';
 export class GraficaDeBarrasComponent implements OnInit {
 
   @ViewChild('MyChart') chartDir: BaseChartDirective;
-  
-  private canvas;
+  private canvas: any;
 
   private colores: any[] = ['#DEA961', '#8F5091', '#148A93', '#4DBE89'];
   private coloresBW: any[] = ['#B1B1B1', '#6A6A6A', '#686868', '#969696'];
@@ -31,8 +30,7 @@ export class GraficaDeBarrasComponent implements OnInit {
     legend : {display : false},
     tooltips : {enabled : false},
     events: ['touchstart', 'mousemove', 'click'],
-    // x_axis : {d},
-    plugins:{
+    plugins: {
       datalabels: {
         color : 'white',
         anchor: 'center',
@@ -86,8 +84,8 @@ export class GraficaDeBarrasComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-    //Ya que se inicializa el componente
-    this.canvas = this.elementRef.nativeElement.querySelector('canvas');
+    // Ya que se inicializa el componente
+    this.canvas = this.elementRef.nativeElement.querySelector('#canvas');
 
     this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
     this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
@@ -100,7 +98,7 @@ export class GraficaDeBarrasComponent implements OnInit {
   }
 
   private iniciaPosiciones(chart: any){
-    //Se encuentran las posiciones de las barras
+    // Se encuentran las posiciones de las barras
     const labels = chart['$datalabels']['_labels'];
     this.centrosX = {};
     this.proyectos = [];
