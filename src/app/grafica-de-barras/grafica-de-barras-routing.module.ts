@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CompararComponent } from './component/comparar/comparar.component';
+import { GraficaDeBarrasComponent } from './component/grafica-de-barras/grafica-de-barras.component';
+
 
 const routes: Routes = [
   {
-    path:'',
-    component: CompararComponent
+    path: '',
+    component: GraficaDeBarrasComponent
   }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CompararRoutingModule { }
+export class GraficaDeBarrasRoutingModule { }

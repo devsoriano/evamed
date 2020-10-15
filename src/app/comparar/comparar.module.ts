@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { PieChartComponent } from '../pie-chart/pie-chart.component';
 import { RadialChartComponent } from '../radial-chart/radial-chart.component';
 import { ChartsModule } from 'ng2-charts';
+import { GraficaDeBarrasModule } from '../grafica-de-barras/grafica-de-barras.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ChartsModule } from 'ng2-charts';
     CompararRoutingModule,
     MaterialModule,
     FormsModule,
-    ChartsModule
+    ChartsModule,
+    GraficaDeBarrasModule
   ],
   exports: [
     CompararComponent,

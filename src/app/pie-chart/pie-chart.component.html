@@ -1,20 +1,14 @@
 <div class="div-principal" *ngIf="showMePartially">
   <div style="display:block">
-    <canvas baseChart
-      [data]="pieChartData"
-      [labels]="pieChartLabels"
+    <canvas #MyChart='base-chart' #canvas baseChart
+      [datasets]="pieChartData"
+      [options]="pieChartOptions"
       [chartType]="pieChartType"></canvas>
   </div>
   <div>
-    <canvas baseChart
-      [data]="pieChartData"
-      [labels]="pieChartLabels"
-      [chartType]="pieChartType"></canvas>
-  </div>
-  <div>
-    <canvas baseChart
-      [data]="pieChartData"
-      [labels]="pieChartLabels"
+      <canvas #MyChart='base-chart' #canvas baseChart
+      [datasets]="pieChartData"
+      [options]="pieChartOptions"
       [chartType]="pieChartType"></canvas>
   </div>
 </div>

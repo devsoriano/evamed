@@ -24,6 +24,11 @@ const routes: Routes = [
         canActivate: [AdminGuard],
         loadChildren: () => import('./comparar/comparar.module').then(m => m.CompararModule)
       },
+      {
+        path: 'acerca-de',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./acerca-de/acerca-de.module').then(m => m.AcercaDeModule)
+      },
     ]
   },
   {
