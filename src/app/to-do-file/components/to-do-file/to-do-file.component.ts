@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { FileSaverService } from 'ngx-filesaver';
+import { Router } from '@angular/router';
 
 type AOA = any[][];
 
@@ -11,12 +12,12 @@ type AOA = any[][];
   styleUrls: ['./to-do-file.component.scss'],
 })
 export class ToDoFileComponent implements OnInit {
-  data: AOA = [];
   fileName: string;
 
   constructor(
     private httpClient: HttpClient,
-    private fileSaverService: FileSaverService
+    private fileSaverService: FileSaverService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -33,12 +34,33 @@ export class ToDoFileComponent implements OnInit {
       /* read workbook */
       const bstr: string = e.target.result;
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+      /* assingable */
+      let partialData: AOA = [];
+      const totalData = [];
+      let i;
       /* save data */
-      this.data = XLSX.utils.sheet_to_json(
-        wb.Sheets[wb.SheetNames[10]],
-        { raw: true, defval: null }
-      );
-      console.log(this.data);
+      for ( i = 0; i < wb.SheetNames.length; i++) {
+        partialData = XLSX.utils.sheet_to_json(
+          wb.Sheets[wb.SheetNames[i]],
+          { raw: true, defval: null }
+        );
+        totalData.push(partialData);
+      }
+
+      let toRead = {};
+      toRead = {
+        sheetNames: wb.SheetNames,
+        data: totalData
+      };
+      sessionStorage.setItem('dataProject', JSON.stringify(toRead));
+      this.router.navigateByUrl('stages-dashboard');
+      /* this.router.navigate(
+        ['stages-dashboard'], {
+          queryParams: {
+            data: JSON.stringify(toRead)
+          }
+        }
+      ); */
     };
     reader.readAsBinaryString(target.files[0]);
   }

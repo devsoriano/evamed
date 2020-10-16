@@ -16,6 +16,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [],
@@ -35,7 +36,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     LayoutModule,
     MatStepperModule,
     MatGridListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule
   ],
   exports: [
     MatButtonModule,
@@ -52,7 +54,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     LayoutModule,
     MatStepperModule,
     MatGridListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule
   ]
 })
 export class MaterialModule { }
