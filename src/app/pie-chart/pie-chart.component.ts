@@ -20,7 +20,7 @@ export class PieChartComponent implements OnInit {
   private coloresY: any[] = ['#DEA961', '#d99d1c', '#d59a3d', '#f5e381'];
 
   public pieChartType = 'doughnut';
-  public radarChartOptions = {
+  public pieChartOptions = {
     segmentShowStroke: false
   };
   public pieChartData: ChartDataSets[] = [
