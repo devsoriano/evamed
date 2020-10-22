@@ -25,9 +25,24 @@ const routes: Routes = [
         loadChildren: () => import('./to-do-file/to-do-file.module').then(m => m.ToDoFileModule)
       },
       {
-        path: 'stages-dashboard',
+        path: 'materials-stage',
         canActivate: [AdminGuard],
-        loadChildren: () => import('./principal-dashboard/principal-dashboard.module').then(m => m.PrincipalDashboardModule)
+        loadChildren: () => import('./materials-stage/materials-stage.module').then(m => m.MaterialsStageModule)
+      },
+      {
+        path: 'construction-stage',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./construction-stage/construction-stage.module').then(m => m.ConstructionStageModule)
+      },
+      {
+        path: 'usage-stage',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./usage-stage/usage-stage.module').then(m => m.UsageStageModule)
+      },
+      {
+        path: 'end-life-stage',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./end-life-stage/end-life-stage.module').then(m => m.EndLifeStageModule)
       }
     ]
   },

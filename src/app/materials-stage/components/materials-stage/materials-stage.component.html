@@ -1,1 +1,106 @@
-<p>materials-stage works!</p>
+<nav class="nav-redirect">
+  <h2 class="proyecto-title">Hospital infantil Lomas altas</h2>
+  <a href="/" class="a-redirect"> < Regresar a proyectos </a>
+</nav>
+<div class="principal-container container-total">
+  <nav class="nav-steps">
+
+  </nav>
+  <section class="container-actions">
+    <section class="container-sheets">
+      <div class="list-elements">
+        <mat-selection-list
+          #sheets
+          [multiple]="false"
+          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)"
+        >
+          <mat-list-option
+            *ngFor="let sheet of sheetNames"
+            [value]="sheet"
+          >
+            {{sheet}}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+    </section>
+    <section class="container-systems">
+      <mat-accordion>
+        <mat-expansion-panel
+          (opened)="panelOpenFirst = true"
+          (closed)="panelOpenFirst = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Importados por REVIT o Template
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-selection-list
+            #sistemas_constructivos
+            [(ngModel)]="selectedOptions"
+            (ngModelChange)="onNgModelChange($event)"
+          >
+            <mat-list-option
+              *ngFor="let sc of SistemasConstructivos"
+              [value]="sc"
+              [disableRipple]="true"
+            >
+            <div style="display:flex; justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center">
+                <div style="display:flex; flex-direction:column">
+                  {{sc}}
+                </div>
+              </div>
+              <div>
+                <button
+                  mat-icon-button
+                  (click)="showMaterials($event, sc)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            </div>
+            </mat-list-option>
+          </mat-selection-list>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-accordion>
+        <mat-expansion-panel
+          (opened)="panelOpenSecond = true"
+          (closed)="panelOpenSecond = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Opciones evamed
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>data</p>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <mat-accordion>
+        <mat-expansion-panel
+          (opened)="panelOpenThird = true"
+          (closed)="panelOpenThird = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Creados por el usuario
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>data</p>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </section>
+    <section class="container-details">
+      <mat-list role="list">
+        <mat-list-item
+          role="listitem"
+          *ngFor="let material of listMateriales"
+        >
+          {{material}}
+        </mat-list-item>
+      </mat-list>
+    </section>
+  </section>
+</div>

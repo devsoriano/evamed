@@ -53,7 +53,7 @@ export class ToDoFileComponent implements OnInit {
         data: totalData
       };
       sessionStorage.setItem('dataProject', JSON.stringify(toRead));
-      this.router.navigateByUrl('stages-dashboard');
+      this.router.navigateByUrl('materials-stage');
       /* this.router.navigate(
         ['stages-dashboard'], {
           queryParams: {
