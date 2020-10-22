@@ -8,26 +8,10 @@
   </nav>
   <section class="container-actions">
     <section class="container-sheets">
-      <div class="list-elements">
-        <mat-selection-list
-          #sheets
-          [multiple]="false"
-          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)"
-        >
-          <mat-list-option
-            *ngFor="let sheet of sheetNames"
-            [value]="sheet"
-          >
-            {{sheet}}
-          </mat-list-option>
-        </mat-selection-list>
-      </div>
+      1. Consumo anual requerido
     </section>
     <section class="container-systems">
-      Formulario
-    </section>
-    <section class="container-details">
-      Vacío
+      2. Fuentes de consumo eléctrico
     </section>
   </section>
 </div>
