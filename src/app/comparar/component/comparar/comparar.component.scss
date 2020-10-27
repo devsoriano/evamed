@@ -1,6 +1,44 @@
-.div-principal{
+.div-secondary-graph{
    display: inline-grid;
    grid-template-columns: auto auto;
+}
+
+.second-container{
+  width: 100%;
+  margin: auto;
+}
+
+.campo-grafica-bar{
+  width: 85%;
+  margin: auto;
+}
+
+.return-proyecto {
+  color:#7FA20B;
+  font-size: 13px;
+  padding: 0%;
+  .mat-icon{
+    font-size: 13px;
+  }
+}
+
+.div-impactos-ambientales{
+  margin: 20px;
+  .icons-options{
+    font-size: 15px;
+  }
+  .sub-container{
+    display: inline-grid;
+    grid-template-columns: auto auto;
+  }
+  .button-impactos{
+    with: 50px;
+  }
+}
+
+.simple-text{
+  font-size: 10px;
+  color:#ACA8A8;
 }
 
 .button-grafica {
@@ -15,24 +53,30 @@
   padding: 0;
 }
 
-mat-icon{
+.tittle-proyect{
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.icons-grafica{
   color: white;
   border-radius: 50%;
   font-size: 18px;
+  text-align: center;
 }
-  .uno {
-    background: #4DBE89;
-  }
 
-  .dos {
-    background: #148A93;
-  }
+.uno {
+  background: #4DBE89;
+}
 
-  .tres {
-    background: #8F5091;
-  }
+.dos {
+  background: #148A93;
+}
 
-  .cuatro {
-    background: #DEA961;
-  }
+.tres {
+  background: #8F5091;
+}
 
+.cuatro {
+  background: #DEA961;
+}

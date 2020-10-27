@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-comparar',
@@ -8,20 +7,31 @@ import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 })
 export class CompararComponent implements OnInit {
 
+  selector: string;
   bandera:number;
   showVar: boolean = false;
   showVar_1: boolean = false;
   ID:number;
+  proyecto:string;
 
   constructor(){ }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    this.proyecto="Hospital infantil Lomas Altas";
+  }
 
-  flag(x:number) {
-  this.bandera = x;
+  receiveSelector($event) {
+    //cordinate with bar graph
+    this.selector = $event;
+    if (this.selector==null){
+      this.bandera = 0;
+    }else{
+      this.bandera=1;
+    }
   }
 
   grafica(x: number) {
+    //activate graph selectioned
     this.ID = x;
     if (this.bandera == 1) {
       this.showVar = !this.showVar;
