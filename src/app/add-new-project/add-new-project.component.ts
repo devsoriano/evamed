@@ -3,7 +3,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
   nombre: string;
-  uso: string;
+  catalogoUsos: any;
+  catalogoPaises: any;
+  catalogoTipo: any;
+  catalogoVidaUtil: any;
+  usoSeleccionado: string;
+  paisSeleccionado: string;
+  tipoSeleccionado: string;
+  vidaUtilSeleccionado: string;
   superficieConstruida: string;
   superficieHabitable: string;
   noNiveles: string;
@@ -16,16 +23,17 @@ export interface DialogData {
   styleUrls: ['./add-new-project.component.scss']
 })
 export class AddNewProjectComponent implements OnInit {
-
   constructor(
     public dialogRef: MatDialogRef<AddNewProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) { 
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
 }

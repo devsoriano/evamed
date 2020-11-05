@@ -18,13 +18,13 @@ body {
 
 /**<Adecuaciones de Input>**/
 .input-general {
-  border: 2px solid #CBCBCB !important;
+  /* border: 2px solid #CBCBCB !important; */
   height: 32px !important;
   width: 100% !important;
   font-size: 20px !important;
   outline: none !important;
-  border-radius: 10px!important;
-  background-color: #EFEFEF!important;
+  /* border-radius: 10px !important; */
+  background-color: #EDEDED !important;
 }
 
 .label-general {
@@ -151,15 +151,32 @@ section.part-side {
 /**<Col Row genérico>**/
 .Row {
   display: flex;
-  justify-content: space-around;
+  margin-top: -14px;
 }
 
 .Col {
-  margin-top: -12px;
-  width: 44%;
+  margin-top: 0px;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 /**</Col Row genérico>**/
 
+/****/
+
+.select-general {
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      height: 34px;
+      margin-top: 10px;
+    }
+  }
+}
+
+.mat-select-arrow {
+  margin-top: -12px!important;
+}
+/****/
 .center {
   display: flex;
   justify-content: center;

@@ -16,24 +16,9 @@
         <mat-form-field>
           <input
             class="input-general"
-            placeholder="Coloca aquí el nombre del proyecto"
             [(ngModel)]="data.nombre"
-            matInput type="text">
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="Col">
-      <div class="label-general">
-        Uso del proyecto
-      </div>
-      <div>
-        <mat-form-field>
-          <input
-            class="input-general"
-            placeholder="Coloca aquí el uso del proyecto"
-            [(ngModel)]="data.uso"
-            matInput
-            type="text">
+            matInput type="text"
+          >
         </mat-form-field>
       </div>
     </div>
@@ -41,30 +26,83 @@
   <div class="Row">
     <div class="Col">
       <div class="label-general">
-        Superficie construida
+        Uso
       </div>
       <div>
-        <mat-form-field>
-          <input
-            class="input-general"
-            placeholder="Coloca aquí la superficie construida"
-            [(ngModel)]="data.superficieConstruida"
-            matInput type="text">
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="data.usoSeleccionado">
+            <mat-option *ngFor="let uso of data.catalogoUsos" [value]="uso.id">
+              {{uso.name_use}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </div>
     <div class="Col">
       <div class="label-general">
-        Superficie habitable
+        Tipo
+      </div>
+      <div>
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="data.tipoSeleccionado">
+            <mat-option *ngFor="let tipo of data.catalogoTipo" [value]="tipo.id">
+              {{tipo.name_type_project}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="Row">
+    <div class="Col">
+      
+    </div>
+    <div class="Col">
+      <div class="label-general">
+        País
+      </div>
+      <div>
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="data.paisSeleccionado">
+            <mat-option *ngFor="let pais of data.catalogoPaises" [value]="pais.id">
+              {{pais.name_country}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="Row">
+    <div class="Col">
+      <div class="label-general">
+        Superficie construida(metros cuadrados)
       </div>
       <div>
         <mat-form-field>
           <input
             class="input-general"
-            placeholder="Coloca aquí la superficie habitable"
+            placeholder="Coloca aquí el nombre del proyecto"
+            [(ngModel)]="data.superficieConstruida"
+            matInput type="text"
+          >
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="Col">
+      <div class="label-general">
+        Superficie habitable(metros cuadrados)
+      </div>
+      <div>
+        <mat-form-field>
+          <input
+            class="input-general"
+            placeholder="Coloca aquí el nombre del proyecto"
             [(ngModel)]="data.superficieHabitable"
-            matInput
-            type="text">
+            matInput type="text"
+          >
         </mat-form-field>
       </div>
     </div>
@@ -78,9 +116,10 @@
         <mat-form-field>
           <input
             class="input-general"
-            placeholder="Coloca aquí el número de niveles"
+            placeholder="Coloca aquí el nombre del proyecto"
             [(ngModel)]="data.noNiveles"
-            matInput type="text">
+            matInput type="text"
+          >
         </mat-form-field>
       </div>
     </div>
@@ -89,13 +128,13 @@
         Vida útil
       </div>
       <div>
-        <mat-form-field>
-          <input
-            class="input-general"
-            placeholder="Coloca aquí la vida útil"
-            [(ngModel)]="data.vidaUtil"
-            matInput
-            type="text">
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="data.vidaUtilSeleccionado">
+            <mat-option *ngFor="let vidaUtil of data.catalogoVidaUtil" [value]="vidaUtil.id">
+              {{vidaUtil.name_useful_life}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </div>

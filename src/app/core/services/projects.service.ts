@@ -13,7 +13,7 @@ export class ProjectsService {
 
   addProject( projectData: object ) {
     return this.http.post<any>(
-      'http://127.0.0.1:8000/api-projects/projects/',
+      'https://evamed-rest-api.herokuapp.com/api-projects/projects/',
       projectData
     ).pipe(
       tap((data) => {
