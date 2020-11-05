@@ -70,6 +70,7 @@ export class HomeEvamedComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       try {
         this.optionSelected = result.optionSelected;
+        this.router.navigateByUrl('do-files');
       } catch (e){
         console.log('close modal');
       }

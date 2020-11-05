@@ -174,7 +174,11 @@ section.part-side {
 }
 
 .mat-select-arrow {
-  margin-top: -12px!important;
+  margin-top: 10px!important;
+}
+
+.mat-form-field-infix {
+  padding-top: 0px!important;
 }
 /****/
 .center {
@@ -274,7 +278,6 @@ section.part-side {
 
 .yellow-button {
   background-color: #EDC903;
-  width: 70%;
   font-size: 14px;
 }
 
@@ -284,13 +287,11 @@ button.yellow-button.alf.mat-button.mat-button-base {
 
 .melon-button {
   background-color: #ED8484;
-  width: 70%;
   font-size: 14px;
 }
 
 .green-button {
   background-color: #A8D024;
-  width: 70%;
   font-size: 14px;
 }
 
