@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap  } from 'rxjs/operators';
+import { environment } from './../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CatalogsService {
 
   usesCatalog() {
     return this.http.get<any>(
-      'https://evamed-rest-api.herokuapp.com/api-projects/uses/',
+      environment.api_uses,
     ).pipe(
       tap((data) => {
         return data;
@@ -23,7 +24,7 @@ export class CatalogsService {
 
   countriesCatalog() {
     return this.http.get<any>(
-      'https://evamed-rest-api.herokuapp.com/api-projects/countries/',
+      environment.api_countries,
     ).pipe(
       tap((data) => {
         return data;
@@ -31,9 +32,9 @@ export class CatalogsService {
     );
   }
 
-  TypeProjectCatalog() {
+  typeProjectCatalog() {
     return this.http.get<any>(
-      'https://evamed-rest-api.herokuapp.com/api-projects/type-project/',
+      environment.api_type_project,
     ).pipe(
       tap((data) => {
         return data;
@@ -43,7 +44,17 @@ export class CatalogsService {
 
   usefulLifeCatalog() {
     return this.http.get<any>(
-      'https://evamed-rest-api.herokuapp.com/api-projects/useful-life/',
+      environment.api_useful_life,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  housingSchemeCatalog() {
+    return this.http.get<any>(
+      environment.api_housing_scheme,
     ).pipe(
       tap((data) => {
         return data;

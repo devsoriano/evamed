@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap  } from 'rxjs/operators';
+import { environment } from './../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ProjectsService {
 
   addProject( projectData: object ) {
     return this.http.post<any>(
-      'https://evamed-rest-api.herokuapp.com/api-projects/projects/',
+      environment.api_projects,
       projectData
     ).pipe(
       tap((data) => {

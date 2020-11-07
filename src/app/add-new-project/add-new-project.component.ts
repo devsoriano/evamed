@@ -7,10 +7,12 @@ export interface DialogData {
   catalogoPaises: any;
   catalogoTipo: any;
   catalogoVidaUtil: any;
+  catalogoEsqHabitacional: any;
   usoSeleccionado: string;
   paisSeleccionado: string;
   tipoSeleccionado: string;
   vidaUtilSeleccionado: string;
+  esqHabitacionalSeleccionado: string;
   superficieConstruida: string;
   superficieHabitable: string;
   noNiveles: string;

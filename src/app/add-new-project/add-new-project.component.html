@@ -57,7 +57,19 @@
   </div>
   <div class="Row">
     <div class="Col">
-      
+      <div class="label-general">
+        Esquema habitacional
+      </div>
+      <div>
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="data.esqHabitacionalSeleccionado">
+            <mat-option *ngFor="let esquema of data.catalogoEsqHabitacional" [value]="esquema.id">
+              {{esquema.name_housing_scheme}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
     <div class="Col">
       <div class="label-general">

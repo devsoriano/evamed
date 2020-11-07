@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewProjectComponent } from './../../../add-new-project/add-new-project.component';
 import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/choose-type-of-project.component';
-import { ProjectsService } from './../../../core/services/projects.service';
+import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 
 @Component({
@@ -20,10 +20,12 @@ export class HomeEvamedComponent implements OnInit {
   catalogoPaises: any;
   catalogoTipo: any;
   catalogoVidaUtil: any;
+  catalogoEsqHabitacional: any;
   usoSeleccionado: string;
   paisSeleccionado: string;
   tipoSeleccionado: string;
   vidaUtilSeleccionado: string;
+  esqHabitacionalSeleccionado: string;
   superficieConstruida: string;
   superficieHabitable: string;
   noNiveles: string;
@@ -42,11 +44,14 @@ export class HomeEvamedComponent implements OnInit {
     this.catalogsService.countriesCatalog().subscribe(data => {
       this.catalogoPaises = data;
     });
-    this.catalogsService.TypeProjectCatalog().subscribe(data => {
+    this.catalogsService.typeProjectCatalog().subscribe(data => {
       this.catalogoTipo = data;
     });
     this.catalogsService.usefulLifeCatalog().subscribe(data => {
       this.catalogoVidaUtil = data;
+    });
+    this.catalogsService.housingSchemeCatalog().subscribe(data => {
+      this.catalogoEsqHabitacional = data;
     });
   }
 
@@ -86,12 +91,14 @@ export class HomeEvamedComponent implements OnInit {
         catalogoPaises: this.catalogoPaises,
         catalogoTipo: this.catalogoTipo,
         catalogoVidaUtil: this.catalogoVidaUtil,
+        catalogoEsqHabitacional: this.catalogoEsqHabitacional,
         usoSeleccionado: this.usoSeleccionado,
         paisSeleccionado: this.paisSeleccionado,
         tipoSeleccionado: this.tipoSeleccionado,
         superficieConstruida: this.superficieConstruida,
         superficieHabitable: this.superficieHabitable,
         vidaUtilSeleccionado: this.vidaUtilSeleccionado,
+        esqHabitacionalSeleccionado: this.esqHabitacionalSeleccionado,
         noNiveles: this.noNiveles,
       }
     });
@@ -103,10 +110,11 @@ export class HomeEvamedComponent implements OnInit {
           builded_surface: parseInt(result.superficieConstruida),
           living_area: parseInt(result.superficieHabitable),
           tier: parseInt(result.noNiveles),
-          use_id:  1, // result.usoSeleccionado,
+          use_id:  result.usoSeleccionado,
           type_id: result.tipoSeleccionado,
           country_id: result.paisSeleccionado,
           useful_life_id: result.vidaUtilSeleccionado,
+          housing_scheme_id: result.esqHabitacionalSeleccionado
         }).subscribe(data => {
           sessionStorage.setItem('primaryDataProject', JSON.stringify(data));
           this.openDialogCTOP();

@@ -1,10 +1,22 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+// genear api
+const api_evamed = 'http://127.0.0.1:8000/api-projects';
+// apis
+const projects = '/projects/';
+const uses = '/uses/';
+const countries = '/countries/';
+const type_project = '/type-project/';
+const useful_life = '/useful-life/';
+const housing_scheme = '/housing-scheme/';
 
 export const environment = {
   production: false,
-  url_api: 'http://platzi-store.herokuapp.com',
+  api_projects: `${api_evamed}${projects}`,
+  api_uses: `${api_evamed}${uses}`,
+  api_countries: `${api_evamed}${countries}`,
+  api_type_project: `${api_evamed}${type_project}`,
+  api_useful_life: `${api_evamed}${useful_life}`,
+  api_housing_scheme: `${api_evamed}${housing_scheme}`,
+
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
@@ -15,12 +27,3 @@ export const environment = {
     appId: '1:255188436131:web:8c3728876042c077f9ab16'
   }
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
