@@ -5,7 +5,7 @@ import { Component, OnInit} from '@angular/core';
   styleUrls: ['./grafica-de-barras.component.scss']
 })
 export class GraficaDeBarrasComponent implements OnInit {
-  public porcentaje = true;
+  public porcentaje = false;
   public datos = [
     {
       Nombre : 'Proyecto 1',
