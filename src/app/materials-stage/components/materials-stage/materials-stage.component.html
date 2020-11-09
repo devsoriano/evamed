@@ -23,6 +23,7 @@
         </mat-selection-list>
       </div>
     </section>
+    
     <section class="container-systems">
       <mat-accordion>
         <mat-expansion-panel
@@ -34,14 +35,13 @@
               Importados por REVIT o Template
             </mat-panel-title>
           </mat-expansion-panel-header>
-
           <mat-selection-list
             #sistemas_constructivos
-            [(ngModel)]="selectedOptions"
-            (ngModelChange)="onNgModelChange($event)"
+            [(ngModel)]="selectedOptionsRevit"
+            (ngModelChange)="onNgModelChangeRevit($event)"
           >
             <mat-list-option
-              *ngFor="let sc of SistemasConstructivos"
+              *ngFor="let sc of ListSCRevit"
               [value]="sc"
               [disableRipple]="true"
             >
@@ -62,9 +62,9 @@
             </div>
             </mat-list-option>
           </mat-selection-list>
-
         </mat-expansion-panel>
       </mat-accordion>
+
       <mat-accordion>
         <mat-expansion-panel
           (opened)="panelOpenSecond = true"
@@ -75,9 +75,37 @@
               Opciones evamed
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>data</p>
+
+          <mat-selection-list
+            #sistemas_constructivos
+            [(ngModel)]="selectedOptionsDynamo"
+            (ngModelChange)="onNgModelChangeDynamo($event)"
+          >
+            <mat-list-option
+              *ngFor="let sc of ListSCDynamo"
+              [value]="sc"
+              [disableRipple]="true"
+            >
+            <div style="display:flex; justify-content:space-between;align-items:center">
+              <div style="display:flex; align-items:center">
+                <div style="display:flex; flex-direction:column">
+                  {{sc}}
+                </div>
+              </div>
+              <div>
+                <button
+                  mat-icon-button
+                  (click)="showMaterials($event, sc)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            </div>
+            </mat-list-option>
+          </mat-selection-list>
         </mat-expansion-panel>
       </mat-accordion>
+
       <mat-accordion>
         <mat-expansion-panel
           (opened)="panelOpenThird = true"
@@ -88,10 +116,37 @@
               Creados por el usuario
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>data</p>
+          <mat-selection-list
+            #sistemas_constructivos
+            [(ngModel)]="selectedOptionsUsuario"
+            (ngModelChange)="onNgModelChangeUser($event)"
+          >
+            <mat-list-option
+              *ngFor="let sc of ListSCUsuario"
+              [value]="sc"
+              [disableRipple]="true"
+            >
+            <div style="display:flex; justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center">
+                <div style="display:flex; flex-direction:column">
+                  {{sc}}
+                </div>
+              </div>
+              <div>
+                <button
+                  mat-icon-button
+                  (click)="showMaterials($event, sc)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            </div>
+            </mat-list-option>
+          </mat-selection-list>
         </mat-expansion-panel>
       </mat-accordion>
     </section>
+
     <section class="container-details">
       <mat-list role="list">
         <mat-list-item

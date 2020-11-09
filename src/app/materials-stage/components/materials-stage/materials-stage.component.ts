@@ -15,9 +15,13 @@ export class MaterialsStageComponent implements OnInit {
   contentData: any;
   listData: any;
   indexSheet: any;
-  SistemasConstructivos: any;
+  ListSCRevit: any;
+  ListSCDynamo: any;
+  ListSCUsuario: any;
   listMateriales: any;
-  selectedOptions: string[] = [];
+  selectedOptionsRevit: string[] = [];
+  selectedOptionsDynamo: string[] = [];
+  selectedOptionsUsuario: string[] = [];
   panelOpenFirst = false;
   panelOpenSecond = false;
   panelOpenThird = false;
@@ -27,12 +31,6 @@ export class MaterialsStageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    /*this.route.queryParams.filter(params => params.data)
-      .subscribe( params => {
-        this.data = JSON.parse(params.data);
-      }
-    );*/
-
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
     this.sheetNames = data.sheetNames;
     this.contentData = data.data;
@@ -48,15 +46,37 @@ export class MaterialsStageComponent implements OnInit {
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
     this.listData = this.contentData[this.indexSheet];
     // get "sistemas constructivos"
-    const sistConstructivos = [];
+    const SCRevit = [];
+    const SCDynamo = [];
+    const SCUsuario = [];
+
     this.listData.map( sc => {
-      sistConstructivos.push(sc.Sistema_constructivo);
+      if (sc.Origen === 'Modelo de Revit') {
+        SCRevit.push(sc.Sistema_constructivo);
+      }
+      if (sc.Origen === 'Calculado en Dynamo') {
+        SCDynamo.push(sc.Sistema_constructivo);
+      }
+      if (sc.Origen === 'Usuario') {
+        SCUsuario.push(sc.Sistema_constructivo);
+      }
     });
-    this.SistemasConstructivos = [...new Set(sistConstructivos)];
+    
+    this.ListSCRevit = [...new Set(SCRevit)];
+    this.ListSCDynamo = [...new Set(SCDynamo)];
+    this.ListSCUsuario = [...new Set(SCUsuario)];
   }
 
-  onNgModelChange(event) {
-    // console.log('on ng model change', event);
+  onNgModelChangeRevit(event) {
+    console.log('on ng model change Revit', event);
+  }
+
+  onNgModelChangeDynamo(event) {
+    console.log('on ng model change dynamo', event);
+  }
+
+  onNgModelChangeUser(event) {
+    console.log('on ng model change user', event);
   }
 
   showMaterials(event, sc) {

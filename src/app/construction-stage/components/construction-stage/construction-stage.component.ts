@@ -51,15 +51,4 @@ export class ConstructionStageComponent implements OnInit {
   onNgModelChange(event) {
     // console.log('on ng model change', event);
   }
-
-  showMaterials(event, sc) {
-    const materiales = [];
-    this.listData.map( data => {
-      if (data.Sistema_constructivo === sc) {
-        materiales.push(data.Material);
-      }
-    });
-    this.listMateriales = materiales;
-  }
-
 }

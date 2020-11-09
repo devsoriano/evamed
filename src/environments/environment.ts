@@ -7,6 +7,7 @@ const countries = '/countries/';
 const type_project = '/type-project/';
 const useful_life = '/useful-life/';
 const housing_scheme = '/housing-scheme/';
+const materials = '/materials/';
 
 export const environment = {
   production: false,
@@ -16,7 +17,7 @@ export const environment = {
   api_type_project: `${api_evamed}${type_project}`,
   api_useful_life: `${api_evamed}${useful_life}`,
   api_housing_scheme: `${api_evamed}${housing_scheme}`,
-
+  api_materials: `${api_evamed}${materials}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',

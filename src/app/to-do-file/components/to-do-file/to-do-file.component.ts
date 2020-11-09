@@ -37,7 +37,7 @@ export class ToDoFileComponent implements OnInit {
       /* assingable */
       let partialData: AOA = [];
       const totalData = [];
-      let i;
+      let i = 0;
       /* save data */
       for ( i = 0; i < wb.SheetNames.length; i++) {
         partialData = XLSX.utils.sheet_to_json(
