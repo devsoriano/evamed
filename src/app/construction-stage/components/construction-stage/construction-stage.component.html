@@ -1,3 +1,4 @@
+
 <nav class="nav-redirect">
   <h2 class="proyecto-title">Hospital infantil Lomas altas</h2>
   <a href="/" class="a-redirect"> < Regresar a proyectos </a>
@@ -7,6 +8,7 @@
 
   </nav>
   <section class="container-actions">
+
     <section class="container-sheets">
       <div class="list-elements">
         <mat-selection-list
@@ -23,49 +25,259 @@
         </mat-selection-list>
       </div>
     </section>
-    <section class="container-systems">
 
-      <mat-accordion>
-        <mat-expansion-panel
-          (opened)="panelOpenSecond = true"
-          (closed)="panelOpenSecond = false"
-        >
+    <section class="container-systems">
+      <!--Accorion multiple-->
+      <mat-accordion class="example-headers-align" multi>
+        <!--Expansion panel 1. -->
+        <mat-expansion-panel>
+          <!--Expansion panel header-->
           <mat-expansion-panel-header>
             <mat-panel-title>
               1. Energía consumida durante el proceso constructivo
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>data</p>
+          <!--Expansion panel form-field-->
+          <div *ngFor="let data of dataArrayEC; let i=index;">
+            <div class="Row">
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Cantidad
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.cantidad"
+                    name="cantidad{{i}}"
+                    matInput 
+                    type="number"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Unidad funcional
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.unidad"
+                    name="unidad{{i}}"
+                    matInput 
+                    type="text"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Fuente
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.fuente"
+                    name="fuente{{i}}"
+                    matInput 
+                    type="text"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <div *ngIf="i!=0">
+                  <button
+                    mat-button
+                    (click)="removeFormEC(i)"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Actions-->
+          <button
+            mat-button
+            (click)="addFormEC()"
+          >
+            Add
+          </button>
+
+          <button
+            mat-button
+            (click)="onSaveEC()"
+          >
+            Guardar
+          </button>
         </mat-expansion-panel>
-      </mat-accordion>
-      <mat-accordion>
-        <mat-expansion-panel
-          (opened)="panelOpenThird = true"
-          (closed)="panelOpenThird = false"
-        >
+        
+        <!--Expansion panel 2. -->
+        <mat-expansion-panel>
+          <!--Expansion panel header-->
           <mat-expansion-panel-header>
             <mat-panel-title>
               2. Agua consumida durante el proceso constructivo
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>data</p>
+          <!--Expansion panel form-field-->
+          <div *ngFor="let data of dataArrayAC; let i=index;">
+            <div class="Row">
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Cantidad
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.cantidad"
+                    name="cantidad{{i}}"
+                    matInput 
+                    type="number"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Unidad funcional
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.unidad"
+                    name="unidad{{i}}"
+                    matInput 
+                    type="text"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Fuente
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.fuente"
+                    name="fuente{{i}}"
+                    matInput 
+                    type="text"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <div *ngIf="i!=0">
+                  <button
+                    mat-button
+                    (click)="removeFormAC(i)"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Actions-->
+          <button
+            mat-button
+            (click)="addFormAC()"
+          >
+            Add
+          </button>
+
+          <button
+            mat-button
+            (click)="onSaveAC()"
+          >
+            Guardar
+          </button>
         </mat-expansion-panel>
-      </mat-accordion>
-      <mat-accordion>
-        <mat-expansion-panel
-          (opened)="panelOpenThird = true"
-          (closed)="panelOpenThird = false"
-        >
+      
+        <!--Expansion panel 3. -->
+        <mat-expansion-panel>
+          <!--Expansion panel header-->
           <mat-expansion-panel-header>
             <mat-panel-title>
               3. Desechos generados durante el proceso constructivo
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>data</p>
+          <!--Expansion panel form-field-->
+          <div *ngFor="let data of dataArrayDG; let i=index;">
+            <div class="Row">
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Cantidad
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.cantidad"
+                    name="cantidad{{i}}"
+                    matInput 
+                    type="number"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Unidad funcional
+                </label>
+                <mat-form-field>
+                  <input
+                    class="input-general"
+                    [(ngModel)]="data.unidad"
+                    name="unidad{{i}}"
+                    matInput 
+                    type="text"
+                  >
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-general">
+                  Fuente
+                </label>
+                <mat-form-field appearance="outline" class="select-general">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select [(ngModel)]="data.fuente">
+                    <mat-option value="uno">
+                      uno
+                    </mat-option>
+                    <mat-option value="dos">
+                      dos
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <div *ngIf="i!=0">
+                  <button
+                    mat-button
+                    (click)="removeFormDG(i)"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Actions-->
+          <button
+            mat-button
+            (click)="addFormDG()"
+          >
+            Add
+          </button>
+
+          <button
+            mat-button
+            (click)="onSaveAC()"
+          >
+            Guardar
+          </button>
         </mat-expansion-panel>
+
       </mat-accordion>
 
     </section>
+
     <section class="container-details">
 
     </section>

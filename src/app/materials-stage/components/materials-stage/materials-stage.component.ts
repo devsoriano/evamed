@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
+import { MaterialsService } from './../../../core/services/materials/materials.service';
 import 'rxjs/add/operator/filter';
 
 @Component({
@@ -25,10 +26,16 @@ export class MaterialsStageComponent implements OnInit {
   panelOpenFirst = false;
   panelOpenSecond = false;
   panelOpenThird = false;
+  allMaterials = [];
 
   constructor(
     private route: ActivatedRoute,
-  ) { }
+    private materialsService: MaterialsService,
+  ) { 
+    this.materialsService.getMaterials().subscribe(data => {
+      this.allMaterials = data;
+    });
+  }
 
   ngOnInit() {
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
