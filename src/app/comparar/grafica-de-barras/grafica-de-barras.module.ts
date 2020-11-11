@@ -7,14 +7,21 @@ import { SharedModule } from '../../shared/shared.module';
 import { MaterialModule } from '../../material/material.module';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
-
-import { BarChartComponent } from '../../bar-chart/bar-chart.component';
+import { CompararComponent } from '../component/comparar/comparar.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
+import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.component';
+import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
+import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 
 
 @NgModule({
   declarations: [
     GraficaDeBarrasComponent,
-    BarChartComponent
+    CompararComponent,
+    BarChartComponent,
+    RadialChartComponent,
+    PieChartComponent
   ],
   imports: [
     CommonModule,
@@ -22,11 +29,12 @@ import { BarChartComponent } from '../../bar-chart/bar-chart.component';
     GraficaDeBarrasRoutingModule,
     MaterialModule,
     FormsModule,
-    ChartsModule
+    ChartsModule,
+    MatTabsModule,
+    MatMenuModule
   ],
   exports: [
     GraficaDeBarrasComponent,
-    BarChartComponent
   ],
 })
 export class GraficaDeBarrasModule { }

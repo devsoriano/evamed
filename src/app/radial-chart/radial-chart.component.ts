@@ -42,7 +42,7 @@ export class RadialChartComponent implements OnInit {
   }
 
   ngOnChanges() {
-    //determinar color de la gráfica
+    //determinar color de la gráfica}
     switch (this.id) {
       case 1: {
         this.radarChartData[0].backgroundColor = 'rgba(77,190,136,0.2)';

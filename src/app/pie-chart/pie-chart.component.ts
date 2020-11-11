@@ -34,7 +34,6 @@ export class PieChartComponent implements OnInit {
 
   ngOnChanges(){
     //determinar color de la gráfica
-    let color: any;
     switch (this.id) {
       case 1:{
         this.pieChartData[0].backgroundColor = this.coloresG;

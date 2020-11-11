@@ -11,6 +11,7 @@ export class GraficaDeBarrasComponent implements OnInit {
   public datos = [
     {
       Nombre : 'Proyecto 1',
+      id:0,
       Datos : {
         'Indicador X' : {
           Producción : Math.random(),
@@ -57,7 +58,56 @@ export class GraficaDeBarrasComponent implements OnInit {
       }
     },
     {
-      Nombre : 'Proyecto 2',
+      Nombre: 'Proyecto 2',
+      id:1,
+      Datos: {
+        'Indicador X': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 2': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 3': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 4': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 5': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 6': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 7': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        }
+      }
+    },
+    {
+      Nombre : 'Proyecto 3',
+      id:2,
       Datos : {
         'Indicador X' : {
           Producción : Math.random(),
@@ -108,10 +158,5 @@ export class GraficaDeBarrasComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  receiveData($event) {
-    this.selector = $event;
-    this.selectorEvent.emit(this.selector);
-  }
 
 }

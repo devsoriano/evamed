@@ -20,9 +20,9 @@ const routes: Routes = [
         loadChildren: () => import('./home-evamed/home-evamed.module').then(m => m.HomeEvamedModule)
       },
       {
-        path: 'comparar',
+        path: 'resultados',
         canActivate: [AdminGuard],
-        loadChildren: () => import('./comparar/comparar.module').then(m => m.CompararModule)
+        loadChildren: () => import('./comparar/grafica-de-barras/grafica-de-barras.module').then(m => m.GraficaDeBarrasModule)
       },
       {
         path: 'acerca-de',

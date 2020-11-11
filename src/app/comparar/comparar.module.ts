@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { CompararRoutingModule } from './comparar-routing.module';
 import { CompararComponent } from './component/comparar/comparar.component';
@@ -11,10 +12,16 @@ import { PieChartComponent } from '../pie-chart/pie-chart.component';
 import { RadialChartComponent } from '../radial-chart/radial-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { GraficaDeBarrasModule } from '../comparar/grafica-de-barras/grafica-de-barras.module';
+import { BarChartComponent } from '../bar-chart/bar-chart.component';
 
 
 @NgModule({
-  declarations: [CompararComponent,PieChartComponent,RadialChartComponent],
+  declarations: [
+    CompararComponent,
+    PieChartComponent,
+    RadialChartComponent,
+    BarChartComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
@@ -23,7 +30,8 @@ import { GraficaDeBarrasModule } from '../comparar/grafica-de-barras/grafica-de-
     FormsModule,
     ChartsModule,
     GraficaDeBarrasModule,
-    MatTabsModule
+    MatTabsModule,
+    MatMenuModule
   ],
   exports: [
     CompararComponent,

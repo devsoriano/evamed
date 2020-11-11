@@ -1,21 +1,22 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, BaseChartDirective } from 'ng2-charts';
 
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
-  styleUrls: ['./bar-chart.component.scss']
+  styleUrls: ['./bar-chart.component.scss'],
 })
 export class BarChartComponent implements OnInit {
 
   @ViewChild('MyChart') chartDir: BaseChartDirective;
   private canvas: any;
 
-  @Input('proyectos') inputProyects : any;
+  @Input() inputProyects: any;
   @Input('porcentaje') porcentaje : any;
+
 
   private colores = { Producción : '#DEA961', Construccion : '#8F5091', Uso : '#148A93', FinDeVida : '#4DBE89'};
   private coloresBW = {Producción : '#B1B1B1', Construccion : '#6A6A6A', Uso : '#686868', FinDeVida : '#969696'};
@@ -83,23 +84,29 @@ export class BarChartComponent implements OnInit {
   //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Edificio 1', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
   // ];
 
-  constructor() {
-  }
+
+  constructor() { }
 
   ngOnInit(): void {
-    // asigna indicadores
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
+
   }
 
   ngAfterViewInit(){
     // Ya que se inicializa el componente
     this.canvas = this.chartDir.chart.canvas;
-
     this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
     this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
 
+  }
+
+  agregarProyecto(input:any){
+    this.inputProyects=input;
+    console.log(this.inputProyects);
+    this.iniciaDatos();
+    this.ajustaEjeY();
   }
 
   // configuración de datos (lectura de datos de entrada)
@@ -133,11 +140,9 @@ export class BarChartComponent implements OnInit {
 
   private iniciaDatos(){
     // le da el formato necesario a los datos para que se puedan graficar
-    let datos = [];
-
+    let datos = []
     this.inputProyects.forEach(proyecto => {
       const auxDatos = { Producción : [], Construccion : [], Uso : [], FinDeVida : []};
-
       this.barChartLabels.forEach(indicador => {
         Object.keys(auxDatos).forEach(etapa => {
           const indicadores = Object.keys(proyecto.Datos);

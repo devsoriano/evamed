@@ -1,10 +1,28 @@
 
 <div class="principal-container">
   <div class="second-container">
-    <div>
-      <a class="return-proyecto"><mat-icon>keyboard_arrow_left</mat-icon>regresar a proyectos</a>
-      <br><a class="tittle-proyect">{{proyecto}}</a>
-      <p class="simple-text">Duplicados</p>
+    <a class="return-proyecto"><mat-icon>keyboard_arrow_left</mat-icon>regresar a proyectos</a>
+    <br><a class="tittle-proyect">{{proyecto}}</a>
+    <p class="simple-text">Duplicados</p>
+    <div class="div-proyectos-mostrados">
+      <div>
+        <button mat-button [matMenuTriggerFor]="menu">Selecciona una opción a visualizar</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item
+            *ngFor="let item of proyect"
+            (click)="iniciar_graficas(item.id)">
+            <span>{{item.Nombre}}</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div>
+        <div *ngFor="let item of proyect">
+          <mat-card *ngIf="item.card">
+            <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
+            {{item.Nombre}}
+          </mat-card>
+        </div>
+      </div>
     </div>
     <mat-card>
         <mat-tab-group mat-stretch-tabs>
@@ -26,7 +44,7 @@
               </div>
             </div>
             <div class="campo-grafica-bar">
-              <app-grafica-de-barras (selectorEvent)="receiveSelector($event)"></app-grafica-de-barras>
+              <app-bar-chart [inputProyects]="outproyect_bar" [porcentaje]="Porcentaje" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
             </div>
             <div>
               <p>Dispersión de Impacto ambiental por fase de ciclo de vida</p>
