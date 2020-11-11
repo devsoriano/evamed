@@ -61,4 +61,46 @@ export class CatalogsService {
       })
     );
   }
+
+  getSourceInformation() {
+    return this.http.get<any>(
+      environment.api_source_information,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getBulkUnits() {
+    return this.http.get<any>(
+      environment.api_bulk_units,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getEnergyUnits() {
+    return this.http.get<any>(
+      environment.api_energy_units,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getVolumeUnits() {
+    return this.http.get<any>(
+      environment.api_volume_units,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+
 }

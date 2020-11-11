@@ -64,3 +64,25 @@ p.p-instrucciones {
 .container-systems {
   overflow: auto;
 }
+
+.Row.top-0 {
+  margin-top: 0px!important;
+}
+
+.button-remove {
+  margin-top: 28px;
+  margin-left: -20px;
+}
+
+.label-small-input {
+  font-size: 12px;
+  color: #CBCBCB;
+}
+
+.select-general {
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      margin-top: -10px!important;
+    }
+  }
+}

@@ -39,9 +39,9 @@
           </mat-expansion-panel-header>
           <!--Expansion panel form-field-->
           <div *ngFor="let data of dataArrayEC; let i=index;">
-            <div class="Row">
+            <div class="Row top-0">
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Cantidad
                 </label>
                 <mat-form-field>
@@ -55,37 +55,36 @@
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Unidad funcional
                 </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.unidad"
-                    name="unidad{{i}}"
-                    matInput 
-                    type="text"
-                  >
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                    <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
+                      {{unidad.name_energy_unit}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Fuente
                 </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.fuente"
-                    name="fuente{{i}}"
-                    matInput 
-                    type="text"
-                  >
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
+                      {{fuente.name_source_information}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
                 <div *ngIf="i!=0">
                   <button
                     mat-button
+                    class="button-remove"
                     (click)="removeFormEC(i)"
                   >
                     Remove
@@ -120,9 +119,9 @@
           </mat-expansion-panel-header>
           <!--Expansion panel form-field-->
           <div *ngFor="let data of dataArrayAC; let i=index;">
-            <div class="Row">
+            <div class="Row top-0">
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Cantidad
                 </label>
                 <mat-form-field>
@@ -136,37 +135,36 @@
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Unidad funcional
                 </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.unidad"
-                    name="unidad{{i}}"
-                    matInput 
-                    type="text"
-                  >
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                    <mat-option *ngFor="let unidad of catalogoUnidadVolumen" [value]="unidad.id">
+                      {{unidad.name_volume_unit}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Fuente
                 </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.fuente"
-                    name="fuente{{i}}"
-                    matInput 
-                    type="text"
-                  >
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
+                      {{fuente.name_source_information}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
                 <div *ngIf="i!=0">
                   <button
                     mat-button
+                    class="button-remove"
                     (click)="removeFormAC(i)"
                   >
                     Remove
@@ -201,9 +199,9 @@
           </mat-expansion-panel-header>
           <!--Expansion panel form-field-->
           <div *ngFor="let data of dataArrayDG; let i=index;">
-            <div class="Row">
+            <div class="Row top-0">
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Cantidad
                 </label>
                 <mat-form-field>
@@ -217,31 +215,27 @@
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Unidad funcional
                 </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.unidad"
-                    name="unidad{{i}}"
-                    matInput 
-                    type="text"
-                  >
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                    <mat-option *ngFor="let unidad of catalogoUnidadMasa" [value]="unidad.id">
+                      {{unidad.name_bulk_unit}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
-                <label class="label-general">
+                <label class="label-small-input">
                   Fuente
                 </label>
-                <mat-form-field appearance="outline" class="select-general">
+                <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select [(ngModel)]="data.fuente">
-                    <mat-option value="uno">
-                      uno
-                    </mat-option>
-                    <mat-option value="dos">
-                      dos
+                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
+                      {{fuente.name_source_information}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -250,6 +244,7 @@
                 <div *ngIf="i!=0">
                   <button
                     mat-button
+                    class="button-remove"
                     (click)="removeFormDG(i)"
                   >
                     Remove

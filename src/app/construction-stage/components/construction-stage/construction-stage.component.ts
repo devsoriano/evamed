@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import { MatAccordion } from '@angular/material/expansion';
+import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import 'rxjs/add/operator/filter';
 
 @Component({
@@ -18,6 +19,11 @@ export class ConstructionStageComponent implements OnInit {
   listData: any;
   indexSheet: any;
   SistemasConstructivos: any;
+  catalogoFuentes: [];
+  catalogoUnidadEnergia: [];
+  catalogoUnidadVolumen: [];
+  catalogoUnidadMasa: [];
+
   EnergiaConsumida: {
     cantidad, 
     unidad,
@@ -53,7 +59,21 @@ export class ConstructionStageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-  ) { }
+    private catalogsService: CatalogsService,
+  ) { 
+    this.catalogsService.getSourceInformation().subscribe(data => {
+      this.catalogoFuentes = data;
+    });
+    this.catalogsService.getEnergyUnits().subscribe(data => {
+      this.catalogoUnidadEnergia = data;
+    });
+    this.catalogsService.getVolumeUnits().subscribe(data => {
+      this.catalogoUnidadVolumen = data;
+    });
+    this.catalogsService.getBulkUnits().subscribe(data => {
+      this.catalogoUnidadMasa = data;
+    });
+  }
 
   ngOnInit() {
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
