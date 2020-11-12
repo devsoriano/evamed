@@ -52,6 +52,8 @@ export class ToDoFileComponent implements OnInit {
         sheetNames: wb.SheetNames,
         data: totalData
       };
+      console.log('trazas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+      console.log(toRead);
       sessionStorage.setItem('dataProject', JSON.stringify(toRead));
       this.router.navigateByUrl('materials-stage');
     };

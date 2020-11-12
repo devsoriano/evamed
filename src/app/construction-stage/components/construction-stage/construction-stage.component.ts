@@ -82,6 +82,8 @@ export class ConstructionStageComponent implements OnInit {
     this.dataArrayEC.push(this.EnergiaConsumida);
     this.dataArrayAC.push(this.AguaConsumida);
     this.dataArrayDG.push(this.DesechosGenerados);
+    console.log('entra a esta madre');
+    console.log(this.indexSheet);
   }
 
   addFormEC() {
@@ -143,16 +145,12 @@ export class ConstructionStageComponent implements OnInit {
     });
     // take index of selection
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
-    this.listData = this.contentData[this.indexSheet];
-    // get "sistemas constructivos"
-    const sistConstructivos = [];
-    this.listData.map( sc => {
-      sistConstructivos.push(sc.Sistema_constructivo);
-    });
-    this.SistemasConstructivos = [...new Set(sistConstructivos)];
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+    console.log(selectedSheet);
+    console.log(this.indexSheet);
   }
 
   onNgModelChange(event) {
-    // console.log('on ng model change', event);
+    console.log('on ng model change', event);
   }
 }

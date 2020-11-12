@@ -30,7 +30,7 @@
       <!--Accorion multiple-->
       <mat-accordion class="example-headers-align" multi>
         <!--Expansion panel 1. -->
-        <mat-expansion-panel>
+        <mat-expansion-panel *ngIf="indexSheet!==undefined">
           <!--Expansion panel header-->
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -110,7 +110,7 @@
         </mat-expansion-panel>
         
         <!--Expansion panel 2. -->
-        <mat-expansion-panel>
+        <mat-expansion-panel *ngIf="indexSheet!==undefined">
           <!--Expansion panel header-->
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -190,7 +190,7 @@
         </mat-expansion-panel>
       
         <!--Expansion panel 3. -->
-        <mat-expansion-panel>
+        <mat-expansion-panel *ngIf="indexSheet!==undefined">
           <!--Expansion panel header-->
           <mat-expansion-panel-header>
             <mat-panel-title>
