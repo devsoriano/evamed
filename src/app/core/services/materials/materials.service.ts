@@ -22,5 +22,15 @@ export class MaterialsService {
     );
   }
 
+  searchMaterial( material ) {
+    return this.http.get<any>(
+      environment.api_materials + '?search=' + material,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   
 }

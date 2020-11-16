@@ -12,10 +12,11 @@ import 'rxjs/add/operator/filter';
 
 export class MaterialsStageComponent implements OnInit {
 
+  // standard variables
   sheetNames: any;
   contentData: any;
   listData: any;
-  indexSheet: any;
+  indexSheet: number;
   ListSCRevit: any;
   ListSCDynamo: any;
   ListSCUsuario: any;
@@ -27,19 +28,36 @@ export class MaterialsStageComponent implements OnInit {
   panelOpenSecond = false;
   panelOpenThird = false;
   allMaterials = [];
+  nameProject: string;
+  SOR = [];
+  SOD = [];
+  SOU = [];
 
   constructor(
     private route: ActivatedRoute,
     private materialsService: MaterialsService,
   ) { 
-    this.materialsService.getMaterials().subscribe(data => {
-      this.allMaterials = data;
-    });
   }
 
   ngOnInit() {
+    const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
-    this.sheetNames = data.sheetNames;
+    
+    this.nameProject = PDP.name_project;
+
+    this.sheetNames = [];
+    data.sheetNames.map( sheetname => {
+      if ( sheetname !== "Muros InterioresBis" && 
+        sheetname !== "Inicio" &&
+        sheetname !== "Registro" &&
+        sheetname !== "ListaElementos" &&
+        sheetname !== "BD" &&
+        sheetname !== "Parametros"
+      ) {
+        this.sheetNames.push(sheetname);
+      }
+    });
+
     this.contentData = data.data;
   }
 
@@ -51,7 +69,7 @@ export class MaterialsStageComponent implements OnInit {
     });
     // take index of selection
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
-    this.listData = this.contentData[this.indexSheet];
+    this.listData = this.contentData[this.indexSheet + 1];
     // get "sistemas constructivos"
     const SCRevit = [];
     const SCDynamo = [];
@@ -72,18 +90,34 @@ export class MaterialsStageComponent implements OnInit {
     this.ListSCRevit = [...new Set(SCRevit)];
     this.ListSCDynamo = [...new Set(SCDynamo)];
     this.ListSCUsuario = [...new Set(SCUsuario)];
+    
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) { 
+      this.indexSheet === i && this.SOR !== undefined ? this.selectedOptionsRevit = this.SOR[i] : this.selectedOptionsRevit;
+      this.indexSheet === i && this.SOD !== undefined ? this.selectedOptionsDynamo = this.SOD[i] : this.selectedOptionsDynamo;
+      this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
+    }
   }
 
   onNgModelChangeRevit(event) {
-    console.log('on ng model change Revit', event);
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) { 
+      this.indexSheet === i ? this.SOR[i] = this.selectedOptionsRevit : this.SOR[i];
+    }
   }
 
   onNgModelChangeDynamo(event) {
-    console.log('on ng model change dynamo', event);
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) { 
+      this.indexSheet === i ? this.SOD[i] = this.selectedOptionsDynamo : this.SOD[i];
+    }
   }
 
   onNgModelChangeUser(event) {
-    console.log('on ng model change user', event);
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) { 
+      this.indexSheet === i ? this.SOU[i] = this.selectedOptionsUsuario : this.SOU[i];
+    }
   }
 
   showMaterials(event, sc) {
@@ -96,4 +130,7 @@ export class MaterialsStageComponent implements OnInit {
     this.listMateriales = materiales;
   }
 
+  saveStepOne() {
+    
+  }
 }

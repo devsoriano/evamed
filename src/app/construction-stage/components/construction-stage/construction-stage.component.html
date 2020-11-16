@@ -48,7 +48,7 @@
                   <input
                     class="input-general"
                     [(ngModel)]="data.cantidad"
-                    name="cantidad{{i}}"
+                    name="cantidad_{{i}}"
                     matInput 
                     type="number"
                   >
@@ -221,8 +221,8 @@
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
                   <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
-                    <mat-option *ngFor="let unidad of catalogoUnidadMasa" [value]="unidad.id">
-                      {{unidad.name_bulk_unit}}
+                    <mat-option *ngFor="let unidad of catalogoUnidadVolumen" [value]="unidad.id">
+                      {{unidad.name_volume_unit}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -263,7 +263,7 @@
 
           <button
             mat-button
-            (click)="onSaveAC()"
+            (click)="onSaveDG()"
           >
             Guardar
           </button>

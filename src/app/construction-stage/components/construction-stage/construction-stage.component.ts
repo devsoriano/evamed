@@ -17,45 +17,19 @@ export class ConstructionStageComponent implements OnInit {
   sheetNames: any;
   contentData: any;
   listData: any;
-  indexSheet: any;
+  indexSheet: number;
   SistemasConstructivos: any;
   catalogoFuentes: [];
   catalogoUnidadEnergia: [];
   catalogoUnidadVolumen: [];
   catalogoUnidadMasa: [];
-
-  EnergiaConsumida: {
-    cantidad, 
-    unidad,
-    fuente,
-  }[] = [{ 
-    cantidad : 0, 
-    unidad: '',
-    fuente: ''
-  }];
+  nameProject: string;
   dataArrayEC = [];
-
-  AguaConsumida: {
-    cantidad, 
-    unidad,
-    fuente,
-  }[] = [{ 
-    cantidad : 0, 
-    unidad: '',
-    fuente: ''
-  }];
   dataArrayAC = [];
-
-  DesechosGenerados: {
-    cantidad, 
-    unidad,
-    fuente,
-  }[] = [{ 
-    cantidad : 0, 
-    unidad: '',
-    fuente: ''
-  }];
   dataArrayDG = [];
+  EC: any;
+  AC: any;
+  DG: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -76,65 +50,24 @@ export class ConstructionStageComponent implements OnInit {
   }
 
   ngOnInit() {
+    const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
-    this.sheetNames = data.sheetNames;
+    
+    this.nameProject = PDP.name_project;
+
+    this.sheetNames = [];
+    data.sheetNames.map( sheetname => {
+      if ( sheetname !== "Muros InterioresBis" && 
+        sheetname !== "Inicio" &&
+        sheetname !== "Registro" &&
+        sheetname !== "ListaElementos" &&
+        sheetname !== "BD" &&
+        sheetname !== "Parametros"
+      ) {
+        this.sheetNames.push(sheetname);
+      }
+    });
     this.contentData = data.data;
-    this.dataArrayEC.push(this.EnergiaConsumida);
-    this.dataArrayAC.push(this.AguaConsumida);
-    this.dataArrayDG.push(this.DesechosGenerados);
-    console.log('entra a esta madre');
-    console.log(this.indexSheet);
-  }
-
-  addFormEC() {
-    this.EnergiaConsumida = [{ 
-      cantidad : 0, 
-      unidad: '',
-      fuente: ''
-    }];
-    this.dataArrayEC.push(this.EnergiaConsumida);
-  }
-
-  removeFormEC(i) {
-    this.dataArrayEC.splice(i)
-  }
-
-  onSaveEC() {
-    console.log(this.dataArrayEC);
-  }
-
-  addFormAC() {
-    this.AguaConsumida = [{ 
-      cantidad : 0, 
-      unidad: '',
-      fuente: ''
-    }];
-    this.dataArrayAC.push(this.AguaConsumida);
-  }
-
-  removeFormAC(i) {
-    this.dataArrayAC.splice(i)
-  }
-
-  onSaveAC() {
-    console.log(this.dataArrayAC);
-  }
-
-  addFormDG() {
-    this.DesechosGenerados = [{ 
-      cantidad : 0, 
-      unidad: '',
-      fuente: ''
-    }];
-    this.dataArrayDG.push(this.DesechosGenerados);
-  }
-
-  removeFormDG(i) {
-    this.dataArrayDG.splice(i)
-  }
-
-  onSaveDG() {
-    console.log(this.dataArrayDG);
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -145,12 +78,78 @@ export class ConstructionStageComponent implements OnInit {
     });
     // take index of selection
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-    console.log(selectedSheet);
-    console.log(this.indexSheet);
+    // take memory of saved data 
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) {
+      if ( this.indexSheet === i && this.EC !== undefined ) {
+        this.dataArrayEC = this.EC[i];
+      }
+      if ( this.indexSheet === i && this.AC !== undefined ) {
+        this.dataArrayAC = this.AC[i];
+      }
+      if ( this.indexSheet === i && this.DG !== undefined ) {
+        this.dataArrayDG = this.DG[i];
+      }
+    }
+  }
+
+  addFormEC() {
+    this.dataArrayEC === undefined ? this.dataArrayEC = []: this.dataArrayEC;
+    this.dataArrayEC.push([]);
+  }
+
+  removeFormEC(i) {
+    this.dataArrayEC.splice(i)
+  }
+
+  onSaveEC() {
+    let i;
+    this.EC === undefined ? this.EC = []: this.EC;
+    for (i = 0; i <= this.sheetNames.length; i++) {
+      if (this.indexSheet === i) {
+        this.EC[i] = this.dataArrayEC;
+      }
+    }
+  }
+
+  addFormAC() {
+    this.dataArrayAC === undefined ? this.dataArrayAC = []: this.dataArrayAC;
+    this.dataArrayAC.push([]);
+  }
+
+  removeFormAC(i) {
+    this.dataArrayAC.splice(i)
+  }
+
+  onSaveAC() {
+    let i;
+    this.AC === undefined ? this.AC = []: this.AC;
+    for (i = 0; i <= this.sheetNames.length; i++) {
+      if (this.indexSheet === i) {
+        this.AC[i] = this.dataArrayAC;
+      }
+    }
+  }
+
+  addFormDG() {
+    this.dataArrayDG === undefined ? this.dataArrayDG = []: this.dataArrayDG;
+    this.dataArrayDG.push([]);
+  }
+
+  removeFormDG(i) {
+    this.dataArrayDG.splice(i)
+  }
+
+  onSaveDG() {
+    let i;
+    this.DG === undefined ? this.DG = []: this.DG;
+    for (i = 0; i <= this.sheetNames.length; i++) {
+      if (this.indexSheet === i) {
+        this.DG[i] = this.dataArrayDG;
+      }
+    }
   }
 
   onNgModelChange(event) {
-    console.log('on ng model change', event);
   }
 }
