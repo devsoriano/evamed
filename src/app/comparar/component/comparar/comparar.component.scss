@@ -23,8 +23,11 @@
 }
 
 .div-proyectos-mostrados {
-      display: inline-grid;
-      grid-template-columns: auto auto;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  .button-graph{
+    font-size: 10px;
+  }
 }
 
 .div-impactos-ambientales{

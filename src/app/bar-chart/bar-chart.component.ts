@@ -27,6 +27,7 @@ export class BarChartComponent implements OnInit {
   private proyectos = [];
   private inicializado = false;
   @Output() lastClickEvent = new EventEmitter<string>();
+  private maxValue = 0;
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -45,15 +46,7 @@ export class BarChartComponent implements OnInit {
       }
     }
   };
-  public barChartLabels: Label[]=[
-    'Indicador 1',
-    'Indicador 2',
-    'Indicador 3',
-    'Indicador 4',
-    'Indicador 5',
-    'Indicador 6',
-    'Indicador 7',
-  ];
+  public barChartLabels: Label[];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels, {
@@ -62,27 +55,6 @@ export class BarChartComponent implements OnInit {
 
 
   public barChartData: ChartDataSets[];
-  //  = [
-  //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto1', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-  //   { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto1', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-  //   { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto1', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-  //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'FinDeVida', stack: 'Proyecto1', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
-  //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto2', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-  //   { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto2', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-  //   { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto2', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-  //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'FinDeVida', stack: 'Proyecto2', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
-  //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Proyecto3', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-  //   { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Proyecto3', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-  //   { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Proyecto3', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-  //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'FinDeVida', stack: 'Proyecto3', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' }
-  // ];
-
-  // public barChartData: ChartDataSets[] = [
-  //   { data: [20, 30, 10, 45, 25, 5, 40], label: 'Producción', stack: 'Edificio 1', backgroundColor: '#DEA961', hoverBackgroundColor: '#DEA961'},
-  //   { data: [15, 20, 40, 20, 35, 38, 37], label: 'Construccion', stack: 'Edificio 1', backgroundColor: '#8F5091', hoverBackgroundColor: '#8F5091' },
-  //   { data: [40, 38, 30, 8, 10, 25, 8], label: 'Uso', stack: 'Edificio 1', backgroundColor: '#148A93', hoverBackgroundColor: '#148A93' },
-  //   { data: [25, 12, 20, 27, 30, 32, 15], label: 'Fin de vida', stack: 'Edificio 1', backgroundColor: '#4DBE89', hoverBackgroundColor: '#4DBE89' },
-  // ];
 
 
   constructor() { }
@@ -91,7 +63,6 @@ export class BarChartComponent implements OnInit {
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
-
   }
 
   ngAfterViewInit(){
@@ -102,23 +73,42 @@ export class BarChartComponent implements OnInit {
 
   }
 
-  agregarProyecto(input:any){
-    this.inputProyects=input;
-    console.log(this.inputProyects);
+  agregarProyecto(cambio:any){
+    //console.log(this.inputProyects);
+    this.inputProyects=cambio;
+    this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
+
+  }
+
+  public togglePorcentaje(vao:boolean){
+    this.porcentaje = vao;
+    this.iniciaDatos();
+    this.ajustaEjeY();
+    this.chartDir.chart.update();
   }
 
   // configuración de datos (lectura de datos de entrada)
   private ajustaEjeY(){
     // se se usan porcentajes, limita el eje y de 0 a 100
-    if (this.porcentaje){
+    if(this.porcentaje){
       this.barChartOptions.scales = {
         yAxes: [{
           display: true,
           ticks: {
               beginAtZero: true,
               max: 100
+            }
+        }]
+      };
+    }else{
+      this.barChartOptions.scales = {
+        yAxes: [{
+          display: true,
+          ticks: {
+              beginAtZero: true,
+              max: this.maxValue
             }
         }]
       };
@@ -134,6 +124,7 @@ export class BarChartComponent implements OnInit {
           this.barChartLabels = [...this.barChartLabels, indicador];
         }
         proyecto.Datos[indicador].total = Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
+        this.maxValue = Math.max(this.maxValue, proyecto.Datos[indicador].total);
       });
     });
   }
@@ -141,6 +132,7 @@ export class BarChartComponent implements OnInit {
   private iniciaDatos(){
     // le da el formato necesario a los datos para que se puedan graficar
     let datos = []
+    this.barChartData=[];
     this.inputProyects.forEach(proyecto => {
       const auxDatos = { Producción : [], Construccion : [], Uso : [], FinDeVida : []};
       this.barChartLabels.forEach(indicador => {
@@ -150,23 +142,23 @@ export class BarChartComponent implements OnInit {
             auxDatos[etapa] = [...auxDatos[etapa], 0];
           }else{
             auxDatos[etapa] = [...auxDatos[etapa],
-              this.porcentaje ?
-              (proyecto.Datos[indicador.toString()][etapa] * 100 / proyecto.Datos[indicador.toString()].total).toFixed(2) :
-              proyecto.Datos[indicador.toString()][etapa].toFixed(2)
-            ];
-          }
-        });
+            this.porcentaje ?
+            (proyecto.Datos[indicador.toString()][etapa] * 100 / proyecto.Datos[indicador.toString()].total).toFixed(2) :
+            proyecto.Datos[indicador.toString()][etapa].toFixed(2)
+          ];
+        }
       });
+    });
 
-      Object.keys(auxDatos).forEach(etapa => {
-        datos = [...datos,
-          {
-            data: auxDatos[etapa],
-            label: etapa,
-            stack: proyecto.Nombre,
-            backgroundColor: this.colores[etapa],
-            hoverBackgroundColor: this.colores[etapa]
-          }];
+    Object.keys(auxDatos).forEach(etapa => {
+      datos = [...datos,
+        {
+          data: auxDatos[etapa],
+          label: etapa,
+          stack: proyecto.Nombre,
+          backgroundColor: this.colores[etapa],
+          hoverBackgroundColor: this.colores[etapa]
+        }];
       });
     });
     this.barChartData = datos;
@@ -191,7 +183,6 @@ export class BarChartComponent implements OnInit {
         this.centrosX[proyecto].push(x);
       }
     });
-    this.inicializado = true;
   }
 
   private agregaTitulosProyectos(chart: any){
@@ -230,6 +221,8 @@ export class BarChartComponent implements OnInit {
     }else if (e.offsetY < limiteSuperior){
       // Control de click de Proyecto
       this.focusProyecto(e);
+    }else{
+      //this.togglePorcentaje();
     }
   }
 

@@ -1,14 +1,14 @@
 <div class="div-principal" *ngIf="showMePartially">
-  <div style="display:block">
-    <canvas #MyChart='base-chart' #canvas baseChart
-      [datasets]="pieChartData"
-      [options]="pieChartOptions"
-      [chartType]="pieChartType"></canvas>
-  </div>
-  <div>
+  <div style="display:block" *ngFor="let item of inputProyect">
+    <mat-card>
+      <mat-card-header>
+        {{item.Nombre}}
+      </mat-card-header>
       <canvas #MyChart='base-chart' #canvas baseChart
-      [datasets]="pieChartData"
-      [options]="pieChartOptions"
-      [chartType]="pieChartType"></canvas>
+        [datasets]="pieChartData[item.id]"
+        [options]="pieChartOptions"
+        [labels]="pieChartLabels[item.id]"
+        [chartType]="pieChartType"></canvas>
+    </mat-card>
   </div>
 </div>

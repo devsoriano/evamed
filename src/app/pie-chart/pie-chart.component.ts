@@ -10,50 +10,64 @@ import {BaseChartDirective } from 'ng2-charts';
 })
 export class PieChartComponent implements OnInit {
   @ViewChild('MyChart') chartDir: BaseChartDirective;
+  @Input() inputProyect: any;
   @Input() showMePartially: boolean;
-  @Input() id:number;
+  @Input() id:string;
 
-  private colores: any[] = ['#4DBE89', '#148A93', '#8F5091', '#DEA961'];
-  private coloresG: any[] = ['#4DBE89', '#96e2bd', '#4dba8b', '#1f8253'];
-  private coloresB: any[] = ['#148A93', '#0da8b6', '#64dee6', '#67c1c9'];
-  private coloresP: any[] = ['#8F5091', '#d37cd4', '#8c4c90', '#6c1d6c'];
-  private coloresY: any[] = ['#DEA961', '#d99d1c', '#d59a3d', '#f5e381'];
+  private colores: any[] = [
+    ['#4DBE89', '#96e2bd', '#4dba8b', '#1f8253'],
+    ['#148A93', '#0da8b6', '#64dee6', '#67c1c9'],
+    ['#8F5091', '#d37cd4', '#8c4c90', '#6c1d6c'],
+    ['#DEA961', '#d99d1c', '#d59a3d', '#f5e381']];
 
   public pieChartType = 'doughnut';
   public pieChartOptions = {
     segmentShowStroke: false
   };
-  public pieChartData: ChartDataSets[] = [
-    {data: [80, 10, 5, 5],
-      backgroundColor: this.colores},
-  ];
+  public pieChartData=[];
+  public pieChartLabels = [];
 
   constructor() { }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    this.cargarDatos(this.id,' ')
+  }
 
-  ngOnChanges(){
-    //determinar color de la gráfica
-    switch (this.id) {
-      case 1:{
-        this.pieChartData[0].backgroundColor = this.coloresG;
-        break;
-      }
-      case 2: {
-        this.pieChartData[0].backgroundColor = this.coloresB;
-        break;
-      }
-      case 3: {
-        this.pieChartData[0].backgroundColor = this.coloresP;
-        break;
-      }
-      case 4: {
-        this.pieChartData[0].backgroundColor = this.coloresY;
-        break;
-      }
-      default: {
-        break;
-      }
+  cargarDatos(ID:string, indicador:string){
+    let auxdata: ChartDataSets[];
+    let color: any[]
+    let auxlabel = ['Producción','Construcción','Uso','FindeVida']
+    let auxdataLabel=[]
+    let auxdatos = []
+    let datos = []
+    let aux=[];
+    this.pieChartData =[]
+    this.pieChartLabels=[]
+
+    if(indicador===' '){
+
+    }else{
+      this.inputProyect.forEach(proyecto => {
+        aux=proyecto.Datos[indicador];
+        Object.keys(auxlabel).forEach(element => {
+          if (auxlabel[element]===ID) {
+            color = this.colores[element];
+            auxdatos = aux[auxlabel[element]]
+            Object.keys(aux[auxlabel[element]]).forEach(marcador => {
+              auxdataLabel=[...auxdataLabel, marcador];
+              datos = [...datos, (auxdatos[marcador]*100).toFixed(2)];
+            });
+          }
+        });
+        auxdata=[{
+          data: datos,
+          backgroundColor: color
+        }]
+        datos=[];
+        this.pieChartData = [...this.pieChartData,auxdata];
+        this.pieChartLabels=[...this.pieChartLabels,auxdataLabel];
+        auxdataLabel = [];
+      });
     }
   }
 }

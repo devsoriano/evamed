@@ -15,7 +15,7 @@
           </button>
         </mat-menu>
       </div>
-      <div>
+      <div class="button-graph">
         <div *ngFor="let item of proyect">
           <mat-card *ngIf="item.card">
             <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
@@ -38,7 +38,7 @@
                   <button class="button-impactos"><mat-icon class="icons-options">bar_chart</mat-icon></button>
                 </div>
                 <div>
-                  <button class="button-impactos">%</button>
+                  <button class="button-impactos" (click)="porcentaje()">%</button>
                   <button class="button-impactos">#</button>
                 </div>
               </div>
@@ -48,22 +48,23 @@
             </div>
             <div>
               <p>Dispersión de Impacto ambiental por fase de ciclo de vida</p>
+                <p>Selecciona una fase del ciclo de vida
             </div>
             <div class="div-secondary-graph">
               <ul class="ul-botones">
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica(1)">
+                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('Producción')">
                   <mat-icon class="icons-grafica uno">visibility_off</mat-icon>Producción</button>
                 </li>
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica(2)">
+                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('Construcción')">
                   <mat-icon class="icons-grafica dos">visibility_off</mat-icon>Construcción</button> </li>
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica(3)">
+                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('Uso')">
                   <mat-icon class="icons-grafica tres">visibility_off</mat-icon>Uso</button> </li>
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica(4)">
+                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('FindeVida')">
                   <mat-icon class="icons-grafica cuatro">visibility_off</mat-icon>Fin de vida</button> </li>
               </ul>
               <div>
-                <app-pie-chart [showMePartially]="showVar" [id]="ID"></app-pie-chart>
-                <app-radial-chart [showMe]="showVar_1" [id]="ID"></app-radial-chart>
+                <app-pie-chart [showMePartially]="showVar" [id]="ID" [inputProyect]="outproyect_pie"></app-pie-chart>
+                <app-radial-chart [showMe]="showVar_1" [id]="ID" [inputProyect]="outproyect_radar"></app-radial-chart>
               </div>
             </div>
           </mat-tab>
