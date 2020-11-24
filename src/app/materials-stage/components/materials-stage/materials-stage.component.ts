@@ -12,7 +12,6 @@ import 'rxjs/add/operator/filter';
 
 export class MaterialsStageComponent implements OnInit {
 
-  // standard variables
   sheetNames: any;
   contentData: any;
   listData: any;
@@ -32,6 +31,8 @@ export class MaterialsStageComponent implements OnInit {
   SOR = [];
   SOD = [];
   SOU = [];
+  sectionRevit: boolean;
+  sectionDynamo: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -63,39 +64,39 @@ export class MaterialsStageComponent implements OnInit {
 
   onGroupsChange(options: MatListOption[]) {
     let selectedSheet;
-    // map these MatListOptions to their values
+
     options.map(option => {
       selectedSheet = option.value;
     });
-    // take index of selection
+
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
     this.listData = this.contentData[this.indexSheet + 1];
-    // get "sistemas constructivos"
+    
     const SCRevit = [];
     const SCDynamo = [];
-    const SCUsuario = [];
+    // const SCUsuario = [];
 
     this.listData.map( sc => {
-      if (sc.Origen === 'Modelo de Revit') {
+      if (sc.Origen === 'Modelo de Revit' || sc.Origen === 'Usuario') {
         SCRevit.push(sc.Sistema_constructivo);
       }
       if (sc.Origen === 'Calculado en Dynamo') {
         SCDynamo.push(sc.Sistema_constructivo);
       }
-      if (sc.Origen === 'Usuario') {
-        SCUsuario.push(sc.Sistema_constructivo);
-      }
+      // if (sc.Origen === 'Usuario') {
+      //  SCUsuario.push(sc.Sistema_constructivo);
+      // }
     });
     
     this.ListSCRevit = [...new Set(SCRevit)];
     this.ListSCDynamo = [...new Set(SCDynamo)];
-    this.ListSCUsuario = [...new Set(SCUsuario)];
+    // this.ListSCUsuario = [...new Set(SCUsuario)];
     
     let i;
     for ( i = 0; i <= this.sheetNames.length; i++ ) { 
       this.indexSheet === i && this.SOR !== undefined ? this.selectedOptionsRevit = this.SOR[i] : this.selectedOptionsRevit;
       this.indexSheet === i && this.SOD !== undefined ? this.selectedOptionsDynamo = this.SOD[i] : this.selectedOptionsDynamo;
-      this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
+      // this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
     }
   }
 
@@ -114,17 +115,24 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onNgModelChangeUser(event) {
-    let i;
-    for ( i = 0; i <= this.sheetNames.length; i++ ) { 
-      this.indexSheet === i ? this.SOU[i] = this.selectedOptionsUsuario : this.SOU[i];
-    }
+  //  let i;
+  //  for ( i = 0; i <= this.sheetNames.length; i++ ) { 
+  //    this.indexSheet === i ? this.SOU[i] = this.selectedOptionsUsuario : this.SOU[i];
+  //  }
   }
 
-  showMaterials(event, sc) {
+  showMaterials(event, sc, origin) {
     const materiales = [];
     this.listData.map( data => {
-      if (data.Sistema_constructivo === sc) {
-        materiales.push(data.Material);
+      if (data.Sistema_constructivo === sc && origin === 'revit-user') {
+        if(data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
+          materiales.push(data.Material); 
+        }
+      }
+      if (data.Sistema_constructivo === sc && origin === 'dynamo') { 
+        if(data.Origen === 'Calculado en Dynamo') {
+          materiales.push(data.Material); 
+        }
       }
     });
     this.listMateriales = materiales;
