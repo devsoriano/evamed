@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import 'rxjs/add/operator/filter';
+import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 
 @Component({
   selector: 'app-materials-stage',
@@ -30,6 +31,7 @@ export class MaterialsStageComponent implements OnInit {
   panelOpenThird = false;
   allMaterials = [];
   nameProject: string;
+  projectId: number;
   SOR = [];
   SOD = [];
   SOU = [];
@@ -39,6 +41,7 @@ export class MaterialsStageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private materialsService: MaterialsService,
+    private projectsService: ProjectsService,
   ) { 
   }
 
@@ -48,6 +51,7 @@ export class MaterialsStageComponent implements OnInit {
     
     this.sheetNames = [];
     this.nameProject = PDP.name_project;
+    this.projectId = PDP.id;
     data.sheetNames.map( sheetname => {
       if ( sheetname !== 'Muros InterioresBis' && 
         sheetname !== 'Inicio' &&
@@ -121,7 +125,7 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onNgModelChangeMaterial(event) {
-    console.log(this.selectedMaterial);
+    // console.log(this.selectedMaterial);
   }
 
   showMaterials(event, sc, origin) {
@@ -142,8 +146,33 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   saveStepOne() {
-    console.log('botón de alta de hoja de excel!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log(this.SOR);
-    console.log(Object.keys(this.SOR))
+    Object.entries(this.SOR).forEach(([key, value]) => {
+      this.listData.map(data => {
+        if (data.Sistema_constructivo === value[0]) {
+          if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
+            this.materialsService.searchMaterial(data.Material).subscribe(material => {
+              material.map( materialData => {
+                if(materialData.name_material === data.Material) {
+                  // console.log(key + ' ' + value + ' ' + materialData.name_material + ' ' + materialData.id)
+                  this.projectsService.addSchemeProject({
+                    "construction_system": data.Sistema_constructivo,
+                    "quantity": data.Cantidad,
+                    "provider_distance": 0,
+                    "material_id":  materialData.id,
+                    "project_id": this.projectId,
+                    "origin_id": 1,
+                    "section_id": parseInt(key) + 1
+                  }).subscribe(data => {
+                    console.log('Success!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                    console.log(data);
+                  });
+                }
+              });
+            });
+          }
+        }
+      });   
+    });
+
   }
 }

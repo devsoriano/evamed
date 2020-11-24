@@ -22,4 +22,15 @@ export class ProjectsService {
       })
     );
   }
+
+  addSchemeProject( schemeData: object ) {
+    return this.http.post<any>(
+      environment.api_scheme_project,
+      schemeData
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }

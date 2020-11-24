@@ -10,8 +10,9 @@ const housing_scheme = '/housing-scheme/';
 const materials = '/materials/';
 const source_information = '/source-information/';
 const bulk_units = '/bulk-units/';
-const energy_units = '/energy-units/'
-const volume_units = '/volume-units/'
+const energy_units = '/energy-units/';
+const volume_units = '/volume-units/';
+const scheme_project = '/material-scheme-project/';
 
 export const environment = {
   production: false,
@@ -26,6 +27,7 @@ export const environment = {
   api_bulk_units: `${api_evamed}${bulk_units}`,
   api_energy_units: `${api_evamed}${energy_units}`,
   api_volume_units: `${api_evamed}${volume_units}`,
+  api_scheme_project: `${api_evamed}${scheme_project}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
