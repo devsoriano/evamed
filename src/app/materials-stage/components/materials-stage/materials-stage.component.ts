@@ -12,6 +12,7 @@ import 'rxjs/add/operator/filter';
 
 export class MaterialsStageComponent implements OnInit {
 
+  selectedSheet: any;
   sheetNames: any;
   contentData: any;
   listData: any;
@@ -23,6 +24,7 @@ export class MaterialsStageComponent implements OnInit {
   selectedOptionsRevit: string[] = [];
   selectedOptionsDynamo: string[] = [];
   selectedOptionsUsuario: string[] = [];
+  selectedMaterial: any;
   panelOpenFirst = false;
   panelOpenSecond = false;
   panelOpenThird = false;
@@ -44,16 +46,15 @@ export class MaterialsStageComponent implements OnInit {
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
     
-    this.nameProject = PDP.name_project;
-
     this.sheetNames = [];
+    this.nameProject = PDP.name_project;
     data.sheetNames.map( sheetname => {
-      if ( sheetname !== "Muros InterioresBis" && 
-        sheetname !== "Inicio" &&
-        sheetname !== "Registro" &&
-        sheetname !== "ListaElementos" &&
-        sheetname !== "BD" &&
-        sheetname !== "Parametros"
+      if ( sheetname !== 'Muros InterioresBis' && 
+        sheetname !== 'Inicio' &&
+        sheetname !== 'Registro' &&
+        sheetname !== 'ListaElementos' &&
+        sheetname !== 'BD' &&
+        sheetname !== 'Parametros'
       ) {
         this.sheetNames.push(sheetname);
       }
@@ -63,13 +64,11 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onGroupsChange(options: MatListOption[]) {
-    let selectedSheet;
-
     options.map(option => {
-      selectedSheet = option.value;
+      this.selectedSheet = option.value;
     });
 
-    this.indexSheet = this.sheetNames.indexOf(selectedSheet);
+    this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
     this.listData = this.contentData[this.indexSheet + 1];
     
     const SCRevit = [];
@@ -121,6 +120,10 @@ export class MaterialsStageComponent implements OnInit {
   //  }
   }
 
+  onNgModelChangeMaterial(event) {
+    console.log(this.selectedMaterial);
+  }
+
   showMaterials(event, sc, origin) {
     const materiales = [];
     this.listData.map( data => {
@@ -139,6 +142,8 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   saveStepOne() {
-    
+    console.log('botón de alta de hoja de excel!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(this.SOR);
+    console.log(Object.keys(this.SOR))
   }
 }

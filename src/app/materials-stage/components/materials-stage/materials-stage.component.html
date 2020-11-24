@@ -155,14 +155,23 @@
 
     <!--Materials section-->
     <section class="container-details">
-      <mat-list role="list">
-        <mat-list-item
-          role="listitem"
-          *ngFor="let material of listMateriales"
+      <mat-selection-list 
+        #materials 
+        [(ngModel)]="selectedMaterial"
+        [multiple]="false"
+        (ngModelChange)="onNgModelChangeMaterial($event)"
+      >
+        <mat-list-option  
+          *ngFor="let material of listMateriales" 
+          [value]="material" 
+          [disableRipple]="true"
         >
           {{material}}
-        </mat-list-item>
-      </mat-list>
+        </mat-list-option>
+      </mat-selection-list>
+      <p>
+        Option selected: {{materials.selectedOptions.selected[0]?.value}}
+      </p>
     </section>
   </section>
 </div>
