@@ -39,6 +39,7 @@ section.form-login {
   width: 100%;
   font-size: 16px;
   outline: none;
+  padding-left: 16px;
 }
 
 .container-label-input {
@@ -59,7 +60,7 @@ section.form-login {
 
 .yellow-button-login {
   background-color: #EDC903;
-  width: 80%;
+  width: 50%;
   text-transform: uppercase;
   font-size: 18px;
 }
@@ -78,22 +79,36 @@ section.form-login {
 }
 
 .logos-ibero {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  width: 50%;
+  font-size: 12px;
+  background-color: #EDEDED;
+  color: #767676;
+  text-align: center;
+  /* height: 60px; */
   display: flex;
-  justify-content: space-around;
+  padding: 16px 0;
 
-  .ibero1 {
-    background-image: url('./../../../../assets/logos/logo1.png');
-    background-repeat: no-repeat;
-    width: 187px;
-    height: 112px;
-    margin-top: 60px;
+  .middle-message {
+    width: 50%;
+    text-align: right;
+    margin-right: 16px;
   }
 
-  .ibero2 {
-    background-image: url('./../../../../assets/logos/logo2.png');
-    background-repeat: no-repeat;
-    width: 110px;
-    height: 110px;
-    margin-top: 60px;
+  .phone {
+    padding-right: 6px;
+    border-right: 2px solid #767676;
+  }
+
+  .cr {
+    padding: 0 6px;
+    border-right: 2px solid #767676;
+  }
+
+  .ap {
+    text-align: left;
+    padding-left: 6px;
   }
 }

@@ -141,7 +141,7 @@
               <div>
                 <button
                   mat-icon-button
-                  (click)="showMaterials($event, sc)"
+                  (click)="showMaterials($event, sc, 'usuario-local')"
                 >
                   <mat-icon>visibility</mat-icon>
                 </button>
@@ -155,17 +155,8 @@
 
     <!--Materials section-->
     <section class="container-details">
-      <mat-selection-list 
-        #materials 
-        [(ngModel)]="selectedMaterial"
-        [multiple]="false"
-        (ngModelChange)="onNgModelChangeMaterial($event)"
-      >
-        <mat-list-option  
-          *ngFor="let material of listMateriales" 
-          [value]="material" 
-          [disableRipple]="true"
-        >
+      <mat-selection-list #materials [multiple]="false">
+        <mat-list-option  *ngFor="let material of listMateriales" [value]="material">
           {{material}}
         </mat-list-option>
       </mat-selection-list>

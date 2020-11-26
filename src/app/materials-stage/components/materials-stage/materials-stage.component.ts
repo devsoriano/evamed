@@ -153,7 +153,6 @@ export class MaterialsStageComponent implements OnInit {
             this.materialsService.searchMaterial(data.Material).subscribe(material => {
               material.map( materialData => {
                 if(materialData.name_material === data.Material) {
-                  // console.log(key + ' ' + value + ' ' + materialData.name_material + ' ' + materialData.id)
                   this.projectsService.addSchemeProject({
                     "construction_system": data.Sistema_constructivo,
                     "quantity": data.Cantidad,
