@@ -146,32 +146,64 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   saveStepOne() {
+    // Save Modelo Revit and Usuario
     Object.entries(this.SOR).forEach(([key, value]) => {
-      this.listData.map(data => {
-        if (data.Sistema_constructivo === value[0]) {
-          if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
-            this.materialsService.searchMaterial(data.Material).subscribe(material => {
-              material.map( materialData => {
-                if(materialData.name_material === data.Material) {
-                  this.projectsService.addSchemeProject({
-                    "construction_system": data.Sistema_constructivo,
-                    "quantity": data.Cantidad,
-                    "provider_distance": 0,
-                    "material_id":  materialData.id,
-                    "project_id": this.projectId,
-                    "origin_id": 1,
-                    "section_id": parseInt(key) + 1
-                  }).subscribe(data => {
-                    console.log('Success!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                    console.log(data);
-                  });
-                }
+      this.contentData[parseInt(key) + 1].map(data => { 
+        value.map(sc => {
+          if (data.Sistema_constructivo === sc) { 
+            if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
+              this.materialsService.searchMaterial(data.Material).subscribe( material => {
+                material.map( materialData => {
+                  if(materialData.name_material === data.Material) {
+                    this.projectsService.addSchemeProject({
+                      "construction_system": data.Sistema_constructivo,
+                      "quantity": data.Cantidad,
+                      "provider_distance": 0,
+                      "material_id":  materialData.id,
+                      "project_id": this.projectId,
+                      "origin_id": 1,
+                      "section_id": parseInt(key) + 1
+                    }).subscribe(data => {
+                      console.log('Success!');
+                      console.log(data);
+                    });
+                  }
+                });
               });
-            });
+            }
           }
-        }
+        });
       });   
     });
 
+    // Save Dynamo
+    Object.entries(this.SOD).forEach(([key, value]) => {
+      this.contentData[parseInt(key) + 1].map(data => { 
+        value.map(sc => {
+          if (data.Sistema_constructivo === sc) { 
+            if (data.Origen === 'Cálculo en Dynamo' ) {
+              this.materialsService.searchMaterial(data.Material).subscribe( material => {
+                material.map( materialData => {
+                  if(materialData.name_material === data.Material) {
+                    this.projectsService.addSchemeProject({
+                      "construction_system": data.Sistema_constructivo,
+                      "quantity": data.Cantidad,
+                      "provider_distance": 0,
+                      "material_id":  materialData.id,
+                      "project_id": this.projectId,
+                      "origin_id": 2,
+                      "section_id": parseInt(key) + 1
+                    }).subscribe(data => {
+                      console.log('Success!');
+                      console.log(data);
+                    });
+                  }
+                });
+              });
+            }
+          }
+        });
+      });   
+    });
   }
 }
