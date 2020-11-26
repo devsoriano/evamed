@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-materials-stage',
@@ -41,6 +42,7 @@ export class MaterialsStageComponent implements OnInit {
     private route: ActivatedRoute,
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
+    private router: Router
   ) { 
   }
 
@@ -204,5 +206,7 @@ export class MaterialsStageComponent implements OnInit {
         });
       });   
     });
+  
+    this.router.navigateByUrl('construction-stage');
   }
 }

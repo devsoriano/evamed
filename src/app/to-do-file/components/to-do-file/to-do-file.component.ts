@@ -53,7 +53,7 @@ export class ToDoFileComponent implements OnInit {
         data: totalData
       };
       sessionStorage.setItem('dataProject', JSON.stringify(toRead));
-      this.router.navigateByUrl('materials-stage');
+      // this.router.navigateByUrl('materials-stage');
     };
     reader.readAsBinaryString(target.files[0]);
   }
@@ -69,5 +69,9 @@ export class ToDoFileComponent implements OnInit {
         this.fileSaverService.save(res.body, fileName);
       });
     return;
+  }
+
+  saveFile() {
+    this.router.navigateByUrl('materials-stage');
   }
 }

@@ -180,7 +180,54 @@ export class ConstructionStageComponent implements OnInit {
     } catch(error) {
       console.log(error);
     }
-    
 
+    try {
+      Object.entries(this.AC).forEach(([key, ec]) => {
+        let ec_any: any;
+        ec_any = ec
+        ec_any.map( data => {
+          this.constructionStageService.addConstructiveSistemElement({
+            'quantity': data.cantidad,
+            'project_id': this.projectId,
+            'section_id': parseInt(key) + 1,
+            'constructive_process_id': 2,
+            'volume_unit_id':  data.unidad,
+            'energy_unit_id': null,
+            'bulk_unit_id': null,
+            'source_information_id': data.fuente
+        }).subscribe(data => {
+            console.log('Success!');
+            console.log(data);
+          });
+        });
+      });
+    } catch(error) {
+      console.log(error);
+    }
+
+    try {
+      Object.entries(this.DG).forEach(([key, ec]) => {
+        let ec_any: any;
+        ec_any = ec
+        ec_any.map( data => {
+          this.constructionStageService.addConstructiveSistemElement({
+            'quantity': data.cantidad,
+            'project_id': this.projectId,
+            'section_id': parseInt(key) + 1,
+            'constructive_process_id': 3,
+            'volume_unit_id':  null,
+            'energy_unit_id': null,
+            'bulk_unit_id':data.unidad,
+            'source_information_id': data.fuente
+        }).subscribe(data => {
+            console.log('Success!');
+            console.log(data);
+          });
+        });
+      });
+    } catch(error) {
+      console.log(error);
+    }
   }
+
 }
