@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
-import 'rxjs/add/operator/filter';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 
 @Component({

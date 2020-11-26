@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import { MatAccordion } from '@angular/material/expansion';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
-import 'rxjs/add/operator/filter';
+import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 
 @Component({
   selector: 'app-construction-stage',
@@ -24,6 +24,7 @@ export class ConstructionStageComponent implements OnInit {
   catalogoUnidadVolumen: [];
   catalogoUnidadMasa: [];
   nameProject: string;
+  projectId: number;
   dataArrayEC = [];
   dataArrayAC = [];
   dataArrayDG = [];
@@ -34,6 +35,7 @@ export class ConstructionStageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private catalogsService: CatalogsService,
+    private constructionStageService: ConstructionStageService
   ) { 
     this.catalogsService.getSourceInformation().subscribe(data => {
       this.catalogoFuentes = data;
@@ -54,6 +56,7 @@ export class ConstructionStageComponent implements OnInit {
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
     
     this.nameProject = PDP.name_project;
+    this.projectId = PDP.id;
 
     this.sheetNames = [];
     data.sheetNames.map( sheetname => {
@@ -151,5 +154,33 @@ export class ConstructionStageComponent implements OnInit {
   }
 
   onNgModelChange(event) {
+  }
+
+  saveStepTwo() {
+    try {
+      Object.entries(this.EC).forEach(([key, ec]) => {
+        let ec_any: any;
+        ec_any = ec
+        ec_any.map( data => {
+          this.constructionStageService.addConstructiveSistemElement({
+            'quantity': data.cantidad,
+            'project_id': this.projectId,
+            'section_id': parseInt(key) + 1,
+            'constructive_process_id': 1,
+            'volume_unit_id': null,
+            'energy_unit_id': data.unidad,
+            'bulk_unit_id': null,
+            'source_information_id': data.fuente
+        }).subscribe(data => {
+            console.log('Success!');
+            console.log(data);
+          });
+        });
+      });
+    } catch(error) {
+      console.log(error);
+    }
+    
+
   }
 }
