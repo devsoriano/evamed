@@ -107,9 +107,9 @@ export class HomeEvamedComponent implements OnInit {
       try {
         this.projectsService.addProject({
           name_project: result.nombre,
-          builded_surface: parseInt(result.superficieConstruida),
-          living_area: parseInt(result.superficieHabitable),
-          tier: parseInt(result.noNiveles),
+          builded_surface: parseInt(result.superficieConstruida, 10),
+          living_area: parseInt(result.superficieHabitable, 10),
+          tier: parseInt(result.noNiveles, 10),
           use_id:  result.usoSeleccionado,
           type_id: result.tipoSeleccionado,
           country_id: result.paisSeleccionado,

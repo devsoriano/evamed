@@ -28,8 +28,7 @@ export class AddNewProjectComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AddNewProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { 
-  }
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();

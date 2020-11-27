@@ -1,31 +1,35 @@
 // genear api
-const api_evamed = 'https://evamed-rest-api.herokuapp.com/api-projects';
+const apiEvamed = 'https://evamed-rest-api.herokuapp.com/api-projects';
 // apis
 const projects = '/projects/';
 const uses = '/uses/';
 const countries = '/countries/';
-const type_project = '/type-project/';
-const useful_life = '/useful-life/';
-const housing_scheme = '/housing-scheme/';
+const typeProject = '/type-project/';
+const usefulLife = '/useful-life/';
+const housingScheme = '/housing-scheme/';
 const materials = '/materials/';
-const source_information = '/source-information/';
-const bulk_units = '/bulk-units/';
-const energy_units = '/energy-units/'
-const volume_units = '/volume-units/'
+const sourceInformation = '/source-information/';
+const bulkUnits = '/bulk-units/';
+const energyUnits = '/energy-units/';
+const volumeUnits = '/volume-units/';
+const schemeProject = '/material-scheme-project/';
+const constructionStage = '/constructive-system-element/';
 
 export const environment = {
   production: true,
-  api_projects: `${api_evamed}${projects}`,
-  api_uses: `${api_evamed}${uses}`,
-  api_countries: `${api_evamed}${countries}`,
-  api_type_project: `${api_evamed}${type_project}`,
-  api_useful_life: `${api_evamed}${useful_life}`,
-  api_housing_scheme: `${api_evamed}${housing_scheme}`,
-  api_materials: `${api_evamed}${materials}`,
-  api_source_information: `${api_evamed}${source_information}`,
-  api_bulk_units: `${api_evamed}${bulk_units}`,
-  api_energy_units: `${api_evamed}${energy_units}`,
-  api_volume_units: `${api_evamed}${volume_units}`,
+  api_projects: `${apiEvamed}${projects}`,
+  api_uses: `${apiEvamed}${uses}`,
+  api_countries: `${apiEvamed}${countries}`,
+  api_type_project: `${apiEvamed}${typeProject}`,
+  api_useful_life: `${apiEvamed}${usefulLife}`,
+  api_housing_scheme: `${apiEvamed}${housingScheme}`,
+  api_materials: `${apiEvamed}${materials}`,
+  api_source_information: `${apiEvamed}${sourceInformation}`,
+  api_bulk_units: `${apiEvamed}${bulkUnits}`,
+  api_energy_units: `${apiEvamed}${energyUnits}`,
+  api_volume_units: `${apiEvamed}${volumeUnits}`,
+  api_scheme_project: `${apiEvamed}${schemeProject}`,
+  api_construction_stage: `${apiEvamed}${constructionStage}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
@@ -36,3 +40,4 @@ export const environment = {
     appId: '1:255188436131:web:8c3728876042c077f9ab16'
   }
 };
+
