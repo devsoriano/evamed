@@ -28,13 +28,14 @@
       </div>
     </section>
     
-    <!---Section construction systems-->
+    <!--Section construction systems-->
     <section class="container-systems">
-      <mat-accordion  *ngIf="indexSheet!==undefined">
+      <mat-accordion *ngIf="indexSheet!==undefined">
         <mat-expansion-panel
           (opened)="panelOpenFirst = true"
           (closed)="panelOpenFirst = false"
         >
+          <!--List Revit or template-->
           <mat-expansion-panel-header>
             <mat-panel-title>
               Importados por REVIT o Template
@@ -49,6 +50,7 @@
               *ngFor="let sc of ListSCRevit"
               [value]="sc"
               [disableRipple]="true"
+              [checkboxPosition]="before" 
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
               <div style="display:flex;align-items:center">
@@ -71,7 +73,7 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <mat-accordion  *ngIf="indexSheet!==undefined">
+      <mat-accordion *ngIf="indexSheet!==undefined">
         <mat-expansion-panel
           (opened)="panelOpenSecond = true"
           (closed)="panelOpenSecond = false"
@@ -155,14 +157,15 @@
 
     <!--Materials section-->
     <section class="container-details">
-      <mat-selection-list #materials [multiple]="false">
-        <mat-list-option  *ngFor="let material of listMateriales" [value]="material">
+      <mat-selection-list 
+        #materials 
+        [multiple]="false"
+        (selectionChange)="onSelection($event, materials.selectedOptions)"
+      >
+        <mat-list-option *ngFor="let material of listMateriales" [value]="material">
           {{material}}
         </mat-list-option>
       </mat-selection-list>
-      <p>
-        Option selected: {{materials.selectedOptions.selected[0]?.value}}
-      </p>
     </section>
   </section>
 </div>

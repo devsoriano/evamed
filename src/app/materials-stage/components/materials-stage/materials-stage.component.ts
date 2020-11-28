@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
@@ -39,7 +38,6 @@ export class MaterialsStageComponent implements OnInit {
   sectionDynamo: boolean;
 
   constructor(
-    private route: ActivatedRoute,
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
     private router: Router
@@ -135,23 +133,6 @@ export class MaterialsStageComponent implements OnInit {
     // console.log(this.selectedMaterial);
   }
 
-  showMaterials(event, sc, origin) {
-    const materiales = [];
-    this.listData.map( data => {
-      if (data.Sistema_constructivo === sc && origin === 'revit-user') {
-        if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
-          materiales.push(data.Material);
-        }
-      }
-      if (data.Sistema_constructivo === sc && origin === 'dynamo') {
-        if (data.Origen === 'Calculado en Dynamo') {
-          materiales.push(data.Material);
-        }
-      }
-    });
-    this.listMateriales = materiales;
-  }
-
   saveStepOne() {
     // Save Modelo Revit and Usuario
     Object.entries(this.SOR).forEach(([key, value]) => {
@@ -215,4 +196,37 @@ export class MaterialsStageComponent implements OnInit {
 
     this.router.navigateByUrl('construction-stage');
   }
+
+  showMaterials(event, sc, origin) {
+    event.stopPropagation();
+    console.log('entra a esta babosada');
+    const materiales = [];
+    this.listData.map( data => {
+      if (data.Sistema_constructivo === sc && origin === 'revit-user') {
+        if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
+          materiales.push(data.Material);
+        }
+      }
+      if (data.Sistema_constructivo === sc && origin === 'dynamo') {
+        if (data.Origen === 'Calculado en Dynamo') {
+          materiales.push(data.Material);
+        }
+      }
+    });
+    this.listMateriales = materiales;
+  }
+
+  onSelection(event, value) {
+    // data
+    console.log('***********************************************Data********************************************************');
+    console.log(this.listData);
+    console.log('**********************************************Content Data***************************************************');
+    console.log(this.contentData);
+    console.log('****************************************index********************************************');
+    console.log(this.indexSheet);
+    // value
+    console.log('************************************************Value****************************************************');
+    console.log(value.selected[0]?.value);
+  }
+
 }
