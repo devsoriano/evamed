@@ -145,6 +145,11 @@ section.part-side {
 .cdk-overlay-dark-backdrop {
   background: #0A0A0A67 0% 0% no-repeat padding-box !important;
   backdrop-filter: blur(28px) !important;
+  pointer-events: none !important;
+}
+
+.cdk-overlay-backdrop {
+  pointer-events: none !important;
 }
 /**</Blur open modal>**/
 
