@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
-import { ProjectsService } from 'src/app/core/services/projects/projects.service';
+import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { Router } from '@angular/router';
 
 @Component({

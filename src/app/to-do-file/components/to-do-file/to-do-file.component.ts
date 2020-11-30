@@ -13,6 +13,7 @@ type AOA = any[][];
 })
 export class ToDoFileComponent implements OnInit {
   fileName: string;
+  nameProject: string;
 
   constructor(
     private httpClient: HttpClient,
@@ -20,7 +21,10 @@ export class ToDoFileComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
+    this.nameProject = PDP.name_project;
+  }
 
   onFileChange(evt: any) {
     /* wire up file reader */
