@@ -199,7 +199,6 @@ export class MaterialsStageComponent implements OnInit {
 
   showMaterials(event, sc, origin) {
     event.stopPropagation();
-    console.log('entra a esta babosada');
     const materiales = [];
     this.listData.map( data => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
@@ -216,6 +215,21 @@ export class MaterialsStageComponent implements OnInit {
     this.listMateriales = materiales;
   }
 
+  removeMaterial(event, sc, origin) {
+    event.stopPropagation();
+    console.log('entra a remove materials');
+  }
+
+  restoreMaterial(event, sc, origin) {
+    event.stopPropagation();
+    console.log('entra a restore material');
+  }
+
+  duplicateMaterial(event, sc, origin) {
+    event.stopPropagation();
+    console.log('entra a restore material');
+  }
+
   onSelection(event, value) {
     // data
     console.log('***********************************************Data********************************************************');
@@ -229,4 +243,12 @@ export class MaterialsStageComponent implements OnInit {
     console.log(value.selected[0]?.value);
   }
 
+
+  addElement() {
+    console.log('add element');
+  }
+
+  addSC() {
+    console.log('add SC');
+  }
 }

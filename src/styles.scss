@@ -328,7 +328,59 @@ button.yellow-button.alf.mat-button.mat-button-base {
   width: 150px;
 }
 
-
 .mat-expansion-panel-body {
   padding: 0!important;
+}
+
+.mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate {
+  background: #A8D024;
+}
+
+/**style tabs**/
+.tab-title-sections {
+  font-size: 12px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  padding-left: 16px;
+  border: 1px solid #00000029;
+
+  p {
+    margin: 0!important;
+  }
+}
+
+mat-expansion-panel-header {
+  background-color: #EFEFEF!important;
+  height: 40px!important;
+}
+
+mat-panel-title.mat-expansion-panel-header-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #767676;
+}
+
+mat-list-option.item-list-option.mat-list-item.mat-list-option.mat-focus-indicator.mat-accent.ng-star-inserted {
+  border-bottom: 1px solid #EFEFEF;
+  height: 40px;
+}
+
+.item-by-list {
+  font-size: 14px;
+}
+
+mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+  color: #767676;
+}
+
+.item-yellow-extend.mat-list-single-selected-option, 
+.item-yellow-extend.mat-list-single-selected-option:hover, 
+.item-yellow-extend.mat-list-single-selected-option:focus {
+  background-color: #EDC903 !important;
+  border-radius: 0px 33px 33px 0px !important;
+  font-weight: 500 !important;
+  width: 180px!important;
 }
