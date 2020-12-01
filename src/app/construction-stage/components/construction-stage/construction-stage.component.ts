@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import { MatAccordion } from '@angular/material/expansion';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
@@ -33,9 +33,9 @@ export class ConstructionStageComponent implements OnInit {
   DG: any;
 
   constructor(
-    private route: ActivatedRoute,
     private catalogsService: CatalogsService,
-    private constructionStageService: ConstructionStageService
+    private constructionStageService: ConstructionStageService,
+    private router: Router
   ) {
     this.catalogsService.getSourceInformation().subscribe(data => {
       this.catalogoFuentes = data;
@@ -240,6 +240,8 @@ export class ConstructionStageComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+
+    this.router.navigateByUrl('usage-stage');
   }
 
 }

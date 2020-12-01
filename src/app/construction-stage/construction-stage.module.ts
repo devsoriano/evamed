@@ -7,13 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
 
 @NgModule({
-  declarations: [ConstructionStageComponent],
+  declarations: [
+    ConstructionStageComponent
+  ],
   imports: [
     CommonModule,
     ConstructionStageRoutingModule,
     SharedModule,
     FormsModule,
-    MaterialModule
+    MaterialModule,
   ]
 })
 export class ConstructionStageModule { }

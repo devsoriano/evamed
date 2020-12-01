@@ -1,14 +1,16 @@
-
 <nav class="nav-redirect">
-  <h2 class="proyecto-title">Hospital infantil Lomas altas</h2>
+  <h2 class="proyecto-title">{{nameProject}}</h2>
   <a href="/" class="a-redirect"> < Regresar a proyectos </a>
 </nav>
+<!--Principal container-->
 <div class="principal-container container-total">
+   <!--Navigation steps-->
   <nav class="nav-steps">
 
   </nav>
+  <!--Container actions of step 1-->
   <section class="container-actions">
-
+    <!--Section sheets-->
     <section class="container-sheets">
       <div class="list-elements">
         <mat-selection-list
@@ -19,6 +21,7 @@
           <mat-list-option
             *ngFor="let sheet of sheetNames"
             [value]="sheet"
+            class="item-yellow-extend"
           >
             {{sheet}}
           </mat-list-option>
@@ -87,7 +90,7 @@
                     class="button-remove"
                     (click)="removeFormEC(i)"
                   >
-                    Remove
+                    <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>
               </div>
@@ -98,14 +101,14 @@
             mat-button
             (click)="addFormEC()"
           >
-            Add
+            <mat-icon>add_circle</mat-icon>
           </button>
 
           <button
             mat-button
             (click)="onSaveEC()"
           >
-            Guardar
+            <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
         
@@ -167,7 +170,7 @@
                     class="button-remove"
                     (click)="removeFormAC(i)"
                   >
-                    Remove
+                    <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>
               </div>
@@ -178,14 +181,14 @@
             mat-button
             (click)="addFormAC()"
           >
-            Add
+            <mat-icon>add_circle</mat-icon>
           </button>
 
           <button
             mat-button
             (click)="onSaveAC()"
           >
-            Guardar
+            <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
       
@@ -247,7 +250,7 @@
                     class="button-remove"
                     (click)="removeFormDG(i)"
                   >
-                    Remove
+                    <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>
               </div>
@@ -258,14 +261,14 @@
             mat-button
             (click)="addFormDG()"
           >
-            Add
+            <mat-icon>add_circle</mat-icon>
           </button>
 
           <button
             mat-button
             (click)="onSaveDG()"
           >
-            Guardar
+            <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
 

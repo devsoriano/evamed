@@ -18,12 +18,10 @@ body {
 
 /**<Adecuaciones de Input>**/
 .input-general {
-  /* border: 2px solid #CBCBCB !important; */
   height: 32px !important;
   width: 100% !important;
   font-size: 20px !important;
   outline: none !important;
-  /* border-radius: 10px !important; */
   background-color: #EDEDED !important;
 }
 
@@ -334,6 +332,17 @@ button.yellow-button.alf.mat-button.mat-button-base {
 
 .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate {
   background: #A8D024;
+}
+
+/**Header redirect**/
+h2.proyecto-title {
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+a.a-redirect {
+  text-decoration: none;
+  color: #92BE00;
 }
 
 /**style tabs**/
