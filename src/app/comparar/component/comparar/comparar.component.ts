@@ -73,7 +73,7 @@ export class CompararComponent implements OnInit {
       Object.keys(proyecto.Datos).forEach(indicador => {
         Object.keys(auxDatos).forEach(etapa => {
           //proyecto.Datos[indicador][etapa] = (proyecto.Datos[indicador.toString()][etapa] * 100 / proyecto.Datos[indicador.toString()].total).toFixed(2)
-          console.log(etapa, proyecto.Datos[indicador.toString()].total);
+          console.log(proyecto.Datos[indicador]);
         });
       });
     });
