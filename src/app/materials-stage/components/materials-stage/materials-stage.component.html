@@ -1,0 +1,247 @@
+<nav class="nav-redirect">
+  <h2 class="proyecto-title">{{nameProject}}</h2>
+  <a href="/" class="a-redirect"> < Regresar a proyectos </a>
+</nav>
+<!--Principal container-->
+<div class="principal-container container-total">
+  <!--Navigation steps-->
+  <nav class="nav-steps">
+
+  </nav>
+  <!--Container actions of step 1-->
+  <section class="container-actions">
+    <!--Section sheets-->
+    <section class="container-sheets">
+      <div class="tab-title-sections">
+        <p>Elementos</p>
+        <button
+          mat-icon-button
+          (click)="addElement()"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <div class="list-elements">
+        <mat-selection-list
+          #sheets
+          [multiple]="false"
+          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)"
+        >
+          <mat-list-option
+            *ngFor="let sheet of sheetNames"
+            [value]="sheet"
+            class="item-yellow-extend"
+          >
+            {{sheet}}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+    </section>
+    
+    <!--Section construction systems-->
+    <section class="container-systems">
+      <div class="tab-title-sections">
+        <p>Seleccione el sistema constructivo base a aplicar</p>
+        <button
+          mat-icon-button
+          (click)="addSC()"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <mat-accordion *ngIf="indexSheet!==undefined">
+        <mat-expansion-panel
+          (opened)="panelOpenFirst = true"
+          (closed)="panelOpenFirst = false"
+        >
+          <!--List Revit or template-->
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Importados por REVIT o Template
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list
+            #sistemas_constructivos
+            [(ngModel)]="selectedOptionsRevit"
+            (ngModelChange)="onNgModelChangeRevit($event)"
+          >
+            <mat-list-option
+              *ngFor="let sc of ListSCRevit"
+              [value]="sc"
+              [disableRipple]="true"
+              checkboxPosition="before" 
+              class="item-list-option"
+            >
+            <div style="display:flex; justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center">
+                <div style="display:flex; flex-direction:column" class="item-by-list">
+                  {{sc}}
+                </div>
+              </div>
+              <div>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="removeMaterial($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">restore_from_trash</mat-icon>
+                </button>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="restoreMaterial($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">restore_page</mat-icon>
+                </button>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="duplicateMaterial($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
+                </button>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="showMaterials($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">visibility</mat-icon>
+                </button>
+              </div>
+            </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion *ngIf="indexSheet!==undefined">
+        <mat-expansion-panel
+          (opened)="panelOpenSecond = true"
+          (closed)="panelOpenSecond = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Opciones evamed
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-selection-list
+            #sistemas_constructivos
+            [(ngModel)]="selectedOptionsDynamo"
+            (ngModelChange)="onNgModelChangeDynamo($event)"
+          >
+            <mat-list-option
+              *ngFor="let sc of ListSCDynamo"
+              [value]="sc"
+              [disableRipple]="true"
+              checkboxPosition="before" 
+            >
+            <div style="display:flex; justify-content:space-between;align-items:center">
+              <div style="display:flex; align-items:center">
+                <div style="display:flex; flex-direction:column">
+                  {{sc}}
+                </div>
+              </div>
+              <div>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="removeMaterial($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">restore_from_trash</mat-icon>
+                </button>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="restoreMaterial($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">restore_page</mat-icon>
+                </button>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="duplicateMaterial($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
+                </button>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="showMaterials($event, sc, 'revit-user')"
+                >
+                  <mat-icon class="custom-icon">visibility</mat-icon>
+                </button>
+              </div>
+            </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion  *ngIf="indexSheet!==undefined">
+        <mat-expansion-panel
+          (opened)="panelOpenThird = true"
+          (closed)="panelOpenThird = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Creados por el usuario
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list
+            #sistemas_constructivos
+            [(ngModel)]="selectedOptionsUsuario"
+            (ngModelChange)="onNgModelChangeUser($event)"
+          >
+            <mat-list-option
+              *ngFor="let sc of ListSCUsuario"
+              [value]="sc"
+              [disableRipple]="true"
+              checkboxPosition="before" 
+            >
+            <div style="display:flex; justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center">
+                <div style="display:flex; flex-direction:column">
+                  {{sc}}
+                </div>
+              </div>
+              <div>
+                <button
+                  mat-icon-button
+                  (click)="showMaterials($event, sc, 'usuario-local')"
+                >
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </div>
+            </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </section>
+
+    <!--Materials section-->
+    <section class="container-details">
+      <mat-selection-list 
+        #materials 
+        [multiple]="false"
+        (selectionChange)="onSelection($event, materials.selectedOptions)"
+      >
+        <mat-list-option *ngFor="let material of listMateriales" [value]="material">
+          {{material}}
+        </mat-list-option>
+      </mat-selection-list>
+    </section>
+  </section>
+</div>
+
+<!--Section continue-->
+<div class="section-continue">
+  <button
+    mat-button
+    class="yellow-button custom-continue"
+    (click)="saveStepOne()"
+  > 
+    Continuar 
+  </button>
+</div>

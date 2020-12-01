@@ -1,10 +1,11 @@
 .title-standard-second-light {
   width: 100% !important;
   text-align: center;
+  margin-bottom: 40px;
 }
 
 .mat-dialog-content.dialog-content {
-  margin-top: -20px;
+  margin-top: -24px;
   display: block!important;
   text-align: center!important;
 }
@@ -15,21 +16,23 @@ h3.title-common {
 }
 
 mat-radio-group.mat-radio-group.example-radio-group {
-  width: 70% !important;
-  margin-left: 15%;
   display: flex;
   justify-content: space-around;
-  font-size: 18px;
-  font-weight: 200 !important;
-  color: #767676;
-  border-bottom: 2px solid #CBCBCB;
-  margin-top: 10px;
+  background-color: #A8D024;
+  font-size: 22px;
+  color: #fff;
+  margin-right: -24px;
+  margin-left: -24px;
+}
+
+mat-radio-button {
+  padding: 14px!important;
+  /* color: palegoldenrod; */
 }
 
 .mat-radio-checked {
-  color: #000;
-  font-weight: 400;
-  border-bottom: 3px solid #EDC903;
+  background-color: #FFF;
+  color: #EDC903;
 }
 
 .text-description {

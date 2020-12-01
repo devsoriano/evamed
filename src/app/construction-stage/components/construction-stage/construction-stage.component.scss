@@ -1,0 +1,87 @@
+.mat-expansion-panel-body {
+  padding: 0 0px 0px!important;
+}
+
+.principal-container.container-total {
+  background-color: #fff;
+  border-radius: 14px;
+  box-shadow: 0px 3px 6px #00000029;
+  width: 100%;
+  display: grid;
+  margin-top: 4px;
+}
+
+nav.nav-steps {
+  height: 4rem;
+  border-bottom: 1px solid #CBCBCB;
+}
+
+.space-row {
+  width: 100%;
+  height: 1.5rem;
+}
+
+section.container-actions {
+  width: 100%;
+  display: flex;
+  height: 24rem;
+}
+
+p.p-instrucciones {
+  color: #767676;
+  font-size: 14px;
+}
+
+.hidden {
+  color: #fff;
+}
+
+.left {
+  text-align: initial;
+  margin-left: 2rem;
+}
+
+.container-elements {
+  text-align: center;
+}
+
+.container-sheets {
+  width: 20%;
+  border-right: 1px solid #CBCBCB;
+}
+
+.container-systems {
+  width: 50%;
+}
+
+.container-details {
+  width: 30%;
+}
+
+.list-elements {
+  width: 100%;
+  overflow: auto;
+  height: 100%;
+}
+
+.container-systems {
+  overflow: auto;
+}
+
+.Row.top-0 {
+  margin-top: 0px!important;
+}
+
+.button-remove {
+  margin-top: 28px;
+  margin-left: -20px;
+}
+
+.select-general {
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      margin-top: -10px!important;
+    }
+  }
+}
+

@@ -4,27 +4,56 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewProjectComponent } from './../../../add-new-project/add-new-project.component';
 import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/choose-type-of-project.component';
+import { ProjectsService } from './../../../core/services/projects/projects.service';
+import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
   styleUrls: ['./home-evamed.component.scss']
 })
+
 export class HomeEvamedComponent implements OnInit {
 
   nombre: string;
-  uso: string;
+  catalogoUsos: any;
+  catalogoPaises: any;
+  catalogoTipo: any;
+  catalogoVidaUtil: any;
+  catalogoEsqHabitacional: any;
+  usoSeleccionado: string;
+  paisSeleccionado: string;
+  tipoSeleccionado: string;
+  vidaUtilSeleccionado: string;
+  esqHabitacionalSeleccionado: string;
   superficieConstruida: string;
   superficieHabitable: string;
   noNiveles: string;
-  vidaUtil: string;
   optionSelected: string;
 
   constructor(
     private auth: AuthService,
     private router: Router,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    private projectsService: ProjectsService,
+    private catalogsService: CatalogsService,
+  ) {
+    this.catalogsService.usesCatalog().subscribe(data => {
+      this.catalogoUsos = data;
+    });
+    this.catalogsService.countriesCatalog().subscribe(data => {
+      this.catalogoPaises = data;
+    });
+    this.catalogsService.typeProjectCatalog().subscribe(data => {
+      this.catalogoTipo = data;
+    });
+    this.catalogsService.usefulLifeCatalog().subscribe(data => {
+      this.catalogoVidaUtil = data;
+    });
+    this.catalogsService.housingSchemeCatalog().subscribe(data => {
+      this.catalogoEsqHabitacional = data;
+    });
+  }
 
   ngOnInit(): void { }
 
@@ -44,10 +73,9 @@ export class HomeEvamedComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
       try {
         this.optionSelected = result.optionSelected;
+        this.router.navigateByUrl('do-files');
       } catch (e){
         console.log('close modal');
       }
@@ -59,31 +87,41 @@ export class HomeEvamedComponent implements OnInit {
       width: '680px',
       data: {
         nombre: this.nombre,
-        uso: this.uso,
+        catalogoUsos: this.catalogoUsos,
+        catalogoPaises: this.catalogoPaises,
+        catalogoTipo: this.catalogoTipo,
+        catalogoVidaUtil: this.catalogoVidaUtil,
+        catalogoEsqHabitacional: this.catalogoEsqHabitacional,
+        usoSeleccionado: this.usoSeleccionado,
+        paisSeleccionado: this.paisSeleccionado,
+        tipoSeleccionado: this.tipoSeleccionado,
         superficieConstruida: this.superficieConstruida,
         superficieHabitable: this.superficieHabitable,
+        vidaUtilSeleccionado: this.vidaUtilSeleccionado,
+        esqHabitacionalSeleccionado: this.esqHabitacionalSeleccionado,
         noNiveles: this.noNiveles,
-        vidaUtil: this.vidaUtil,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
       try {
-        this.nombre = result.nombre;
-        this.uso = result.uso;
-        this.superficieConstruida = result.superficieConstruida;
-        this.superficieHabitable = result.superficieHabitable;
-        this.noNiveles = result.noNiveles;
-        this.vidaUtil = result.vidaUtil;
-        this.openDialogCTOP();
+        this.projectsService.addProject({
+          name_project: result.nombre,
+          builded_surface: parseInt(result.superficieConstruida, 10),
+          living_area: parseInt(result.superficieHabitable, 10),
+          tier: parseInt(result.noNiveles, 10),
+          use_id:  result.usoSeleccionado,
+          type_id: result.tipoSeleccionado,
+          country_id: result.paisSeleccionado,
+          useful_life_id: result.vidaUtilSeleccionado,
+          housing_scheme_id: result.esqHabitacionalSeleccionado
+        }).subscribe(data => {
+          sessionStorage.setItem('primaryDataProject', JSON.stringify(data));
+          this.openDialogCTOP();
+        });
       } catch (e){
         console.log('close modal');
       }
-
     });
   }
-
-
 }

@@ -24,10 +24,9 @@ body {
 }
 
 section.form-login {
-  /*background-color: yellow;*/
   margin-left: 15%;
   margin-right: 20%;
-  margin-top: 30%;
+  margin-top: 20%;
   height: 70%;
 }
 
@@ -45,6 +44,7 @@ section.form-login {
   width: 100%;
   font-size: 16px;
   outline: none;
+  padding-left: 16px!important;
 }
 
 .container-label-input {
@@ -65,7 +65,7 @@ section.form-login {
 
 .yellow-button-login {
   background-color: #EDC903;
-  width: 80%;
+  width: 50%;
   text-transform: uppercase;
   font-size: 18px;
 }
@@ -81,4 +81,38 @@ section.form-login {
   text-decoration: none;
   font-weight: bold;
   border-bottom: 2px solid;
+}
+
+.logos-ibero {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  width: 50%;
+  font-size: 10px;
+  background-color: #EDEDED;
+  color: #767676;
+  text-align: center;
+  display: flex;
+  padding: 6px 0;
+
+  .middle-message {
+    width: 50%;
+    text-align: right;
+    margin-right: 16px;
+  }
+
+  .phone {
+    padding-right: 6px;
+    border-right: 2px solid #767676;
+  }
+
+  .cr {
+    padding: 0 6px;
+    border-right: 2px solid #767676;
+  }
+
+  .ap {
+    text-align: left;
+    padding-left: 6px;
+  }
 }

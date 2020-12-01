@@ -1,0 +1,72 @@
+<nav class="nav-redirect">
+  <h2 class="proyecto-title">{{nameProject}}</h2>
+  <a href="/" class="a-redirect"> < Regresar a proyectos </a>
+</nav>
+<!--Principal container-->
+<div class="principal-container container-total">
+  <nav class="nav-steps">
+
+  </nav>
+  <section class="container-actions">
+    <section class="container-sheets">
+      <div class="custom-global-data">
+        <h3>1. Consumo anual requerido</h3>
+        <p>
+          Indica el consumo energético para la cimentización del inmueble
+        </p>
+      </div>
+      <div class="custom-inputs-data">
+        <div>
+          <label class="label-small-input">
+            Cantidad
+          </label>
+          <mat-form-field>
+            <input
+              class="input-general"
+              [(ngModel)]="cantidad"
+              name="cantidad"
+              matInput 
+              type="text"
+            >
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="label-small-input">
+            Unidad
+          </label>
+          <mat-form-field appearance="outline">
+            <mat-label>Seleccione una opción</mat-label>
+            <!-- <mat-select  [(ngModel)]="unidad" name="fuente"> -->
+            <mat-select name="fuente">
+              <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
+                {{unidad.name_energy_unit}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </section>
+    <section class="container-systems">
+      <div>
+        <h3> 2. Fuentes de consumo eléctrico </h3>
+        <p>
+          Indica las fuentes del suministro de consumo para la simentación
+        </p>
+      </div>
+      <div>
+        
+      </div>
+    </section>
+  </section>
+</div>
+
+<!--Section continue-->
+<div class="section-continue">
+  <button
+    mat-button
+    class="yellow-button"
+    (click)="saveStepThree()"
+  > 
+    Continuar 
+  </button>
+</div>
