@@ -16,8 +16,8 @@
         </mat-menu>
       </div>
       <div class="button-graph">
-        <div *ngFor="let item of proyect">
-          <mat-card *ngIf="item.card">
+        <div *ngFor="let item of proyect" class="button-graph">
+          <mat-card *ngIf="item.card" class="card">
             <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
             {{item.Nombre}}
           </mat-card>
@@ -34,32 +34,41 @@
               <p>Impactos ambientales</p>
               <div class="sub-container">
                 <div>
-                  <button class="button-impactos"><mat-icon class="icons-options">table_view</mat-icon></button>
-                  <button class="button-impactos"><mat-icon class="icons-options">bar_chart</mat-icon></button>
+                  <mat-button-toggle-group>
+                    <mat-button-toggle class="button-impactos"><mat-icon class="icons-options">table_view</mat-icon></mat-button-toggle>
+                    <mat-button-toggle class="button-impactos"><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
                 <div>
-                  <button class="button-impactos" (click)="porcentaje()">%</button>
-                  <button class="button-impactos">#</button>
+                  <mat-button-toggle-group>
+                    <mat-button-toggle class="button-impactos" (click)="porcentaje(true)">%</mat-button-toggle>
+                    <mat-button-toggle class="button-impactos" (click)="porcentaje(false)">#</mat-button-toggle>
+                  </mat-button-toggle-group>
                 </div>
               </div>
             </div>
             <div class="campo-grafica-bar">
-              <app-bar-chart [inputProyects]="outproyect_bar" [porcentaje]="Porcentaje" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
+              <div [hidden]="bandera_porcentaje">
+                <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="true" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
+              </div>
+              <div [hidden]="bandera_num">
+                <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="false" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
+              </div>
             </div>
             <div>
               <p>Dispersión de Impacto ambiental por fase de ciclo de vida</p>
                 <p>Selecciona una fase del ciclo de vida
             </div>
             <div class="div-secondary-graph">
-              <ul class="ul-botones">
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('Producción')">
+              <ul>
+                <li> <button mat-stroked-button (click)="grafica('Producción')">
                   <mat-icon class="icons-grafica uno">visibility_off</mat-icon>Producción</button>
                 </li>
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('Construcción')">
+                <li> <button mat-stroked-button (click)="grafica('Construccion')">
                   <mat-icon class="icons-grafica dos">visibility_off</mat-icon>Construcción</button> </li>
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('Uso')">
+                <li> <button mat-stroked-button (click)="grafica('Uso')">
                   <mat-icon class="icons-grafica tres">visibility_off</mat-icon>Uso</button> </li>
-                <li> <button mat-stroked-button class="button-grafica" (click)="grafica('FindeVida')">
+                <li> <button mat-stroked-button (click)="grafica('FinDeVida')">
                   <mat-icon class="icons-grafica cuatro">visibility_off</mat-icon>Fin de vida</button> </li>
               </ul>
               <div>

@@ -16,9 +16,10 @@ export class BarChartComponent implements OnInit {
 
   @Input() inputProyects: any;
   @Input('porcentaje') porcentaje : any;
+  @Input() showMe:boolean;
 
 
-  private colores = { Producción : '#DEA961', Construccion : '#8F5091', Uso : '#148A93', FinDeVida : '#4DBE89'};
+  private colores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89'};
   private coloresBW = {Producción : '#B1B1B1', Construccion : '#6A6A6A', Uso : '#686868', FinDeVida : '#969696'};
 
   private lastClick = 'Ninguno';
@@ -70,7 +71,6 @@ export class BarChartComponent implements OnInit {
     this.canvas = this.chartDir.chart.canvas;
     this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
     this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
-
   }
 
   agregarProyecto(cambio:any){
@@ -82,12 +82,13 @@ export class BarChartComponent implements OnInit {
 
   }
 
-  public togglePorcentaje(vao:boolean){
+
+  /*public togglePorcentaje(vao:boolean){
     this.porcentaje = vao;
     this.iniciaDatos();
     this.ajustaEjeY();
     this.chartDir.chart.update();
-  }
+  }*/
 
   // configuración de datos (lectura de datos de entrada)
   private ajustaEjeY(){
@@ -142,9 +143,11 @@ export class BarChartComponent implements OnInit {
             auxDatos[etapa] = [...auxDatos[etapa], 0];
           }else{
             auxDatos[etapa] = [...auxDatos[etapa],
-            this.porcentaje ?
+              proyecto.Datos[indicador.toString()][etapa].toFixed(2)
+            /*this.porcentaje ?
             (proyecto.Datos[indicador.toString()][etapa] * 100 / proyecto.Datos[indicador.toString()].total).toFixed(2) :
             proyecto.Datos[indicador.toString()][etapa].toFixed(2)
+            */
           ];
         }
       });
@@ -302,22 +305,24 @@ export class BarChartComponent implements OnInit {
 
   public onHover(e: any){
     // Controla el flujo de hover sobre los elementos de las barras
-    if (this.hovered !== null){
-      const serie = this.chartDir.chart.data.datasets[this.hovered['_datasetIndex']].label;
-      if (this.hovered.inRange(e.offsetX, e.offsetY)){
-        if (this.lastClick !== serie){
-          this.focusSeries(serie);
-          this.lastClick = serie;
+    if (this.showMe){
+      if (this.hovered !== null){
+        const serie = this.chartDir.chart.data.datasets[this.hovered['_datasetIndex']].label;
+        if (this.hovered.inRange(e.offsetX, e.offsetY)){
+          if (this.lastClick !== serie){
+            this.focusSeries(serie);
+            this.lastClick = serie;
+          }
+        }else{
+          this.resetColores();
+          this.hovered = null;
+          this.lastClick = null;
         }
-      }else{
-        this.resetColores();
-        this.hovered = null;
-        this.lastClick = null;
       }
     }
   }
 
-  private resetColores(){
+  public resetColores(){
     // Pone todas las series en color normal
     this.barChartData.forEach( ( data , index) => {
       const color = this.colores[ data.label ];
@@ -328,7 +333,7 @@ export class BarChartComponent implements OnInit {
     this.chartDir.update();
   }
 
-  private focusSeries(serie){
+  public focusSeries(serie){
     // Pone la serie seleccionada de color normal, el resto se pone en blanco y negro
     this.barChartData.forEach( (datos , index) => {
       let color: any;
@@ -350,7 +355,6 @@ export class BarChartComponent implements OnInit {
     // Asigna el elemento de la grafica sobre el cual se hace hover
     this.hovered = this.chartDir.chart.getElementAtEvent(event)[0];
   }
-
 
   public onChartClick(e: any): void {
   }

@@ -79,7 +79,7 @@ export class RadialChartComponent implements OnInit {
 
   cargarDatos(ID:string){
     this.radarChartData = [];
-    let auxlabel = ['Producción', 'Construcción', 'Uso', 'FindeVida'];
+    let auxlabel = ['Producción', 'Construccion', 'Uso', 'FinDeVida'];
     let auxdata=[];
     let auxdatos=[]
     let datos=[]

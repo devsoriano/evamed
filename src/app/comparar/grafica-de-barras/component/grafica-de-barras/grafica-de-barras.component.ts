@@ -5,7 +5,6 @@ import { Component, EventEmitter, OnInit, Output} from '@angular/core';
   styleUrls: ['./grafica-de-barras.component.scss']
 })
 export class GraficaDeBarrasComponent implements OnInit {
-  public porcentaje = true;
   selector:string;
   @Output() selectorEvent = new EventEmitter<string>();
   public datos_bar = [
@@ -169,7 +168,7 @@ export class GraficaDeBarrasComponent implements OnInit {
           'Indicador 6': Math.random(),
           'Indicador 7': Math.random(),
         },
-        'Construcción': {
+        'Construccion': {
           'Indicador X': Math.random(),
           'Indicador 2': Math.random(),
           'Indicador 3': Math.random(),
@@ -187,7 +186,7 @@ export class GraficaDeBarrasComponent implements OnInit {
           'Indicador 6': Math.random(),
           'Indicador 7': Math.random(),
         },
-        'FindeVida': {
+        'FinDeVida': {
           'Indicador X': Math.random(),
           'Indicador 2': Math.random(),
           'Indicador 3': Math.random(),
@@ -211,7 +210,7 @@ export class GraficaDeBarrasComponent implements OnInit {
           'Indicador 6': Math.random(),
           'Indicador 7': Math.random(),
         },
-        'Construcción': {
+        'Construccion': {
           'Indicador X': Math.random(),
           'Indicador 2': Math.random(),
           'Indicador 3': Math.random(),
@@ -229,7 +228,7 @@ export class GraficaDeBarrasComponent implements OnInit {
           'Indicador 6': Math.random(),
           'Indicador 7': Math.random(),
         },
-        'FindeVida': {
+        'FinDeVida': {
           'Indicador X': Math.random(),
           'Indicador 2': Math.random(),
           'Indicador 3': Math.random(),
@@ -253,7 +252,7 @@ export class GraficaDeBarrasComponent implements OnInit {
           'Indicador 6': Math.random(),
           'Indicador 7': Math.random(),
         },
-        'Construcción': {
+        'Construccion': {
           'Indicador X': Math.random(),
           'Indicador 2': Math.random(),
           'Indicador 3': Math.random(),
@@ -271,7 +270,7 @@ export class GraficaDeBarrasComponent implements OnInit {
           'Indicador 6': Math.random(),
           'Indicador 7': Math.random(),
         },
-        'FindeVida': {
+        'FinDeVida': {
           'Indicador X': Math.random(),
           'Indicador 2': Math.random(),
           'Indicador 3': Math.random(),
@@ -296,7 +295,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -308,7 +307,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -322,7 +321,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -334,7 +333,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -348,7 +347,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -360,7 +359,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -374,7 +373,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -386,7 +385,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -400,7 +399,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -412,7 +411,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -426,7 +425,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -438,7 +437,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -452,7 +451,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -464,7 +463,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -484,7 +483,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -496,7 +495,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -510,7 +509,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -522,7 +521,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -536,7 +535,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -548,7 +547,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -562,7 +561,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -574,7 +573,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -588,7 +587,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -600,7 +599,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -614,7 +613,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -626,7 +625,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -640,7 +639,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -652,7 +651,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -672,7 +671,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -684,7 +683,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -698,7 +697,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -710,7 +709,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -724,7 +723,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -736,7 +735,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -750,7 +749,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -762,7 +761,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -776,7 +775,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -788,7 +787,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -802,7 +801,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -814,7 +813,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -828,7 +827,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'Construcción': {
+          'Construccion': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),
@@ -840,7 +839,7 @@ export class GraficaDeBarrasComponent implements OnInit {
             'Subproceso 3': Math.random(),
             'Subproceso 4': Math.random()
           },
-          'FindeVida': {
+          'FinDeVida': {
             'Subproceso 1': Math.random(),
             'Subproceso 2': Math.random(),
             'Subproceso 3': Math.random(),

@@ -14,7 +14,6 @@ export class CompararComponent implements OnInit {
   @Input('Inproyectos_bar') inputproyect_bar: any;
   @Input('Inproyectos_radar') inputproyect_radar: any;
   @Input('Inproyectos_pie') inputproyect_pie: any;
-  @Input('Inporcentaje') Porcentaje: any;
   @ViewChildren(BarChartComponent)
   childBar: QueryList<BarChartComponent>;
   @ViewChildren(PieChartComponent)
@@ -29,10 +28,16 @@ export class CompararComponent implements OnInit {
   proyecto:string;
   banderaGrapg:number=0;
   proyect=[];
+  inputproyect_bar_porcent=[];
   proyect_active=[];
-  outproyect_bar=[];
+  outproyect_bar = [];
+  outproyect_bar_porcent=[];
   outproyect_radar=[];
   outproyect_pie = [];
+  hover:boolean=true;
+  bandera_porcentaje: boolean = true;
+  bandera_num:boolean= false;
+
 
   constructor(){ }
 
@@ -53,15 +58,37 @@ export class CompararComponent implements OnInit {
         }]
     });
     this.proyect_active.push(0);
+    this.datosProcentaje();
     //carga de datos inicial en graficas
     this.outproyect_bar.push(this.inputproyect_bar[0]);
     this.outproyect_radar.push(this.inputproyect_radar[0]);
     this.outproyect_pie.push(this.inputproyect_pie[0]);
   }
 
-  porcentaje(){
-    this.childBar.forEach(c => c.togglePorcentaje(false));
+  //Poner en porcentajes los datos
+  datosProcentaje(){
+    this.inputproyect_bar_porcent=this.inputproyect_bar;
+    this.inputproyect_bar.forEach(proyecto => {
+      const auxDatos = { Producción: [], Construccion: [], Uso: [], FinDeVida: [] };
+      Object.keys(proyecto.Datos).forEach(indicador => {
+        Object.keys(auxDatos).forEach(etapa => {
+          //proyecto.Datos[indicador][etapa] = (proyecto.Datos[indicador.toString()][etapa] * 100 / proyecto.Datos[indicador.toString()].total).toFixed(2)
+          console.log(etapa, proyecto.Datos[indicador.toString()].total);
+        });
+      });
+    });
+}
 
+  //activar gráfica de porcentaje
+  porcentaje(val:boolean){
+    console.log(val);
+    if(val){
+      this.bandera_porcentaje=false;
+      this.bandera_num= true;
+    }else{
+      this.bandera_porcentaje =true;
+      this.bandera_num = false;
+    }
   }
   //agregar proyecto a graficas
   iniciar_graficas(id:number){
@@ -101,8 +128,10 @@ export class CompararComponent implements OnInit {
     this.showVar = false;
     if (this.selector==null){
       this.bandera = 0;
+      this.hover = true;
     }else{
       this.bandera=1;
+      this.hover = false;
     }
 
   }
@@ -114,13 +143,15 @@ export class CompararComponent implements OnInit {
       this.ID = ' ';
     }
     if(x===this.ID ){
-      console.log("1" );
       if (this.bandera == 1) {
         this.showVar = false;
       } else {
         this.showVar_1 = false;
+        this.hover = true;
+        this.childBar.forEach(c => c.resetColores());
       }
       this.banderaGrapg=0;
+      console.log("on");
       this.ID = x;
     }else{
       this.ID = x;
@@ -131,7 +162,9 @@ export class CompararComponent implements OnInit {
       } else {
         this.showVar_1 = true;
         this.showVar=false;
+        this.hover=false;
         this.childRadar.forEach(c => c.cargarDatos(this.ID));
+        this.childBar.forEach(c => c.focusSeries(this.ID));
       }
     }
   }

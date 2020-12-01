@@ -22,7 +22,12 @@ export class PieChartComponent implements OnInit {
 
   public pieChartType = 'doughnut';
   public pieChartOptions = {
-    segmentShowStroke: false
+    elements: { arc: { borderWidth: 0 } },
+    plugins: {
+      datalabels: {
+        display: false
+      }
+    }
   };
   public pieChartData=[];
   public pieChartLabels = [];
@@ -36,7 +41,7 @@ export class PieChartComponent implements OnInit {
   cargarDatos(ID:string, indicador:string){
     let auxdata: ChartDataSets[];
     let color: any[]
-    let auxlabel = ['Producción','Construcción','Uso','FindeVida']
+    let auxlabel = ['Producción','Construccion','Uso','FinDeVida']
     let auxdataLabel=[]
     let auxdatos = []
     let datos = []

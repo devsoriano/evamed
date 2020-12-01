@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.component';
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
 import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle'
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
     FormsModule,
     ChartsModule,
     MatTabsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatButtonToggleModule
   ],
   exports: [
     GraficaDeBarrasComponent,
