@@ -15,14 +15,34 @@
           Indica el consumo energético para la cimentización del inmueble
         </p>
       </div>
-      <div clas="custom-inputs-data">
-        <input
-          class="input-general"
-          [(ngModel)]="cantidad"
-          name="cantidad"
-          matInput 
-          type="text"
-        >
+      <div class="custom-inputs-data">
+        <div>
+          <label class="label-small-input">
+            Cantidad
+          </label>
+          <mat-form-field>
+            <input
+              class="input-general"
+              [(ngModel)]="cantidad"
+              name="cantidad"
+              matInput 
+              type="text"
+            >
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="label-small-input">
+            Unidad
+          </label>
+          <mat-form-field appearance="outline">
+            <mat-label>Seleccione una opción</mat-label>
+            <mat-select  [(ngModel)]="unidad" name="fuente">
+              <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
+                {{unidad.name_energy_unit}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </section>
     <section class="container-systems">

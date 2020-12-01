@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 
 @Component({
   selector: 'app-usage-stage',
@@ -8,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 export class UsageStageComponent implements OnInit {
   nameProject: string;
   cantidad: string;
+  catalogoUnidadEnergia: [];
 
   constructor(
-  ) { }
+    private catalogsService: CatalogsService,
+  ) {
+    this.catalogsService.getEnergyUnits().subscribe(data => {
+      this.catalogoUnidadEnergia = data;
+    });
+  }
 
   ngOnInit() {
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
