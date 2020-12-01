@@ -42,7 +42,17 @@ const routes: Routes = [
         path: 'end-life-stage',
         canActivate: [AdminGuard],
         loadChildren: () => import('./end-life-stage/end-life-stage.module').then(m => m.EndLifeStageModule)
-      }
+      },
+      {
+        path: 'resultados',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./comparar/grafica-de-barras/grafica-de-barras.module').then(m => m.GraficaDeBarrasModule)
+      },
+      {
+        path: 'acerca-de',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./acerca-de/acerca-de.module').then(m => m.AcercaDeModule)
+      },
     ]
   },
   {

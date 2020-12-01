@@ -1,0 +1,19 @@
+<div class="div-principal" *ngIf="showMe">
+  <div  *ngFor="let item of inputProyect">
+    <mat-card>
+      <mat-card-header>
+        {{item.Nombre}}
+        <br>
+        {{subtitulo}}
+      </mat-card-header>
+      <canvas #MyChart='base-chart' #canvas baseChart
+      [datasets]="radarChartData[item.id]"
+      [options]="radarChartOptions"
+      [labels]="radarChartLabels"
+      [chartType]="radarChartType">
+      </canvas>
+    </mat-card>
+  </div>
+  <div>
+  </div>
+</div>

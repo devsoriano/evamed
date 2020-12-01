@@ -1,0 +1,93 @@
+
+<div class="principal-container">
+  <div class="second-container">
+    <a class="return-proyecto"><mat-icon>keyboard_arrow_left</mat-icon>regresar a proyectos</a>
+    <br><a class="tittle-proyect">{{proyecto}}</a>
+    <p class="simple-text">Duplicados</p>
+    <div class="div-proyectos-mostrados">
+      <div>
+        <button mat-button [matMenuTriggerFor]="menu">Selecciona una opción a visualizar</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item
+            *ngFor="let item of proyect"
+            (click)="iniciar_graficas(item.id)">
+            <span>{{item.Nombre}}</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div class="button-graph">
+        <div *ngFor="let item of proyect" class="button-graph">
+          <mat-card *ngIf="item.card" class="card">
+            <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
+            {{item.Nombre}}
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <mat-card>
+        <mat-tab-group mat-stretch-tabs>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Impactos ambientales<br>por impactos del ciclo de vida
+            </ng-template>
+            <div class="div-impactos-ambientales">
+              <p>Impactos ambientales</p>
+              <div class="sub-container">
+                <div>
+                  <mat-button-toggle-group>
+                    <mat-button-toggle class="button-impactos"><mat-icon class="icons-options">table_view</mat-icon></mat-button-toggle>
+                    <mat-button-toggle class="button-impactos"><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+                <div>
+                  <mat-button-toggle-group>
+                    <mat-button-toggle class="button-impactos" (click)="porcentaje(true)">%</mat-button-toggle>
+                    <mat-button-toggle class="button-impactos" (click)="porcentaje(false)">#</mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+            </div>
+            <div class="campo-grafica-bar">
+              <div [hidden]="bandera_porcentaje">
+                <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="true" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
+              </div>
+              <div [hidden]="bandera_num">
+                <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="false" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
+              </div>
+            </div>
+            <div>
+              <p>Dispersión de Impacto ambiental por fase de ciclo de vida</p>
+                <p>Selecciona una fase del ciclo de vida
+            </div>
+            <div class="div-secondary-graph">
+              <ul>
+                <li> <button mat-stroked-button (click)="grafica('Producción')">
+                  <mat-icon class="icons-grafica uno">visibility_off</mat-icon>Producción</button>
+                </li>
+                <li> <button mat-stroked-button (click)="grafica('Construccion')">
+                  <mat-icon class="icons-grafica dos">visibility_off</mat-icon>Construcción</button> </li>
+                <li> <button mat-stroked-button (click)="grafica('Uso')">
+                  <mat-icon class="icons-grafica tres">visibility_off</mat-icon>Uso</button> </li>
+                <li> <button mat-stroked-button (click)="grafica('FinDeVida')">
+                  <mat-icon class="icons-grafica cuatro">visibility_off</mat-icon>Fin de vida</button> </li>
+              </ul>
+              <div>
+                <app-pie-chart [showMePartially]="showVar" [id]="ID" [inputProyect]="outproyect_pie"></app-pie-chart>
+                <app-radial-chart [showMe]="showVar_1" [id]="ID" [inputProyect]="outproyect_radar"></app-radial-chart>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Impactos ambientales<br>por elementos constructivos
+            </ng-template>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Elementos constructivos<br>por etapas del ciclo de vida
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

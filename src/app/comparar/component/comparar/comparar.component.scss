@@ -1,0 +1,130 @@
+
+.second-container{
+  width: 100%;
+  margin: auto;
+}
+
+.campo-grafica-bar{
+  width: 85%;
+  margin: auto;
+}
+
+.return-proyecto {
+  top: 126px;
+  left: 140px;
+  width: 151px;
+  height: 17px;
+  text-align: left;
+  font:17px Helvetica Neue;
+  letter-spacing: 0px;
+  color: #92BE00;
+  opacity: 1;
+  .mat-icon{
+    font-size: 15px;
+  }
+}
+
+.div-proyectos-mostrados {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  margin-bottom: 15px;
+  .button-graph{
+    display: inline-block;
+    margin-right:10px;
+    font-size: 10px;
+    height: 8px;
+    .card{
+      background-color: #E2DDDD;
+      text-align: center;
+      margin-right: 0;
+      padding: 0;
+      font: normal normal medium 14px;
+      letter-spacing: 0px;
+      color: #343434;
+      opacity: 1;
+      border-radius: 9px;
+      .mat-icon {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+.div-impactos-ambientales{
+  margin: 20px;
+  .icons-options{
+    font-size: 15px;
+  }
+  .sub-container{
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    .button-impactos{
+      width: 64px;
+      height: 40px;
+    }
+  }
+}
+
+.div-secondary-graph{
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  button{
+    width: 150px;
+    margin-left: 8px;
+    text-align: left;
+    background-color: #efefefc7;
+  }
+
+}
+
+.simple-text{
+  top: 192px;
+  left: 140px;
+  width: 71px;
+  height: 16px;
+  text-align: left;
+  font:16px Helvetica Neue;
+  letter-spacing: 0px;
+  color: #767676;
+  opacity: 1;
+}
+
+.tittle-proyect{
+  top: 147px;
+  left: 154px;
+  width: 263px;
+  height: 24px;
+  text-align: left;
+  font:25px Helvetica Neue;
+  letter-spacing: 0px;
+  color: #343434;
+  opacity: 1;
+}
+
+.icons-grafica{
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+  text-align: center;
+}
+
+.uno {
+  background: #4DBE89;
+}
+
+.dos {
+  background: #148A93;
+}
+
+.tres {
+  background: #8F5091;
+}
+
+.cuatro {
+  background: #DEA961;
+}
