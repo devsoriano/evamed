@@ -58,7 +58,7 @@ export class CompararComponent implements OnInit {
         }]
     });
     this.proyect_active.push(0);
-    this.datosProcentaje();
+    // this.datosProcentaje();
     //carga de datos inicial en graficas
     this.outproyect_bar.push(this.inputproyect_bar[0]);
     this.outproyect_radar.push(this.inputproyect_radar[0]);
