@@ -30,6 +30,7 @@ export class HomeEvamedComponent implements OnInit {
   superficieHabitable: string;
   noNiveles: string;
   optionSelected: string;
+  projectsList: [];
 
   constructor(
     private auth: AuthService,
@@ -37,6 +38,7 @@ export class HomeEvamedComponent implements OnInit {
     public dialog: MatDialog,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
+    private projects: ProjectsService
   ) {
     this.catalogsService.usesCatalog().subscribe(data => {
       this.catalogoUsos = data;
@@ -52,6 +54,13 @@ export class HomeEvamedComponent implements OnInit {
     });
     this.catalogsService.housingSchemeCatalog().subscribe(data => {
       this.catalogoEsqHabitacional = data;
+    });
+    this.projects.getProjects().subscribe( data => {
+      this.projectsList = data;
+      console.log(this.projectsList);
+    });
+    this.projects.searchProject(1).subscribe(data => {
+      console.log(data);
     });
   }
 

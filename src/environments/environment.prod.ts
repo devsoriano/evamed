@@ -14,6 +14,7 @@ const energyUnits = '/energy-units/';
 const volumeUnits = '/volume-units/';
 const schemeProject = '/material-scheme-project/';
 const constructionStage = '/constructive-system-element/';
+const annualConsumptionRequired = '/annual-consumption-required/';
 
 export const environment = {
   production: true,
@@ -30,6 +31,7 @@ export const environment = {
   api_volume_units: `${apiEvamed}${volumeUnits}`,
   api_scheme_project: `${apiEvamed}${schemeProject}`,
   api_construction_stage: `${apiEvamed}${constructionStage}`,
+  api_annual_consumption_required: `${apiEvamed}${annualConsumptionRequired}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
