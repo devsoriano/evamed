@@ -75,8 +75,8 @@ export class BarChartComponent implements OnInit {
   }
 
   agregarProyecto(cambio: any) {
-    //console.log(this.inputProyects);
-    this.inputProyects = cambio;
+    console.log(cambio);
+    this.inputProyects = [...cambio];
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
@@ -125,7 +125,11 @@ export class BarChartComponent implements OnInit {
         if (!this.barChartLabels.includes(indicador)) {
           this.barChartLabels = [...this.barChartLabels, indicador];
         }
+        if (Object.keys( proyecto.Datos[indicador]).includes('total')){
+          proyecto.Datos[indicador].total = 0;
+        }
         proyecto.Datos[indicador].total = Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
+        // console.log(proyecto.Nombre,proyecto.Datos[indicador])
         this.maxValue = Math.max(this.maxValue, proyecto.Datos[indicador].total);
       });
     });
@@ -133,8 +137,8 @@ export class BarChartComponent implements OnInit {
 
   private iniciaDatos() {
     // le da el formato necesario a los datos para que se puedan graficar
-    let datos = []
-    this.barChartData = [];
+    let datos = [];
+
     this.inputProyects.forEach(proyecto => {
       const auxDatos = { Producción: [], Construccion: [], Uso: [], FinDeVida: [] };
       this.barChartLabels.forEach(indicador => {
