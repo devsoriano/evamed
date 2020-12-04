@@ -11,9 +11,9 @@
 <!--Cuerpo de modal-->
 <div mat-dialog-content class="dialog-content">
   <mat-radio-group
-    aria-labelledby="example-radio-group-label"
     class="example-radio-group"
-    [(ngModel)]="data.optionSelected">
+    [(ngModel)]="data.optionSelected"
+  >
     <mat-radio-button class="example-radio-button" *ngFor="let option of options" [value]="option">
       {{option}}
     </mat-radio-button>

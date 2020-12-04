@@ -1,12 +1,15 @@
 <nav class="nav-redirect">
-  <h2 class="proyecto-title">Hospital infantil Lomas altas</h2>
+  <h2 class="proyecto-title">{{nameProject}}</h2>
   <a href="/" class="a-redirect"> < Regresar a proyectos </a>
 </nav>
+<!--Principal container-->
 <div class="principal-container container-total">
   <nav class="nav-steps">
 
   </nav>
+  <!--Container actions of step 4-->
   <section class="container-actions">
+    <!--Section sheets-->
     <section class="container-sheets">
       <div class="list-elements">
         <mat-selection-list
@@ -17,14 +20,72 @@
           <mat-list-option
             *ngFor="let sheet of sheetNames"
             [value]="sheet"
+            class="item-yellow-extend"
           >
             {{sheet}}
           </mat-list-option>
         </mat-selection-list>
       </div>
     </section>
+    <!--Formulario de energía consumida-->
     <section class="container-systems">
-      Formulario
+      <div class="container-ec" *ngIf="indexSheet!==undefined">
+        <div *ngFor="let data of dataArrayEC; let i=index;">
+          <div class="Row top-0">
+            <div class="Col col-small-space">
+              <label class="label-small-input">
+                Cantidad
+              </label>
+              <mat-form-field>
+                <input
+                  class="input-general"
+                  [(ngModel)]="data.cantidad"
+                  name="cantidad_{{i}}"
+                  matInput 
+                  type="number"
+                >
+              </mat-form-field>
+            </div>
+            <div class="Col col-small-space">
+              <label class="label-small-input">
+                Unidad funcional
+              </label>
+              
+            </div>
+            <div class="Col col-small-space">
+              <label class="label-small-input">
+                Fuente
+              </label>
+              
+            </div>
+            <div class="Col col-small-space">
+              <div *ngIf="i!=0">
+                <button
+                  mat-button
+                  class="button-remove"
+                  (click)="removeFormEC(i)"
+                >
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Actions-->
+        <button
+          mat-button
+          (click)="addFormEC()"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+
+        <button
+          mat-button
+          (click)="onSaveEC()"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
     </section>
     <section class="container-details">
       Vacío

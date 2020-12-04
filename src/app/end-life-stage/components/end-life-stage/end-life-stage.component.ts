@@ -16,12 +16,15 @@ export class EndLifeStageComponent implements OnInit {
   contentData: any;
   listData: any;
   indexSheet: any;
+  nameProject: any;
   SistemasConstructivos: any;
   listMateriales: any;
   selectedOptions: string[] = [];
   panelOpenFirst = false;
   panelOpenSecond = false;
   panelOpenThird = false;
+  dataArrayEC = [];
+  EC: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,6 +32,9 @@ export class EndLifeStageComponent implements OnInit {
 
   ngOnInit() {
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
+    const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
+
+    this.nameProject = PDP.name_project;
     this.sheetNames = data.sheetNames;
     this.contentData = data.data;
   }
@@ -41,13 +47,12 @@ export class EndLifeStageComponent implements OnInit {
     });
     // take index of selection
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
-    this.listData = this.contentData[this.indexSheet];
-    // get "sistemas constructivos"
-    const sistConstructivos = [];
-    this.listData.map( sc => {
-      sistConstructivos.push(sc.Sistema_constructivo);
-    });
-    this.SistemasConstructivos = [...new Set(sistConstructivos)];
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) {
+      if ( this.indexSheet === i && this.EC !== undefined ) {
+        this.dataArrayEC = this.EC[i];
+      }
+    }
   }
 
   onNgModelChange(event) {
@@ -62,6 +67,29 @@ export class EndLifeStageComponent implements OnInit {
       }
     });
     this.listMateriales = materiales;
+  }
+
+  addFormEC() {
+    if (this.dataArrayEC === undefined) {
+      this.dataArrayEC = [];
+    }
+    this.dataArrayEC.push([]);
+  }
+
+  removeFormEC(i) {
+    this.dataArrayEC.splice(i);
+  }
+
+  onSaveEC() {
+    let i;
+    if (this.EC === undefined) {
+      this.EC = [];
+    }
+    for (i = 0; i <= this.sheetNames.length; i++) {
+      if (this.indexSheet === i) {
+        this.EC[i] = this.dataArrayEC;
+      }
+    }
   }
 
 }

@@ -55,11 +55,20 @@ body {
 }
 /**</Adecuaciones de Input>**/
 
-.mat-radio-container {
-  display: none!important;
+.example-radio-button {
+  .mat-radio-label {
+    .mat-radio-container {
+      display: none!important;
+    }
+  }
 }
 
 /**<Side inicio>**/
+
+.Row.top-0 {
+  margin-top: 0px!important;
+}
+
 .side {
   flex: 50%;
   background: transparent url('./assets/images/edificio.png') 0% 0% no-repeat padding-box;

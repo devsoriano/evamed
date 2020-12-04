@@ -22,4 +22,15 @@ export class ElectricitConsumptionService {
       })
     );
   }
+
+  addECD( ECD: object ) {
+    return this.http.post<any>(
+      environment.api_electricity_consumption_data,
+      ECD
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }
