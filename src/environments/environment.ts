@@ -17,6 +17,8 @@ const constructionStage = '/constructive-system-element/';
 const annualConsumptionRequired = '/annual-consumption-required/';
 const typeEnergy = '/type-energy/';
 const electricityConsumptionData = '/electricity-consumption-data/';
+const treatmentOfGenerateWasted = 'treatment-of-generate-wasted';
+const electricityConsumptionDeconstructiveProcess = 'electricity-consumption-deconstructive-process';
 
 export const environment = {
   production: false,
@@ -36,6 +38,8 @@ export const environment = {
   api_annual_consumption_required: `${apiEvamed}${annualConsumptionRequired}`,
   api_type_energy: `${apiEvamed}${typeEnergy}`,
   api_electricity_consumption_data: `${apiEvamed}${electricityConsumptionData}`,
+  api_treatment_of_generate_wasted: `${apiEvamed}${treatmentOfGenerateWasted}`,
+  api_electricity_consumption_deconstructive_process: `${apiEvamed}${electricityConsumptionDeconstructiveProcess}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',

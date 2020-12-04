@@ -1,3 +1,4 @@
+import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +17,8 @@ export class EndLifeStageComponent implements OnInit {
   contentData: any;
   listData: any;
   indexSheet: any;
-  nameProject: any;
+  nameProject: string;
+  projectId: number;
   SistemasConstructivos: any;
   listMateriales: any;
   selectedOptions: string[] = [];
@@ -28,6 +30,7 @@ export class EndLifeStageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private endLifeService: EndLifeService
   ) { }
 
   ngOnInit() {
@@ -35,6 +38,7 @@ export class EndLifeStageComponent implements OnInit {
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
 
     this.nameProject = PDP.name_project;
+    this.projectId = PDP.id;
     this.sheetNames = data.sheetNames;
     this.contentData = data.data;
   }
@@ -90,6 +94,52 @@ export class EndLifeStageComponent implements OnInit {
         this.EC[i] = this.dataArrayEC;
       }
     }
+  }
+
+  saveStepFour() {
+    console.log('test step four');
+
+    this.endLifeService.addECDP({
+      quantity: 3000,
+      unit_id: 1,
+      source_information_id: 1,
+      section_id: 1,
+      project_id: this.projectId
+    }).subscribe(data => {
+      console.log(data);
+    });
+
+    this.endLifeService.addTOGW({
+      landfill: 90,
+      recycling: 5,
+      reuse: 5,
+      section_id: 1,
+      project_id: this.projectId
+    }).subscribe(data => {
+      console.log(data);
+    });
+
+    this.endLifeService.addTOGW({
+      landfill: 70,
+      recycling: 15,
+      reuse: 15,
+      section_id: 2,
+      project_id: this.projectId
+    }).subscribe(data => {
+      console.log(data);
+    });
+
+    this.endLifeService.addTOGW({
+      landfill: 70,
+      recycling: 29,
+      reuse: 1,
+      section_id: 4,
+      project_id: this.projectId
+    }).subscribe(data => {
+      console.log(data);
+    });
+
+
   }
 
 }

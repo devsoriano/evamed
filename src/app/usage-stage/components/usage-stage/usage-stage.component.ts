@@ -46,6 +46,8 @@ export class UsageStageComponent implements OnInit {
       this.catalogoUnidadEnergia = data;
     });
     this.catalogsService.getTypeEnergy().subscribe(data => {
+      console.log('catalogo');
+      console.log(data);
       this.catalogoTipoEnergia = data;
     });
   }
