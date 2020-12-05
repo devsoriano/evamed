@@ -102,5 +102,15 @@ export class CatalogsService {
     );
   }
 
+  getTypeEnergy() {
+    return this.http.get<any>(
+      environment.api_type_energy,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
 
 }

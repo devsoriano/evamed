@@ -33,4 +33,24 @@ export class ProjectsService {
       })
     );
   }
+
+  getProjects() {
+    return this.http.get<any>(
+      environment.api_projects,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  searchProject( project ) {
+    return this.http.get<any>(
+      environment.api_projects + '?search=' + project,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }

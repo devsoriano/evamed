@@ -42,25 +42,32 @@ p.p-instrucciones {
 }
 
 .container-sheets {
-  width: 30%;
+  width: 20%;
   border-right: 1px solid #CBCBCB;
   padding: 40px;
 }
 
 .container-systems {
-  width: 70%;
+  width: 80%;
   border-right: 1px solid #CBCBCB;
   padding: 40px;
+  overflow: auto;
+
+  h1 {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  p {
+    font-size: 12px;
+    color: #767676;
+    font-weight: 500;
+  }
 }
 
 .list-elements {
   width: 100%;
   overflow: auto;
   height: 100%;
-}
-
-.container-systems {
-  overflow: auto;
 }
 
 .custom-global-data {
@@ -82,4 +89,13 @@ p.p-instrucciones {
     width: 45%;
     margin: 10px;
   }
+}
+
+.container-radius {
+  display: flex;
+  justify-content: space-around;
+}
+
+.container-values {
+  margin: 20px;
 }
