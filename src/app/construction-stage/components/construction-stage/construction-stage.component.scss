@@ -91,3 +91,12 @@ p.p-instrucciones {
   font-weight: 500;
   font-size: 14px;
 }
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  border-bottom: 2px solid #CBCBCB;
+  box-shadow: none;
+}
+.mat-expansion-panel:last-of-type {
+  border-bottom-right-radius: 0px!important;
+  border-bottom-left-radius:0px!important; 
+}

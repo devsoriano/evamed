@@ -91,11 +91,36 @@ p.p-instrucciones {
   }
 }
 
-.container-radius {
-  display: flex;
-  justify-content: space-around;
-}
-
 .container-values {
   margin: 20px;
+}
+
+.custom-expansion-panel-header {
+  background-color: #FFF !important;
+  height: 60px!important;
+}
+
+.custom-mat-panel-title {
+  color: #000;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  border-bottom: 2px solid #CBCBCB;
+  box-shadow: none;
+}
+.mat-expansion-panel:last-of-type {
+  border-bottom-right-radius: 0px!important;
+  border-bottom-left-radius:0px!important; 
+}
+
+.container-selected {
+  margin: 20px 80px;
+
+  .container-radius {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
 }
