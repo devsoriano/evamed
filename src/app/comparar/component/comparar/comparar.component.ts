@@ -46,11 +46,11 @@ export class CompararComponent implements OnInit {
   outproyect_radar=[];
   outproyect_pie = [];
   hover:boolean=true;
-  bandera_porcentaje: boolean = false;
+  bandera_porcentaje: boolean = true;
   bandera_num:boolean= false;
 
   // vars analisis
-  idProyectoActivo: number = 13;
+  idProyectoActivo: number = 46;
 
   projectsList: [];
   materialList: [];
@@ -58,6 +58,13 @@ export class CompararComponent implements OnInit {
   materialSchemeProyectList: [];
   potentialTypesList: [];
   standarsList: [];
+  CSEList: [];
+  SIDList: [];
+  SIList: [];
+  ACRList: [];
+  ECDList: [];
+  TEDList: [];
+  ULList: [];
 
   constructor(
     private materials: MaterialsService,
@@ -72,7 +79,14 @@ export class CompararComponent implements OnInit {
       this.analisis.getMaterialSchemeData(),
       this.analisis.getMaterialSchemeProyect(),
       this.analisis.getPotentialTypes(),
-      this.analisis.getStandars()
+      this.analisis.getStandars(),
+      this.analisis.getConstructiveSystemElement(),
+      this.analisis.getSourceInformationData(),
+      this.analisis.getSourceInformation(),
+      this.analisis.getAnnualConsumptionRequired(),
+      this.analisis.getElectricityConsumptionData(),
+      this.analisis.getTypeEnergyData(),
+      this.analisis.getUsefulLife()
     ])
     .subscribe(([
       projectsData,
@@ -80,7 +94,14 @@ export class CompararComponent implements OnInit {
       materialSchemeData,
       materialSchemeProyect,
       potentialTypes,
-      standards
+      standards,
+      CSE,
+      SID,
+      SI,
+      ACR,
+      ECD,
+      TED,
+      UL
     ]) => {
       this.projectsList = projectsData;
       this.materialList = materialData;
@@ -88,6 +109,13 @@ export class CompararComponent implements OnInit {
       this.materialSchemeProyectList = materialSchemeProyect;
       this.potentialTypesList = potentialTypes;
       this.standarsList = standards;
+      this.CSEList = CSE;
+      this.SIDList = SID;
+      this.SIList = SI;
+      this.ACRList = ACR;
+      this.ECDList = ECD;
+      this.TEDList = TED;
+      this.ULList = UL;
       // console.log(this.materialSchemeProyectList);
       this.menu_inicio();
       // this.childBar.forEach(c => c.ngOnInit());
@@ -138,26 +166,27 @@ export class CompararComponent implements OnInit {
     const grafica = this.container.createComponent(componentFactory);
     grafica.instance.porcentaje = this.bandera_porcentaje;
     grafica.instance.inputProyects = this.outproyect_bar;
+    grafica.instance.showMe = true;
     grafica.instance.lastClickEvent.subscribe(e => console.log(e));
   }
 
   getAnalisisBarras(idProyecto){
     let analisisProyectos : Record<string,any> = {
-      Nombre: this.projectsList.filter( p => { return p['id'] == idProyecto})[0]['name_project'],
+      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
       id: idProyecto,
       Datos: {}
     };
     
     // Etapa de construccion
 
-    let standardId = this.standarsList.filter(s => { return s['name_standard'] == 'A1-A3'})[0]['id'];
-    let schemeProyect = this.materialSchemeProyectList.filter(msp =>{return msp['project_id'] == idProyecto});
+    let standardId = this.standarsList.filter(s => s['name_standard'] == 'A1-A3' )[0]['id'];
+    let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
 
     schemeProyect.forEach(ps => {
-      let impactos = this.materialSchemeDataList.filter(msd => {return msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId}) 
+      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId ) 
       // console.log(ps)
       impactos.forEach(impacto =>{
-        let potencial = this.potentialTypesList.filter(pt => { return pt['id'] == impacto['potential_type_id']})[0]['name_potential_type']
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
         if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
           analisisProyectos.Datos[potencial] = {};
         }
@@ -172,7 +201,53 @@ export class CompararComponent implements OnInit {
     // TODO: falta analisis de transporte por material ( no forma de guardar datos en la base )
 
     // etapa de construcción
+    let CSEs = this.CSEList.filter(c =>  c['project_id'] == idProyecto);
+    CSEs.forEach(CSE =>{
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  ) 
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
+          analisisProyectos.Datos[potencial] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Construccion')){
+          analisisProyectos['Datos'][potencial]['Construccion'] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos'][potencial]['Construccion'] += impacto['value'] * CSE['quantity'];
+      });
+    });
 
+
+    // Estapa de Uso
+
+    let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
+    let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
+    let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
+    let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
+    try{
+      vidaUtil = parseFloat(vidaUtil);
+    }catch{
+      vidaUtil = 1;
+    }
+
+    console.log(vidaUtil)
+    consumos.forEach(ecd => {
+      let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
+          analisisProyectos.Datos[potencial] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Uso')){
+          analisisProyectos['Datos'][potencial]['Uso'] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos'][potencial]['Uso'] += impacto['value'] * ecd['quantity'] ;
+      });
+    });
+    console.log(analisisProyectos)
     return analisisProyectos;
   }
 

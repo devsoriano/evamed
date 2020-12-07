@@ -15,6 +15,8 @@ export class BarChartComponent implements OnInit {
 
   @ViewChild('MyChart') chartDir: BaseChartDirective;
   private canvas: any;
+  
+  private hoverIniciado = false;
 
   @Input() inputProyects: any;
   @Input('porcentaje') porcentaje: any;
@@ -69,11 +71,12 @@ export class BarChartComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // Ya que se inicializa el componente
-    this.canvas = this.chartDir.chart.canvas;
-    // console.log(this.chartDir.chart);
-    this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
-    this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
+      
+      // Ya que se inicializa el componente
+      this.canvas = this.chartDir.chart.canvas;
+      // console.log(this.chartDir.chart);
+      this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
+      this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
   }
 
   agregarProyecto(cambio: any) {
@@ -368,6 +371,15 @@ export class BarChartComponent implements OnInit {
   public onChartHover(e: any): void {
     // Asigna el elemento de la grafica sobre el cual se hace hover
     this.hovered = this.chartDir.chart.getElementAtEvent(event)[0];
+
+    // if(!this.hoverIniciado){
+    //   this.hoverIniciado = true;
+    //   console.log('hovered')
+    // // Ya que se inicializa el componente
+    //   this.canvas = this.chartDir.chart.canvas;
+    //   this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
+    //   this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
+    // }
   }
 
   public onChartClick(e: any): void {
