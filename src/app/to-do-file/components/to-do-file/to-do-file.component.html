@@ -7,37 +7,45 @@
   </nav>
   <div class="space-row"></div>
   <section class="container-actions">
+
     <section class="container-download">
-      <div class="container-elements">
-        <h2 class="left">1. Descarga de archivo</h2>
-        <p class="p-instrucciones">
-          Descarga el complemento de REVIT
-          para exportar materiales
-        </p>
-        <div class="icon-download" (click)="onDownload()">
-          <h3 class="title-action">Descargar archivo</h3>
+      <h2>1. Elige una opción para registrar materiales de construcción</h2>
+      <div class="elements-to-download">
+        <div class="container-elements">
+          <h3>Registro automático desde REVIT</h3>
+          <p class="p-instrucciones">
+            Descarga el complemento para exportar los materiales desde el modelo 3D de REVIT
+          </p>
+          <div class="icon-download" (click)="onDownload()">
+            <h3 class="title-action">Descargar archivo</h3>
+          </div>
         </div>
-      </div>
-      <div class="container-elements">
-        <h2 class="hidden">1. Descarga de archivo</h2>
-        <p class="p-instrucciones">
-          Descarga el template de excel para
-          registrar materiales
-        </p>
-        <div class="icon-download" (click)="onDownload()">
-          <h3 class="title-action">Descargar archivo</h3>
+        <div class="container-elements">
+          <h3>Registro manual en Excel</h3>
+          <p class="p-instrucciones">
+            Descarga el template de excel para
+            capturar materiales manualmente
+          </p>
+          <div class="icon-download" (click)="onDownload()">
+            <h3 class="title-action">Descargar archivo</h3>
+          </div>
         </div>
       </div>
     </section>
+
     <section class="container-upload">
-      <div class="container-elements">
-        <h2>2. Carga de archivo</h2>
-        <p class="p-instrucciones">
-          Carga tu archivo de materiales en el formato excel dividido
-          por sistemas constructivos.
-        </p>
-        <input type="file" id="file" (change)="onFileChange($event)" multiple="false" class="input-upload" />
-        <label for="file" class="title-action">Subir archivo</label>
+      <h2>2. Carga de materiales de construcción</h2>
+      <div class="elements-to-download">
+        <div class="container-elements">
+          <p class="p-instrucciones">
+            Carga tu archivo de materiales en el formato excel dividido
+            por sistemas constructivos.
+          </p>
+          <div class="container-upload-icon">
+            <input type="file" id="file" (change)="onFileChange($event)" multiple="false" class="input-upload" />
+            <label for="file" class="title-action">Subir archivo</label>
+          </div>
+        </div>
       </div>
     </section>
   </section>
