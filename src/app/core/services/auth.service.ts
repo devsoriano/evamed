@@ -3,8 +3,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { timeout, retry, catchError, switchMap, finalize, tap  } from 'rxjs/operators';
 import { TokenService } from './token.service';
-import { _throw } from 'rxjs/observable/throw';
 import { of } from 'rxjs';
+import { _throw } from 'rxjs/observable/throw';
 
 @Injectable({
   providedIn: 'root'

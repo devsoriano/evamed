@@ -14,6 +14,8 @@ import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.componen
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
 import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle'
     ChartsModule,
     MatTabsModule,
     MatMenuModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatCheckboxModule
   ],
   exports: [
     GraficaDeBarrasComponent,

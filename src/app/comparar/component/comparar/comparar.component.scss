@@ -128,3 +128,65 @@
 .cuatro {
   background: #DEA961;
 }
+.div-elementos-constructivos{
+  display: inline-grid;
+  grid-template-columns: 300px 400px auto;
+  height: 150px;
+  column-gap: 20px;
+  p{
+    text-align: left;
+    font: normal normal bold 15px;
+    letter-spacing: 0px;
+    color: #707070;
+    opacity: 1;
+  }
+}
+
+seccion-ciclo{
+  display: inline-block;
+}
+Fases-ciclo{
+  display: inline-block;
+  column-gap: 0px;
+  height: 20px;
+}
+
+.icon-fases{
+  width: 28px;
+  border-radius: 0px 10px 10px 0px;
+  opacity: 1;
+  color: #FFFFFF;
+  text-align: center;
+}
+.card-fases{
+  width: 40px;
+  font-family: normal normal normal;
+  font-size: 10px;
+  background: #EFEFEF
+}
+
+mat-select{
+  width: 218px;
+  height: 40px;
+  background: #FFFFFF;
+  border: 2px solid #CBCBCB;
+  opacity: 1;
+}
+.example-section {
+  display: grid;
+  grid-template-columns: 86px 86px 86px 86px;
+  column-gap: 10px;
+  row-gap: 5px;
+  align-content: center;
+  align-items: center;
+  height: 100px;
+  text-align: left;
+  font-family: normal normal normal;
+  font-size: 10px;
+  letter-spacing: 0px;
+  color: #767676;
+  opacity: 1;
+}
+.example-margin {
+  margin: 0 10px;
+}

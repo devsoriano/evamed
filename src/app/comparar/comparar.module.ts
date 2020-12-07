@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
+import { MatSelectModule } from '@angular/material/select';
 
 import { CompararRoutingModule } from './comparar-routing.module';
 import { CompararComponent } from './component/comparar/comparar.component';
@@ -34,6 +35,7 @@ import { BarChartComponent } from '../bar-chart/bar-chart.component';
     MatTabsModule,
     MatMenuModule,
     MatButtonToggleModule,
+    MatSelectModule
   ],
   exports: [
     CompararComponent,

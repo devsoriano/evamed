@@ -74,7 +74,6 @@ export class BarChartComponent implements OnInit {
   }
 
   agregarProyecto(cambio:any){
-    //console.log(this.inputProyects);
     this.inputProyects=cambio;
     this.iniciaIndicadores();
     this.iniciaDatos();
@@ -143,10 +142,7 @@ export class BarChartComponent implements OnInit {
             auxDatos[etapa] = [...auxDatos[etapa], 0];
           }else{
             auxDatos[etapa] = [...auxDatos[etapa],
-            this.porcentaje ?
-            (proyecto.Datos[indicador.toString()][etapa] * 100 / proyecto.Datos[indicador.toString()].total).toFixed(2) :
             proyecto.Datos[indicador.toString()][etapa].toFixed(2)
-
           ];
         }
       });
@@ -263,7 +259,7 @@ export class BarChartComponent implements OnInit {
     }
   }
 
-  private focusColumnas(seleccion: any){
+  public focusColumnas(seleccion: any){
     // Selecciona las columnas deacuerdo con la etiqueta en el eje X De acuerdo a barChartLabels
     if (this.lastClick !== seleccion.label){
       this.barChartData.forEach( (datos , index) => {
