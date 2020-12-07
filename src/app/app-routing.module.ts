@@ -46,7 +46,7 @@ const routes: Routes = [
       {
         path: 'resultados',
         canActivate: [AdminGuard],
-        loadChildren: () => import('./comparar/grafica-de-barras/grafica-de-barras.module').then(m => m.GraficaDeBarrasModule)
+        loadChildren: () => import('./comparar/comparar.module').then(m => m.CompararModule)
       },
       {
         path: 'acerca-de',

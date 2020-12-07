@@ -1,15 +1,26 @@
-import { Component, OnInit, Input, ViewChildren, QueryList} from '@angular/core';
+import { NgModule, Component, OnInit, Input, ViewChildren, ViewChild, QueryList, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
 import { element } from 'protractor';
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
 import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.component';
+import { ProjectsService } from './../../../core/services/projects/projects.service';
+import { MaterialsService } from './../../../core/services/materials/materials.service';
+import { AnalisisService } from './../../../core/services/analisis/analisis.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-comparar',
   templateUrl: './comparar.component.html',
   styleUrls: ['./comparar.component.scss'],
 })
+
+@NgModule({
+  entryComponents: [ BarChartComponent ]
+})
 export class CompararComponent implements OnInit {
+  barChartComponent = BarChartComponent;
+
+  @ViewChild('barContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
   @Input('Inproyectos_bar') inputproyect_bar: any;
   @Input('Inproyectos_radar') inputproyect_radar: any;
@@ -35,34 +46,159 @@ export class CompararComponent implements OnInit {
   outproyect_radar=[];
   outproyect_pie = [];
   hover:boolean=true;
-  bandera_porcentaje: boolean = true;
+  bandera_porcentaje: boolean = false;
   bandera_num:boolean= false;
 
+  // vars analisis
+  idProyectoActivo: number = 13;
 
-  constructor(){ }
+  projectsList: [];
+  materialList: [];
+  materialSchemeDataList: [];
+  materialSchemeProyectList: [];
+  potentialTypesList: [];
+  standarsList: [];
+
+  constructor(
+    private materials: MaterialsService,
+    private projects: ProjectsService,
+    private analisis: AnalisisService,
+    private componentFactoryResolver: ComponentFactoryResolver
+    ){
+
+    forkJoin([
+      this.projects.getProjects(),
+      this.materials.getMaterials(),
+      this.analisis.getMaterialSchemeData(),
+      this.analisis.getMaterialSchemeProyect(),
+      this.analisis.getPotentialTypes(),
+      this.analisis.getStandars()
+    ])
+    .subscribe(([
+      projectsData,
+      materialData,
+      materialSchemeData,
+      materialSchemeProyect,
+      potentialTypes,
+      standards
+    ]) => {
+      this.projectsList = projectsData;
+      this.materialList = materialData;
+      this.materialSchemeDataList = materialSchemeData;
+      this.materialSchemeProyectList = materialSchemeProyect;
+      this.potentialTypesList = potentialTypes;
+      this.standarsList = standards;
+      // console.log(this.materialSchemeProyectList);
+      this.menu_inicio();
+      // this.childBar.forEach(c => c.ngOnInit());
+    });
+
+  }
 
   ngOnInit(): void {
-    this.proyecto="Hospital infantil Lomas Altas";
-    this.menu_inicio();
-    this.ID = 'Producción';
+    // this.proyecto="Hospital infantil Lomas Altas";
+    // this.menu_inicio();
+    // this.ID = 'Producción';
+  }
+  
+  //agregar proyecto a graficas
+
+  iniciar_graficas(id:number){
+    // return;
+    if (this.proyect_active.some((item) => item == id) ) {
+      return;
+    }
+    console.log(id)
+    this.proyect_active.push(id);
+    this.proyect.forEach((proyecto,index) => {
+      if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
+        this.proyect[index].card = true;
+      }
+    });
+
+    let analisis = this.getAnalisisBarras(id);
+
+    this.outproyect_bar.push(analisis);
+    // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
+    this.iniciaBarras();
+    return;
+    this.outproyect_bar.push(this.inputproyect_bar[id]);
+    this.outproyect_radar.push(this.inputproyect_radar[id]);
+    this.outproyect_pie.push(this.inputproyect_pie[id]);
+    
+    this.showVar = false;
+    this.showVar_1 = false;
+    
+  }
+
+  iniciaBarras(){
+    this.container.clear();
+    // console.log(this.container):
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
+    const grafica = this.container.createComponent(componentFactory);
+    grafica.instance.porcentaje = this.bandera_porcentaje;
+    grafica.instance.inputProyects = this.outproyect_bar;
+    grafica.instance.lastClickEvent.subscribe(e => console.log(e));
+  }
+
+  getAnalisisBarras(idProyecto){
+    let analisisProyectos : Record<string,any> = {
+      Nombre: this.projectsList.filter( p => { return p['id'] == idProyecto})[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
+    
+    // Etapa de construccion
+
+    let standardId = this.standarsList.filter(s => { return s['name_standard'] == 'A1-A3'})[0]['id'];
+    let schemeProyect = this.materialSchemeProyectList.filter(msp =>{return msp['project_id'] == idProyecto});
+
+    schemeProyect.forEach(ps => {
+      let impactos = this.materialSchemeDataList.filter(msd => {return msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId}) 
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => { return pt['id'] == impacto['potential_type_id']})[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
+          analisisProyectos.Datos[potencial] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Producción')){
+          analisisProyectos['Datos'][potencial]['Producción'] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos'][potencial]['Producción'] += impacto['value']*ps['quantity'];
+      });
+    });
+
+    // TODO: falta analisis de transporte por material ( no forma de guardar datos en la base )
+
+    // etapa de construcción
+
+    return analisisProyectos;
   }
 
   //Se cargan los proyetcos existentes y se configura el menu
   menu_inicio(){
-    this.inputproyect_bar.forEach(proyecto => {
+    this.projectsList.forEach(proyecto => {
+      if (proyecto['id'] == this.idProyectoActivo){
+        this.proyecto = proyecto['name_project']
+        return;
+      }
       this.proyect = [...this.proyect,
         {
-          Nombre: proyecto.Nombre,
-          id: proyecto.id,
-          card:false
-        }]
-    });
-    this.proyect_active.push(0);
+          Nombre: proyecto['name_project'],
+          id: proyecto['id'],
+          card: false
+        }];
+    })
+
+    this.iniciar_graficas(this.idProyectoActivo);
+    // this.proyect_active.push(this.idProyectoActivo);
+    // this.outproyect_bar.push(this.getAnalisisBarras(this.idProyectoActivo));
     // this.datosProcentaje();
     //carga de datos inicial en graficas
-    this.outproyect_bar.push(this.inputproyect_bar[0]);
-    this.outproyect_radar.push(this.inputproyect_radar[0]);
-    this.outproyect_pie.push(this.inputproyect_pie[0]);
+    // this.outproyect_bar.push(this.inputproyect_bar[0]);
+    // this.outproyect_radar.push(this.inputproyect_radar[0]);
+    // this.outproyect_pie.push(this.inputproyect_pie[0]);
   }
 
   //Poner en porcentajes los datos
@@ -81,31 +217,10 @@ export class CompararComponent implements OnInit {
 
   //activar gráfica de porcentaje
   porcentaje(val:boolean){
-    console.log(val);
-    if(val){
-      this.bandera_porcentaje=false;
-      this.bandera_num= true;
-    }else{
-      this.bandera_porcentaje =true;
-      this.bandera_num = false;
-    }
-  }
-  //agregar proyecto a graficas
-  iniciar_graficas(id:number){
-    if (!this.proyect_active.some((item) => item == id)) {
-      this.proyect_active.push(id);
-      this.outproyect_bar.push(this.inputproyect_bar[id]);
-      this.outproyect_radar.push(this.inputproyect_radar[id]);
-      this.outproyect_pie.push(this.inputproyect_pie[id]);
-      this.proyect.forEach((proyecto,index) => {
-        if(proyecto.id==id){
-          this.proyect[index].card = true;
-        }
-      });
-      this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
-      this.showVar = false;
-      this.showVar_1 = false;
-    }
+    if ( val == this.bandera_porcentaje ){ return; }
+
+    this.bandera_porcentaje = val;
+    this.iniciaBarras();
   }
   //quitar proyecto a las gráficas
   quitarProyecto(ID:number){
@@ -115,6 +230,10 @@ export class CompararComponent implements OnInit {
       }
     });
     this.proyect_active = this.proyect_active.filter(item => item != ID);
+    this.outproyect_bar = this.outproyect_bar.filter(({id}) => id != ID);
+
+    this.iniciaBarras();
+    return;
     this.outproyect_bar = this.outproyect_bar.filter(({id}) => id != ID);
     this.outproyect_radar = this.outproyect_radar.filter(({ id }) => id != ID);
     this.outproyect_pie = this.outproyect_pie.filter(({ id }) => id != ID);

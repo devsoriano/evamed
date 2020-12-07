@@ -47,13 +47,16 @@
                 </div>
               </div>
             </div>
-            <div class="campo-grafica-bar">
-              <div [hidden]="bandera_porcentaje">
+            <div class="campo-grafica-bar" >
+              <ng-template #barContainer>
+
+              </ng-template>
+              <!-- <div [hidden]="bandera_porcentaje">
                 <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="true" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
               </div>
               <div [hidden]="bandera_num">
                 <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="false" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
-              </div>
+              </div> -->
             </div>
             <div>
               <p>Dispersión de Impacto ambiental por fase de ciclo de vida</p>
