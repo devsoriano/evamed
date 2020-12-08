@@ -63,9 +63,26 @@ export class ToDoFileComponent implements OnInit {
   }
 
   onDownload() {
-    const fileName = `Formato REVIT.xlsx`;
+    console.log('download pendiente')
+  }
+
+  onDownloadWindows() {
+    const fileName = `Formato REVIT Windows.xlsm`;
     this.httpClient
-      .get(`assets/files/Template-cuantificación-de-materialesv3.xlsx`, {
+      .get(`assets/files/EVAMED_WINDOWS.xlsm`, {
+        observe: 'response',
+        responseType: 'blob',
+      })
+      .subscribe((res) => {
+        this.fileSaverService.save(res.body, fileName);
+      });
+    return;
+  }
+
+  onDownloadMac() {
+    const fileName = `Formato REVIT MAC.xlsm`;
+    this.httpClient
+      .get(`assets/files/EVAMED_MAC.xlsm`, {
         observe: 'response',
         responseType: 'blob',
       })

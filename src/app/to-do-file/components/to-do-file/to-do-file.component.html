@@ -11,23 +11,31 @@
     <section class="container-download">
       <h2>1. Elige una opción para registrar materiales de construcción</h2>
       <div class="elements-to-download">
-        <div class="container-elements">
+        <div class="container-elements-1">
           <h3>Registro automático desde REVIT</h3>
           <p class="p-instrucciones">
             Descarga el complemento para exportar los materiales desde el modelo 3D de REVIT
           </p>
           <div class="icon-download" (click)="onDownload()">
-            <h3 class="title-action">Descargar archivo</h3>
+            <img src="assets/images/Icon awesome-file-download.png"/>
+            <h3>Descargar archivo</h3>
           </div>
         </div>
-        <div class="container-elements">
+        <div class="container-elements-2">
           <h3>Registro manual en Excel</h3>
           <p class="p-instrucciones">
             Descarga el template de excel para
             capturar materiales manualmente
           </p>
-          <div class="icon-download" (click)="onDownload()">
-            <h3 class="title-action">Descargar archivo</h3>
+          <div class="container-two-icons">
+            <div class="icon-download" (click)="onDownloadWindows()">
+              <img src="assets/images/Grupo 2070.png"/>
+              <h3>Descargar archivo</h3>
+            </div>
+            <div class="icon-download" (click)="onDownloadMac()">
+              <img src="assets/images/Grupo 2071.png"/>
+              <h3>Descargar archivo</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -36,14 +44,15 @@
     <section class="container-upload">
       <h2>2. Carga de materiales de construcción</h2>
       <div class="elements-to-download">
-        <div class="container-elements">
+        <div class="container-elements-3">
           <p class="p-instrucciones">
             Carga tu archivo de materiales en el formato excel dividido
             por sistemas constructivos.
           </p>
           <div class="container-upload-icon">
+            <img src="assets/images/Icon awesome-file-upload.png" class="img-upload" />
             <input type="file" id="file" (change)="onFileChange($event)" multiple="false" class="input-upload" />
-            <label for="file" class="title-action">Subir archivo</label>
+            <label for="file" class="title-action">cargar archivo</label>
           </div>
         </div>
       </div>
