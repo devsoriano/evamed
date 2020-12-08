@@ -1,5 +1,5 @@
 // genear api
-const apiEvamed = 'http://127.0.0.1:8000/api-projects';
+const apiEvamed = 'https://evamed-rest-api.herokuapp.com/api-projects';
 // apis
 const projects = '/projects/';
 const uses = '/uses/';
@@ -21,7 +21,7 @@ const treatmentOfGenerateWasted = 'treatment-of-generate-wasted';
 const electricityConsumptionDeconstructiveProcess = 'electricity-consumption-deconstructive-process';
 
 export const environment = {
-  production: false,
+  production: true,
   api_projects: `${apiEvamed}${projects}`,
   api_uses: `${apiEvamed}${uses}`,
   api_countries: `${apiEvamed}${countries}`,
@@ -49,4 +49,6 @@ export const environment = {
     messagingSenderId: '255188436131',
     appId: '1:255188436131:web:8c3728876042c077f9ab16'
   }
+
 };
+
