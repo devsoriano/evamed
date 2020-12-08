@@ -21,7 +21,7 @@ const treatmentOfGenerateWasted = 'treatment-of-generate-wasted';
 const electricityConsumptionDeconstructiveProcess = 'electricity-consumption-deconstructive-process';
 
 export const environment = {
-  production: false,
+  production: true,
   api_projects: `${apiEvamed}${projects}`,
   api_uses: `${apiEvamed}${uses}`,
   api_countries: `${apiEvamed}${countries}`,
