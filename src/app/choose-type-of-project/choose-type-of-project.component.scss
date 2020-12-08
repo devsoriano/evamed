@@ -1,7 +1,7 @@
 .title-standard-second-light {
   width: 100% !important;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 70px;
 }
 
 .mat-dialog-content.dialog-content {
@@ -98,8 +98,8 @@ mat-radio-button {
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-circle {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   margin: 0 auto;
   background-color: #9E9E9E;
   border-radius: 50%;
@@ -129,7 +129,7 @@ mat-radio-button {
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
   position: absolute;
-  top: 45px;
+  top: 60px;
   height: 1px;
   border-top: 1px solid #BDBDBD;
 }
@@ -137,42 +137,41 @@ mat-radio-button {
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
   right: 0;
   left: 50%;
-  margin-left: 20px;
+  margin-left: 35px;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left {
   left: 0;
   right: 50%;
-  margin-right: 20px;
+  margin-right: 35px;
 }
 
 /**Custom stepper**/
 div.step-one-selected div.mdl-stepper-circle {
-  background-color: #A8D024 !important;
-  background: url('./../../assets/icons/fabrica-bold.svg') no-repeat 50% 50%;
-  width: 40px!important;
-  height: 40px!important;
+  background: url('./../../assets/images/Etapas/Produccion.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
 }
 
 div.step-two div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
-  background: url('./../../assets/icons/torton.svg') no-repeat 50% 50%;
-  width: 40px!important;
-  height: 40px!important;
+  background: url('./../../assets/images/Etapas/Construcción_.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
 }
 
 div.step-three div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
-  background: url('./../../assets/icons/uso.svg') no-repeat 50% 50%;
-  width: 40px!important;
-  height: 40px!important;
+  background: url('./../../assets/images/Etapas/Uso_.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
 }
 
 div.step-four div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
-  background: url('./../../assets/icons/grua.svg') no-repeat 50% 50%;
-  width: 40px!important;
-  height: 40px!important;
+  background: url('./../../assets/images/Etapas/fin.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
 }
 
 

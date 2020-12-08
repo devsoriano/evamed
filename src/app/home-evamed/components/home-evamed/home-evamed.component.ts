@@ -75,7 +75,7 @@ export class HomeEvamedComponent implements OnInit {
 
   openDialogCTOP() {
     const dialogRef = this.dialog.open(ChooseTypeOfProjectComponent, {
-      width: '800px',
+      width: '900px',
       data: {
         optionSelected: 'Huella de carbono'
       }
