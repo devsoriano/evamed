@@ -61,11 +61,12 @@
         <!--Mix electrico-->
         <mat-accordion class="container-accordion">
           <mat-expansion-panel
+            class="custom-expansion-panel"
             (opened)="panelOpenFirst = true"
             (closed)="panelOpenFirst = false"
           >
-            <mat-expansion-panel-header>
-              <mat-panel-title>
+            <mat-expansion-panel-header class="custom-expansion-panel-header">
+              <mat-panel-title class="custom-mat-panel-title">
                 Mix eléctrico
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -154,9 +155,10 @@
           <mat-expansion-panel
             (opened)="panelOpenSecond = true"
             (closed)="panelOpenSecond = false"
+            class="custom-expansion-panel"
           >
-            <mat-expansion-panel-header>
-              <mat-panel-title>
+            <mat-expansion-panel-header class="custom-expansion-panel-header">
+              <mat-panel-title class="custom-mat-panel-title">
                 Combustible
               </mat-panel-title>
             </mat-expansion-panel-header>
@@ -245,8 +247,8 @@
             (opened)="panelOpenThird = true"
             (closed)="panelOpenThird = false"
           >
-            <mat-expansion-panel-header>
-              <mat-panel-title>
+            <mat-expansion-panel-header class="custom-expansion-panel-header">
+              <mat-panel-title class="custom-mat-panel-title">
                 Paneles fotovoltaicos
               </mat-panel-title>
             </mat-expansion-panel-header>
