@@ -85,6 +85,7 @@ export class RadialChartComponent implements OnInit {
     let datos=[]
     let bcolor='';
     let pcolor='';
+    this.cargarLabels(ID);
     this.subtitulo=ID;
 
     Object.keys(auxlabel).forEach(indicador => {

@@ -74,9 +74,12 @@
                 <li> <button mat-stroked-button (click)="grafica('FinDeVida')">
                   <mat-icon class="icons-grafica cuatro">visibility_off</mat-icon>Fin de vida</button> </li>
               </ul>
-              <div #GraficasEspecificas>
-                <app-pie-chart [showMePartially]="showVar" [id]="ID" [inputProyect]="outproyect_pie"></app-pie-chart>
-                <app-radial-chart [showMe]="showVar_1" [id]="ID" [inputProyect]="outproyect_radar"></app-radial-chart>
+              <div >
+                <ng-template #GraficasEspecificas>
+
+                </ng-template>
+                <!-- <app-pie-chart [showMePartially]="showVar" [id]="ID" [inputProyect]="outproyect_pie"></app-pie-chart>
+                <app-radial-chart [showMe]="showVar_1" [id]="ID" [inputProyect]="outproyect_radar"></app-radial-chart> -->
               </div>
             </div>
           </mat-tab>

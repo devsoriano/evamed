@@ -25,6 +25,19 @@ export class AnalisisService {
     );
   }
 
+  //api_type_energy
+  
+  getTypeEnergy(){
+    return this.http.get<any>(
+      environment.api_type_energy,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+
   getTypeEnergyData(){
     return this.http.get<any>(
       environment.api_type_energy_data,
