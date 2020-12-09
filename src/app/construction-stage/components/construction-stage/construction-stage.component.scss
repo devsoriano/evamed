@@ -106,13 +106,12 @@ p.p-instrucciones {
 .mdl-stepper-horizontal-alternative {
   display: table;
   width: 100%;
-  margin-top: -20px!important;
+  margin-top: 5px!important;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step {
   display: table-cell;
   position: relative;
-  padding: 24px;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step:active {
@@ -165,7 +164,7 @@ p.p-instrucciones {
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
   position: absolute;
-  top: 60px;
+  top: 35px;
   height: 1px;
   border-top: 1px solid #BDBDBD;
 }

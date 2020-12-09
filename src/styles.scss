@@ -69,10 +69,6 @@ body {
   margin-top: 0px!important;
 }
 
-img.img-logo {
-  width: 300px;
-}
-
 .side {
   flex: 50%;
   background: transparent url('./assets/images/edificio.png') 0% 0% no-repeat padding-box;
@@ -413,3 +409,14 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
   width: 180px!important;
 }
 
+
+/**inputs**/
+mat-option {
+  height: 2em !important;
+  background-color: #EDEDED !important;
+  border-bottom: 1px solid #FFF !important;
+}
+
+span.mat-option-text {
+  color: #ACA8A8 !important;
+}
