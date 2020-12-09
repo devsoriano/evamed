@@ -232,7 +232,13 @@
           </div>
         </mat-tab>
         <mat-tab label="Resultados" class="label-principal-tab"> 
-          Resultados 
+          <button
+            mat-button
+            class="yellow-button"
+            (click)="redirectResultados(project.id)"
+          > 
+            Resultados
+          </button>
         </mat-tab>
       </mat-tab-group>
     </mat-card>
@@ -267,7 +273,9 @@
           mat-button
           class="yellow-button"
           (click)="openDialogANP()"
-        > Crear nuevo proyecto </button>
+        > 
+        Crear nuevo proyecto 
+      </button>
       </mat-card-actions>
       <mat-card-actions class="content-logout-button">
         <button mat-button class="melon-button" (click)="logout()">
