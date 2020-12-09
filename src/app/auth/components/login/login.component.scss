@@ -53,6 +53,11 @@ section.form-login {
   margin-bottom: 8px;
 }
 
+.container-label-button-second {
+  margin-top: 10px;
+  text-align: center;
+}
+
 .container-label-button {
   margin-top: 50px;
   text-align: center;
@@ -110,4 +115,11 @@ section.form-login {
     text-align: left;
     padding-left: 6px;
   }
+}
+
+.redirect-get-password {
+  color: #A8D024;
+  padding-bottom: 3px;
+  text-decoration: none;
+  font-weight: bold;
 }

@@ -17,6 +17,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [],
@@ -37,7 +38,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatStepperModule,
     MatGridListModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule
   ],
   exports: [
     MatButtonModule,
@@ -55,7 +57,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatStepperModule,
     MatGridListModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule
   ]
 })
 export class MaterialModule { }
