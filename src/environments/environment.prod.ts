@@ -19,6 +19,11 @@ const typeEnergy = '/type-energy/';
 const electricityConsumptionData = '/electricity-consumption-data/';
 const treatmentOfGenerateWasted = 'treatment-of-generate-wasted';
 const electricityConsumptionDeconstructiveProcess = 'electricity-consumption-deconstructive-process';
+const materialSchemeData = '/material-scheme-data/';
+const potentialTypes = '/potential-types/';
+const standards = '/standards/';
+const sourceInformationData = '/source-information-data/';
+const typeEnergyData = '/type-energy-data/';
 
 export const environment = {
   production: true,
@@ -40,6 +45,11 @@ export const environment = {
   api_electricity_consumption_data: `${apiEvamed}${electricityConsumptionData}`,
   api_treatment_of_generate_wasted: `${apiEvamed}${treatmentOfGenerateWasted}`,
   api_electricity_consumption_deconstructive_process: `${apiEvamed}${electricityConsumptionDeconstructiveProcess}`,
+  api_material_scheme_data: `${apiEvamed}${materialSchemeData}`,
+  api_potetnial_types: `${apiEvamed}${potentialTypes}`,
+  api_standards: `${apiEvamed}${standards}`,
+  api_source_information_data:`${apiEvamed}${sourceInformationData}`,
+  api_type_energy_data:`${apiEvamed}${typeEnergyData}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
