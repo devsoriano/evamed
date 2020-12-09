@@ -138,6 +138,6 @@ export class HomeEvamedComponent implements OnInit {
     console.log('redirect a resultados');
     console.log(id);
     sessionStorage.setItem('projectID', id);
-    // this.router.navigateByUrl('usage-stage');
+    this.router.navigateByUrl('resultados');
   }
 }

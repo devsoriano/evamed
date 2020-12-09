@@ -9,6 +9,7 @@ import { AnalisisService } from './../../../core/services/analisis/analisis.serv
 import { forkJoin, observable } from 'rxjs';
 import { couldStartTrivia } from 'typescript';
 import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comparar',
@@ -115,6 +116,9 @@ export class CompararComponent implements OnInit {
       TED,
       UL
     ]) => {
+      this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
+      // console.log('id recibido', this.idProyectoActivo)
+
       this.projectsList = projectsData;
       this.materialList = materialData;
       this.materialSchemeDataList = materialSchemeData;
