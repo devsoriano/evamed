@@ -7,12 +7,110 @@
       <div class="filter-options">
       </div>
     </div>
-    <div class="container-principal">
-      <div class="btn-primer-producto" (click)="openDialogANP()">
-        <div class="plus">+</div>
-        <div class="message-plus">Crea tu primer proyecto</div>
+    <mat-card *ngFor="let project of projectsList" class="card-project">
+      <div class="title-tag">
+        Title
       </div>
-    </div>
+      <mat-tab-group class="container-principal-tab">
+        <mat-tab label="Configurar información" class="label-principal-tab">
+          <div class="second-mat-tab-group">
+            <mat-tab-group class="container-second-tab">
+              <mat-tab label="Producción" class="label-second-tab">
+                <section class="grid-container">
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                </section>
+              </mat-tab>
+              <mat-tab label="Construcción" class="label-second-tab">
+                <section class="grid-container">
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                </section>
+              </mat-tab>
+              <mat-tab label="Uso" class="label-second-tab">
+                <section class="grid-container">
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                </section>
+              </mat-tab>
+              <mat-tab label="Fin de vida" class="label-second-tab">
+                <section class="grid-container">
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                  <mat-card class="card-item-custom">
+                    contenido
+                  </mat-card>
+                </section>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </mat-tab>
+        <mat-tab label="Resultados" class="label-principal-tab"> 
+          Resultados 
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
   </div>
   <div class="description-container">
     <mat-card class="user-card">

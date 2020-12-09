@@ -420,3 +420,52 @@ mat-option {
 span.mat-option-text {
   color: #ACA8A8 !important;
 }
+
+/**css tabs**/
+/**css tabs**/
+.container-principal-tab {
+  .mat-tab-header {
+    .mat-tab-label-container {
+      .mat-tab-list {
+        .mat-tab-labels {
+          display: flex !important;
+          justify-content: flex-end !important;
+        }
+
+        .mat-ink-bar {
+          background-color: #E3C500;
+        }
+      }
+    }
+  }
+}
+
+.container-second-tab {
+  .mat-tab-header {
+    border-bottom: 0px;
+
+    .mat-tab-label-container {
+      .mat-tab-list {
+        background-color: #EDEDED;
+        padding-top: 20px;
+
+        .mat-tab-labels {
+          display: flex !important;
+          justify-content: center !important;
+
+          .mat-tab-label {
+            background-color: #EDEDED;
+          }
+
+          .mat-tab-label.mat-tab-label-active {
+            background-color: #FFF;
+          }
+        }
+
+        .mat-ink-bar {
+          background-color: #FFF;
+        }
+      }
+    }
+  }
+}

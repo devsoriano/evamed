@@ -45,5 +45,27 @@
 }
 
 .user-card {
-  height: 100%;
+  margin-top: 20px;
+}
+
+.card-project {
+  margin: 10px 16px 16px 0;
+}
+
+.second-mat-tab-group {
+  background-color: #FFF;
+}
+
+.grid-container {
+  max-width: 980px;
+  margin: auto;
+  height: 300px;
+
+  .card-item-custom {
+    display: inline-block;
+    padding-left: 10px;
+    width: 14%;
+    margin: 15px 1px 0px 15px;
+    height: 100px;
+  }
 }
