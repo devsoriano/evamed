@@ -5,6 +5,7 @@ import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, BaseChartDirective } from 'ng2-charts';
 
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { runInThisContext } from 'vm';
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
@@ -14,6 +15,8 @@ export class BarChartComponent implements OnInit {
 
   @ViewChild('MyChart') chartDir: BaseChartDirective;
   private canvas: any;
+  
+  private hoverIniciado = false;
 
   @Input() inputProyects: any;
   @Input('porcentaje') porcentaje: any;
@@ -68,18 +71,22 @@ export class BarChartComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // Ya que se inicializa el componente
-    this.canvas = this.chartDir.chart.canvas;
-    this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
-    this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
+      
+      // Ya que se inicializa el componente
+      this.canvas = this.chartDir.chart.canvas;
+      // console.log(this.chartDir.chart);
+      this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
+      this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
   }
 
   agregarProyecto(cambio: any) {
-    console.log(cambio);
+    // console.log(cambio);
     this.inputProyects = [...cambio];
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
+    // this.chartDir.chart.update();
+    // this.ngOnInit()
 
   }
 
@@ -120,7 +127,11 @@ export class BarChartComponent implements OnInit {
   private iniciaIndicadores() {
     // se obtienen todos los indicadores en los proyectos
     this.barChartLabels = [];
+    if (this.inputProyects.length == 0){
+      return;
+    }
     this.inputProyects.forEach(proyecto => {
+      // console.log(proyecto)
       Object.keys(proyecto.Datos).forEach(indicador => {
         if (!this.barChartLabels.includes(indicador)) {
           this.barChartLabels = [...this.barChartLabels, indicador];
@@ -199,7 +210,9 @@ export class BarChartComponent implements OnInit {
     const centroY = (chart['boxes'][1].height / 2);
 
     this.iniciaPosiciones(chart);
-
+    if( chart['$datalabels']['_labels'].length == 0){
+      return;
+    } 
     ctx.font = chart['$datalabels']['_labels'][0]['_ctx'].font;//'30px Comic Sans MS';
     ctx.fillStyle = 'gray';
     ctx.textAlign = 'center';
@@ -358,6 +371,15 @@ export class BarChartComponent implements OnInit {
   public onChartHover(e: any): void {
     // Asigna el elemento de la grafica sobre el cual se hace hover
     this.hovered = this.chartDir.chart.getElementAtEvent(event)[0];
+
+    // if(!this.hoverIniciado){
+    //   this.hoverIniciado = true;
+    //   console.log('hovered')
+    // // Ya que se inicializa el componente
+    //   this.canvas = this.chartDir.chart.canvas;
+    //   this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
+    //   this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
+    // }
   }
 
   public onChartClick(e: any): void {

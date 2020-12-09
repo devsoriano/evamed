@@ -1,5 +1,5 @@
 <div class="div-principal" *ngIf="showMe">
-  <div  *ngFor="let item of inputProyect">
+  <div  *ngFor="let item of inputProyect;let i = index">
     <mat-card>
       <mat-card-header>
         {{item.Nombre}}
@@ -7,7 +7,7 @@
         {{subtitulo}}
       </mat-card-header>
       <canvas #MyChart='base-chart' #canvas baseChart
-      [datasets]="radarChartData[item.id]"
+      [datasets]="radarChartData[i]"
       [options]="radarChartOptions"
       [labels]="radarChartLabels"
       [chartType]="radarChartType">

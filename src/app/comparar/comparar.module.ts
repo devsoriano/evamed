@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { PieChartComponent } from '../pie-chart/pie-chart.component';
 import { RadialChartComponent } from '../radial-chart/radial-chart.component';
 import { ChartsModule } from 'ng2-charts';
-import { GraficaDeBarrasModule } from '../comparar/grafica-de-barras/grafica-de-barras.module';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
 
 
@@ -30,7 +29,6 @@ import { BarChartComponent } from '../bar-chart/bar-chart.component';
     MaterialModule,
     FormsModule,
     ChartsModule,
-    GraficaDeBarrasModule,
     MatTabsModule,
     MatMenuModule,
     MatButtonToggleModule,

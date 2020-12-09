@@ -13,6 +13,7 @@ export class PieChartComponent implements OnInit {
   @Input() inputProyect: any;
   @Input() showMePartially: boolean;
   @Input() id:string;
+  @Input() indicador:string;
 
   private colores: any[] = [
     ['#4DBE89', '#96e2bd', '#4dba8b', '#1f8253'],
@@ -35,7 +36,7 @@ export class PieChartComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.cargarDatos(this.id,' ')
+    this.cargarDatos(this.id,this.indicador)
   }
 
   cargarDatos(ID:string, indicador:string){
@@ -49,6 +50,8 @@ export class PieChartComponent implements OnInit {
     this.pieChartData =[]
     this.pieChartLabels=[]
 
+    // console.log(ID,indicador)
+
     if(indicador===' '){
 
     }else{
@@ -60,7 +63,7 @@ export class PieChartComponent implements OnInit {
             auxdatos = aux[auxlabel[element]]
             Object.keys(aux[auxlabel[element]]).forEach(marcador => {
               auxdataLabel=[...auxdataLabel, marcador];
-              datos = [...datos, (auxdatos[marcador]*100).toFixed(2)];
+              datos = [...datos, (auxdatos[marcador]).toFixed(2)];
             });
           }
         });
@@ -74,5 +77,6 @@ export class PieChartComponent implements OnInit {
         auxdataLabel = [];
       });
     }
+    // console.log('pie',this.pieChartData)
   }
 }
