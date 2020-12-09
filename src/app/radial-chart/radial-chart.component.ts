@@ -85,6 +85,7 @@ export class RadialChartComponent implements OnInit {
     let datos=[]
     let bcolor='';
     let pcolor='';
+    this.subtitulo=ID;
 
     Object.keys(auxlabel).forEach(indicador => {
       if (auxlabel[indicador] === ID) {
@@ -97,7 +98,7 @@ export class RadialChartComponent implements OnInit {
         if (auxlabel[indicador] === ID) {
           auxdatos = proyecto.Datos[auxlabel[indicador]]
           Object.keys(proyecto.Datos[auxlabel[indicador]]).forEach(element => {
-            datos = [...datos, (auxdatos[element] * 100).toFixed(2)];
+            datos = [...datos, (auxdatos[element]).toFixed(2)];
           });
         }
       });
@@ -115,6 +116,8 @@ export class RadialChartComponent implements OnInit {
       auxdata=[];
       auxdatos=[];
     });
+    console.log(this.radarChartData)
+
   }
 
 }

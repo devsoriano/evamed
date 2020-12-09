@@ -7,6 +7,8 @@ import { ProjectsService } from './../../../core/services/projects/projects.serv
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { AnalisisService } from './../../../core/services/analisis/analisis.service';
 import { forkJoin } from 'rxjs';
+import { couldStartTrivia } from 'typescript';
+import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-comparar',
@@ -15,12 +17,17 @@ import { forkJoin } from 'rxjs';
 })
 
 @NgModule({
-  entryComponents: [ BarChartComponent ]
+  entryComponents: [ 
+    BarChartComponent,
+    RadialChartComponent
+  ]
 })
 export class CompararComponent implements OnInit {
   barChartComponent = BarChartComponent;
+  radialChart = RadialChartComponent;
 
   @ViewChild('barContainer', {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild('GraficasEspecificas', {read: ViewContainerRef}) containerGraficas: ViewContainerRef;
 
   @Input('Inproyectos_bar') inputproyect_bar: any;
   @Input('Inproyectos_radar') inputproyect_radar: any;
@@ -145,17 +152,20 @@ export class CompararComponent implements OnInit {
     });
 
     let analisis = this.getAnalisisBarras(id);
-
+    let analisisRad = this.getAnalisisRadial(id)
+    console.log(analisisRad)
     this.outproyect_bar.push(analisis);
+    this.outproyect_radar.push(analisisRad);
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     this.iniciaBarras();
+    
+    this.showVar = false;
+    this.showVar_1 = false;
     return;
     this.outproyect_bar.push(this.inputproyect_bar[id]);
     this.outproyect_radar.push(this.inputproyect_radar[id]);
     this.outproyect_pie.push(this.inputproyect_pie[id]);
     
-    this.showVar = false;
-    this.showVar_1 = false;
     
   }
 
@@ -167,7 +177,20 @@ export class CompararComponent implements OnInit {
     grafica.instance.porcentaje = this.bandera_porcentaje;
     grafica.instance.inputProyects = this.outproyect_bar;
     grafica.instance.showMe = true;
-    grafica.instance.lastClickEvent.subscribe(e => console.log(e));
+    grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
+  }
+
+  iniciaRadiales(){
+    this.containerGraficas.clear();
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.radialChart);
+    const grafica = this.containerGraficas.createComponent(componentFactory);
+    grafica.instance.inputProyect = this.outproyect_radar;
+    grafica.instance.showMe = this.showVar_1;
+    grafica.instance.id = this.ID;
+    // grafica.instance.cargarDatos(this.ID)
+        // this.childRadar.forEach(c => c.cargarDatos(this.ID));
+
+
   }
 
   getAnalisisBarras(idProyecto){
@@ -231,7 +254,7 @@ export class CompararComponent implements OnInit {
       vidaUtil = 1;
     }
 
-    console.log(vidaUtil)
+    // console.log(vidaUtil)
     consumos.forEach(ecd => {
       let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
       // console.log(ps)
@@ -247,7 +270,92 @@ export class CompararComponent implements OnInit {
         analisisProyectos['Datos'][potencial]['Uso'] += impacto['value'] * ecd['quantity'] ;
       });
     });
-    console.log(analisisProyectos)
+    // console.log(analisisProyectos)
+    return analisisProyectos;
+  }
+
+
+  
+  getAnalisisRadial(idProyecto){
+    let analisisProyectos : Record<string,any> = {
+      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
+    
+    // Etapa de construccion
+
+    let standardId = this.standarsList.filter(s => s['name_standard'] == 'A1-A3' )[0]['id'];
+    let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
+    // console.log(schemeProyect)
+    schemeProyect.forEach(ps => {
+      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId ) 
+      // console.log(impactos)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes('Producción')){
+          analisisProyectos.Datos['Producción'] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos']['Producción']).includes(potencial)){
+          analisisProyectos['Datos']['Producción'][potencial] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos']['Producción'][potencial] += impacto['value']*ps['quantity'];
+      });
+    });
+
+    // TODO: falta analisis de transporte por material ( no forma de guardar datos en la base )
+
+    // etapa de construcción
+    let CSEs = this.CSEList.filter(c =>  c['project_id'] == idProyecto);
+    CSEs.forEach(CSE =>{
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  ) 
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes('Construccion')){
+          analisisProyectos.Datos['Construccion'] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos']['Construccion']).includes(potencial)){
+          analisisProyectos['Datos']['Construccion'][potencial] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos']['Construccion'][potencial] += impacto['value'] * CSE['quantity'];
+      });
+    });
+
+
+    // Estapa de Uso
+
+    let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
+    let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
+    let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
+    let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
+    try{
+      vidaUtil = parseFloat(vidaUtil);
+    }catch{
+      vidaUtil = 1;
+    }
+
+    // console.log(vidaUtil)
+    consumos.forEach(ecd => {
+      let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes('Uso')){
+          analisisProyectos.Datos['Uso'] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos']['Uso']).includes(potencial)){
+          analisisProyectos['Datos']['Uso'][potencial] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos']['Uso'][potencial] += impacto['value'] * ecd['quantity'] ;
+      });
+    });
+
+
+    // console.log(analisisProyectos)
     return analisisProyectos;
   }
 
@@ -267,6 +375,9 @@ export class CompararComponent implements OnInit {
     })
 
     this.iniciar_graficas(this.idProyectoActivo);
+    console.log('inicia radiales')
+    // this.iniciaRadiales();
+
     // this.proyect_active.push(this.idProyectoActivo);
     // this.outproyect_bar.push(this.getAnalisisBarras(this.idProyectoActivo));
     // this.datosProcentaje();
@@ -288,7 +399,7 @@ export class CompararComponent implements OnInit {
         });
       });
     });
-}
+  }
 
   //activar gráfica de porcentaje
   porcentaje(val:boolean){
@@ -297,6 +408,7 @@ export class CompararComponent implements OnInit {
     this.bandera_porcentaje = val;
     this.iniciaBarras();
   }
+
   //quitar proyecto a las gráficas
   quitarProyecto(ID:number){
     this.proyect.forEach((proyecto, index) => {
@@ -357,6 +469,9 @@ export class CompararComponent implements OnInit {
         this.showVar_1 = true;
         this.showVar=false;
         this.hover=false;
+        console.log('radiales')
+        // this.iniciaRadiales()
+
         this.childRadar.forEach(c => c.cargarDatos(this.ID));
         this.childBar.forEach(c => c.focusSeries(this.ID));
       }
