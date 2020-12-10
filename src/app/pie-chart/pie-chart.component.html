@@ -16,32 +16,9 @@
 <div class="div-principal" *ngIf="showMe_elementos">
   <canvas #MyChart='base-chart' #canvas baseChart
     [datasets]="pieChartData[0]"
-    [options]="pieChartOptions"
+    [options]="pieChartOptions_elementos"
+    (chartClick)='onChartClick($event)'
     [chartType]="pieChartType"></canvas>
 </div>
 
-<!--
-<div *ngIf="Bandera_resultado==1">
-    <div style="display:block">
-      <canvas #MyChart='base-chart' #canvas baseChart
-      [datasets]="pieChartData[0]"
-      [options]="pieChartOptions"
-      [chartType]="pieChartType"></canvas>
-    </div>
-</div>
-<div *ngIf="Bandera_resultado==0">
-  <div class="div-principal" *ngIf="showMePartially">
-    <div style="display:block" *ngFor="let item of inputProyect">
-      <mat-card>
-        <mat-card-header>
-          {{item.Nombre}}
-        </mat-card-header>
-        <canvas #MyChart='base-chart' #canvas baseChart
-          [datasets]="pieChartData[item.id]"
-          [options]="pieChartOptions"
-          [labels]="pieChartLabels[item.id]"
-          [chartType]="pieChartType"></canvas>
-      </mat-card>
-    </div>
-  </div>
-</div>-->
+

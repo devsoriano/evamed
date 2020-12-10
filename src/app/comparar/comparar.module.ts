@@ -15,6 +15,7 @@ import { RadialChartComponent } from '../radial-chart/radial-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { GraficaDeBarrasModule } from '../comparar/grafica-de-barras/grafica-de-barras.module';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
+import { MatRadioButton } from '@angular/material/radio';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import { BarChartComponent } from '../bar-chart/bar-chart.component';
     CompararComponent,
     PieChartComponent,
     RadialChartComponent,
-    BarChartComponent
+    BarChartComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +36,8 @@ import { BarChartComponent } from '../bar-chart/bar-chart.component';
     MatTabsModule,
     MatMenuModule,
     MatButtonToggleModule,
-    MatSelectModule
+    MatSelectModule,
+    MatRadioButton
   ],
   exports: [
     CompararComponent,

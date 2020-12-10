@@ -190,3 +190,43 @@ mat-select{
 .example-margin {
   margin: 0 10px;
 }
+.card-indicador{
+  display: grid;
+  grid-template-columns: repeat(3, 350px);
+  border-width: 1px;
+  border-style: solid;
+  border-color: #CBCBCB;
+  border-radius: 17px;
+  margin-bottom: 15px;
+  padding:0%;
+  p{
+    text-align: left;
+    font-family: normal normal normal;
+    font-size: 10px;
+    letter-spacing: 0px;
+    color: #767676;
+    opacity: 1;
+  }
+}
+.elementos-seccionUno{
+  display: grid;
+  grid-template-columns: repeat(1, 350);
+  height: 300px;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: #CBCBCB;
+
+  .Botones{
+      display: grid;
+      grid-template-rows: 15px;
+      grid-template-columns: repeat(2, 150px 100px);
+      column-gap: 50px;
+      margin-bottom: 5px;
+  }
+}
+
+.elementos-seccionDos{
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: #CBCBCB;
+}

@@ -15,6 +15,7 @@ import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
 import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { BarChartSimpleComponent } from 'src/app/bar-chart-simple/bar-chart-simple.component';
 
 
 
@@ -24,7 +25,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CompararComponent,
     BarChartComponent,
     RadialChartComponent,
-    PieChartComponent
+    PieChartComponent,
+    BarChartSimpleComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatTabsModule,
     MatMenuModule,
     MatButtonToggleModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
   exports: [
     GraficaDeBarrasComponent,

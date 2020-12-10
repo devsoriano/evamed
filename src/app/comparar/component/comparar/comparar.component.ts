@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChildren, QueryList} from '@angular/core';
 import { element } from 'protractor';
+import { BarChartSimpleComponent } from 'src/app/bar-chart-simple/bar-chart-simple.component';
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
 import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.component';
@@ -25,6 +26,8 @@ export class CompararComponent implements OnInit {
   childPie: QueryList<PieChartComponent>;
   @ViewChildren(RadialChartComponent)
   childRadar: QueryList<RadialChartComponent>;
+  @ViewChildren(BarChartSimpleComponent)
+  childBarSimple: QueryList<BarChartSimpleComponent>;
   selector: string;
   bandera:number;
   showVar: boolean = false;
@@ -46,11 +49,21 @@ export class CompararComponent implements OnInit {
   Impactos_menu=[];
   indicador_elegido:boolean=false;
   bandera_resultado:number=0;
-  show_elementos:boolean=false;
+  show_elementos:boolean=true;
   Impactos_ambientales:boolean=true;
   Impactos_Elementos:boolean=false;
   Elementos_constructivos:boolean=false;
   selectedValue: string;
+  labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
+  proyectosMostrados_elementos=[{
+    idproyecto:0,
+    showpie:true,
+    showbar:false,
+    showciclo:false,
+    ciclo:' ',
+    showcimenta:false,
+    elemento:' '
+  }];
 
   constructor(){ }
 
@@ -71,7 +84,6 @@ export class CompararComponent implements OnInit {
       this.Impactos_Elementos = true;
       this.Elementos_constructivos = false;
     }else{
-      this.showVar_1=false;
       this.Impactos_ambientales = false;
       this.Impactos_Elementos = false;
       this.Elementos_constructivos = true;
@@ -153,6 +165,7 @@ export class CompararComponent implements OnInit {
       }
     }
   }
+
   //agregar proyecto a graficas
   iniciar_graficas(id:number){
     if (!this.proyect_active.some((item) => item == id)) {
@@ -167,6 +180,15 @@ export class CompararComponent implements OnInit {
         }
       });
       this.porcentaje(this.bandera_porcentaje,2);
+      this.proyectosMostrados_elementos=[...this.proyectosMostrados_elementos,{
+        idproyecto: id,
+        showpie: true,
+        showbar: false,
+        showciclo: false,
+        ciclo: ' ',
+        showcimenta: false,
+        elemento:' '
+      }];
       this.showVar = false;
       this.showVar_1 = false;
     }
@@ -179,6 +201,7 @@ export class CompararComponent implements OnInit {
       }
     });
     this.proyect_active = this.proyect_active.filter(item => item != ID);
+    this.proyectosMostrados_elementos = this.proyectosMostrados_elementos.filter(({ idproyecto }) => idproyecto != ID);
     this.outproyect_bar_num = this.outproyect_bar_num.filter(({id}) => id != ID);
     this.outproyect_bar_porcent = this.outproyect_bar_porcent.filter(({ id }) => id != ID);
     this.outproyect_radar = this.outproyect_radar.filter(({ id }) => id != ID);
@@ -204,7 +227,7 @@ export class CompararComponent implements OnInit {
   //Despliegue gráficas de pie o radar
   grafica(x: string) {
     //activate graph selectioned
-    this.bandera_resultado = 0;
+    this.bandera_resultado = 2;
     if (this.banderaGrapg == 0) {
       this.banderaGrapg++;
       this.ID = ' ';
@@ -239,7 +262,6 @@ export class CompararComponent implements OnInit {
   grafica_pie_elementos(indicador:string){
     this.bandera_resultado = 1;
     this.indicador_elegido = true;
-    this.show_elementos=true;
     this.indicador_impacto=indicador;
     this.childPie.forEach(c => c.cambioIndicadorElementos(' ',indicador, this.bandera_resultado));
   }
@@ -249,11 +271,71 @@ export class CompararComponent implements OnInit {
     if(value==2){
       this.bandera_resultado=1;
       this.showVar=false;
+      this.show_elementos=false;
       this.ID ='Producción';
       this.receiveSelector(null);
     }else if(value==0){
       this.indicador_elegido =false;
+      this.show_elementos = true;
+      this.proyectosMostrados_elementos.forEach(element=>{
+        element.showpie= true;
+        element.showbar= false;
+        element.showciclo= false;
+        element.ciclo= ' ';
+        element.showcimenta= false;
+        element.elemento= ' ';
+      });
     }
+  }
+
+  //cambio entre grafica pie y bar en sección elementos contructivos
+  change_graph(value:number,IDproyect:number){
+    this.proyectosMostrados_elementos.forEach(element=>{
+      if(element.idproyecto==IDproyect){
+        element.showciclo=false;
+        element.showcimenta=false;
+        element.ciclo=' ';
+        element.elemento=' ';
+        //activar pie
+        if(value==1){
+          element.showbar = false;
+          element.showpie = true;
+        }else{
+          //activar bar
+          element.showbar = true;
+          element.showpie = false;
+        }
+      }
+    });
+  }
+
+  //configuración de la sección dispersión del en fase de ciclo de vida
+  configurarDatos($event,IDproyect:number){
+    let auxdatos=$event;
+    this.proyectosMostrados_elementos.forEach(element => {
+      if(element.idproyecto==IDproyect){
+        element.showcimenta=false;
+        element.showciclo= auxdatos.show;
+        element.ciclo= auxdatos.etapa;
+        if(element.showciclo){
+        this.childPie.forEach(c => c.cambioID(element.ciclo,IDproyect));
+        }
+      }
+    });
+  }
+
+  //configuración de la sección dispersión del impacto en cimentación
+  configurarData($event, IDproyect: number) {
+    let auxdatos = $event;
+    this.proyectosMostrados_elementos.forEach(element => {
+      if (element.idproyecto == IDproyect) {
+        element.showcimenta = auxdatos.show;
+        element.elemento = auxdatos.etapa;
+        if (element.showcimenta) {
+          this.childBarSimple.forEach(c => c.CargarDatos(element.elemento, element.ciclo));
+        }
+      }
+    });
   }
 
 }
