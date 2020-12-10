@@ -108,6 +108,18 @@ mat-radio-button {
   color: white;
 }
 
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-circle-noSelected {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  background-color: #9E9E9E;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 2em;
+  font-size: 12px;
+  color: white;
+}
+
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title {
   margin-top: 4px;
   font-size: 14px;
@@ -152,23 +164,52 @@ div.step-one-selected div.mdl-stepper-circle {
   height: 70px!important;
 }
 
-div.step-two div.mdl-stepper-circle {
+div.step-one-selected div.mdl-stepper-circle-noSelected {
+  background: url('./../../assets/images/Etapas/Produccion_.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
+}
+
+
+div.step-two div.mdl-stepper-circle-noSelected {
   background-color: #CBCBCB !important;
   background: url('./../../assets/images/Etapas/Construcción_.png') no-repeat 50% 50%;
   width: 70px!important;
   height: 70px!important;
 }
 
-div.step-three div.mdl-stepper-circle {
+div.step-two div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../assets/images/Etapas/Construcción.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
+}
+
+div.step-three div.mdl-stepper-circle-noSelected {
   background-color: #CBCBCB !important;
   background: url('./../../assets/images/Etapas/Uso_.png') no-repeat 50% 50%;
   width: 70px!important;
   height: 70px!important;
 }
 
-div.step-four div.mdl-stepper-circle {
+div.step-three div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../assets/images/Etapas/Uso.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
+}
+
+div.step-four div.mdl-stepper-circle-noSelected {
   background-color: #CBCBCB !important;
   background: url('./../../assets/images/Etapas/fin.png') no-repeat 50% 50%;
+  width: 70px!important;
+  height: 70px!important;
+}
+
+
+div.step-four div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../assets/images/Etapas/Fin_.png') no-repeat 50% 50%;
   width: 70px!important;
   height: 70px!important;
 }

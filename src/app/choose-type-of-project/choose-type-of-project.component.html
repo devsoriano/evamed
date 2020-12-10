@@ -28,7 +28,7 @@
     <div class="mdl-card__supporting-text">
       <div class="mdl-stepper-horizontal-alternative">
         <div class="mdl-stepper-step step-one-selected">
-          <div class="mdl-stepper-circle"></div>
+          <div [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
           <div class="mdl-stepper-title">Etapa de producción</div>
           <div class="mdl-stepper-optional">
             <table class="table-container">
@@ -50,7 +50,7 @@
           <div class="mdl-stepper-bar-right"></div>
         </div>
         <div class="mdl-stepper-step step-two">
-          <div class="mdl-stepper-circle"></div>
+          <div [ngClass]="data.optionSelected === 'Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
           <div class="mdl-stepper-title">Etapa de producción</div>
           <div class="mdl-stepper-optional">
             <table class="table-container">
@@ -68,7 +68,7 @@
           <div class="mdl-stepper-bar-right"></div>
         </div>
         <div class="mdl-stepper-step step-three">
-          <div class="mdl-stepper-circle"></div>
+          <div [ngClass]="data.optionSelected ==='Uso' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
           <div class="mdl-stepper-title">Etapa de uso</div>
           <div class="mdl-stepper-optional">
             <table class="table-container">
@@ -86,7 +86,7 @@
           <div class="mdl-stepper-bar-right"></div>
         </div>
         <div class="mdl-stepper-step step-four">
-          <div class="mdl-stepper-circle"></div>
+          <div [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
           <div class="mdl-stepper-title">Etapa de fin de vida</div>
           <div class="mdl-stepper-optional">
             <table class="table-container">

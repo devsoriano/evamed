@@ -30,6 +30,9 @@ export class EndLifeStageComponent implements OnInit {
   EC: any;
   catalogoFuentes: [];
   catalogoUnidadEnergia: [];
+  vertedero: string;
+  reciclaje: string;
+  reuso: string;
 
   constructor(
     private router: Router,
