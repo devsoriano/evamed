@@ -52,6 +52,7 @@ p.p-instrucciones {
   border-right: 1px solid #CBCBCB;
   padding: 40px;
   overflow: auto;
+  position: relative;
 
   h1 {
     font-size: 14px;
@@ -117,14 +118,13 @@ p.p-instrucciones {
 
 .container-selected {
   margin: 20px 80px;
-
-  .container-radius {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-  }
 }
 
+.container-radios {
+  display: flex !important;
+  justify-content: space-around !important;
+  width: 100% !important;
+}
 
 /**Stepers**/
 .mdl-stepper-horizontal-alternative {
@@ -231,4 +231,8 @@ div.step-four div.mdl-stepper-circle {
   background: url('./../../../../assets/images/Etapas/fin.png') no-repeat 50% 50%;
   width: 70px!important;
   height: 70px!important;
+}
+
+.container-options-3 {
+  position: absolute;
 }

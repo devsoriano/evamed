@@ -93,7 +93,7 @@ export class UsageStageComponent implements OnInit {
         percentage: this.porcentajePanelesFotovoltaicos,
         annual_consumption_required_id: data.id,
         unit_id: this.unidadPanelesFotovoltaicos,
-        type: this.tipoPanelesFotovoltaicos
+        type: null
       }).subscribe( data => {
         console.log('paneles fotovoltaicos');
         console.log(data);

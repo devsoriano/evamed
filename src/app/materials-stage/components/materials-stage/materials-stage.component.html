@@ -249,7 +249,18 @@
         (selectionChange)="onSelection($event, materials.selectedOptions)"
       >
         <mat-list-option *ngFor="let material of listMateriales" [value]="material">
-          {{material}}
+          <div class="table-materials"> 
+            <div class="col-material">
+              {{material.Material}}
+            </div>
+            <div class="col-cantidad">
+              {{material.Cantidad}}
+            </div>
+            <div class="col-unidad">
+              {{material.Unidad}}
+            </div>
+          </div>
+          
         </mat-list-option>
       </mat-selection-list>
     </section>

@@ -179,3 +179,16 @@ div.step-four div.mdl-stepper-circle {
   width: 70px!important;
   height: 70px!important;
 }
+
+/**css materials list**/
+
+.table-materials {
+  display: flex;
+  /* background-color: red; */
+  justify-content: space-between;
+
+  div {
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
