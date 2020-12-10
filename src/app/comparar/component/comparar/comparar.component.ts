@@ -153,7 +153,7 @@ export class CompararComponent implements OnInit {
     if (this.proyect_active.some((item) => item == id) ) {
       return;
     }
-    // console.log(id)
+    console.log(id)
     this.proyect_active.push(id);
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
