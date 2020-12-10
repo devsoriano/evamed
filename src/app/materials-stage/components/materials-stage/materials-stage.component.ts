@@ -203,12 +203,12 @@ export class MaterialsStageComponent implements OnInit {
     this.listData.map( data => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
         if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
-          materiales.push(data.Material);
+          materiales.push(data);
         }
       }
       if (data.Sistema_constructivo === sc && origin === 'dynamo') {
         if (data.Origen === 'Calculado en Dynamo') {
-          materiales.push(data.Material);
+          materiales.push(data);
         }
       }
     });

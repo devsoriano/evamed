@@ -50,9 +50,23 @@
     </section>
     <!--Formulario de energía consumida-->
     <section class="container-systems">
+      <h3>1. Energía consumida durante el proceso deconstructivo</h3>
       <div class="container-ec" *ngIf="indexSheet!==undefined">
         <div *ngFor="let data of dataArrayEC; let i=index;">
           <div class="Row top-0">
+            <div class="Col col-small-space">
+              <label class="label-small-input">
+                Fuente
+              </label>
+              <mat-form-field appearance="outline">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                  <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
+                    {{fuente.name_source_information}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div class="Col col-small-space">
               <label class="label-small-input">
                 Cantidad
@@ -71,13 +85,14 @@
               <label class="label-small-input">
                 Unidad funcional
               </label>
-              
-            </div>
-            <div class="Col col-small-space">
-              <label class="label-small-input">
-                Fuente
-              </label>
-              
+              <mat-form-field appearance="outline">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                  <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
+                    {{unidad.name_energy_unit}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
             <div class="Col col-small-space">
               <div *ngIf="i!=0">
@@ -106,6 +121,51 @@
         >
           <mat-icon>save</mat-icon>
         </button>
+      </div>
+      <h3>2. Tratamiento de desechos generados</h3>
+      <div class="Row top-0">
+        <div class="Col col-small-space">
+          <label class="label-small-input">
+            Vertedero
+          </label>
+          <mat-form-field>
+            <input
+              class="input-general"
+              [(ngModel)]="vertedero"
+              name="vertedero"
+              matInput 
+              type="number"
+            >
+          </mat-form-field>
+        </div>
+        <div class="Col col-small-space">
+          <label class="label-small-input">
+            Reciclaje
+          </label>
+          <mat-form-field>
+            <input
+              class="input-general"
+              [(ngModel)]="reciclaje"
+              name="reciclaje"
+              matInput 
+              type="number"
+            >
+          </mat-form-field>
+        </div>
+        <div class="Col col-small-space">
+          <label class="label-small-input">
+            Reuso
+          </label>
+          <mat-form-field>
+            <input
+              class="input-general"
+              [(ngModel)]="reuso"
+              name="reuso"
+              matInput 
+              type="number"
+            >
+          </mat-form-field>
+        </div>
       </div>
     </section>
     <section class="container-details">

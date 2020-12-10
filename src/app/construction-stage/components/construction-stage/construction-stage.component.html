@@ -66,6 +66,19 @@
             <div class="Row top-0">
               <div class="Col col-small-space">
                 <label class="label-small-input">
+                  Fuente
+                </label>
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
+                      {{fuente.name_source_information}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-small-input">
                   Cantidad
                 </label>
                 <mat-form-field>
@@ -87,19 +100,6 @@
                   <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
                       {{unidad.name_energy_unit}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="Col col-small-space">
-                <label class="label-small-input">
-                  Fuente
-                </label>
-                <mat-form-field appearance="outline">
-                  <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
-                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
-                      {{fuente.name_source_information}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -146,6 +146,19 @@
             <div class="Row top-0">
               <div class="Col col-small-space">
                 <label class="label-small-input">
+                  Fuente
+                </label>
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
+                      {{fuente.name_source_information}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-small-input">
                   Cantidad
                 </label>
                 <mat-form-field>
@@ -167,19 +180,6 @@
                   <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadVolumen" [value]="unidad.id">
                       {{unidad.name_volume_unit}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="Col col-small-space">
-                <label class="label-small-input">
-                  Fuente
-                </label>
-                <mat-form-field appearance="outline">
-                  <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
-                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
-                      {{fuente.name_source_information}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -226,6 +226,19 @@
             <div class="Row top-0">
               <div class="Col col-small-space">
                 <label class="label-small-input">
+                  Fuente
+                </label>
+                <mat-form-field appearance="outline">
+                  <mat-label>Seleccione una opción</mat-label>
+                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
+                      {{fuente.name_source_information}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="Col col-small-space">
+                <label class="label-small-input">
                   Cantidad
                 </label>
                 <mat-form-field>
@@ -247,19 +260,6 @@
                   <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadVolumen" [value]="unidad.id">
                       {{unidad.name_volume_unit}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="Col col-small-space">
-                <label class="label-small-input">
-                  Fuente
-                </label>
-                <mat-form-field appearance="outline">
-                  <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
-                    <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
-                      {{fuente.name_source_information}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
