@@ -60,6 +60,9 @@ export class UsageStageComponent implements OnInit {
 
   saveStepThree() {
     console.log('save step three');
+    console.log(this.cantidad);
+    console.log(this.projectId);
+    console.log(this.unidad);
     this.electricitConsumptionService.addACR({
       quantity: this.cantidad,
       project_id: this.projectId,
