@@ -1,7 +1,8 @@
+import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import 'rxjs/add/operator/filter';
 
@@ -27,19 +28,41 @@ export class EndLifeStageComponent implements OnInit {
   panelOpenThird = false;
   dataArrayEC = [];
   EC: any;
+  catalogoFuentes: [];
+  catalogoUnidadEnergia: [];
 
   constructor(
-    private route: ActivatedRoute,
-    private endLifeService: EndLifeService
-  ) { }
+    private router: Router,
+    private endLifeService: EndLifeService,
+    private catalogsService: CatalogsService
+  ) {
+    this.catalogsService.getSourceInformation().subscribe(data => {
+      this.catalogoFuentes = data;
+    });
+    this.catalogsService.getEnergyUnits().subscribe(data => {
+      this.catalogoUnidadEnergia = data;
+    });
+  }
 
   ngOnInit() {
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
 
+    this.sheetNames = [];
     this.nameProject = PDP.name_project;
     this.projectId = PDP.id;
-    this.sheetNames = data.sheetNames;
+    data.sheetNames.map( sheetname => {
+      if ( sheetname !== 'Muros InterioresBis' &&
+        sheetname !== 'Inicio' &&
+        sheetname !== 'Registro' &&
+        sheetname !== 'ListaElementos' &&
+        sheetname !== 'BD' &&
+        sheetname !== 'Parametros'
+      ) {
+        this.sheetNames.push(sheetname);
+      }
+    });
+
     this.contentData = data.data;
   }
 
@@ -139,6 +162,7 @@ export class EndLifeStageComponent implements OnInit {
       console.log(data);
     });
 
+    this.router.navigateByUrl('/');
 
   }
 
