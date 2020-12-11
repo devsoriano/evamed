@@ -6,6 +6,8 @@ import { AddNewProjectComponent } from './../../../add-new-project/add-new-proje
 import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/choose-type-of-project.component';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
+import { ChartType } from 'chart.js';
+import { MultiDataSet, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-home-evamed',
@@ -30,6 +32,10 @@ export class HomeEvamedComponent implements OnInit {
   superficieHabitable: string;
   noNiveles: string;
   optionSelected: string;
+
+  public doughnutChartLabels = ['Sales Q1', 'Sales Q2', 'Sales Q3', 'Sales Q4'];
+  public doughnutChartData = [120, 150, 180, 90];
+  public doughnutChartType = 'doughnut';
 
   constructor(
     private auth: AuthService,

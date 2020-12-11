@@ -8,6 +8,12 @@ import { MaterialModule } from './../material/material.module';
 import { AddNewProjectComponent } from './../add-new-project/add-new-project.component';
 import { ChooseTypeOfProjectComponent } from './../choose-type-of-project/choose-type-of-project.component';
 import { FormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [
@@ -21,6 +27,11 @@ import { FormsModule } from '@angular/forms';
     HomeEvamedRoutingModule,
     MaterialModule,
     FormsModule,
+    MatTabsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatButtonToggleModule,
+    ChartsModule
   ],
   exports: [
     HomeEvamedComponent,
