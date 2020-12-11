@@ -123,49 +123,29 @@ export class EndLifeStageComponent implements OnInit {
   }
 
   saveStepFour() {
-    console.log('test step four');
-
-    this.endLifeService.addECDP({
-      quantity: 3000,
-      unit_id: 1,
-      source_information_id: 1,
-      section_id: 1,
-      project_id: this.projectId
-    }).subscribe(data => {
-      console.log(data);
-    });
-
-    this.endLifeService.addTOGW({
-      landfill: 90,
-      recycling: 5,
-      reuse: 5,
-      section_id: 1,
-      project_id: this.projectId
-    }).subscribe(data => {
-      console.log(data);
-    });
-
-    this.endLifeService.addTOGW({
-      landfill: 70,
-      recycling: 15,
-      reuse: 15,
-      section_id: 2,
-      project_id: this.projectId
-    }).subscribe(data => {
-      console.log(data);
-    });
-
-    this.endLifeService.addTOGW({
-      landfill: 70,
-      recycling: 29,
-      reuse: 1,
-      section_id: 4,
-      project_id: this.projectId
-    }).subscribe(data => {
-      console.log(data);
-    });
-
-    this.router.navigateByUrl('/');
+    console.log('confirm step 4');
+    try {
+      Object.entries(this.EC).forEach(([key, ec]) => {
+        let ecAny: any;
+        ecAny = ec;
+        ecAny.map( data => {
+          console.log('esta es la data');
+          console.log(data);
+          this.endLifeService.addECDP({
+            quantity: data.cantidad,
+            unit_id: data.unidad,
+            source_information_id: data.fuente,
+            section_id: parseInt(key, 10) + 1,
+            project_id: this.projectId
+          }).subscribe(data => {
+            console.log(data);
+          });
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // this.router.navigateByUrl('/');
 
   }
 
