@@ -64,6 +64,14 @@ export class CompararComponent implements OnInit {
     showcimenta:false,
     elemento:' '
   }];
+  bandera_graph_bar=false;
+  botones_elementos_constructivos=[
+    { Nombre: 'Cimentación', nivel: 'n1' }, { Nombre: 'Pisos', nivel: 'n2' }, { Nombre: 'Muros Interiores', nivel: 'n3' },
+    { Nombre: 'Muros ext.', nivel: 'n4' }, { Nombre: 'Ventanas', nivel: 'n5' }, { Nombre: 'Ins Especiales', nivel: 'n6' },
+    { Nombre: 'Otros', nivel: 'n7' }, { Nombre: 'Techo cubierta', nivel: 'n8' }, { Nombre: 'Entrepiso', nivel: 'n9' },
+    { Nombre: 'Estructura', nivel: 'n10' }, { Nombre: 'Puertas', nivel: 'n11' }];
+  impacto_seleccionado=' ';
+
 
   constructor(){ }
 
@@ -79,14 +87,18 @@ export class CompararComponent implements OnInit {
       this.Impactos_ambientales=true;
       this.Impactos_Elementos=false;
       this.Elementos_constructivos=false;
+      this.bandera_graph_bar=false;
+      this.impacto_seleccionado = ' ';
     }else if($event==1){
       this.Impactos_ambientales = false;
       this.Impactos_Elementos = true;
       this.Elementos_constructivos = false;
+      this.bandera_graph_bar=true;
     }else{
       this.Impactos_ambientales = false;
       this.Impactos_Elementos = false;
       this.Elementos_constructivos = true;
+      this.impacto_seleccionado = ' ';
     }
     this.ResetTabs($event);
   }
@@ -336,6 +348,15 @@ export class CompararComponent implements OnInit {
         }
       }
     });
+  }
+  graficabar(item:string,n:string){
+    if (this.impacto_seleccionado===item){
+      this.impacto_seleccionado=' ';
+      this.childBar.forEach(c => c.resetColores());
+    }else{
+      this.impacto_seleccionado=item;
+      this.childBar.forEach(c => c.focusSeries(n));
+    }
   }
 
 }

@@ -47,7 +47,7 @@
                  </div>
                </div>
              </div>
-             <div class="campo-grafica-bar">
+             <div class="campo-grafica-bar" *ngIf="Impactos_ambientales">
                <div [hidden]="bandera_porcentaje">
                  <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar_porcent" [porcentaje]="true" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
                </div>
@@ -83,6 +83,16 @@
               Impactos ambientales<br>por elementos constructivos
             </ng-template>
             <div *ngIf="Impactos_Elementos">
+                 <app-bar-chart [showMe]="false" [Bandera_bar]="bandera_graph_bar" [porcentaje]="true" [inputProyects]="proyect_active"></app-bar-chart>
+                 <div>
+                   Elementos constructivos
+                   <div>
+                     <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
+                       <button (click)="graficabar(item.Nombre,item.nivel)">
+                        <mat-icon>visibility_off</mat-icon>{{item.Nombre}}</button>
+                     </div>
+                   </div>
+                 </div>
             </div>
           </mat-tab>
           <mat-tab>

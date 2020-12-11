@@ -6,7 +6,7 @@ import { AddNewProjectComponent } from './../../../add-new-project/add-new-proje
 import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/choose-type-of-project.component';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
-import { ChartType } from 'chart.js';
+import { ChartDataSets, ChartType } from 'chart.js';
 import { MultiDataSet, Label } from 'ng2-charts';
 
 @Component({
@@ -33,9 +33,11 @@ export class HomeEvamedComponent implements OnInit {
   noNiveles: string;
   optionSelected: string;
 
-  public doughnutChartLabels = ['Sales Q1', 'Sales Q2', 'Sales Q3', 'Sales Q4'];
-  public doughnutChartData = [120, 150, 180, 90];
-  public doughnutChartType = 'doughnut';
+  doughnutChartLabels: Label[] = ['BMW', 'Ford', 'Tesla'];
+  doughnutChartData: MultiDataSet = [
+    [55, 25, 20]
+  ];
+  doughnutChartType: ChartType = 'doughnut';
 
   constructor(
     private auth: AuthService,

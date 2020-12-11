@@ -230,3 +230,17 @@ mat-select{
   border-right-style: solid;
   border-right-color: #CBCBCB;
 }
+
+.botones-elementos-contructivos{
+  display: inline-block;
+  button{
+    width: 144px;
+    height: 34px;
+    background: #EFEFEF;
+    text-align: left;
+    font-size:15px;
+    letter-spacing: 0px;
+    color: #767676;
+    margin: 5px;
+  }
+}
