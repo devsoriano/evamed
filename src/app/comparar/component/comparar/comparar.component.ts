@@ -77,6 +77,9 @@ export class CompararComponent implements OnInit {
   TEList: [];
   ULList: [];
 
+  impactosIgnorar = ['Human toxicity','Fresh water aquatic ecotox.', 'Marine aquatic ecotoxicity', 'Terrestrial ecotoxicity']
+
+
   constructor(
     private materials: MaterialsService,
     private projects: ProjectsService,
@@ -265,33 +268,49 @@ export class CompararComponent implements OnInit {
 
     // Estapa de Uso
 
-    let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
-    let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
-    let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
-    let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
-    try{
-      vidaUtil = parseFloat(vidaUtil);
-    }catch{
-      vidaUtil = 1;
-    }
+    let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
+    if (listaACR.length>0){
+      let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
+      let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
+      let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
+      let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
+      try{
+        vidaUtil = parseFloat(vidaUtil);
+      }catch{
+        vidaUtil = 1;
+      }
 
-    // console.log(vidaUtil)
-    consumos.forEach(ecd => {
-      let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
-      // console.log(ps)
-      impactos.forEach(impacto =>{
-        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
-        if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
-          analisisProyectos.Datos[potencial] = {};
-        }
-        if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Uso')){
-          analisisProyectos['Datos'][potencial]['Uso'] = 0;
-        }
-        // console.log(impacto['value'],impacto['value']*ps['quantity'])
-        analisisProyectos['Datos'][potencial]['Uso'] += impacto['value'] * ecd['quantity'] ;
+      // console.log(vidaUtil)
+      consumos.forEach(ecd => {
+        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+        // console.log(ps)
+        impactos.forEach(impacto =>{
+          let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+          if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
+            analisisProyectos.Datos[potencial] = {};
+          }
+          if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Uso')){
+            analisisProyectos['Datos'][potencial]['Uso'] = 0;
+          }
+          // console.log(impacto['value'],impacto['value']*ps['quantity'])
+          analisisProyectos['Datos'][potencial]['Uso'] += impacto['value'] * ecd['quantity'] ;
+        });
       });
-    });
+    }
     // console.log(analisisProyectos)
+
+    //Etapa de Fin de Vida
+
+
+
+    //Filtro de impactos que no se tomaran en cuenta ahorita 
+    console.log(`"${Object.keys(analisisProyectos.Datos)}"`)
+    this.impactosIgnorar.forEach(impacto => {
+      if (Object.keys(analisisProyectos.Datos).includes(impacto)){
+        delete analisisProyectos.Datos[impacto];
+      }
+    });
+
     return analisisProyectos;
   }
   
@@ -353,37 +372,40 @@ export class CompararComponent implements OnInit {
 
 
     // Estapa de Uso
+    
+    let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
+    if (listaACR.length>0){
+      let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
+      let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
+      let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
+      let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
+      try{
+        vidaUtil = parseFloat(vidaUtil);
+      }catch{
+        vidaUtil = 1;
+      }
 
-    let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
-    let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
-    let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
-    let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
-    try{
-      vidaUtil = parseFloat(vidaUtil);
-    }catch{
-      vidaUtil = 1;
-    }
-
-    // console.log(vidaUtil)
-    consumos.forEach(ecd => {
-      let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
-      // console.log(ps)
-      impactos.forEach(impacto =>{
-        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
-        if (!Object.keys(analisisProyectos['Datos']).includes('Uso')){
-          analisisProyectos.Datos['Uso'] = {};
-        }
-        if(!Object.keys(analisisProyectos['Datos']['Uso']).includes(potencial)){
-          analisisProyectos['Datos']['Uso'][potencial] = 0;
-        }
-        if(!Object.keys(totales).includes(potencial)){
-          totales[potencial]=0;
-        }
-        // console.log(impacto['value'],impacto['value']*ps['quantity'])
-        analisisProyectos['Datos']['Uso'][potencial] += impacto['value'] * ecd['quantity'] ;
-        totales[potencial] += impacto['value'] * ecd['quantity'] ;
+      // console.log(vidaUtil)
+      consumos.forEach(ecd => {
+        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+        // console.log(ps)
+        impactos.forEach(impacto =>{
+          let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+          if (!Object.keys(analisisProyectos['Datos']).includes('Uso')){
+            analisisProyectos.Datos['Uso'] = {};
+          }
+          if(!Object.keys(analisisProyectos['Datos']['Uso']).includes(potencial)){
+            analisisProyectos['Datos']['Uso'][potencial] = 0;
+          }
+          if(!Object.keys(totales).includes(potencial)){
+            totales[potencial]=0;
+          }
+          // console.log(impacto['value'],impacto['value']*ps['quantity'])
+          analisisProyectos['Datos']['Uso'][potencial] += impacto['value'] * ecd['quantity'] ;
+          totales[potencial] += impacto['value'] * ecd['quantity'] ;
+        });
       });
-    });
+    }
 
     Object.keys(analisisProyectos.Datos).forEach(key1 => {
       Object.keys(analisisProyectos.Datos[key1]).forEach(key2 =>{
@@ -391,6 +413,16 @@ export class CompararComponent implements OnInit {
       });
     });
     // console.log(analisisProyectos)
+
+    //Analisis Fin de vida
+
+    //Filtro de impactos que no se tomaran en cuenta ahorita 
+    console.log(`"${Object.keys(analisisProyectos.Datos)}"`)
+    this.impactosIgnorar.forEach(impacto => {
+      if (Object.keys(analisisProyectos.Datos).includes(impacto)){
+        delete analisisProyectos.Datos[impacto];
+      }
+    });
     return analisisProyectos;
   }
 
@@ -411,6 +443,13 @@ export class CompararComponent implements OnInit {
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        
+        //filtro impactos que no se tomaran en cuenta ahorita
+        if (this.impactosIgnorar.includes(potencial)){
+          return;
+        }
+
+
         let standardName = this.standarsList.filter(s => s['id'] == impacto['standard_id'] )[0]['name_standard'];
         if(standardName == 'A1-A3'){
           return
@@ -435,10 +474,17 @@ export class CompararComponent implements OnInit {
     let CSEs = this.CSEList.filter(c =>  c['project_id'] == idProyecto);
     CSEs.forEach( CSE =>{
       let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  ) 
+      
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
         let SIName = this.SIList.filter(s => s['id'] == impacto['sourceInformarion_id'] )[0]['name_source_information'];
+
+        //filtro impactos que no se tomaran en cuenta ahorita
+        if (this.impactosIgnorar.includes(potencial)){
+          return;
+        }
+
         // console.log( SIName)
         if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
           analisisProyectos.Datos[potencial] = {};
@@ -457,39 +503,46 @@ export class CompararComponent implements OnInit {
 
 
     // Estapa de Uso
+    let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
+    if (listaACR.length>0){
+      let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
+      let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
+      let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
+      let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
+      try{
+        vidaUtil = parseFloat(vidaUtil);
+      }catch{
+        vidaUtil = 1;
+      }
 
-    let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
-    let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == consumoID );
-    let vidaUtilID = this.projectsList.filter( p => p['id'] == idProyecto)[0]['useful_life_id']
-    let vidaUtil:any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
-    try{
-      vidaUtil = parseFloat(vidaUtil);
-    }catch{
-      vidaUtil = 1;
-    }
+      // console.log(vidaUtil)
+      consumos.forEach(ecd => {
+        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+          // console.log(ps)
+        impactos.forEach(impacto =>{
+          // console.log('pie',impacto['type_energy_id'])
+          let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+          let procesName = this.TEList.filter(te => te['id'] == impacto['type_energy_id'])[0]['name_type_energy']
+          
+          //filtro impactos que no se tomaran en cuenta ahorita
+          if (this.impactosIgnorar.includes(potencial)){
+            return;
+          }
 
-    // console.log(vidaUtil)
-    consumos.forEach(ecd => {
-      let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
-        // console.log(ps)
-      impactos.forEach(impacto =>{
-        // console.log('pie',impacto['type_energy_id'])
-        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
-        let procesName = this.TEList.filter(te => te['id'] == impacto['type_energy_id'])[0]['name_type_energy']
-
-        if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
-          analisisProyectos.Datos[potencial] = {};
-        }
-        if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Uso')){
-          analisisProyectos['Datos'][potencial]['Uso'] = {};
-        }
-        if(!Object.keys(analisisProyectos['Datos'][potencial]['Uso']).includes(procesName)){
-          analisisProyectos['Datos'][potencial]['Uso'][procesName] = 0;
-        }
-        // console.log(impacto['value'],impacto['value']*ps['quantity'])
-        analisisProyectos['Datos'][potencial]['Uso'][procesName] += impacto['value'] * ecd['quantity'] ;
+          if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
+            analisisProyectos.Datos[potencial] = {};
+          }
+          if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Uso')){
+            analisisProyectos['Datos'][potencial]['Uso'] = {};
+          }
+          if(!Object.keys(analisisProyectos['Datos'][potencial]['Uso']).includes(procesName)){
+            analisisProyectos['Datos'][potencial]['Uso'][procesName] = 0;
+          }
+          // console.log(impacto['value'],impacto['value']*ps['quantity'])
+          analisisProyectos['Datos'][potencial]['Uso'][procesName] += impacto['value'] * ecd['quantity'] ;
+        });
       });
-    });
+    }
     // console.log(analisisProyectos)
     return analisisProyectos;
   }
