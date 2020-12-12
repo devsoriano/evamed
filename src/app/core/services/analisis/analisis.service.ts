@@ -15,6 +15,16 @@ export class AnalisisService {
 
   }
 
+  getECDP() {
+    return this.http.get<any>(
+      environment.api_electricity_consumption_deconstructive_process,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   getUsefulLife(){
     return this.http.get<any>(
       environment.api_useful_life,

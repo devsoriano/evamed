@@ -76,6 +76,7 @@ export class CompararComponent implements OnInit {
   TEDList: [];
   TEList: [];
   ULList: [];
+  ECDPList: [];
 
   impactosIgnorar = ['Human toxicity','Fresh water aquatic ecotox.', 'Marine aquatic ecotoxicity', 'Terrestrial ecotoxicity']
 
@@ -101,7 +102,8 @@ export class CompararComponent implements OnInit {
       this.analisis.getAnnualConsumptionRequired(),
       this.analisis.getElectricityConsumptionData(),
       this.analisis.getTypeEnergyData(),
-      this.analisis.getUsefulLife()
+      this.analisis.getUsefulLife(),
+      this.analisis.getECDP()
     ])
     .subscribe(([
       TE,
@@ -117,7 +119,8 @@ export class CompararComponent implements OnInit {
       ACR,
       ECD,
       TED,
-      UL
+      UL,
+      ECDP
     ]) => {
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
       // console.log('id recibido', this.idProyectoActivo)
@@ -136,6 +139,7 @@ export class CompararComponent implements OnInit {
       this.TEDList = TED;
       this.TEList = TE;
       this.ULList = UL;
+      this.ECDPList = ECDP;
       // console.log(this.TEList);
       this.menu_inicio();
       // this.childBar.forEach(c => c.ngOnInit());
@@ -300,11 +304,26 @@ export class CompararComponent implements OnInit {
     // console.log(analisisProyectos)
 
     //Etapa de Fin de Vida
-
+    let ECDPs = this.ECDPList.filter(c =>  c['project_id'] == idProyecto);
+    ECDPs.forEach(ECDP =>{
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  ) 
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
+          analisisProyectos.Datos[potencial] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('FinDeVida')){
+          analisisProyectos['Datos'][potencial]['FinDeVida'] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos'][potencial]['FinDeVida'] += impacto['value'] * ECDP['quantity'];
+      });
+    });
 
 
     //Filtro de impactos que no se tomaran en cuenta ahorita 
-    console.log(`"${Object.keys(analisisProyectos.Datos)}"`)
+    // console.log(`"${Object.keys(analisisProyectos.Datos)}"`)
     this.impactosIgnorar.forEach(impacto => {
       if (Object.keys(analisisProyectos.Datos).includes(impacto)){
         delete analisisProyectos.Datos[impacto];
@@ -414,15 +433,42 @@ export class CompararComponent implements OnInit {
     });
     // console.log(analisisProyectos)
 
+
+
     //Analisis Fin de vida
 
-    //Filtro de impactos que no se tomaran en cuenta ahorita 
-    console.log(`"${Object.keys(analisisProyectos.Datos)}"`)
-    this.impactosIgnorar.forEach(impacto => {
-      if (Object.keys(analisisProyectos.Datos).includes(impacto)){
-        delete analisisProyectos.Datos[impacto];
-      }
+    let ECDPs = this.ECDPList.filter(c =>  c['project_id'] == idProyecto);
+    ECDPs.forEach(ECDP =>{
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  ) 
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        if (!Object.keys(analisisProyectos['Datos']).includes('FinDeVida')){
+          analisisProyectos.Datos['FinDeVida'] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos']['FinDeVida']).includes(potencial)){
+          analisisProyectos['Datos']['FinDeVida'][potencial] = 0;
+        }
+        if(!Object.keys(totales).includes(potencial)){
+          totales[potencial]=0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos']['FinDeVida'][potencial] += impacto['value'] * ECDP['quantity'];
+        totales[potencial] += impacto['value'] * ECDP['quantity'];
+      });
     });
+
+    //Filtro de impactos que no se tomaran en cuenta ahorita 
+    Object.keys(analisisProyectos.Datos).forEach(etapa =>{
+      // console.log(`"${Object.keys(analisisProyectos.Datos[etapa])}"`)
+      this.impactosIgnorar.forEach(impacto => {
+        // console.log(`"${Object.keys(analisisProyectos.Datos[])}"`)
+        if (Object.keys(analisisProyectos.Datos[etapa]).includes(impacto)){
+          delete analisisProyectos.Datos[etapa][impacto];
+        }
+      });
+    });
+    
     return analisisProyectos;
   }
 
@@ -543,6 +589,39 @@ export class CompararComponent implements OnInit {
         });
       });
     }
+
+    //Analisis de fin de vida
+    let ECDPs = this.ECDPList.filter(c =>  c['project_id'] == idProyecto);
+    ECDPs.forEach( ECDP =>{
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  ) 
+      
+      // console.log(ps)
+      impactos.forEach(impacto =>{
+        let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
+        let SIName = this.SIList.filter(s => s['id'] == impacto['sourceInformarion_id'] )[0]['name_source_information'];
+
+        //filtro impactos que no se tomaran en cuenta ahorita
+        if (this.impactosIgnorar.includes(potencial)){
+          return;
+        }
+
+        // console.log( SIName)
+        if (!Object.keys(analisisProyectos['Datos']).includes(potencial)){
+          analisisProyectos.Datos[potencial] = {};
+        }
+        if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('FinDeVida')){
+          analisisProyectos['Datos'][potencial]['FinDeVida'] = {};
+        }
+        
+        if(!Object.keys(analisisProyectos['Datos'][potencial]['FinDeVida']).includes(SIName)){
+          analisisProyectos['Datos'][potencial]['FinDeVida'][SIName] = 0;
+        }
+        // console.log(impacto['value'],impacto['value']*ps['quantity'])
+        analisisProyectos['Datos'][potencial]['FinDeVida'][SIName] += impacto['value'] * ECDP['quantity'];
+      });
+    });
+
+
     // console.log(analisisProyectos)
     return analisisProyectos;
   }
