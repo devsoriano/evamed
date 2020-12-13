@@ -21,7 +21,6 @@ import { BarChartSimpleComponent } from 'src/app/bar-chart-simple/bar-chart-simp
 @NgModule({
   declarations: [
     GraficaDeBarrasComponent,
-    CompararComponent,
     BarChartComponent,
     RadialChartComponent,
     PieChartComponent,

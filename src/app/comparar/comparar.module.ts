@@ -14,7 +14,9 @@ import { PieChartComponent } from '../pie-chart/pie-chart.component';
 import { RadialChartComponent } from '../radial-chart/radial-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
-import { MatRadioButton } from '@angular/material/radio';
+import { BarChartSimpleComponent } from '../bar-chart-simple/bar-chart-simple.component';
+// import { MatRadioButton } from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { MatRadioButton } from '@angular/material/radio';
     PieChartComponent,
     RadialChartComponent,
     BarChartComponent,
+    BarChartSimpleComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,8 @@ import { MatRadioButton } from '@angular/material/radio';
     MatMenuModule,
     MatButtonToggleModule,
     MatSelectModule,
-    MatRadioButton
+    // MatRadioButton,
+    MatCheckboxModule
   ],
   exports: [
     CompararComponent,

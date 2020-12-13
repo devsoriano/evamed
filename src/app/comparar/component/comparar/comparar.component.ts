@@ -38,9 +38,9 @@ export class CompararComponent implements OnInit {
   @ViewChild('barContainer', {read: ViewContainerRef}) container: ViewContainerRef;
   @ViewChild('GraficasEspecificas', {read: ViewContainerRef}) containerGraficas: ViewContainerRef;
 
-  @Input('Inproyectos_bar') inputproyect_bar: any;
-  @Input('Inproyectos_radar') inputproyect_radar: any;
-  @Input('Inproyectos_pie') inputproyect_pie: any;
+  // @Input('Inproyectos_bar') inputproyect_bar: any;
+  // @Input('Inproyectos_radar') inputproyect_radar: any;
+  // @Input('Inproyectos_pie') inputproyect_pie: any;
   @ViewChildren(BarChartComponent)
   childBar: QueryList<BarChartComponent>;
   @ViewChildren(PieChartComponent)
@@ -59,8 +59,7 @@ export class CompararComponent implements OnInit {
   proyect=[];
   proyect_active=[];
   inputproyect_bar_porcent:any;
-  outproyect_bar_num = [];
-  outproyect_bar_porcent=[];
+  outproyect_bar = [];
   outproyect_radar=[];
   outproyect_pie = [];
   indicador_impacto:string;
@@ -215,10 +214,6 @@ export class CompararComponent implements OnInit {
     this.showVar = false;
     this.showVar_1 = false;
     return;
-    this.outproyect_bar.push(this.inputproyect_bar[id]);
-    this.outproyect_radar.push(this.inputproyect_radar[id]);
-    this.outproyect_pie.push(this.inputproyect_pie[id]);
-    
     
   }
 
@@ -711,33 +706,33 @@ export class CompararComponent implements OnInit {
   }
 
   //Poner en porcentajes los datos
-  datosProcentaje(){
-    this.inputproyect_bar_porcent =[];
-    let aux_datos;
-    let n;
-    let aux_num;
-    this.inputproyect_bar.forEach(proyecto => {
-      const auxDatos = [ 'Producción', 'Construccion', 'Uso', 'FinDeVida'];
-      aux_datos = {};
-      Object.keys(proyecto.Datos).forEach(indicador => {
-        aux_num = { Producción: 0, Construccion: 0, Uso: 0, FinDeVida: 0};
-        auxDatos.forEach(etapa => {
-          n= Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
-          aux_num[etapa] = proyecto.Datos[indicador][etapa] * 100 / n;
-        });
-        aux_datos={...aux_datos,
-          [indicador]:aux_num
-        };
-      });
-      this.inputproyect_bar_porcent=[...this.inputproyect_bar_porcent,
-        {
-          Nombre : proyecto.Nombre,
-          id: proyecto.id,
-          Datos : aux_datos
-        }
-      ];
-    });
-  }
+  // datosProcentaje(){
+  //   this.inputproyect_bar_porcent =[];
+  //   let aux_datos;
+  //   let n;
+  //   let aux_num;
+  //   this.inputproyect_bar.forEach(proyecto => {
+  //     const auxDatos = [ 'Producción', 'Construccion', 'Uso', 'FinDeVida'];
+  //     aux_datos = {};
+  //     Object.keys(proyecto.Datos).forEach(indicador => {
+  //       aux_num = { Producción: 0, Construccion: 0, Uso: 0, FinDeVida: 0};
+  //       auxDatos.forEach(etapa => {
+  //         n= Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
+  //         aux_num[etapa] = proyecto.Datos[indicador][etapa] * 100 / n;
+  //       });
+  //       aux_datos={...aux_datos,
+  //         [indicador]:aux_num
+  //       };
+  //     });
+  //     this.inputproyect_bar_porcent=[...this.inputproyect_bar_porcent,
+  //       {
+  //         Nombre : proyecto.Nombre,
+  //         id: proyecto.id,
+  //         Datos : aux_datos
+  //       }
+  //     ];
+  //   });
+  // }
 
   //activar gráfica de porcentaje
   // porcentaje(val:boolean){
@@ -746,23 +741,28 @@ export class CompararComponent implements OnInit {
   //   this.bandera_porcentaje = val;
   //   this.iniciaBarras();
   porcentaje(val:boolean,val2:number){
-    if(val2==1){
-      if(val){
-        this.bandera_porcentaje=false;
-        this.bandera_num= true;
-        this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_porcent));
-      }else{
-        this.bandera_porcentaje =true;
-        this.bandera_num = false;
-        this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_num));
-      }
-    }else{
-      if (val) {
-        this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_num));
-      } else {
-        this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_porcent));
-      }
-    }
+    if ( val == this.bandera_porcentaje ){ return; }
+
+    this.bandera_porcentaje = val;
+    this.iniciaBarras();
+    return;
+    // if(val2==1){
+    //   if(val){
+    //     this.bandera_porcentaje=false;
+    //     this.bandera_num= true;
+    //     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_porcent));
+    //   }else{
+    //     this.bandera_porcentaje =true;
+    //     this.bandera_num = false;
+    //     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_num));
+    //   }
+    // }else{
+    //   if (val) {
+    //     this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_num));
+    //   } else {
+    //     this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_porcent));
+    //   }
+    // }
   }
 
   // //agregar proyecto a graficas
@@ -802,8 +802,7 @@ export class CompararComponent implements OnInit {
     });
     this.proyect_active = this.proyect_active.filter(item => item != ID);
     this.proyectosMostrados_elementos = this.proyectosMostrados_elementos.filter(({ idproyecto }) => idproyecto != ID);
-    this.outproyect_bar_num = this.outproyect_bar_num.filter(({id}) => id != ID);
-    this.outproyect_bar_porcent = this.outproyect_bar_porcent.filter(({ id }) => id != ID);
+    this.outproyect_bar = this.outproyect_bar.filter(({id}) => id != ID);
     this.outproyect_radar = this.outproyect_radar.filter(({ id }) => id != ID);
     this.outproyect_pie = this.outproyect_pie.filter(({ id }) => id != ID);
 
