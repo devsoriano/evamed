@@ -231,14 +231,62 @@
             </mat-tab-group>
           </div>
         </mat-tab>
-        <mat-tab label="Resultados" class="label-principal-tab"> 
-          <button
-            mat-button
-            class="yellow-button"
-            (click)="redirectResultados(project.id)"
-          > 
-            Resultados
-          </button>
+        <mat-tab label="Resultados" class="label-principal-tab">
+          <div class="mat-tab-resultados">
+            <div>
+              <div class="seccionUno">
+
+                <p>Selecciona impacto ambiental</p>
+                <select>
+                  <option value="val1">Calentamiento global</option>
+                  <option value="val1">Op2</option>
+                  <option value="val1">Op3</option>
+                </select>
+                <p>Fases de ciclo de vida</p>
+                <ul>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Materiales</a><a>18% / 1,000 co2</a></div>
+                     <mat-icon class="uno">visibility_off</mat-icon></button>
+                   </li>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Construcción</a><a>20% / 1,000 co2</a></div>
+                     <mat-icon class="dos">visibility_off</mat-icon></button> </li>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Uso</a><a>31% / 1,000 co2</a></div>
+                     <mat-icon class="tres">visibility_off</mat-icon></button> </li>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Fin de vida</a><a>16% / 1,000 co2</a></div>
+                     <mat-icon class="cuatro">visibility_off</mat-icon></button> </li>
+                </ul>
+              </div>
+              <button mat-stroked-button class="Detalle"
+              (click)="redirectResultados(project.id)"
+              >Ver detalle</button>
+            </div>
+            <div>
+              <div class="button-graph">
+                <mat-button-toggle-group>
+                     <mat-button-toggle><mat-icon>table_view</mat-icon></mat-button-toggle>
+                     <mat-button-toggle><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+                   </mat-button-toggle-group>
+                <button>Exportar</button>
+              </div>
+              <div>
+                <!--<canvas baseChart
+                  [data]="doughnutChartData"
+                  [labels]="doughnutChartLabels"
+                  [chartType]="doughnutChartType"></canvas>> -->
+              </div>
+            </div>
+            <div>
+              <button mat-stroked-button class="Detalle">Generar reporte</button>
+              <p>Dispersión de impactos por subetapa</p>
+            </div>
+          </div>
         </mat-tab>
       </mat-tab-group>
     </mat-card>

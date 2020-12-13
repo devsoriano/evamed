@@ -12,3 +12,13 @@
     </mat-card>
   </div>
 </div>
+
+<div class="div-principal" *ngIf="showMe_elementos">
+  <canvas #MyChart='base-chart' #canvas baseChart
+    [datasets]="pieChartData[0]"
+    [options]="pieChartOptions_elementos"
+    (chartClick)='onChartClick($event)'
+    [chartType]="pieChartType"></canvas>
+</div>
+
+
