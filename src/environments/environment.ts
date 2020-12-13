@@ -26,7 +26,7 @@ const sourceInformationData = '/source-information-data/';
 const typeEnergyData = '/type-energy-data/';
 
 export const environment = {
-  production: true,
+  production: false,
   api_projects: `${apiEvamed}${projects}`,
   api_uses: `${apiEvamed}${uses}`,
   api_countries: `${apiEvamed}${countries}`,

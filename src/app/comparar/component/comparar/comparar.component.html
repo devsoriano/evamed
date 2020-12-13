@@ -134,7 +134,7 @@
                 </div>
               </div>
               <div *ngIf="indicador_elegido">
-               <mat-card *ngFor="let item of outproyect_bar_num ; let i = index" class="card-indicador">
+               <mat-card *ngFor="let item of outproyect_bar; let i = index" class="card-indicador">
                  <div class="elementos-seccionUno">
                    <div class="Botones">
                      <div>
@@ -144,7 +144,7 @@
                       <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
                    </div>
                    <div>
-                     <app-pie-chart [id]="indicador_impacto" [showMe_elementos]="proyectosMostrados_elementos[i].showpie" [inputProyect]="outproyect_bar_porcent" [Bandera_resultado]="bandera_resultado" (ClickEvent)="configurarDatos($event, item.id)" [proyecto]="item.id" [bandera_click]="0"></app-pie-chart>
+                     <app-pie-chart [id]="indicador_impacto" [showMe_elementos]="proyectosMostrados_elementos[i].showpie" [inputProyect]="outproyect_bar" [Bandera_resultado]="bandera_resultado" (ClickEvent)="configurarDatos($event, item.id)" [proyecto]="item.id" [bandera_click]="0"></app-pie-chart>
                      <app-bar-chart-simple [showGr]="proyectosMostrados_elementos[i].showbar" (ClickEvent)="configurarDatos($event, item.id)" [idProyect]="item.id"></app-bar-chart-simple>
                    </div>
                    <div class="Botones">
