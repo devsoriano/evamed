@@ -28,7 +28,7 @@ export class EndLifeStageComponent implements OnInit {
   panelOpenThird = false;
   dataArrayEC = [];
   EC: any;
-  catalogoFuentes: [];
+  catalogoFuentes: any;
   catalogoUnidadEnergia: [];
   vertedero: string;
   reciclaje: string;
@@ -40,7 +40,13 @@ export class EndLifeStageComponent implements OnInit {
     private catalogsService: CatalogsService
   ) {
     this.catalogsService.getSourceInformation().subscribe(data => {
-      this.catalogoFuentes = data;
+      const fuentes = [];
+      data.map( fuente => {
+        if (fuente.name_source_information !== 'Mexicaniuh - CADIS') {
+          fuentes.push(fuente);
+        }
+      });
+      this.catalogoFuentes = fuentes;
     });
     this.catalogsService.getEnergyUnits().subscribe(data => {
       this.catalogoUnidadEnergia = data;
@@ -129,7 +135,7 @@ export class EndLifeStageComponent implements OnInit {
         let ecAny: any;
         ecAny = ec;
         ecAny.map( data => {
-          console.log('esta es la data');
+          console.log('Fin de vida!!!');
           console.log(data);
           this.endLifeService.addECDP({
             quantity: data.cantidad,
