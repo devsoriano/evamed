@@ -327,7 +327,7 @@ export class CompararComponent implements OnInit {
             analisisProyectos['Datos'][potencial]['Uso'] = 0;
           }
           // console.log(impacto['value'],impacto['value']*ps['quantity'])
-          analisisProyectos['Datos'][potencial]['Uso'] += impacto['value'] * ecd['quantity'] ;
+          analisisProyectos['Datos'][potencial]['Uso'] += impacto['value'] * ecd['quantity'] * vidaUtil ;
         });
       });
     }
@@ -450,8 +450,8 @@ export class CompararComponent implements OnInit {
             totales[potencial]=0;
           }
           // console.log(impacto['value'],impacto['value']*ps['quantity'])
-          analisisProyectos['Datos']['Uso'][potencial] += impacto['value'] * ecd['quantity'] ;
-          totales[potencial] += impacto['value'] * ecd['quantity'] ;
+          analisisProyectos['Datos']['Uso'][potencial] += impacto['value'] * ecd['quantity'] * vidaUtil;
+          totales[potencial] += impacto['value'] * ecd['quantity'] * vidaUtil;
         });
       });
     }
@@ -489,15 +489,15 @@ export class CompararComponent implements OnInit {
     });
 
     //Filtro de impactos que no se tomaran en cuenta ahorita 
-  // Object.keys(analisisProyectos.Datos).forEach(etapa =>{
-  //   // console.log(`"${Object.keys(analisisProyectos.Datos[etapa])}"`)
-  //   this.impactosIgnorar.forEach(impacto => {
-  //     // console.log(`"${Object.keys(analisisProyectos.Datos[])}"`)
-  //     if (Object.keys(analisisProyectos.Datos[etapa]).includes(impacto)){
-  //       delete analisisProyectos.Datos[etapa][impacto];
-  //     }
-  //   });
-  // });
+    Object.keys(analisisProyectos.Datos).forEach(etapa =>{
+      // console.log(`"${Object.keys(analisisProyectos.Datos[etapa])}"`)
+      this.impactosIgnorar.forEach(impacto => {
+        // console.log(`"${Object.keys(analisisProyectos.Datos[])}"`)
+        if (Object.keys(analisisProyectos.Datos[etapa]).includes(impacto)){
+          delete analisisProyectos.Datos[etapa][impacto];
+        }
+      });
+    });
     
     return analisisProyectos;
   }
@@ -615,7 +615,7 @@ export class CompararComponent implements OnInit {
             analisisProyectos['Datos'][potencial]['Uso'][procesName] = 0;
           }
           // console.log(impacto['value'],impacto['value']*ps['quantity'])
-          analisisProyectos['Datos'][potencial]['Uso'][procesName] += impacto['value'] * ecd['quantity'] ;
+          analisisProyectos['Datos'][potencial]['Uso'][procesName] += impacto['value'] * ecd['quantity'] * vidaUtil ;
         });
       });
     }
