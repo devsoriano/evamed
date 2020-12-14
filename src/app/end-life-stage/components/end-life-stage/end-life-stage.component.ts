@@ -145,7 +145,7 @@ export class EndLifeStageComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-    // this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/');
 
   }
 

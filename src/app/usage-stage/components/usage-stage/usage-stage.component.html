@@ -100,7 +100,7 @@
                   <mat-form-field appearance="outline" class="custom-formField">
                     <mat-label>Seleccione una opción</mat-label>
                     <mat-select  [(ngModel)]="tipoMixElectrico" name="fuente">
-                      <mat-option *ngFor="let tipo of catalogoTipoEnergia" [value]="tipo.id">
+                      <mat-option *ngFor="let tipo of catalogoTipoEnergiaElectrica" [value]="tipo.id">
                         {{tipo.name_type_energy}}
                       </mat-option>
                     </mat-select>
@@ -191,7 +191,7 @@
                 <mat-form-field appearance="outline" class="custom-formField">
                   <mat-label>Seleccione una opción</mat-label>
                   <mat-select  [(ngModel)]="tipoCombustible" name="fuente">
-                    <mat-option *ngFor="let tipo of catalogoTipoEnergia" [value]="tipo.id">
+                    <mat-option *ngFor="let tipo of catalogoTipoEnergiaCombustible" [value]="tipo.id">
                       {{tipo.name_type_energy}}
                     </mat-option>
                   </mat-select>

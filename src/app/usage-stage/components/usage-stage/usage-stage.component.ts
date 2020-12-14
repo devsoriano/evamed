@@ -35,7 +35,8 @@ export class UsageStageComponent implements OnInit {
   selectedPreference: string;
   preferences: string[] = ['cantidad', 'porcentaje'];
   catalogoUnidadEnergia: [];
-  catalogoTipoEnergia: [];
+  catalogoTipoEnergiaElectrica: any;
+  catalogoTipoEnergiaCombustible: any;
 
   constructor(
     private catalogsService: CatalogsService,
@@ -48,7 +49,23 @@ export class UsageStageComponent implements OnInit {
     this.catalogsService.getTypeEnergy().subscribe(data => {
       console.log('catalogo');
       console.log(data);
-      this.catalogoTipoEnergia = data;
+      // this.catalogoTipoEnergia = data;
+      const tipoEnergiaElectrica = [];
+      const tipoEnergiaCombustible = [];
+      data.map( tipo => {
+        if ( tipo.name_type_energy === 'Energía eléctrica, Medio voltaje (MX)' ||
+          tipo.name_type_energy === 'Energía eléctrica, Alto voltaje (MX)' ||
+          tipo.name_type_energy === 'Energía eléctrica, Bajo voltaje (MX)' ) {
+          tipoEnergiaElectrica.push(tipo);
+        }
+
+        if ( tipo.name_type_energy === 'Calefacción doméstica con gas natural (GLO)' ) {
+          tipoEnergiaCombustible.push(tipo);
+        }
+      });
+
+      this.catalogoTipoEnergiaElectrica = tipoEnergiaElectrica;
+      this.catalogoTipoEnergiaCombustible = tipoEnergiaCombustible;
     });
   }
 

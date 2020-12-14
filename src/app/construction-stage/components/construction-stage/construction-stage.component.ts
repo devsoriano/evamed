@@ -19,7 +19,7 @@ export class ConstructionStageComponent implements OnInit {
   listData: any;
   indexSheet: number;
   SistemasConstructivos: any;
-  catalogoFuentes: [];
+  catalogoFuentes: any;
   catalogoUnidadEnergia: [];
   catalogoUnidadVolumen: [];
   catalogoUnidadMasa: [];
@@ -38,7 +38,14 @@ export class ConstructionStageComponent implements OnInit {
     private router: Router
   ) {
     this.catalogsService.getSourceInformation().subscribe(data => {
-      this.catalogoFuentes = data;
+      // this.catalogoFuentes = data;
+      const fuentes = [];
+      data.map( fuente => {
+        if (fuente.name_source_information !== 'Mexicaniuh - CADIS') {
+          fuentes.push(fuente);
+        }
+      });
+      this.catalogoFuentes = fuentes;
     });
     this.catalogsService.getEnergyUnits().subscribe(data => {
       this.catalogoUnidadEnergia = data;
