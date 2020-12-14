@@ -247,6 +247,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.showMePartially = this.showVar;
     grafica.instance.indicador = this.selector;
     grafica.instance.id = this.ID;
+    grafica.instance.Bandera_resultado=1;
     // grafica.instance.cargarDatos(this.ID)
         // this.childRadar.forEach(c => c.cargarDatos(this.ID));
   }
