@@ -2,6 +2,7 @@ import { EventEmitter, Input, Output } from '@angular/core';
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { ChartDataSets } from 'chart.js';
 import {BaseChartDirective } from 'ng2-charts';
+import { couldStartTrivia } from 'typescript';
 
 @Component({
   selector: 'app-pie-chart',
@@ -69,10 +70,11 @@ export class PieChartComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    // console.log("Pie chart data input",this.inputProyect)
     if (this.Bandera_resultado == 1) {
       this.cargarDatos(' ', this.id);
     }else{
-      this.cargarDatos(this.id, ' ');
+      this.cargarDatos(this.id, this.indicador);
     }
   }
 
@@ -107,6 +109,7 @@ export class PieChartComponent implements OnInit {
     let aux=[];
     this.pieChartLabels=[]
     //carga datos para sección de resultados "Elementos constructivos por ciclo de vida"
+    // console.log(this.Bandera_resultado,indicador)
     if (this.Bandera_resultado == 1){
       this.pieChartData =[];
       this.inputProyect.forEach(element => {
@@ -131,6 +134,7 @@ export class PieChartComponent implements OnInit {
         this.inputProyect.forEach(proyecto => {
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
+            console.log(element)
             if (auxlabel[element]===ID) {
               color = this.colores[element];
               auxdatos = aux[auxlabel[element]]
@@ -144,12 +148,16 @@ export class PieChartComponent implements OnInit {
             data: datos,
             backgroundColor: color
           }]
-          datos=[];
           this.pieChartData = [...this.pieChartData,auxdata];
           this.pieChartLabels=[...this.pieChartLabels,auxdataLabel];
+          datos=[];
           auxdataLabel = [];
+          // console.log(auxdata)
         });
+
       }
+      // console.log(this.pieChartData)
+
     }else{
       this.pieChartData =[];
       Object.keys(auxlabel_dos).forEach(element => {

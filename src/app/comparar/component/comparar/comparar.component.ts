@@ -245,9 +245,10 @@ export class CompararComponent implements OnInit {
     const grafica = this.containerGraficas.createComponent(componentFactory);
     grafica.instance.inputProyect = this.outproyect_pie;
     grafica.instance.showMePartially = this.showVar;
+    console.log(this.selector.toString())
     grafica.instance.indicador = this.selector;
     grafica.instance.id = this.ID;
-    grafica.instance.Bandera_resultado=1;
+    grafica.instance.Bandera_resultado=2;
     // grafica.instance.cargarDatos(this.ID)
         // this.childRadar.forEach(c => c.cargarDatos(this.ID));
   }
@@ -821,6 +822,7 @@ export class CompararComponent implements OnInit {
     this.selector = $event;
     this.showVar_1 = false;
     this.showVar = false;
+    // console.log($event)
     if (this.selector==null){
       this.bandera = 0;
       this.hover = true;
