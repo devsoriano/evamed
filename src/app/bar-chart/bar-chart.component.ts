@@ -137,6 +137,7 @@ export class BarChartComponent implements OnInit {
           if (!this.barChartLabels.includes(indicador)){
             this.barChartLabels = [...this.barChartLabels, indicador];
           }
+          proyecto.Datos[indicador].total = 0;
           proyecto.Datos[indicador].total = Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
           this.maxValue = Math.max(this.maxValue, proyecto.Datos[indicador].total);
         });
@@ -181,6 +182,8 @@ export class BarChartComponent implements OnInit {
               auxDatos[etapa] = [...auxDatos[etapa], 0];
             }else{
               auxDatos[etapa] = [...auxDatos[etapa],
+              this.porcentaje?
+              (proyecto.Datos[indicador.toString()][etapa ]*100 /proyecto.Datos[indicador.toString()].total ).toFixed(2):
               proyecto.Datos[indicador.toString()][etapa].toFixed(2)
             ];
           }
@@ -199,6 +202,7 @@ export class BarChartComponent implements OnInit {
         });
       });
     }
+    console.log(datos)
     this.barChartData = datos;
   }
 

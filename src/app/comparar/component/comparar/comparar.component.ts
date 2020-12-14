@@ -225,6 +225,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.porcentaje = this.bandera_porcentaje;
     grafica.instance.inputProyects = this.outproyect_bar;
     grafica.instance.showMe = true;
+    grafica.instance.Bandera_bar=false;
     grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
   }
 
@@ -358,7 +359,7 @@ export class CompararComponent implements OnInit {
         delete analisisProyectos.Datos[impacto];
       }
     });
-
+    // console.log(analisisProyectos)
     return analisisProyectos;
   }
   
@@ -488,15 +489,15 @@ export class CompararComponent implements OnInit {
     });
 
     //Filtro de impactos que no se tomaran en cuenta ahorita 
-    Object.keys(analisisProyectos.Datos).forEach(etapa =>{
-      // console.log(`"${Object.keys(analisisProyectos.Datos[etapa])}"`)
-      this.impactosIgnorar.forEach(impacto => {
-        // console.log(`"${Object.keys(analisisProyectos.Datos[])}"`)
-        if (Object.keys(analisisProyectos.Datos[etapa]).includes(impacto)){
-          delete analisisProyectos.Datos[etapa][impacto];
-        }
-      });
-    });
+  // Object.keys(analisisProyectos.Datos).forEach(etapa =>{
+  //   // console.log(`"${Object.keys(analisisProyectos.Datos[etapa])}"`)
+  //   this.impactosIgnorar.forEach(impacto => {
+  //     // console.log(`"${Object.keys(analisisProyectos.Datos[])}"`)
+  //     if (Object.keys(analisisProyectos.Datos[etapa]).includes(impacto)){
+  //       delete analisisProyectos.Datos[etapa][impacto];
+  //     }
+  //   });
+  // });
     
     return analisisProyectos;
   }
