@@ -8,10 +8,11 @@ import { RegisterComponent } from './components/register/register.component';
 
 import { MaterialModule } from './../material/material.module';
 import { SharedModule } from './../shared/shared.module';
+import { RecoverPasswordComponent } from './components/recover-password/recover-password/recover-password.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [LoginComponent, RegisterComponent, RecoverPasswordComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,

@@ -127,10 +127,10 @@ export class HomeEvamedComponent implements OnInit {
           living_area: parseInt(result.superficieHabitable, 10),
           tier: parseInt(result.noNiveles, 10),
           use_id:  result.usoSeleccionado,
-          type_id: result.tipoSeleccionado,
+          type_id: result.tipoSeleccionado === undefined ? null : result.tipoSeleccionado,
           country_id: result.paisSeleccionado,
           useful_life_id: result.vidaUtilSeleccionado,
-          housing_scheme_id: result.esqHabitacionalSeleccionado
+          housing_scheme_id: result.esqHabitacionalSeleccionado === undefined ? null : result.esqHabitacionalSeleccionado
         }).subscribe(data => {
           sessionStorage.setItem('primaryDataProject', JSON.stringify(data));
           this.openDialogCTOP();
