@@ -21,7 +21,7 @@ export class HomeEvamedComponent implements OnInit {
   catalogoTipo: any;
   catalogoVidaUtil: any;
   catalogoEsqHabitacional: any;
-  usoSeleccionado: string;
+  usoSeleccionado: number;
   paisSeleccionado: string;
   tipoSeleccionado: string;
   vidaUtilSeleccionado: string;

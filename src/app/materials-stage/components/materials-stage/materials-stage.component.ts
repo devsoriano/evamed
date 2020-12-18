@@ -101,7 +101,6 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onGroupsChange(options: MatListOption[]) {
-    console.log('aquí ando clickeando esta mamada');
     options.map(option => {
       console.log(option.value);
       this.selectedSheet = option.value;
