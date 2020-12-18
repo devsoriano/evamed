@@ -81,17 +81,22 @@
   }
 }
 
-.container-tag {
-  position: absolute;
-
-  .title-tag {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .date-tag {
-    font-size: 12px;
-    color: #767676;
+.header-tag {
+  display: flex;
+  
+  .container-tag {
+    position: absolute;
+    margin-left: 30px;
+  
+    .title-tag {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  
+    .date-tag {
+      font-size: 12px;
+      color: #767676;
+    }
   }
 }
 

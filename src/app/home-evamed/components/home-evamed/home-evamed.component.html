@@ -8,12 +8,24 @@
       </div>
     </div>
     <mat-card *ngFor="let project of projectsList" class="card-project">
-      <div class="container-tag">
-        <div class="title-tag">
-          {{project.name_project}}
+      <div class="header-tag">
+        <div class="more-vert">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="deleteProject(project.id)">
+              <span>Eliminar</span>
+            </button>
+          </mat-menu>
         </div>
-        <div class="date-tag">
-          Noviembre 2019
+        <div class="container-tag">
+          <div class="title-tag">
+            {{project.name_project}}
+          </div>
+          <div class="date-tag">
+            Noviembre 2019
+          </div>
         </div>
       </div>
       <mat-tab-group class="container-principal-tab">

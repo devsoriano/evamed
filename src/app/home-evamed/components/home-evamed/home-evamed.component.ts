@@ -6,8 +6,6 @@ import { AddNewProjectComponent } from './../../../add-new-project/add-new-proje
 import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/choose-type-of-project.component';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
-import { ChartDataSets, ChartType } from 'chart.js';
-import { MultiDataSet, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-home-evamed',
@@ -34,12 +32,6 @@ export class HomeEvamedComponent implements OnInit {
   optionSelected: string;
   projectsList: [];
 
-  doughnutChartLabels: Label[] = ['BMW', 'Ford', 'Tesla'];
-  doughnutChartData: MultiDataSet = [
-    [55, 25, 20]
-  ];
-  doughnutChartType: ChartType = 'doughnut';
-
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -64,8 +56,7 @@ export class HomeEvamedComponent implements OnInit {
       this.catalogoEsqHabitacional = data;
     });
     this.projects.getProjects().subscribe( data => {
-      this.projectsList = data;
-      console.log(this.projectsList);
+      this.projectsList = data.reverse();
     });
     this.projects.searchProject(1).subscribe(data => {
       console.log(data);
@@ -96,6 +87,14 @@ export class HomeEvamedComponent implements OnInit {
       } catch (e){
         console.log('close modal');
       }
+    });
+  }
+
+  deleteProject(id) {
+    this.projects.deleteProject(id).subscribe(data => {
+      this.projects.getProjects().subscribe( list => {
+        this.projectsList = list.reverse();
+      });
     });
   }
 
@@ -143,8 +142,6 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   redirectResultados(id) {
-    console.log('redirect a resultados');
-    console.log(id);
     sessionStorage.setItem('projectID', id);
     this.router.navigateByUrl('resultados');
   }

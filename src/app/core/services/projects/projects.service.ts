@@ -23,6 +23,16 @@ export class ProjectsService {
     );
   }
 
+  deleteProject( id: number ) {
+    return this.http.delete(
+      `${environment.api_projects}${id}/`
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   addSchemeProject( schemeData: object ) {
     return this.http.post<any>(
       environment.api_scheme_project,
