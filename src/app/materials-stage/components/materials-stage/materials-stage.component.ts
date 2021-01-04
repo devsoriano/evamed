@@ -24,7 +24,6 @@ export class MaterialsStageComponent implements OnInit {
   selectedOptionsRevit: string[] = [];
   selectedOptionsDynamo: string[] = [];
   selectedOptionsUsuario: string[] = [];
-  selectedMaterial: any;
   panelOpenFirst = false;
   panelOpenSecond = false;
   panelOpenThird = false;
@@ -36,6 +35,8 @@ export class MaterialsStageComponent implements OnInit {
   SOU = [];
   sectionRevit: boolean;
   sectionDynamo: boolean;
+  selectedMaterial: boolean;
+  dataMaterialSelected: any;
 
   constructor(
     private materialsService: MaterialsService,
@@ -44,6 +45,7 @@ export class MaterialsStageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.selectedMaterial = false;
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
 
@@ -235,6 +237,7 @@ export class MaterialsStageComponent implements OnInit {
 
   showMaterials(event, sc, origin) {
     event.stopPropagation();
+    this.selectedMaterial = false;
     const materiales = [];
     this.listData.map( data => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
@@ -266,19 +269,24 @@ export class MaterialsStageComponent implements OnInit {
     console.log('entra a restore material');
   }
 
-  onSelection(event, value) {
+  onSelectedMaterial(event, value) {
     // data
-    console.log('***********************************************Data********************************************************');
-    console.log(this.listData);
-    console.log('**********************************************Content Data***************************************************');
-    console.log(this.contentData);
-    console.log('****************************************index********************************************');
-    console.log(this.indexSheet);
+    // console.log('***********************************************Data********************************************************');
+    // console.log(this.listData);
+    // console.log('**********************************************Content Data***************************************************');
+    // console.log(this.contentData);
+    // console.log('****************************************index********************************************');
+    // console.log(this.indexSheet);
     // value
     console.log('************************************************Value****************************************************');
     console.log(value.selected[0]?.value);
+    this.dataMaterialSelected = value.selected[0]?.value;
+    this.selectedMaterial = true;
   }
 
+  onReturnListMaterials() {
+    this.selectedMaterial = false;
+  }
 
   addElement() {
     console.log('add element');

@@ -167,28 +167,28 @@
                 <button
                   class="custom-button-icon"
                   mat-icon-button
-                  (click)="removeMaterial($event, sc, 'revit-user')"
+                  (click)="removeMaterial($event, sc, 'dynamo')"
                 >
                   <mat-icon class="custom-icon">restore_from_trash</mat-icon>
                 </button>
                 <button
                   class="custom-button-icon"
                   mat-icon-button
-                  (click)="restoreMaterial($event, sc, 'revit-user')"
+                  (click)="restoreMaterial($event, sc, 'dynamo')"
                 >
                   <mat-icon class="custom-icon">restore_page</mat-icon>
                 </button>
                 <button
                   class="custom-button-icon"
                   mat-icon-button
-                  (click)="duplicateMaterial($event, sc, 'revit-user')"
+                  (click)="duplicateMaterial($event, sc, 'dynamo')"
                 >
                   <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
                 </button>
                 <button
                   class="custom-button-icon"
                   mat-icon-button
-                  (click)="showMaterials($event, sc, 'revit-user')"
+                  (click)="showMaterials($event, sc, 'dynamo')"
                 >
                   <mat-icon class="custom-icon">visibility</mat-icon>
                 </button>
@@ -242,11 +242,11 @@
     </section>
 
     <!--Materials section-->
-    <section class="container-details">
+    <section class="container-details" *ngIf="selectedMaterial===false">
       <mat-selection-list 
         #materials 
         [multiple]="false"
-        (selectionChange)="onSelection($event, materials.selectedOptions)"
+        (selectionChange)="onSelectedMaterial($event, materials.selectedOptions)"
       >
         <mat-list-option *ngFor="let material of listMateriales" [value]="material">
           <div class="table-materials"> 
@@ -264,6 +264,78 @@
         </mat-list-option>
       </mat-selection-list>
     </section>
+    <!--Form material-->
+    <div class="container-details" *ngIf="selectedMaterial===true">
+      <a class="return" (click)="onReturnListMaterials()"> < </a>
+      <div class="form-update-material">
+        <div class="Row">
+          <div class="Col">
+            <div class="label-general">
+              Nombre comercial
+            </div>
+            <div>
+              <mat-form-field>
+                <input
+                  class="input-general"
+                  [(ngModel)]="dataMaterialSelected.Material"
+                  matInput 
+                  type="text"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <div class="label-general">
+              Cantidad
+            </div>
+            <div>
+              <mat-form-field>
+                <input
+                  class="input-general"
+                  [(ngModel)]="dataMaterialSelected.Cantidad"
+                  matInput 
+                  type="text"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="Col">
+            <div class="label-general">
+              Unidad
+            </div>
+            <div>
+              <mat-form-field>
+                <input
+                  class="input-general"
+                  [(ngModel)]="dataMaterialSelected.Unidad"
+                  matInput 
+                  type="text"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <div class="label-general">
+              Comentarios
+            </div>
+            <div>
+              <mat-form-field>
+                <input
+                  class="input-general"
+                  [(ngModel)]="dataMaterialSelected.Comentarios"
+                  matInput 
+                  type="text"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </div>
 
