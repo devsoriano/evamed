@@ -44,6 +44,10 @@ section.form-login {
   border-radius: 5px;
 }
 
+::placeholder {
+  color: #CBCBCB !important;
+}
+
 .container-label-input {
   margin-top: 20px;
 }
@@ -70,7 +74,7 @@ section.form-login {
   background-color: #EDC903;
   width: 50%;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .p-context-login {
