@@ -66,9 +66,12 @@ export class MaterialsStageComponent implements OnInit {
 
     this.contentData = data.data;
 
-    // Inicio de datos
+    this.initialChange();
+  }
 
-    this.indexSheet = this.sheetNames.indexOf('Cimentación');
+  initialChange() {
+    this.selectedSheet = 'Cimentación';
+    this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
     this.listData = this.contentData[this.indexSheet + 1];
     const SCRevit = [];
     const SCDynamo = [];
@@ -103,7 +106,9 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onGroupsChange(options: MatListOption[]) {
+    console.log(options);
     options.map(option => {
+      console.log('el valor');
       console.log(option.value);
       this.selectedSheet = option.value;
     });

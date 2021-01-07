@@ -12,21 +12,16 @@ body {
   margin-left: 0%;
 }
 
-.side {
-  flex: 50%;
-  background-color:#ffffff;
-}
-
 .main {
   flex: 50%;
-  background-color: #FFFFFF;
+  background-color: #FFF;
   justify-content: flex-start;
 }
 
 section.form-login {
   margin-left: 15%;
   margin-right: 20%;
-  margin-top: 20%;
+  margin-top: 8%;
   height: 70%;
 }
 
@@ -39,12 +34,14 @@ section.form-login {
 }
 
 .input-context-login {
-  border: 2px solid #CBCBCB;
-  height: 36px;
+  border: 0px;
+  height: 32px;
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
-  padding-left: 16px!important;
+  padding-left: 16px;
+  background-color: #EDEDED;
+  border-radius: 5px;
 }
 
 .container-label-input {
@@ -52,14 +49,20 @@ section.form-login {
 }
 
 .label-context-login {
-  color: #ACA8A8;
+  color: #767676;
+  font-weight: 700;
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 8px;
 }
 
+.container-label-button-second {
+  margin-top: 10px;
+  text-align: center;
+}
+
 .container-label-button {
-  margin-top: 70px;
+  margin-top: 50px;
   text-align: center;
 }
 
@@ -115,4 +118,11 @@ section.form-login {
     text-align: left;
     padding-left: 6px;
   }
+}
+
+.redirect-get-password {
+  color: #A8D024;
+  padding-bottom: 3px;
+  text-decoration: none;
+  font-weight: bold;
 }

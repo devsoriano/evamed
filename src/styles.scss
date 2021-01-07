@@ -426,7 +426,6 @@ span.mat-option-text {
 }
 
 /**css tabs**/
-/**css tabs**/
 .container-principal-tab {
   .mat-tab-header {
     .mat-tab-label-container {
@@ -471,5 +470,21 @@ span.mat-option-text {
         }
       }
     }
+  }
+}
+
+.mat-list-single-selected-option {
+  .mat-list-item-content {
+    .mat-list-text {
+      color: #000 !important;
+      font-size: 14px !important;
+    }
+  }
+}
+
+.mat-list-item-content {
+  .mat-list-text {
+    color: #767676 !important;
+    font-size: 14px !important;
   }
 }
