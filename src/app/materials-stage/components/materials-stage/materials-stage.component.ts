@@ -300,4 +300,20 @@ export class MaterialsStageComponent implements OnInit {
   addSC() {
     console.log('add SC');
   }
+
+  goToMaterialStage() {
+    this.router.navigateByUrl('material-stage');
+  }
+
+  goToConstructionStage() {
+    this.router.navigateByUrl('construction-stage');
+  }
+
+  goToUsageStage() {
+    this.router.navigateByUrl('usage-stage');
+  }
+
+  goToEndLife() {
+    this.router.navigateByUrl('end-life-stage');
+  }
 }

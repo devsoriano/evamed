@@ -251,4 +251,20 @@ export class ConstructionStageComponent implements OnInit {
     this.router.navigateByUrl('usage-stage');
   }
 
+  goToMaterialStage() {
+    this.router.navigateByUrl('materials-stage');
+  }
+
+  goToConstructionStage() {
+    this.router.navigateByUrl('construction-stage');
+  }
+
+  goToUsageStage() {
+    this.router.navigateByUrl('usage-stage');
+  }
+
+  goToEndLife() {
+    this.router.navigateByUrl('end-life-stage');
+  }
+
 }

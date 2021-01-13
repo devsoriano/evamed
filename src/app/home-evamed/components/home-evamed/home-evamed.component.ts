@@ -6,6 +6,7 @@ import { AddNewProjectComponent } from './../../../add-new-project/add-new-proje
 import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/choose-type-of-project.component';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 
 @Component({
   selector: 'app-home-evamed',
@@ -30,7 +31,10 @@ export class HomeEvamedComponent implements OnInit {
   superficieHabitable: string;
   noNiveles: string;
   optionSelected: string;
-  projectsList: [];
+  projectsList: any;
+  countProjectList: number;
+  user: string;
+  sector: string;
 
   constructor(
     private auth: AuthService,
@@ -38,7 +42,8 @@ export class HomeEvamedComponent implements OnInit {
     public dialog: MatDialog,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
-    private projects: ProjectsService
+    private projects: ProjectsService,
+    private users: UserService
   ) {
     this.catalogsService.usesCatalog().subscribe(data => {
       this.catalogoUsos = data;
@@ -55,11 +60,21 @@ export class HomeEvamedComponent implements OnInit {
     this.catalogsService.housingSchemeCatalog().subscribe(data => {
       this.catalogoEsqHabitacional = data;
     });
-    this.projects.getProjects().subscribe( data => {
-      this.projectsList = data.reverse();
-    });
-    this.projects.searchProject(1).subscribe(data => {
+    this.users.searchUser(localStorage.getItem('email-login')).subscribe( data => {
+      console.log('datos*****************************');
       console.log(data);
+      this.user = data[0].name;
+      this.sector = data[0].sector;
+      localStorage.setItem('email-id', data[0].id);
+      this.projectsList = [];
+      this.projects.getProjects().subscribe( data => {
+        data.map( item => {
+          if ( item.user_platform_id === parseInt(localStorage.getItem('email-id'), 10)) {
+            this.projectsList.push(item);
+          }
+          this.countProjectList = this.projectsList.length;
+        });
+      });
     });
   }
 
@@ -92,8 +107,17 @@ export class HomeEvamedComponent implements OnInit {
 
   deleteProject(id) {
     this.projects.deleteProject(id).subscribe(data => {
-      this.projects.getProjects().subscribe( list => {
-        this.projectsList = list.reverse();
+      this.users.searchUser(localStorage.getItem('email-login')).subscribe( data => {
+        localStorage.setItem('email-id', data[0].id);
+        this.projectsList = [];
+        this.projects.getProjects().subscribe( data => {
+          data.map( item => {
+            if ( item.user_platform_id === parseInt(localStorage.getItem('email-id'), 10) ) {
+              this.projectsList.push(item);
+            }
+            this.countProjectList = this.projectsList.length;
+          });
+        });
       });
     });
   }
@@ -130,7 +154,8 @@ export class HomeEvamedComponent implements OnInit {
           type_id: result.tipoSeleccionado === undefined ? null : result.tipoSeleccionado,
           country_id: result.paisSeleccionado,
           useful_life_id: result.vidaUtilSeleccionado,
-          housing_scheme_id: result.esqHabitacionalSeleccionado === undefined ? null : result.esqHabitacionalSeleccionado
+          housing_scheme_id: result.esqHabitacionalSeleccionado === undefined ? null : result.esqHabitacionalSeleccionado,
+          user_platform_id: parseInt(localStorage.getItem('email-id'), 10)
         }).subscribe(data => {
           sessionStorage.setItem('primaryDataProject', JSON.stringify(data));
           this.openDialogCTOP();

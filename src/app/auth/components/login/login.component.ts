@@ -29,25 +29,11 @@ export class LoginComponent implements OnInit {
       const value = this.form.value;
       this.authService.login(value.email, value.password)
       .then( () => {
+        localStorage.setItem('email-login', value.email);
         this.router.navigate(['/']);
       })
       .catch( () => {
         alert('no es válido');
-      });
-    }
-  }
-
-  loginApi(event: Event) {
-    event.preventDefault();
-    if (this.form.valid) {
-      const value = this.form.value;
-      this.authService.loginCoreEVAMED(value.email, value.password)
-      .subscribe(data => {
-        if (data.token) {
-          this.router.navigate(['/']);
-        } else {
-          alert('no es válido');
-        }
       });
     }
   }
