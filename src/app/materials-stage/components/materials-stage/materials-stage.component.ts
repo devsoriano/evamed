@@ -109,6 +109,8 @@ export class MaterialsStageComponent implements OnInit {
     options.map(option => {
       this.selectedSheet = option.value;
     });
+    console.log('la puta selección');
+    console.log(this.selectedSheet);
 
     this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
     this.listData = this.contentData[this.indexSheet + 1];

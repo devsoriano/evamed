@@ -31,6 +31,7 @@ export class ConstructionStageComponent implements OnInit {
   EC: any;
   AC: any;
   DG: any;
+  selectedSheet: any;
 
   constructor(
     private catalogsService: CatalogsService,
@@ -78,6 +79,26 @@ export class ConstructionStageComponent implements OnInit {
       }
     });
     this.contentData = data.data;
+
+    this.initialChange();
+  }
+
+  initialChange() {
+    // take index of selection
+    this.indexSheet = this.sheetNames.indexOf('Cimentación');
+    // take memory of saved data
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) {
+      if ( this.indexSheet === i && this.EC !== undefined ) {
+        this.dataArrayEC = this.EC[i];
+      }
+      if ( this.indexSheet === i && this.AC !== undefined ) {
+        this.dataArrayAC = this.AC[i];
+      }
+      if ( this.indexSheet === i && this.DG !== undefined ) {
+        this.dataArrayDG = this.DG[i];
+      }
+    }
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -101,6 +122,8 @@ export class ConstructionStageComponent implements OnInit {
         this.dataArrayDG = this.DG[i];
       }
     }
+
+    this.selectedSheet = selectedSheet;
   }
 
   addFormEC() {

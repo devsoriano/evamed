@@ -92,7 +92,7 @@ section.part-side {
 }
 
 img.logo-header {
-  height: 56px;
+  height: 68px;
 }
 
 .container-title-standard {
@@ -492,4 +492,9 @@ span.mat-option-text {
 span.mat-checkbox-label {
   font-size: 12px!important;
   color: #767676!important;
+}
+
+.mat-toolbar-multiple-rows {
+  min-height: 78px !important;
+  align-items: center !important;
 }

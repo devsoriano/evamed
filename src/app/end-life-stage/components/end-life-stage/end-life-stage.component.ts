@@ -33,6 +33,7 @@ export class EndLifeStageComponent implements OnInit {
   vertedero: string;
   reciclaje: string;
   reuso: string;
+  selectedSheet: any;
 
   constructor(
     private router: Router,
@@ -73,6 +74,19 @@ export class EndLifeStageComponent implements OnInit {
     });
 
     this.contentData = data.data;
+
+    this.initialChange();
+  }
+
+  initialChange() {
+    // take index of selection
+    this.indexSheet = this.sheetNames.indexOf('Cimentación');
+    let i;
+    for ( i = 0; i <= this.sheetNames.length; i++ ) {
+      if ( this.indexSheet === i && this.EC !== undefined ) {
+        this.dataArrayEC = this.EC[i];
+      }
+    }
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -89,6 +103,8 @@ export class EndLifeStageComponent implements OnInit {
         this.dataArrayEC = this.EC[i];
       }
     }
+
+    this.selectedSheet = selectedSheet;
   }
 
   onNgModelChange(event) {
