@@ -31,7 +31,7 @@ export class HomeEvamedComponent implements OnInit {
   superficieHabitable: string;
   noNiveles: string;
   optionSelected: string;
-  projectsList: any;
+  projectsList: any = 0;
   countProjectList: number;
   user: string;
   sector: string;
@@ -61,8 +61,6 @@ export class HomeEvamedComponent implements OnInit {
       this.catalogoEsqHabitacional = data;
     });
     this.users.searchUser(localStorage.getItem('email-login')).subscribe( data => {
-      console.log('datos*****************************');
-      console.log(data);
       this.user = data[0].name;
       this.sector = data[0].sector;
       localStorage.setItem('email-id', data[0].id);

@@ -1,7 +1,7 @@
 .title-standard-second-light {
   width: 100% !important;
-  text-align: center;
-  margin-bottom: 70px;
+  text-align: left;
+  margin-bottom: 50px;
 }
 
 .mat-dialog-content.dialog-content {
@@ -36,12 +36,14 @@ mat-radio-button {
 }
 
 .text-description {
-  width: 50%;
-  margin-left: 25%;
-  margin-top: 16px;
-  margin-bottom: 18px;
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 40px;
+  margin-bottom: 40px;
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 16px;
+  color: #767676;
 }
 
 /* Simple setup for this demo */
@@ -134,7 +136,7 @@ mat-radio-button {
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
@@ -227,8 +229,8 @@ td.td-title {
 td.td-text {
   text-align: left;
   padding-left: 2px!important;
+  line-height: initial;
 }
-
 
 .title-type-project {
   color: #767676 !important;

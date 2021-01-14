@@ -94,7 +94,7 @@
               class="item-list-option"
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
-              <div style="display:flex;align-items:center">
+              <div style="display:flex; align-items:center; width: 70%;" (click)="showMaterials($event, sc, 'revit-user')">
                 <div style="display:flex; flex-direction:column" class="item-by-list">
                   {{sc}}
                 </div>
@@ -120,13 +120,6 @@
                   (click)="duplicateMaterial($event, sc, 'revit-user')"
                 >
                   <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
-                </button>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="showMaterials($event, sc, 'revit-user')"
-                >
-                  <mat-icon class="custom-icon">visibility</mat-icon>
                 </button>
               </div>
             </div>
@@ -158,7 +151,7 @@
               checkboxPosition="before" 
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
-              <div style="display:flex; align-items:center">
+              <div style="display:flex; align-items:center; width: 70%;" (click)="showMaterials($event, sc, 'revit-user')">
                 <div style="display:flex; flex-direction:column">
                   {{sc}}
                 </div>
@@ -184,13 +177,6 @@
                   (click)="duplicateMaterial($event, sc, 'dynamo')"
                 >
                   <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
-                </button>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="showMaterials($event, sc, 'dynamo')"
-                >
-                  <mat-icon class="custom-icon">visibility</mat-icon>
                 </button>
               </div>
             </div>
@@ -243,24 +229,38 @@
 
     <!--Materials section-->
     <section class="container-details" *ngIf="selectedMaterial===false">
+      <div class="tab-title-sections">
+        <p>Materiales</p>
+        <button
+          mat-icon-button
+          (click)="addElement()"
+        >
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
       <mat-selection-list 
         #materials 
         [multiple]="false"
         (selectionChange)="onSelectedMaterial($event, materials.selectedOptions)"
       >
-        <mat-list-option *ngFor="let material of listMateriales" [value]="material">
+        <mat-list-option *ngFor="let material of listMateriales | keyvalue" [value]="material">
           <div class="table-materials"> 
+            <div class="col-key">
+              {{material.key}}.
+            </div>
             <div class="col-material">
-              {{material.Material}}
+              {{material.value.Material}}
             </div>
             <div class="col-cantidad">
-              {{material.Cantidad}}
+              {{material.value.Cantidad}}
             </div>
             <div class="col-unidad">
-              {{material.Unidad}}
+              {{material.value.Unidad}}
+            </div>
+            <div class="col-icon">
+              <mat-icon class="custom-icon custom-error">check_circle</mat-icon>
             </div>
           </div>
-          
         </mat-list-option>
       </mat-selection-list>
     </section>

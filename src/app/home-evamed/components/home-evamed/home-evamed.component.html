@@ -7,10 +7,20 @@
       <div class="filter-options">
       </div>
     </div>
+    <div class="container-principal" *ngIf="countProjectList === 0">
+      <div class="btn-primer-producto" (click)="openDialogANP()">
+        <div class="plus">+</div>
+        <div class="message-plus">Crea tu primer proyecto</div>
+      </div>
+    </div>
     <mat-card *ngFor="let project of projectsList" class="card-project">
       <div class="header-tag">
         <div class="more-vert">
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <button 
+            mat-icon-button 
+            [matMenuTriggerFor]="menu" 
+            aria-label="Example icon-button with a menu"
+          >
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">

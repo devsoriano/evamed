@@ -184,11 +184,22 @@ div.step-four div.mdl-stepper-circle {
 
 .table-materials {
   display: flex;
-  /* background-color: red; */
   justify-content: space-between;
+  align-items: center;
 
   div {
     font-size: 12px;
     font-weight: 500;
+    line-height: normal;
   }
+
+  .col-material {
+    width: 70%;
+  }
+
+}
+
+.custom-error {
+  color: black!important;
+  width: 10px;
 }
