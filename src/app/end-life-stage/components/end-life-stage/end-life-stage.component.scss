@@ -66,12 +66,11 @@ p.p-instrucciones {
   overflow: auto;
 }
 
-
 /**Stepers**/
 .mdl-stepper-horizontal-alternative {
   display: table;
   width: 100%;
-  margin-top: 5px!important;
+  margin-top: 10px!important;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step {
@@ -129,7 +128,7 @@ p.p-instrucciones {
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
   position: absolute;
-  top: 35px;
+  top: 30px;
   height: 1px;
   border-top: 1px solid #BDBDBD;
 }
@@ -149,29 +148,35 @@ p.p-instrucciones {
 /**Custom stepper**/
 div.step-one-selected div.mdl-stepper-circle {
   background: url('./../../../../assets/images/Etapas/Produccion_.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
 }
 
 div.step-two div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
   background: url('./../../../../assets/images/Etapas/Construcción_.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
 }
 
 div.step-three div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
   background: url('./../../../../assets/images/Etapas/Uso_.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
 }
 
 div.step-four div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
   background: url('./../../../../assets/images/Etapas/Fin_.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
+}
+
+.mdl-stepper-circle {
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 /**imagenes**/
