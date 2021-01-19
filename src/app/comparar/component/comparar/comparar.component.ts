@@ -1,4 +1,4 @@
-import { NgModule, Component, OnInit, Input, ViewChildren, ViewChild, QueryList, ViewContainerRef, ComponentFactoryResolver} from '@angular/core';
+import { NgModule, Component, OnInit, Input, ViewChildren, ViewChild, QueryList, ViewContainerRef, ComponentFactoryResolver, ElementRef, ComponentRef} from '@angular/core';
 import { element } from 'protractor';
 import { BarChartSimpleComponent } from 'src/app/bar-chart-simple/bar-chart-simple.component';
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
@@ -24,7 +24,7 @@ interface impactos_menu{
 })
 
 @NgModule({
-  entryComponents: [ 
+  entryComponents: [
     BarChartComponent,
     RadialChartComponent,
     PieChartComponent
@@ -35,12 +35,8 @@ export class CompararComponent implements OnInit {
   radialChart = RadialChartComponent;
   pieChart = PieChartComponent;
 
-  @ViewChild('barContainer', {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild('barContainer', { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild('GraficasEspecificas', {read: ViewContainerRef}) containerGraficas: ViewContainerRef;
-
-  // @Input('Inproyectos_bar') inputproyect_bar: any;
-  // @Input('Inproyectos_radar') inputproyect_radar: any;
-  // @Input('Inproyectos_pie') inputproyect_pie: any;
   @ViewChildren(BarChartComponent)
   childBar: QueryList<BarChartComponent>;
   @ViewChildren(PieChartComponent)
@@ -181,11 +177,8 @@ export class CompararComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.proyecto="Hospital infantil Lomas Altas";
-    // this.menu_inicio();
-    // this.ID = 'Producción';
   }
-  
+
   //agregar proyecto a graficas
 
   iniciar_graficas(id:number){
@@ -193,7 +186,7 @@ export class CompararComponent implements OnInit {
     if (this.proyect_active.some((item) => item == id) ) {
       return;
     }
-    console.log(id)
+    //console.log(id)
     this.proyect_active.push(id);
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -210,21 +203,19 @@ export class CompararComponent implements OnInit {
     this.outproyect_pie.push(analisisPie);
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     this.iniciaBarras();
-    
     this.showVar = false;
     this.showVar_1 = false;
     return;
-    
+
   }
 
   iniciaBarras(){
     this.container.clear();
-    // console.log(this.container):
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
     const grafica = this.container.createComponent(componentFactory);
     grafica.instance.porcentaje = this.bandera_porcentaje;
     grafica.instance.inputProyects = this.outproyect_bar;
-    grafica.instance.showMe = true;
+    grafica.instance.showMe = this.hover;
     grafica.instance.Bandera_bar=false;
     grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
   }
@@ -245,7 +236,6 @@ export class CompararComponent implements OnInit {
     const grafica = this.containerGraficas.createComponent(componentFactory);
     grafica.instance.inputProyect = this.outproyect_pie;
     grafica.instance.showMePartially = this.showVar;
-    console.log(this.selector.toString())
     grafica.instance.indicador = this.selector;
     grafica.instance.id = this.ID;
     grafica.instance.Bandera_resultado=2;
@@ -259,14 +249,14 @@ export class CompararComponent implements OnInit {
       id: idProyecto,
       Datos: {}
     };
-    
+
     // Etapa de construccion
 
     let standardId = this.standarsList.filter(s => s['name_standard'] == 'A1-A3' )[0]['id'];
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
 
     schemeProyect.forEach(ps => {
-      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId ) 
+      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId )
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -286,7 +276,7 @@ export class CompararComponent implements OnInit {
     // etapa de construcción
     let CSEs = this.CSEList.filter(c =>  c['project_id'] == idProyecto);
     CSEs.forEach(CSE =>{
-      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  ) 
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  )
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -318,7 +308,7 @@ export class CompararComponent implements OnInit {
 
       // console.log(vidaUtil)
       consumos.forEach(ecd => {
-        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] )
         // console.log(ps)
         impactos.forEach(impacto =>{
           let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -338,7 +328,7 @@ export class CompararComponent implements OnInit {
     //Etapa de Fin de Vida
     let ECDPs = this.ECDPList.filter(c =>  c['project_id'] == idProyecto);
     ECDPs.forEach(ECDP =>{
-      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  ) 
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  )
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -354,7 +344,7 @@ export class CompararComponent implements OnInit {
     });
 
 
-    //Filtro de impactos que no se tomaran en cuenta ahorita 
+    //Filtro de impactos que no se tomaran en cuenta ahorita
     // console.log(`"${Object.keys(analisisProyectos.Datos)}"`)
     this.impactosIgnorar.forEach(impacto => {
       if (Object.keys(analisisProyectos.Datos).includes(impacto)){
@@ -364,7 +354,7 @@ export class CompararComponent implements OnInit {
     // console.log(analisisProyectos)
     return analisisProyectos;
   }
-  
+
   getAnalisisRadial(idProyecto){
     let analisisProyectos : Record<string,any> = {
       Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
@@ -378,7 +368,7 @@ export class CompararComponent implements OnInit {
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
     // console.log(schemeProyect)
     schemeProyect.forEach(ps => {
-      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId ) 
+      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == standardId )
       // console.log(impactos)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -402,7 +392,7 @@ export class CompararComponent implements OnInit {
     // etapa de construcción
     let CSEs = this.CSEList.filter(c =>  c['project_id'] == idProyecto);
     CSEs.forEach(CSE =>{
-      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  ) 
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  )
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -423,7 +413,7 @@ export class CompararComponent implements OnInit {
 
 
     // Estapa de Uso
-    
+
     let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
     if (listaACR.length>0){
       let consumoID =  this.ACRList.filter(acr => acr['project_id'] == idProyecto)[0]['id'];
@@ -438,7 +428,7 @@ export class CompararComponent implements OnInit {
 
       // console.log(vidaUtil)
       consumos.forEach(ecd => {
-        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] )
         // console.log(ps)
         impactos.forEach(impacto =>{
           let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -471,7 +461,7 @@ export class CompararComponent implements OnInit {
 
     let ECDPs = this.ECDPList.filter(c =>  c['project_id'] == idProyecto);
     ECDPs.forEach(ECDP =>{
-      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  ) 
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  )
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -490,7 +480,7 @@ export class CompararComponent implements OnInit {
       });
     });
 
-    //Filtro de impactos que no se tomaran en cuenta ahorita 
+    //Filtro de impactos que no se tomaran en cuenta ahorita
     Object.keys(analisisProyectos.Datos).forEach(etapa =>{
       // console.log(`"${Object.keys(analisisProyectos.Datos[etapa])}"`)
       this.impactosIgnorar.forEach(impacto => {
@@ -500,7 +490,7 @@ export class CompararComponent implements OnInit {
         }
       });
     });
-    
+
     return analisisProyectos;
   }
 
@@ -510,18 +500,18 @@ export class CompararComponent implements OnInit {
       id: idProyecto,
       Datos: {}
     };
-    
+
     // Etapa de construccion
 
     // let standardId = this.standarsList.filter(s => s['name_standard'] != 'A1-A3' )[0]['id'];
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
 
     schemeProyect.forEach(ps => {
-      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id']  ) 
+      let impactos = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id']  )
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
-        
+
         //filtro impactos que no se tomaran en cuenta ahorita
         if (this.impactosIgnorar.includes(potencial)){
           return;
@@ -551,8 +541,8 @@ export class CompararComponent implements OnInit {
     // etapa de construcción
     let CSEs = this.CSEList.filter(c =>  c['project_id'] == idProyecto);
     CSEs.forEach( CSE =>{
-      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  ) 
-      
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id']  )
+
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -570,7 +560,7 @@ export class CompararComponent implements OnInit {
         if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('Construccion')){
           analisisProyectos['Datos'][potencial]['Construccion'] = {};
         }
-        
+
         if(!Object.keys(analisisProyectos['Datos'][potencial]['Construccion']).includes(SIName)){
           analisisProyectos['Datos'][potencial]['Construccion'][SIName] = 0;
         }
@@ -595,13 +585,13 @@ export class CompararComponent implements OnInit {
 
       // console.log(vidaUtil)
       consumos.forEach(ecd => {
-        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] ) 
+        let impactos = this.TEDList.filter(sid => sid['type_energy_id'] == ecd['type'] )
           // console.log(ps)
         impactos.forEach(impacto =>{
           // console.log('pie',impacto['type_energy_id'])
           let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
           let procesName = this.TEList.filter(te => te['id'] == impacto['type_energy_id'])[0]['name_type_energy']
-          
+
           //filtro impactos que no se tomaran en cuenta ahorita
           if (this.impactosIgnorar.includes(potencial)){
             return;
@@ -625,8 +615,8 @@ export class CompararComponent implements OnInit {
     //Analisis de fin de vida
     let ECDPs = this.ECDPList.filter(c =>  c['project_id'] == idProyecto);
     ECDPs.forEach( ECDP =>{
-      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  ) 
-      
+      let impactos = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id']  )
+
       // console.log(ps)
       impactos.forEach(impacto =>{
         let potencial = this.potentialTypesList.filter(pt => pt['id'] == impacto['potential_type_id'] )[0]['name_potential_type']
@@ -644,7 +634,7 @@ export class CompararComponent implements OnInit {
         if(!Object.keys(analisisProyectos['Datos'][potencial]).includes('FinDeVida')){
           analisisProyectos['Datos'][potencial]['FinDeVida'] = {};
         }
-        
+
         if(!Object.keys(analisisProyectos['Datos'][potencial]['FinDeVida']).includes(SIName)){
           analisisProyectos['Datos'][potencial]['FinDeVida'][SIName] = 0;
         }
@@ -708,64 +698,13 @@ export class CompararComponent implements OnInit {
     // this.outproyect_pie.push(this.inputproyect_pie[0]);
   }
 
-  //Poner en porcentajes los datos
-  // datosProcentaje(){
-  //   this.inputproyect_bar_porcent =[];
-  //   let aux_datos;
-  //   let n;
-  //   let aux_num;
-  //   this.inputproyect_bar.forEach(proyecto => {
-  //     const auxDatos = [ 'Producción', 'Construccion', 'Uso', 'FinDeVida'];
-  //     aux_datos = {};
-  //     Object.keys(proyecto.Datos).forEach(indicador => {
-  //       aux_num = { Producción: 0, Construccion: 0, Uso: 0, FinDeVida: 0};
-  //       auxDatos.forEach(etapa => {
-  //         n= Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
-  //         aux_num[etapa] = proyecto.Datos[indicador][etapa] * 100 / n;
-  //       });
-  //       aux_datos={...aux_datos,
-  //         [indicador]:aux_num
-  //       };
-  //     });
-  //     this.inputproyect_bar_porcent=[...this.inputproyect_bar_porcent,
-  //       {
-  //         Nombre : proyecto.Nombre,
-  //         id: proyecto.id,
-  //         Datos : aux_datos
-  //       }
-  //     ];
-  //   });
-  // }
-
   //activar gráfica de porcentaje
-  // porcentaje(val:boolean){
-  //   if ( val == this.bandera_porcentaje ){ return; }
-
-  //   this.bandera_porcentaje = val;
-  //   this.iniciaBarras();
   porcentaje(val:boolean,val2:number){
     if ( val == this.bandera_porcentaje ){ return; }
 
     this.bandera_porcentaje = val;
     this.iniciaBarras();
     return;
-    // if(val2==1){
-    //   if(val){
-    //     this.bandera_porcentaje=false;
-    //     this.bandera_num= true;
-    //     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_porcent));
-    //   }else{
-    //     this.bandera_porcentaje =true;
-    //     this.bandera_num = false;
-    //     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_num));
-    //   }
-    // }else{
-    //   if (val) {
-    //     this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_num));
-    //   } else {
-    //     this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar_porcent));
-    //   }
-    // }
   }
 
   // //agregar proyecto a graficas
@@ -812,8 +751,8 @@ export class CompararComponent implements OnInit {
     this.iniciaBarras();
     this.iniciaRadiales();
     this.iniciaPie();
-    
-    this.porcentaje(this.bandera_porcentaje, 2);
+
+    //this.porcentaje(this.bandera_porcentaje, 2);
   }
 
   //interacción con la gráfca de bar
@@ -822,7 +761,6 @@ export class CompararComponent implements OnInit {
     this.selector = $event;
     this.showVar_1 = false;
     this.showVar = false;
-    // console.log($event)
     if (this.selector==null){
       this.bandera = 0;
       this.hover = true;
@@ -830,6 +768,7 @@ export class CompararComponent implements OnInit {
       this.bandera=1;
       this.hover = false;
     }
+
   }
 
   //Despliegue gráficas de pie o radar
@@ -849,7 +788,6 @@ export class CompararComponent implements OnInit {
         this.childBar.forEach(c => c.resetColores());
       }
       this.banderaGrapg=0;
-      // console.log("on");
       this.ID = x;
       this.containerGraficas.clear()
     }else{
@@ -859,18 +797,12 @@ export class CompararComponent implements OnInit {
         this.showVar_1 =false;
 
         this.iniciaPie();
-
-        // this.childPie.forEach(c => c.cargarDatos(this.ID,this.selector));
-        this.childPie.forEach(c => c.cambioIndicadorElementos(this.ID,this.selector,this.bandera_resultado));
       } else {
         this.showVar_1 = true;
         this.showVar=false;
         this.hover=false;
         // console.log('radiales')
         this.iniciaRadiales()
-
-        this.childRadar.forEach(c => c.cargarDatos(this.ID));
-        this.childBar.forEach(c => c.focusSeries(this.ID));
       }
     }
   }

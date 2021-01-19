@@ -15,7 +15,7 @@ export class BarChartComponent implements OnInit {
 
   @ViewChild('MyChart') chartDir: BaseChartDirective;
   private canvas: any;
-  
+
   private hoverIniciado = false;
 
   @Input() inputProyects: any;
@@ -74,7 +74,7 @@ export class BarChartComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-      
+
       // Ya que se inicializa el componente
       this.canvas = this.chartDir.chart.canvas;
       // console.log(this.chartDir.chart);
@@ -90,6 +90,14 @@ export class BarChartComponent implements OnInit {
     // this.chartDir.chart.update();
     // this.ngOnInit()
 
+  }
+
+  public changeHover(){
+    console.log('QQ');
+  }
+
+  QUE(){
+    console.log('LLLL');
   }
 
 
@@ -202,7 +210,7 @@ export class BarChartComponent implements OnInit {
         });
       });
     }
-    console.log(datos)
+    //console.log(datos)
     this.barChartData = datos;
   }
 
@@ -236,7 +244,7 @@ export class BarChartComponent implements OnInit {
     this.iniciaPosiciones(chart);
     if( chart['$datalabels']['_labels'].length == 0){
       return;
-    } 
+    }
     ctx.font = chart['$datalabels']['_labels'][0]['_ctx'].font;//'30px Comic Sans MS';
     ctx.fillStyle = 'gray';
     ctx.textAlign = 'center';
@@ -358,6 +366,7 @@ export class BarChartComponent implements OnInit {
 
   public onHover(e: any) {
     // Controla el flujo de hover sobre los elementos de las barras
+    console.log(this.showMe);
     if (this.showMe) {
       if (this.hovered !== null) {
         const serie = this.chartDir.chart.data.datasets[this.hovered['_datasetIndex']].label;
@@ -377,6 +386,7 @@ export class BarChartComponent implements OnInit {
 
   public resetColores() {
     // Pone todas las series en color normal
+    console.log('in');
     if(this.Bandera_bar){
       this.barChartData.forEach((data, index) => {
         const color = this.coloresGraph2[data.label];

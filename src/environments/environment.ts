@@ -1,5 +1,5 @@
 // genear api
-const apiEvamed = 'http://127.0.0.1:8000/api-projects';
+const apiEvamed = 'https://evamed-rest-api.herokuapp.com/api-projects';
 // apis
 const projects = '/projects/';
 const uses = '/uses/';
