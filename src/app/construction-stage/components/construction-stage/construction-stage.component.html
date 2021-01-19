@@ -8,22 +8,22 @@
   <nav class="nav-steps">
     <div class="mdl-stepper-horizontal-alternative">
       <div class="mdl-stepper-step step-one-selected">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToMaterialStage()"></div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-two">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToConstructionStage()"></div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-three">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToUsageStage()"></div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-four">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToEndLife()"></div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
@@ -33,6 +33,20 @@
   <section class="container-actions">
     <!--Section sheets-->
     <section class="container-sheets">
+      <div class="container-image" [ngSwitch]="selectedSheet">
+        <img *ngSwitchCase="'Cimentación'" src="../../../../assets/map/image001.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Muros interiores'" src="../../../../assets/map/image002.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Muros exteriores'" src="../../../../assets/map/image003.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Pisos'" src="../../../../assets/map/image004.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Techos'" src="../../../../assets/map/image005.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Entrepiso'" src="../../../../assets/map/image005.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Estructura'" src="../../../../assets/map/image005.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Puertas'" src="../../../../assets/map/image005.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Ventanas'" src="../../../../assets/map/image005.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Inst. especiales'" src="../../../../assets/map/image009.png" class="image-element" alt="" />
+        <img *ngSwitchCase="'Otros'" src="../../../../assets/map/image009.png" class="image-element" alt="" />
+        <img *ngSwitchDefault src="../../../../assets/map/image001.png" class="image-element" alt="" />
+      </div>
       <div class="list-elements">
         <mat-selection-list
           #sheets

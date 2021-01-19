@@ -106,12 +106,11 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onGroupsChange(options: MatListOption[]) {
-    console.log(options);
     options.map(option => {
-      console.log('el valor');
-      console.log(option.value);
       this.selectedSheet = option.value;
     });
+    console.log('la puta selección');
+    console.log(this.selectedSheet);
 
     this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
     this.listData = this.contentData[this.indexSheet + 1];
@@ -145,6 +144,18 @@ export class MaterialsStageComponent implements OnInit {
       }
       // this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
     }
+    console.log('Avance indicador');
+    Object.entries(this.SOR).forEach(([key, value]) => {
+      this.contentData[parseInt(key, 10) + 1].map(data => {
+        value.map(sc => {
+          if (data.Sistema_constructivo === sc) {
+            if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
+              console.log(parseInt(key, 10) + 1);
+            }
+          }
+        });
+      });
+    });
   }
 
   onNgModelChangeRevit(event) {
@@ -244,7 +255,7 @@ export class MaterialsStageComponent implements OnInit {
     event.stopPropagation();
     this.selectedMaterial = false;
     const materiales = [];
-    this.listData.map( data => {
+    this.listData.map( (data, key) => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
         if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
           materiales.push(data);
@@ -275,16 +286,6 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onSelectedMaterial(event, value) {
-    // data
-    // console.log('***********************************************Data********************************************************');
-    // console.log(this.listData);
-    // console.log('**********************************************Content Data***************************************************');
-    // console.log(this.contentData);
-    // console.log('****************************************index********************************************');
-    // console.log(this.indexSheet);
-    // value
-    console.log('************************************************Value****************************************************');
-    console.log(value.selected[0]?.value);
     this.dataMaterialSelected = value.selected[0]?.value;
     this.selectedMaterial = true;
   }
@@ -299,5 +300,21 @@ export class MaterialsStageComponent implements OnInit {
 
   addSC() {
     console.log('add SC');
+  }
+
+  goToMaterialStage() {
+    this.router.navigateByUrl('material-stage');
+  }
+
+  goToConstructionStage() {
+    this.router.navigateByUrl('construction-stage');
+  }
+
+  goToUsageStage() {
+    this.router.navigateByUrl('usage-stage');
+  }
+
+  goToEndLife() {
+    this.router.navigateByUrl('end-life-stage');
   }
 }

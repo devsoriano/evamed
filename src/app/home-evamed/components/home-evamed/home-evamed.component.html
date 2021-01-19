@@ -7,10 +7,20 @@
       <div class="filter-options">
       </div>
     </div>
+    <div class="container-principal" *ngIf="countProjectList === 0">
+      <div class="btn-primer-producto" (click)="openDialogANP()">
+        <div class="plus">+</div>
+        <div class="message-plus">Crea tu primer proyecto</div>
+      </div>
+    </div>
     <mat-card *ngFor="let project of projectsList" class="card-project">
       <div class="header-tag">
         <div class="more-vert">
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <button 
+            mat-icon-button 
+            [matMenuTriggerFor]="menu" 
+            aria-label="Example icon-button with a menu"
+          >
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
@@ -309,23 +319,15 @@
         <div mat-card-avatar class="profile-image"></div>
       </mat-card-header>
       <mat-card-content class="content-standard-card">
-        <strong class="label-name">Arq. Victor Arvizu Piña</strong>
+        <strong class="label-name">{{user}}</strong>
         <p class="label-profile">
-          Investigador
+          {{sector}}
         </p>
       </mat-card-content>
       <mat-card-content class="content-estadisticas">
         <div>
-          <div>12</div>
+          <div>{{countProjectList}}</div>
           <div>Proyectos</div>
-        </div>
-        <div>
-          <div>10</div>
-          <div>Acciones</div>
-        </div>
-        <div>
-          <div>2</div>
-          <div>Nivel</div>
         </div>
       </mat-card-content>
       <mat-card-actions>

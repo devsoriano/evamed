@@ -8,7 +8,7 @@
   box-shadow: 0px 3px 6px #00000029;
   width: 100%;
   display: grid;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 nav.nav-steps {
@@ -62,7 +62,7 @@ p.p-instrucciones {
 .list-elements {
   width: 100%;
   overflow: auto;
-  height: 90%;
+  height: 56.3%;
 }
 
 .container-systems {
@@ -77,7 +77,7 @@ p.p-instrucciones {
 .mdl-stepper-horizontal-alternative {
   display: table;
   width: 100%;
-  margin-top: 5px!important;
+  margin-top: 10px!important;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step {
@@ -135,7 +135,7 @@ p.p-instrucciones {
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
   position: absolute;
-  top: 35px;
+  top: 30px;
   height: 1px;
   border-top: 1px solid #BDBDBD;
 }
@@ -155,40 +155,66 @@ p.p-instrucciones {
 /**Custom stepper**/
 div.step-one-selected div.mdl-stepper-circle {
   background: url('./../../../../assets/images/Etapas/Produccion.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
 }
 
 div.step-two div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
   background: url('./../../../../assets/images/Etapas/Construcción_.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
 }
 
 div.step-three div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
   background: url('./../../../../assets/images/Etapas/Uso_.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
 }
 
 div.step-four div.mdl-stepper-circle {
   background-color: #CBCBCB !important;
   background: url('./../../../../assets/images/Etapas/fin.png') no-repeat 50% 50%;
-  width: 70px!important;
-  height: 70px!important;
+  width: 60px!important;
+  height: 60px!important;
+}
+
+.mdl-stepper-circle {
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 /**css materials list**/
 
 .table-materials {
   display: flex;
-  /* background-color: red; */
   justify-content: space-between;
+  align-items: center;
 
   div {
     font-size: 12px;
     font-weight: 500;
+    line-height: normal;
+  }
+
+  .col-material {
+    width: 70%;
+  }
+
+}
+
+.custom-error {
+  color: black!important;
+  width: 10px;
+}
+
+/**imagenes**/
+.container-image {
+  margin: 10px;
+
+  img.image-element {
+    max-width: 100%;
   }
 }
