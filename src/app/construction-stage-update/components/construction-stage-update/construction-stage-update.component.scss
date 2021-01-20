@@ -1,0 +1,224 @@
+.mat-expansion-panel-body {
+  padding: 0 0px 0px!important;
+}
+
+.principal-container.container-total {
+  background-color: #fff;
+  border-radius: 14px;
+  box-shadow: 0px 3px 6px #00000029;
+  width: 100%;
+  display: grid;
+  margin-top: 8px;
+}
+
+nav.nav-steps {
+  height: 5rem;
+  border-bottom: 1px solid #CBCBCB;
+}
+
+.space-row {
+  width: 100%;
+  height: 1.5rem;
+}
+
+section.container-actions {
+  width: 100%;
+  display: flex;
+  height: 27rem;
+}
+
+p.p-instrucciones {
+  color: #767676;
+  font-size: 14px;
+}
+
+.hidden {
+  color: #fff;
+}
+
+.left {
+  text-align: initial;
+  margin-left: 2rem;
+}
+
+.container-elements {
+  text-align: center;
+}
+
+.container-sheets {
+  width: 20%;
+  border-right: 1px solid #CBCBCB;
+}
+
+.container-systems {
+  width: 50%;
+}
+
+.container-details {
+  width: 30%;
+}
+
+.list-elements {
+  width: 100%;
+  overflow: auto;
+  height: 65.8%;
+}
+
+.container-systems {
+  overflow: auto;
+}
+
+.button-remove {
+  margin-top: 28px;
+  margin-left: -20px;
+}
+
+.select-general {
+  .mat-form-field-wrapper {
+    .mat-form-field-flex {
+      margin-top: -10px!important;
+    }
+  }
+}
+
+.custom-expansion-panel-header {
+  background-color: #FFF !important;
+  height: 60px!important;
+}
+
+.custom-mat-panel-title {
+  color: #000;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  border-bottom: 2px solid #CBCBCB;
+  box-shadow: none;
+}
+.mat-expansion-panel:last-of-type {
+  border-bottom-right-radius: 0px!important;
+  border-bottom-left-radius:0px!important; 
+}
+
+/**Stepers**/
+.mdl-stepper-horizontal-alternative {
+  display: table;
+  width: 100%;
+  margin-top: 10px!important;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step {
+  display: table-cell;
+  position: relative;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:active {
+  border-radius: 15% / 75%;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child:active {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child:active {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child .mdl-stepper-bar-right {
+  display: none;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-circle {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  background-color: #9E9E9E;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 2em;
+  font-size: 12px;
+  color: white;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+  text-align: center;
+  color: #000;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+  font-size: 10px;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+  position: absolute;
+  top: 30px;
+  height: 1px;
+  border-top: 1px solid #BDBDBD;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+  right: 0;
+  left: 50%;
+  margin-left: 35px;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left {
+  left: 0;
+  right: 50%;
+  margin-right: 35px;
+}
+
+/**Custom stepper**/
+div.step-one-selected div.mdl-stepper-circle {
+  background: url('./../../../../assets/images/Etapas/Produccion_.png') no-repeat 50% 50%;
+  width: 60px!important;
+  height: 60px!important;
+}
+
+div.step-two div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../../../assets/images/Etapas/Construcción.png') no-repeat 50% 50%;
+  width: 60px!important;
+  height: 60px!important;
+}
+
+div.step-three div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../../../assets/images/Etapas/Uso_.png') no-repeat 50% 50%;
+  width: 60px!important;
+  height: 60px!important;
+}
+
+div.step-four div.mdl-stepper-circle {
+  background-color: #CBCBCB !important;
+  background: url('./../../../../assets/images/Etapas/fin.png') no-repeat 50% 50%;
+  width: 60px!important;
+  height: 60px!important;
+}
+
+.mdl-stepper-circle {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/**imagenes**/
+.container-image {
+  margin: 10px;
+
+  img.image-element {
+    max-width: 100%;
+  }
+}

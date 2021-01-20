@@ -109,8 +109,6 @@ export class MaterialsStageComponent implements OnInit {
     options.map(option => {
       this.selectedSheet = option.value;
     });
-    console.log('la puta selección');
-    console.log(this.selectedSheet);
 
     this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
     this.listData = this.contentData[this.indexSheet + 1];
@@ -204,7 +202,8 @@ export class MaterialsStageComponent implements OnInit {
                       material_id:  materialData.id,
                       project_id: this.projectId,
                       origin_id: 1,
-                      section_id: parseInt(key, 10) + 1
+                      section_id: parseInt(key, 10) + 1,
+                      value: null
                     }).subscribe( data => {
                       console.log('Success!');
                       console.log(data);
@@ -234,7 +233,8 @@ export class MaterialsStageComponent implements OnInit {
                       material_id:  materialData.id,
                       project_id: this.projectId,
                       origin_id: 2,
-                      section_id: parseInt(key, 10) + 1
+                      section_id: parseInt(key, 10) + 1,
+                      value: null
                     }).subscribe( data => {
                       console.log('Success!');
                       console.log(data);

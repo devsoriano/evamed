@@ -44,10 +44,12 @@ export class ToDoFileComponent implements OnInit {
       let i = 0;
       /* save data */
       for ( i = 0; i < wb.SheetNames.length; i++) {
+        console.log('prueba rápida!!!!!!');
         partialData = XLSX.utils.sheet_to_json(
           wb.Sheets[wb.SheetNames[i]],
           { raw: true, defval: null }
         );
+        console.log(partialData);
         totalData.push(partialData);
       }
 
@@ -56,6 +58,8 @@ export class ToDoFileComponent implements OnInit {
         sheetNames: wb.SheetNames,
         data: totalData
       };
+      console.log('excel°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°');
+      console.log(totalData);
       sessionStorage.setItem('dataProject', JSON.stringify(toRead));
       // this.router.navigateByUrl('materials-stage');
     };
@@ -63,7 +67,7 @@ export class ToDoFileComponent implements OnInit {
   }
 
   onDownload() {
-    console.log('download pendiente')
+    console.log('download pendiente');
   }
 
   onDownloadWindows() {
