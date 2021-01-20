@@ -53,6 +53,12 @@ const routes: Routes = [
         canActivate: [AdminGuard],
         loadChildren: () => import('./acerca-de/acerca-de.module').then(m => m.AcercaDeModule)
       },
+      {
+        path: 'construction-stage-update',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./construction-stage-update/construction-stage-update.module')
+          .then(m => m.ConstructionStageUpdateModule)
+      }
     ]
   },
   {

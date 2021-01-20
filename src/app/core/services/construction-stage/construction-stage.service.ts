@@ -22,4 +22,14 @@ export class ConstructionStageService {
       })
     );
   }
+
+  getConstructiveSystemElement() {
+    return this.http.get<any>(
+      environment.api_construction_stage,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }

@@ -72,6 +72,7 @@ export class HomeEvamedComponent implements OnInit {
           }
           this.countProjectList = this.projectsList.length;
         });
+        console.log(this.projectsList);
       });
     });
   }
@@ -167,5 +168,10 @@ export class HomeEvamedComponent implements OnInit {
   redirectResultados(id) {
     sessionStorage.setItem('projectID', id);
     this.router.navigateByUrl('resultados');
+  }
+
+  updateMaterial(id) {
+    localStorage.setItem('idProyectoConstrucción', id);
+    this.router.navigateByUrl('construction-stage-update');
   }
 }
