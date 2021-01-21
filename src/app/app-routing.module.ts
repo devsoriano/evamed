@@ -54,10 +54,22 @@ const routes: Routes = [
         loadChildren: () => import('./acerca-de/acerca-de.module').then(m => m.AcercaDeModule)
       },
       {
+        path: 'material-stage-update',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./material-stage-update/material-stage-update.module')
+          .then(m => m.MaterialStageUpdateModule)
+      },
+      {
         path: 'construction-stage-update',
         canActivate: [AdminGuard],
         loadChildren: () => import('./construction-stage-update/construction-stage-update.module')
           .then(m => m.ConstructionStageUpdateModule)
+      },
+      {
+        path: 'usage-stage-update',
+        canActivate: [AdminGuard],
+        loadChildren: () => import('./usage-stage-update/usage-stage-update.module')
+          .then(m => m.UsageStageUpdateModule)
       }
     ]
   },

@@ -3,12 +3,14 @@ import { Router } from '@angular/router';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
 
+
 @Component({
-  selector: 'app-usage-stage',
-  templateUrl: './usage-stage.component.html',
-  styleUrls: ['./usage-stage.component.scss']
+  selector: 'app-usage-stage-update',
+  templateUrl: './usage-stage-update.component.html',
+  styleUrls: ['./usage-stage-update.component.scss']
 })
-export class UsageStageComponent implements OnInit {
+export class UsageStageUpdateComponent implements OnInit {
+
   nameProject: string;
   projectId: string;
   cantidad: number;
@@ -37,6 +39,7 @@ export class UsageStageComponent implements OnInit {
   catalogoUnidadEnergia: [];
   catalogoTipoEnergiaElectrica: any;
   catalogoTipoEnergiaCombustible: any;
+  CAID: number;
 
   constructor(
     private catalogsService: CatalogsService,
@@ -47,8 +50,6 @@ export class UsageStageComponent implements OnInit {
       this.catalogoUnidadEnergia = data;
     });
     this.catalogsService.getTypeEnergy().subscribe(data => {
-      console.log('catalogo');
-      console.log(data);
       // this.catalogoTipoEnergia = data;
       const tipoEnergiaElectrica = [];
       const tipoEnergiaCombustible = [];
@@ -67,62 +68,52 @@ export class UsageStageComponent implements OnInit {
       this.catalogoTipoEnergiaElectrica = tipoEnergiaElectrica;
       this.catalogoTipoEnergiaCombustible = tipoEnergiaCombustible;
     });
+    
+    this.electricitConsumptionService.getACR().subscribe( data => {
+      const globalData = [];
+      data.map( item => {
+        if (item.project_id === parseInt(localStorage.getItem('idProyectoConstrucción'), 10)) {
+          globalData.push(item);
+        }
+      });
+      this.projectId = globalData[0].project_id;
+      this.nameProject = 'Genérico';
+      this.cantidad = globalData[0].quantity;
+      this.unidad = globalData[0].unit_id;
+      this.CAID = globalData[0].id;
+    });
+
+    this.electricitConsumptionService.getECD().subscribe( data => {
+      data.map ( item => {
+        if( item.annual_consumption_required_id === this.CAID ) {
+          if (item.source === 'electric') {
+            this.cantidadMixElectrico = item.quantity;
+            this.porcentajeMixElectrico = item.percentage;
+            this.unidadMixElectrico = item.unit_id;
+            this.tipoMixElectrico = item.type;
+          }
+          if (item.source === 'fuel') {
+            this.cantidadCombustible = item.quantity;
+            this.porcentajeCombustible = item.percentage;
+            this.unidadCombustible = item.unit_id;
+            this.tipoCombustible = item.type;
+          }
+          if (item.source === 'panels') {
+            this.cantidadPanelesFotovoltaicos = item.quantity;
+            this.porcentajePanelesFotovoltaicos = item.percentage;
+            this.unidadPanelesFotovoltaicos = item.unit_id;
+          }
+        }
+      });
+    })
+
   }
 
   ngOnInit() {
-    const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
-    this.projectId = PDP.id;
-    this.nameProject = PDP.name_project;
   }
 
   saveStepThree() {
-    console.log('save step three');
-    console.log(this.cantidad);
-    console.log(this.projectId);
-    console.log(this.unidad);
-    this.electricitConsumptionService.addACR({
-      quantity: this.cantidad,
-      project_id: this.projectId,
-      unit_id: this.unidad
-    }).subscribe(data => {
-      console.log('success!!!!!!');
-      this.electricitConsumptionService.addECD({
-        quantity: this.cantidadCombustible,
-        percentage: this.porcentajeCombustible,
-        annual_consumption_required_id: data.id,
-        unit_id: this.unidadCombustible,
-        type: this.tipoCombustible,
-        source: 'fuel'
-      }).subscribe( data => {
-        console.log('combustible!!!!!');
-        console.log(data);
-      });
-      console.log('success!!!!!!');
-      this.electricitConsumptionService.addECD({
-        quantity: this.cantidadMixElectrico,
-        percentage: this.porcentajeMixElectrico,
-        annual_consumption_required_id: data.id,
-        unit_id: this.unidadMixElectrico,
-        type: this.tipoMixElectrico,
-        source: 'electric'
-      }).subscribe( data => {
-        console.log('Mix electrico');
-        console.log(data);
-      });
-      console.log('success!!!!!!');
-      this.electricitConsumptionService.addECD({
-        quantity: this.cantidadPanelesFotovoltaicos,
-        percentage: this.porcentajePanelesFotovoltaicos,
-        annual_consumption_required_id: data.id,
-        unit_id: this.unidadPanelesFotovoltaicos,
-        type: null,
-        source: 'panels'
-      }).subscribe( data => {
-        console.log('paneles fotovoltaicos');
-        console.log(data);
-      });
-    });
-    this.router.navigateByUrl('end-life-stage');
+    console.log('entra al proceso de edición');
   }
 
   goToMaterialStage() {

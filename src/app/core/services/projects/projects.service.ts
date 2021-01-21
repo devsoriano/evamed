@@ -44,6 +44,16 @@ export class ProjectsService {
     );
   }
 
+  getMaterialSchemeProyect(){
+    return this.http.get<any>(
+      environment.api_scheme_project,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   getProjects() {
     return this.http.get<any>(
       environment.api_projects,

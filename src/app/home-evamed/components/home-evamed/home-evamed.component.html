@@ -51,6 +51,13 @@
                       <li>Zapata corrida</li>
                       <li>Zapata aislada 2</li>
                     </ul>
+                    <button
+                      mat-button
+                      class="yellow-button"
+                      (click)="updateMaterial(project.id)"
+                    > 
+                      Editar
+                    </button>
                   </mat-card>
                   <mat-card class="card-item-custom">
                     <h2>Cimentación</h2>
@@ -106,7 +113,7 @@
                     <button
                       mat-button
                       class="yellow-button"
-                      (click)="updateMaterial(project.id)"
+                      (click)="updateConstruction(project.id)"
                     > 
                       Editar
                     </button>
@@ -162,6 +169,13 @@
                       <li>Zapata corrida</li>
                       <li>Zapata aislada 2</li>
                     </ul>
+                    <button
+                      mat-button
+                      class="yellow-button"
+                      (click)="updateUso(project.id)"
+                    > 
+                      Editar
+                    </button>
                   </mat-card>
                   <mat-card class="card-item-custom">
                     <h2>Cimentación</h2>

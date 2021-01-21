@@ -205,7 +205,7 @@ export class MaterialsStageComponent implements OnInit {
                       section_id: parseInt(key, 10) + 1,
                       value: null
                     }).subscribe( data => {
-                      console.log('Success!');
+                      console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
                     });
                   }
@@ -222,7 +222,7 @@ export class MaterialsStageComponent implements OnInit {
       this.contentData[parseInt(key, 10) + 1].map(data => {
         value.map(sc => {
           if (data.Sistema_constructivo === sc) {
-            if (data.Origen === 'Cálculo en Dynamo' ) {
+            if (data.Origen === 'Calculado en Dynamo' ) {
               this.materialsService.searchMaterial(data.Material).subscribe( material => {
                 material.map( materialData => {
                   if (materialData.name_material === data.Material) {
@@ -236,7 +236,7 @@ export class MaterialsStageComponent implements OnInit {
                       section_id: parseInt(key, 10) + 1,
                       value: null
                     }).subscribe( data => {
-                      console.log('Success!');
+                      console.log('Success Dynamo!');
                       console.log(data);
                     });
                   }
