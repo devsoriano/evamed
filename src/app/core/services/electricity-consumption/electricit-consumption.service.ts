@@ -53,4 +53,25 @@ export class ElectricitConsumptionService {
       })
     );
   }
+
+  deleteACR( id: number ) {
+    return this.http.delete(
+      `${environment.api_annual_consumption_required}${id}/`
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  deleteECD( id: number ) {
+    return this.http.delete(
+      `${environment.api_electricity_consumption_data}${id}/`
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
 }

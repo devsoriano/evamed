@@ -113,7 +113,7 @@ export class UsageStageUpdateComponent implements OnInit {
   }
 
   saveStepThree() {
-    console.log('entra al proceso de editar step three');
+    console.log('entra al proceso de edición');
   }
 
   goToMaterialStage() {
