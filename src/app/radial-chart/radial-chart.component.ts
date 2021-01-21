@@ -59,6 +59,7 @@ export class RadialChartComponent implements OnInit {
   ngOnInit(): void {
     this.cargarLabels(this.id);
     this.cargarDatos(this.id);
+    console.log("Radar");
   }
 
   cargarLabels(ID:string){

@@ -1,181 +1,182 @@
-<div class="principal-container">
-  <div class="second-container">
-    <a class="return-proyecto"><mat-icon>keyboard_arrow_left</mat-icon>regresar a proyectos</a>
-    <br><a class="tittle-proyect">{{proyecto}}</a>
-    <p class="simple-text">Duplicados</p>
-    <div class="div-proyectos-mostrados">
-      <div>
-        <button mat-button [matMenuTriggerFor]="menu">Selecciona una opción a visualizar</button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item
-            *ngFor="let item of proyect"
-            (click)="iniciar_graficas(item.id)">
-            <span>{{item.Nombre}}</span>
-          </button>
-        </mat-menu>
-      </div>
-      <div class="button-graph">
-        <div *ngFor="let item of proyect" class="button-graph">
-          <mat-card *ngIf="item.card" class="card">
-            <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
-            {{item.Nombre}}
-          </mat-card>
-        </div>
-      </div>
+<div class="sectionOne">
+  <button mat-icon-button (click)="returnHome()">
+    <mat-icon class="excepction">keyboard_arrow_left</mat-icon>
+  </button>
+  <a class="return-proyecto">regresar a proyectos</a>
+</div>
+<br><a class="tittle-proyect">{{proyecto}}</a>
+<p class="simple-text">Duplicados</p>
+<div class="div-proyectos-mostrados">
+  <div>
+    <button mat-button [matMenuTriggerFor]="menu">Selecciona una opción a visualizar</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item
+        *ngFor="let item of proyect"
+        (click)="iniciar_graficas(item.id)">
+        <span>{{item.Nombre}}</span>
+      </button>
+    </mat-menu>
+  </div>
+  <div class="button-graph">
+    <div *ngFor="let item of proyect" class="button-graph">
+      <mat-card *ngIf="item.card" class="card">
+        <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
+        {{item.Nombre}}
+      </mat-card>
     </div>
-    <mat-card class="principal-card">
-        <mat-tab-group mat-stretch-tabs (selectedIndexChange)="show($event)">
-          <mat-tab>
-            <ng-template mat-tab-label>
-              Impactos ambientales<br>por impactos del ciclo de vida
-            </ng-template>
-            <div class="div-impactos-ambientales">
-              <p>Impactos ambientales</p>
-              <div class="sub-container">
-                <div>
-                  <mat-button-toggle-group>
-                    <mat-button-toggle class="button-impactos" disabled><mat-icon class="icons-options">table_view</mat-icon></mat-button-toggle>
-                    <mat-button-toggle class="button-impactos" disabled><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
-                  </mat-button-toggle-group>
-                </div>
-                <div>
-                  <mat-button-toggle-group>
-                    <mat-button-toggle class="button-impactos" (click)="porcentaje(true,1)">%</mat-button-toggle>
-                    <mat-button-toggle class="button-impactos" (click)="porcentaje(false,1)">#</mat-button-toggle>
-                  </mat-button-toggle-group>
-                </div>
-              </div>
-            </div>
-            <div class="campo-grafica-bar" >
-              <ng-template #barContainer>
-
-              </ng-template>
-              <!-- <div [hidden]="bandera_porcentaje">
-                <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="true" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
-              </div>
-              <div [hidden]="bandera_num">
-                <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="false" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
-              </div> -->
-            </div>
-            <div>
-              <p>Dispersión de Impacto ambiental por fase de ciclo de vida</p>
-                <p>Selecciona una fase del ciclo de vida
-            </div>
-            <div class="div-secondary-graph">
-              <ul>
-                <li> <button mat-stroked-button (click)="grafica('Producción')">
-                  <mat-icon class="icons-grafica uno">visibility_off</mat-icon>Producción</button>
-                </li>
-                <li> <button mat-stroked-button (click)="grafica('Construccion')">
-                  <mat-icon class="icons-grafica dos">visibility_off</mat-icon>Construcción</button> </li>
-                <li> <button mat-stroked-button (click)="grafica('Uso')">
-                  <mat-icon class="icons-grafica tres">visibility_off</mat-icon>Uso</button> </li>
-                <li> <button mat-stroked-button (click)="grafica('FinDeVida')">
-                  <mat-icon class="icons-grafica cuatro">visibility_off</mat-icon>Fin de vida</button> </li>
-              </ul>
-              <div >
-                <ng-template #GraficasEspecificas>
-
-                </ng-template>
-                <!-- <app-pie-chart [showMePartially]="showVar" [id]="ID" [inputProyect]="outproyect_pie"></app-pie-chart>
-                <app-radial-chart [showMe]="showVar_1" [id]="ID" [inputProyect]="outproyect_radar"></app-radial-chart> -->
-              </div>
-            </div>
-          </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              Impactos ambientales<br>por elementos constructivos
-            </ng-template>
-            <div *ngIf="Impactos_Elementos">
-                 <app-bar-chart [showMe]="false" [Bandera_bar]="bandera_graph_bar" [porcentaje]="true" [inputProyects]="proyect_active"></app-bar-chart>
-                 <div>
-                   Elementos constructivos
-                   <div>
-                     <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
-                       <button (click)="graficabar(item.Nombre,item.nivel)">
-                        <mat-icon>visibility_off</mat-icon>{{item.Nombre}}</button>
-                     </div>
-                   </div>
-                 </div>
-            </div>
-          </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              Elementos constructivos<br>por etapas del ciclo de vida
-            </ng-template>
-            <div *ngIf="Elementos_constructivos">
-              <div class="div-elementos-constructivos">
-                <div>
-                  <p>Selecciona impacto ambiental</p>
-                    <mat-select  (ngModelChange)="grafica_pie_elementos($event)" [(ngModel)]="selectedValue" name="food" class="example-margin">
-                      <mat-option *ngFor="let food of Impactos_menu" [value]="food.value">
-                        {{food.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                </div>
-                <div>
-                  <p>Elementos constructivos</p>
-                  <section class="example-section">
-                    <mat-checkbox class="example-margin">Cimentación</mat-checkbox>
-                    <mat-checkbox class="example-margin">Muros ext.</mat-checkbox>
-                    <mat-checkbox class="example-margin">Estructura</mat-checkbox>
-                    <mat-checkbox class="example-margin">Ins. especiales</mat-checkbox>
-                    <mat-checkbox class="example-margin">Pisos</mat-checkbox>
-                    <mat-checkbox class="example-margin">Techo cubierta</mat-checkbox>
-                    <mat-checkbox class="example-margin">Puertas</mat-checkbox>
-                    <mat-checkbox class="example-margin">Otros</mat-checkbox>
-                    <mat-checkbox class="example-margin">Muros interiores</mat-checkbox>
-                    <mat-checkbox class="example-margin">Entrepisos</mat-checkbox>
-                    <mat-checkbox class="example-margin">Ventanas </mat-checkbox>
-                  </section>
-                </div>
-                <div>
-                  <p>Fases del ciclo de vida</p>
-                </div>
-              </div>
-              <div *ngIf="indicador_elegido">
-               <mat-card *ngFor="let item of outproyect_bar; let i = index" class="card-indicador">
-                 <div class="elementos-seccionUno">
-                   <div class="Botones">
-                     <div>
-                       <a>{{item.Nombre}}</a>
-                       <p>Dispersión del impacto ambiental <br> por fases del ciclo de vida</p>
-                     </div>
-                      <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
-                   </div>
-                   <div>
-                     <app-pie-chart [id]="indicador_impacto" [showMe_elementos]="proyectosMostrados_elementos[i].showpie" [inputProyect]="outproyect_bar" [Bandera_resultado]="bandera_resultado" (ClickEvent)="configurarDatos($event, item.id)" [proyecto]="item.id" [bandera_click]="0"></app-pie-chart>
-                     <app-bar-chart-simple [showGr]="proyectosMostrados_elementos[i].showbar" (ClickEvent)="configurarDatos($event, item.id)" [idProyect]="item.id"></app-bar-chart-simple>
-                   </div>
-                   <div class="Botones">
-                     <div>
-                     </div>
-                     <div>
-                        <mat-radio-group>
-                          <mat-button-toggle class="button-impactos" (click)="change_graph(1,item.id)"><mat-icon class="icons-options">pie_chart</mat-icon></mat-button-toggle>
-                          <mat-button-toggle class="button-impactos" (click)="change_graph(2,item.id)" ><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
-                        </mat-radio-group>
-                     </div>
-                   </div>
-                 </div>
-                 <div class="elementos-seccionDos">
-                   <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
-                   <div *ngIf="proyectosMostrados_elementos[i].showciclo">
-                     <app-pie-chart [id]="proyectosMostrados_elementos[i].ciclo" [showMe_elementos]="proyectosMostrados_elementos[i].showciclo" (ClickEvent)="configurarData($event, item.id)" [Bandera_resultado]="3" [proyecto]="item.id" [bandera_click]="1"></app-pie-chart>
-                   </div>
-                 </div>
-                 <div>
-                   <p>Dispersión del impacto en cimentación</p>
-                   <div *ngIf="proyectosMostrados_elementos[i].showcimenta">
-                     <app-bar-chart-simple [ciclo]="proyectosMostrados_elementos[i].ciclo" [elemento]="proyectosMostrados_elementos[i].elemento" [showGr]="false" [idProyect]="item.id" [showlastGr]="proyectosMostrados_elementos[i].showcimenta" ></app-bar-chart-simple>
-                     <a>materiales</a>
-                   </div>
-                 </div>
-               </mat-card>
-             </div>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-    </mat-card>
   </div>
 </div>
+<mat-card class="principal-card">
+    <mat-tab-group mat-stretch-tabs class="container-principal-tab" (selectedIndexChange)="show($event)">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Impactos ambientales<br>por impactos del ciclo de vida
+        </ng-template>
+        <div class="div-impactos-ambientales">
+          <p>Impactos ambientales</p>
+          <div class="sub-container">
+            <div>
+              <mat-button-toggle-group>
+                <mat-button-toggle class="button-impactos" disabled><mat-icon class="icons-options">table_view</mat-icon></mat-button-toggle>
+                <mat-button-toggle class="button-impactos" disabled><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+            <div>
+              <mat-button-toggle-group>
+                <mat-button-toggle class="button-impactos" (click)="porcentaje(true,1)">%</mat-button-toggle>
+                <mat-button-toggle class="button-impactos" (click)="porcentaje(false,1)">#</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+        </div>
+        <div class="campo-grafica-bar" >
+          <ng-template #barContainer>
+
+          </ng-template>
+          <!-- <div [hidden]="bandera_porcentaje">
+            <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="true" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
+          </div>
+          <div [hidden]="bandera_num">
+            <app-bar-chart [showMe]="hover" [inputProyects]="outproyect_bar" [porcentaje]="false" (lastClickEvent)="receiveSelector($event)"></app-bar-chart>
+          </div> -->
+        </div>
+        <div>
+          <p>Dispersión de Impacto ambiental por fase de ciclo de vida</p>
+            <p>Selecciona una fase del ciclo de vida
+        </div>
+        <div class="div-secondary-graph">
+          <ul>
+            <li> <button mat-stroked-button (click)="grafica('Producción')">
+              <mat-icon class="icons-grafica uno">visibility_off</mat-icon>Producción</button>
+            </li>
+            <li> <button mat-stroked-button (click)="grafica('Construccion')">
+              <mat-icon class="icons-grafica dos">visibility_off</mat-icon>Construcción</button> </li>
+            <li> <button mat-stroked-button (click)="grafica('Uso')">
+              <mat-icon class="icons-grafica tres">visibility_off</mat-icon>Uso</button> </li>
+            <li> <button mat-stroked-button (click)="grafica('FinDeVida')">
+              <mat-icon class="icons-grafica cuatro">visibility_off</mat-icon>Fin de vida</button> </li>
+          </ul>
+          <div >
+            <ng-template #GraficasEspecificas>
+
+            </ng-template>
+            <!-- <app-pie-chart [showMePartially]="showVar" [id]="ID" [inputProyect]="outproyect_pie"></app-pie-chart>
+            <app-radial-chart [showMe]="showVar_1" [id]="ID" [inputProyect]="outproyect_radar"></app-radial-chart> -->
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Impactos ambientales<br>por elementos constructivos
+        </ng-template>
+        <div *ngIf="Impactos_Elementos">
+              <app-bar-chart [showMe]="false" [Bandera_bar]="bandera_graph_bar" [porcentaje]="true" [inputProyects]="proyect_active"></app-bar-chart>
+              <div>
+                Elementos constructivos
+                <div>
+                  <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
+                    <button (click)="graficabar(item.Nombre,item.nivel)">
+                    <mat-icon>visibility_off</mat-icon>{{item.Nombre}}</button>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Elementos constructivos<br>por etapas del ciclo de vida
+        </ng-template>
+        <div *ngIf="Elementos_constructivos">
+          <div class="div-elementos-constructivos">
+            <div>
+              <p>Selecciona impacto ambiental</p>
+                <mat-select  (ngModelChange)="grafica_pie_elementos($event)" [(ngModel)]="selectedValue" name="food" class="example-margin">
+                  <mat-option *ngFor="let food of Impactos_menu" [value]="food.value">
+                    {{food.viewValue}}
+                  </mat-option>
+                </mat-select>
+            </div>
+            <div>
+              <p>Elementos constructivos</p>
+              <section class="example-section">
+                <mat-checkbox class="example-margin">Cimentación</mat-checkbox>
+                <mat-checkbox class="example-margin">Muros ext.</mat-checkbox>
+                <mat-checkbox class="example-margin">Estructura</mat-checkbox>
+                <mat-checkbox class="example-margin">Ins. especiales</mat-checkbox>
+                <mat-checkbox class="example-margin">Pisos</mat-checkbox>
+                <mat-checkbox class="example-margin">Techo cubierta</mat-checkbox>
+                <mat-checkbox class="example-margin">Puertas</mat-checkbox>
+                <mat-checkbox class="example-margin">Otros</mat-checkbox>
+                <mat-checkbox class="example-margin">Muros interiores</mat-checkbox>
+                <mat-checkbox class="example-margin">Entrepisos</mat-checkbox>
+                <mat-checkbox class="example-margin">Ventanas </mat-checkbox>
+              </section>
+            </div>
+            <div>
+              <p>Fases del ciclo de vida</p>
+            </div>
+          </div>
+          <div *ngIf="indicador_elegido">
+            <mat-card *ngFor="let item of outproyect_bar; let i = index" class="card-indicador">
+              <div class="elementos-seccionUno">
+                <div class="Botones">
+                  <div>
+                    <a>{{item.Nombre}}</a>
+                    <p>Dispersión del impacto ambiental <br> por fases del ciclo de vida</p>
+                  </div>
+                  <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
+                </div>
+                <div>
+                  <app-pie-chart [id]="indicador_impacto" [showMe_elementos]="proyectosMostrados_elementos[i].showpie" [inputProyect]="outproyect_bar" [Bandera_resultado]="bandera_resultado" (ClickEvent)="configurarDatos($event, item.id)" [proyecto]="item.id" [bandera_click]="0"></app-pie-chart>
+                  <app-bar-chart-simple [showGr]="proyectosMostrados_elementos[i].showbar" (ClickEvent)="configurarDatos($event, item.id)" [idProyect]="item.id"></app-bar-chart-simple>
+                </div>
+                <div class="Botones">
+                  <div>
+                  </div>
+                  <div>
+                    <mat-radio-group>
+                      <mat-button-toggle class="button-impactos" (click)="change_graph(1,item.id)"><mat-icon class="icons-options">pie_chart</mat-icon></mat-button-toggle>
+                      <mat-button-toggle class="button-impactos" (click)="change_graph(2,item.id)" ><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div class="elementos-seccionDos">
+                <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
+                <div *ngIf="proyectosMostrados_elementos[i].showciclo">
+                  <app-pie-chart [id]="proyectosMostrados_elementos[i].ciclo" [showMe_elementos]="proyectosMostrados_elementos[i].showciclo" (ClickEvent)="configurarData($event, item.id)" [Bandera_resultado]="3" [proyecto]="item.id" [bandera_click]="1"></app-pie-chart>
+                </div>
+              </div>
+              <div>
+                <p>Dispersión del impacto en cimentación</p>
+                <div *ngIf="proyectosMostrados_elementos[i].showcimenta">
+                  <app-bar-chart-simple [ciclo]="proyectosMostrados_elementos[i].ciclo" [elemento]="proyectosMostrados_elementos[i].elemento" [showGr]="false" [idProyect]="item.id" [showlastGr]="proyectosMostrados_elementos[i].showcimenta" ></app-bar-chart-simple>
+                  <a>materiales</a>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+</mat-card>

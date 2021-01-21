@@ -11,6 +11,7 @@ import { forkJoin, observable } from 'rxjs';
 import { couldStartTrivia } from 'typescript';
 import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
 import { Router } from '@angular/router';
+import { CompileSummaryKind } from '@angular/compiler';
 
 interface impactos_menu{
   value: string;
@@ -45,7 +46,7 @@ export class CompararComponent implements OnInit {
   childRadar: QueryList<RadialChartComponent>;
   @ViewChildren(BarChartSimpleComponent)
   childBarSimple: QueryList<BarChartSimpleComponent>;
-  selector: string;
+  selector = 'Ninguno';
   bandera:number;
   showVar: boolean = false;
   showVar_1: boolean = false;
@@ -70,6 +71,8 @@ export class CompararComponent implements OnInit {
   Impactos_Elementos:boolean=false;
   Elementos_constructivos:boolean=false;
   selectedValue: string;
+  seleccion_columna:any;
+  click_anterior:'Ninguno';
   labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
   proyectosMostrados_elementos=[{
     idproyecto:0,
@@ -114,6 +117,7 @@ export class CompararComponent implements OnInit {
     private materials: MaterialsService,
     private projects: ProjectsService,
     private analisis: AnalisisService,
+    private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver
     ){
 
@@ -179,6 +183,11 @@ export class CompararComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //Regreso a la página de inicio
+  returnHome(){
+    this.router.navigateByUrl('home-evamed');
+  }
+
   //agregar proyecto a graficas
 
   iniciar_graficas(id:number){
@@ -186,7 +195,6 @@ export class CompararComponent implements OnInit {
     if (this.proyect_active.some((item) => item == id) ) {
       return;
     }
-    //console.log(id)
     this.proyect_active.push(id);
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -197,12 +205,20 @@ export class CompararComponent implements OnInit {
     let analisis = this.getAnalisisBarras(id);
     let analisisRad = this.getAnalisisRadial(id);
     let analisisPie = this.getAnalisisPie(id);
-    // console.log(analisisPie)
     this.outproyect_bar.push(analisis);
     this.outproyect_radar.push(analisisRad);
     this.outproyect_pie.push(analisisPie);
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     this.iniciaBarras();
+    this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
+      idproyecto: id,
+      showpie: true,
+      showbar: false,
+      showciclo: false,
+      ciclo: ' ',
+      showcimenta: false,
+      elemento: ' '
+    }];
     this.showVar = false;
     this.showVar_1 = false;
     return;
@@ -217,7 +233,11 @@ export class CompararComponent implements OnInit {
     grafica.instance.inputProyects = this.outproyect_bar;
     grafica.instance.showMe = this.hover;
     grafica.instance.Bandera_bar=false;
+    grafica.instance.LClick = this.selector;
+    grafica.instance.seleccion_columna= this.seleccion_columna;
+    grafica.instance.clicknterior=this.click_anterior;
     grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
+    grafica.instance.selectEvent.subscribe(e => this.receiveSelect(e));
   }
 
   iniciaRadiales(){
@@ -684,18 +704,36 @@ export class CompararComponent implements OnInit {
           card: false
         }];
     })
+    this.Impactos_menu=[{
+      value : 'PCG100',
+      viewValue : 'PCG100'
+    },
+    {
+      value : 'PAAe',
+      viewValue : 'PAAe'
+    },
+    {
+      value : 'PAAf',
+      viewValue : 'PAAf'
+    },
+    {
+      value: 'PFOF',
+      viewValue: 'PFOF'
+    },
+    {
+      value: 'PA',
+      viewValue: 'PA'
+    },
+    {
+      value: 'PE',
+      viewValue: 'PE'
+    },
+        {
+      value: 'PAO',
+      viewValue: 'PAO'
+    }
+  ]
     this.iniciar_graficas(this.idProyectoActivo);
-    // console.log('inicia radiales')
-    this.iniciaRadiales();
-    this.iniciaPie();
-
-    // this.proyect_active.push(this.idProyectoActivo);
-    // this.outproyect_bar.push(this.getAnalisisBarras(this.idProyectoActivo));
-    // this.datosProcentaje();
-    //carga de datos inicial en graficas
-    // this.outproyect_bar.push(this.inputproyect_bar[0]);
-    // this.outproyect_radar.push(this.inputproyect_radar[0]);
-    // this.outproyect_pie.push(this.inputproyect_pie[0]);
   }
 
   //activar gráfica de porcentaje
@@ -704,36 +742,37 @@ export class CompararComponent implements OnInit {
 
     this.bandera_porcentaje = val;
     this.iniciaBarras();
+    this.containerGraficas.clear();
     return;
   }
 
   // //agregar proyecto a graficas
-  // iniciar_graficas(id:number){
-  //   if (!this.proyect_active.some((item) => item == id)) {
-  //     this.proyect_active.push(id);
-  //     this.outproyect_bar_num.push(this.inputproyect_bar[id]);
-  //     this.outproyect_bar_porcent.push(this.inputproyect_bar_porcent[id]);
-  //     this.outproyect_radar.push(this.inputproyect_radar[id]);
-  //     this.outproyect_pie.push(this.inputproyect_pie[id]);
-  //     this.proyect.forEach((proyecto,index) => {
-  //       if(proyecto.id==id){
-  //         this.proyect[index].card = true;
-  //       }
-  //     });
-  //     this.porcentaje(this.bandera_porcentaje,2);
-  //     this.proyectosMostrados_elementos=[...this.proyectosMostrados_elementos,{
-  //       idproyecto: id,
-  //       showpie: true,
-  //       showbar: false,
-  //       showciclo: false,
-  //       ciclo: ' ',
-  //       showcimenta: false,
-  //       elemento:' '
-  //     }];
-  //     this.showVar = false;
-  //     this.showVar_1 = false;
-  //   }
-  // }
+  /*iniciar_graficas(id:number){
+     if (!this.proyect_active.some((item) => item == id)) {
+       this.proyect_active.push(id);
+       this.outproyect_bar_num.push(this.inputproyect_bar[id]);
+       this.outproyect_bar_porcent.push(this.inputproyect_bar_porcent[id]);
+       this.outproyect_radar.push(this.inputproyect_radar[id]);
+       this.outproyect_pie.push(this.inputproyect_pie[id]);
+       this.proyect.forEach((proyecto,index) => {
+         if(proyecto.id==id){
+           this.proyect[index].card = true;
+         }
+      });
+       this.porcentaje(this.bandera_porcentaje,2);
+       this.proyectosMostrados_elementos=[...this.proyectosMostrados_elementos,{
+         idproyecto: id,
+         showpie: true,
+         showbar: false,
+         showciclo: false,
+         ciclo: ' ',
+         showcimenta: false,
+         elemento:' '
+       }];
+       this.showVar = false;
+       this.showVar_1 = false;
+     }
+  }*/
 
   //quitar proyecto a las gráficas
   quitarProyecto(ID:number){
@@ -758,22 +797,33 @@ export class CompararComponent implements OnInit {
   //interacción con la gráfca de bar
   receiveSelector($event) {
     //cordinate with bar graph
-    this.selector = $event;
     this.showVar_1 = false;
     this.showVar = false;
-    if (this.selector==null){
+    this.selector = $event;
+    if ($event==null){
       this.bandera = 0;
       this.hover = true;
     }else{
+      this.containerGraficas.clear();
       this.bandera=1;
       this.hover = false;
+      this.ID = ' ';
     }
 
+    //this.iniciaBarras();
+
+  }
+
+  receiveSelect($event){
+    console.log($event)
+    this.click_anterior=$event.label;
+    this.seleccion_columna=$event;
   }
 
   //Despliegue gráficas de pie o radar
   grafica(x: string) {
     //activate graph selectioned
+    this.containerGraficas.clear();
     this.bandera_resultado = 2;
     if (this.banderaGrapg == 0) {
       this.banderaGrapg++;
@@ -785,24 +835,24 @@ export class CompararComponent implements OnInit {
       } else {
         this.showVar_1 = false;
         this.hover = true;
-        this.childBar.forEach(c => c.resetColores());
+        //this.childBar.forEach(c => c.resetColores());
       }
       this.banderaGrapg=0;
       this.ID = x;
-      this.containerGraficas.clear()
+      this.containerGraficas.clear();
     }else{
       this.ID = x;
       if (this.bandera == 1) {
         this.showVar = true;
         this.showVar_1 =false;
-
         this.iniciaPie();
       } else {
         this.showVar_1 = true;
         this.showVar=false;
         this.hover=false;
         // console.log('radiales')
-        this.iniciaRadiales()
+        this.iniciaBarras();
+        this.iniciaRadiales();
       }
     }
   }

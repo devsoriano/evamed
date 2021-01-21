@@ -1,26 +1,14 @@
-
-.second-container{
-  width: 100%;
-  margin: auto;
-}
-
 .campo-grafica-bar{
   width: 85%;
   margin: auto;
 }
 
-.return-proyecto {
-  top: 126px;
-  left: 140px;
-  width: 151px;
-  height: 17px;
-  text-align: left;
-  font:17px Helvetica Neue;
-  letter-spacing: 0px;
+.sectionOne{
+  font-size: 15px;
   color: #92BE00;
-  opacity: 1;
-  .mat-icon{
-    font-size: 15px;
+
+  mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+    color: #92BE00;
   }
 }
 
@@ -79,6 +67,9 @@
     text-align: left;
     background-color: #efefefc7;
   }
+  mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+    color: #FFFFFF;
+  }
 
 }
 
@@ -95,12 +86,8 @@
 }
 
 .tittle-proyect{
-  top: 147px;
-  left: 154px;
-  width: 263px;
-  height: 24px;
-  text-align: left;
-  font:25px Helvetica Neue;
+  font-size: 20px;
+  font-style: medium;
   letter-spacing: 0px;
   color: #343434;
   opacity: 1;
@@ -110,6 +97,7 @@
   color: white;
   border-radius: 50%;
   font-size: 18px;
+  margin-top: 2px;
   text-align: center;
 }
 
