@@ -91,7 +91,8 @@ export class UsageStageComponent implements OnInit {
         percentage: this.porcentajeCombustible,
         annual_consumption_required_id: data.id,
         unit_id: this.unidadCombustible,
-        type: this.tipoCombustible
+        type: this.tipoCombustible,
+        source: 'fuel'
       }).subscribe( data => {
         console.log('combustible!!!!!');
         console.log(data);
@@ -102,7 +103,8 @@ export class UsageStageComponent implements OnInit {
         percentage: this.porcentajeMixElectrico,
         annual_consumption_required_id: data.id,
         unit_id: this.unidadMixElectrico,
-        type: this.tipoMixElectrico
+        type: this.tipoMixElectrico,
+        source: 'electric'
       }).subscribe( data => {
         console.log('Mix electrico');
         console.log(data);
@@ -113,7 +115,8 @@ export class UsageStageComponent implements OnInit {
         percentage: this.porcentajePanelesFotovoltaicos,
         annual_consumption_required_id: data.id,
         unit_id: this.unidadPanelesFotovoltaicos,
-        type: null
+        type: null,
+        source: 'panels'
       }).subscribe( data => {
         console.log('paneles fotovoltaicos');
         console.log(data);

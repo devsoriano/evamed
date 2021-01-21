@@ -84,10 +84,25 @@ export class UsageStageUpdateComponent implements OnInit {
     });
 
     this.electricitConsumptionService.getECD().subscribe( data => {
-      console.log('respuesta!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       data.map ( item => {
         if( item.annual_consumption_required_id === this.CAID ) {
-          console.log(item);
+          if (item.source === 'electric') {
+            this.cantidadMixElectrico = item.quantity;
+            this.porcentajeMixElectrico = item.percentage;
+            this.unidadMixElectrico = item.unit_id;
+            this.tipoMixElectrico = item.type;
+          }
+          if (item.source === 'fuel') {
+            this.cantidadCombustible = item.quantity;
+            this.porcentajeCombustible = item.percentage;
+            this.unidadCombustible = item.unit_id;
+            this.tipoCombustible = item.type;
+          }
+          if (item.source === 'panels') {
+            this.cantidadPanelesFotovoltaicos = item.quantity;
+            this.porcentajePanelesFotovoltaicos = item.percentage;
+            this.unidadPanelesFotovoltaicos = item.unit_id;
+          }
         }
       });
     })
