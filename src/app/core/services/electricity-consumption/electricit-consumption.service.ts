@@ -12,6 +12,26 @@ export class ElectricitConsumptionService {
     private http: HttpClient,
   ) { }
 
+  getACR() {
+    return this.http.get<any>(
+      environment.api_annual_consumption_required,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getECD() {
+    return this.http.get<any>(
+      environment.api_electricity_consumption_data,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   addACR( acrData: object ) {
     return this.http.post<any>(
       environment.api_annual_consumption_required,

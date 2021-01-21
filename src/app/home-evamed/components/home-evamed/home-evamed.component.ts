@@ -180,5 +180,10 @@ export class HomeEvamedComponent implements OnInit {
     this.router.navigateByUrl('construction-stage-update');
   }
 
+  updateUso(id) {
+    localStorage.setItem('idProyectoConstrucción', id);
+    this.router.navigateByUrl('usage-stage-update');
+  }
+
 
 }
