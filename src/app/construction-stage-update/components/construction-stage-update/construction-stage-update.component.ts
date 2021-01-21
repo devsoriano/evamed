@@ -96,26 +96,46 @@ export class ConstructionStageUpdateComponent implements OnInit {
     // take index of selection
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
 
-    //
-    let getData = [];
+    // map data exist to edit
+    let getDataEC = [];
+    let getDataAC = [];
+    let getDataDG = [];
     this.CSE.map((item, key) => {
       const prevData = [];
       if (item.section_id === ( this.indexSheet + 1 )) {
-        prevData['cantidad'] = item.quantity;
-        prevData['fuente'] = item.source_information_id;
-        prevData['energy_unit_id'] = item.energy_unit_id;
-        getData.push(prevData);
+        switch(item.constructive_process_id) {
+          case 1:
+            prevData['cantidad'] = item.quantity;
+            prevData['fuente'] = item.source_information_id;
+            prevData['energy_unit_id'] = item.energy_unit_id;
+            getDataEC.push(prevData);
+            break;
+          case 2:
+            prevData['cantidad'] = item.quantity;
+            prevData['fuente'] = item.source_information_id;
+            prevData['energy_unit_id'] = item.energy_unit_id;
+            getDataAC.push(prevData);
+            break;
+          case 3:
+            prevData['cantidad'] = item.quantity;
+            prevData['fuente'] = item.source_information_id;
+            prevData['energy_unit_id'] = item.energy_unit_id;
+            getDataDG.push(prevData);
+            break;
+          default:
+            break;
+        }
       }
     });
-    console.log(getData);
 
     // take memory of saved data
     let i;
     for ( i = 0; i <= this.sheetNames.length; i++ ) {
-      // Flujo de edición
+      // Initial data exist
       if ( this.indexSheet === i ) {
-        this.dataArrayEC = getData;
-        // getData = this.EC[i];
+        this.dataArrayEC = getDataEC;
+        this.dataArrayAC = getDataAC;
+        this.dataArrayDG = getDataDG;
       }
       // Flujo normal
       if ( this.indexSheet === i && this.EC !== undefined ) {

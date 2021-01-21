@@ -214,7 +214,7 @@ export class ConstructionStageComponent implements OnInit {
             bulk_unit_id: null,
             source_information_id: data.fuente
         }).subscribe(data => {
-            console.log('Success!');
+            console.log('Success EC!!!!!!!');
             console.log(data);
           });
         });
@@ -238,7 +238,7 @@ export class ConstructionStageComponent implements OnInit {
             bulk_unit_id: null,
             source_information_id: data.fuente
         }).subscribe(data => {
-            console.log('Success!');
+            console.log('Success AC!!!!!');
             console.log(data);
           });
         });
@@ -262,7 +262,7 @@ export class ConstructionStageComponent implements OnInit {
             bulk_unit_id: data.unidad,
             source_information_id: data.fuente
         }).subscribe(data => {
-            console.log('Success!');
+            console.log('Success DG!!!!!');
             console.log(data);
           });
         });
