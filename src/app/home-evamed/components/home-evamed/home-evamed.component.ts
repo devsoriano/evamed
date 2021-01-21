@@ -172,6 +172,13 @@ export class HomeEvamedComponent implements OnInit {
 
   updateMaterial(id) {
     localStorage.setItem('idProyectoConstrucción', id);
+    this.router.navigateByUrl('material-stage-update');
+  }
+
+  updateConstruction(id) {
+    localStorage.setItem('idProyectoConstrucción', id);
     this.router.navigateByUrl('construction-stage-update');
   }
+
+
 }

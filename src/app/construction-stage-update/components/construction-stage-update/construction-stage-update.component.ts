@@ -24,7 +24,6 @@ export class ConstructionStageUpdateComponent implements OnInit {
   catalogoUnidadVolumen: [];
   catalogoUnidadMasa: [];
   nameProject: string;
-  projectId: number;
   dataArrayEC = [];
   dataArrayAC = [];
   dataArrayDG = [];
@@ -70,7 +69,6 @@ export class ConstructionStageUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.nameProject = 'Genérico';
-    this.projectId = 1;
 
     this.sheetNames = [
       'Cimentación',
