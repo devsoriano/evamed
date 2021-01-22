@@ -139,7 +139,9 @@ export class PieChartComponent implements OnInit {
               color = this.colores[element];
               auxdatos = aux[auxlabel[element]]
               Object.keys(aux[auxlabel[element]]).forEach(marcador => {
-                auxdataLabel=[...auxdataLabel, marcador];
+                auxdataLabel=[...auxdataLabel,
+                  { label: marcador,
+                    Color: color}];
                 datos = [...datos, (auxdatos[marcador]*100).toFixed(2)];
               });
             }
@@ -152,7 +154,7 @@ export class PieChartComponent implements OnInit {
           this.pieChartLabels=[...this.pieChartLabels,auxdataLabel];
           datos=[];
           auxdataLabel = [];
-          // console.log(auxdata)
+          console.log(this.pieChartLabels);
         });
 
       }

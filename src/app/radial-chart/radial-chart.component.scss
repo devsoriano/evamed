@@ -1,4 +1,7 @@
-.div-principal {
-  display: inline-grid;
-  grid-template-columns: auto auto auto;
+.graficas-especificas {
+  display: grid;
+  grid-template-columns: repeat(2, 450px);
+  column-gap: 50px;
+  row-gap: 50px;
+  margin: 20px;
 }

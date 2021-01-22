@@ -37,6 +37,7 @@ export class CompararComponent implements OnInit {
   pieChart = PieChartComponent;
 
   @ViewChild('barContainer', { read: ViewContainerRef }) container: ViewContainerRef;
+  @ViewChild('barGraphDos', { read: ViewContainerRef }) containerBarGrafica: ViewContainerRef;
   @ViewChild('GraficasEspecificas', {read: ViewContainerRef}) containerGraficas: ViewContainerRef;
   @ViewChildren(BarChartComponent)
   childBar: QueryList<BarChartComponent>;
@@ -70,6 +71,7 @@ export class CompararComponent implements OnInit {
   Impactos_ambientales:boolean=true;
   Impactos_Elementos:boolean=false;
   Elementos_constructivos:boolean=false;
+  show_Dispercion:boolean=false;
   selectedValue: string;
   seleccion_columna:any;
   click_anterior:'Ninguno';
@@ -85,7 +87,7 @@ export class CompararComponent implements OnInit {
   }];
   bandera_graph_bar=false;
   botones_elementos_constructivos=[
-    { Nombre: 'Cimentación', nivel: 'n1' }, { Nombre: 'Pisos', nivel: 'n2' }, { Nombre: 'Muros Interiores', nivel: 'n3' },
+    { Nombre: 'Cimentación', nivel: 'n1' }, { Nombre: 'Pisos', nivel: 'n2' }, { Nombre: 'Muros Int.', nivel: 'n3' },
     { Nombre: 'Muros ext.', nivel: 'n4' }, { Nombre: 'Ventanas', nivel: 'n5' }, { Nombre: 'Ins Especiales', nivel: 'n6' },
     { Nombre: 'Otros', nivel: 'n7' }, { Nombre: 'Techo cubierta', nivel: 'n8' }, { Nombre: 'Entrepiso', nivel: 'n9' },
     { Nombre: 'Estructura', nivel: 'n10' }, { Nombre: 'Puertas', nivel: 'n11' }];
@@ -210,6 +212,7 @@ export class CompararComponent implements OnInit {
     this.outproyect_pie.push(analisisPie);
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     this.iniciaBarras();
+    this.iniciaBarrasSeccionDos();
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
       showpie: true,
@@ -233,11 +236,22 @@ export class CompararComponent implements OnInit {
     grafica.instance.inputProyects = this.outproyect_bar;
     grafica.instance.showMe = this.hover;
     grafica.instance.Bandera_bar=false;
-    grafica.instance.LClick = this.selector;
-    grafica.instance.seleccion_columna= this.seleccion_columna;
-    grafica.instance.clicknterior=this.click_anterior;
+    grafica.instance.lastClick = this.selector;
     grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
-    grafica.instance.selectEvent.subscribe(e => this.receiveSelect(e));
+  }
+
+  //creación de gráfica de barras para la sección de impactos ambientales por
+  //elementos onstructivos
+  iniciaBarrasSeccionDos(){
+    this.containerBarGrafica.clear();
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
+    const grafica = this.containerBarGrafica.createComponent(componentFactory);
+    grafica.instance.inputProyects = this.proyect_active;
+    grafica.instance.showMe = false;
+    grafica.instance.Bandera_bar = this.bandera_graph_bar;
+    grafica.instance.porcentaje=true;
+    //grafica.instance.lastClick = this.selector;
+    //grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
   }
 
   iniciaRadiales(){
@@ -682,6 +696,7 @@ export class CompararComponent implements OnInit {
       this.Impactos_Elementos = true;
       this.Elementos_constructivos = false;
       this.bandera_graph_bar=true;
+      this.iniciaBarrasSeccionDos();
     }else{
       this.Impactos_ambientales = false;
       this.Impactos_Elementos = false;
@@ -690,6 +705,11 @@ export class CompararComponent implements OnInit {
     }
     this.ResetTabs($event);
   }
+
+  analisisSeccionDos(){
+    //Calculos y obtención de datos para crear correctamente las gráficas de barras
+  }
+
   //Se cargan los proyetcos existentes y se configura el menu
   menu_inicio(){
     this.projectsList.forEach(proyecto => {
@@ -734,6 +754,7 @@ export class CompararComponent implements OnInit {
     }
   ]
     this.iniciar_graficas(this.idProyectoActivo);
+
   }
 
   //activar gráfica de porcentaje
@@ -809,6 +830,7 @@ export class CompararComponent implements OnInit {
       this.hover = false;
       this.ID = ' ';
     }
+    console.log(this.selector);
 
     //this.iniciaBarras();
 
@@ -850,8 +872,8 @@ export class CompararComponent implements OnInit {
         this.showVar_1 = true;
         this.showVar=false;
         this.hover=false;
-        // console.log('radiales')
-        this.iniciaBarras();
+        console.log('radiales')
+        //this.iniciaBarras();
         this.iniciaRadiales();
       }
     }
@@ -921,6 +943,10 @@ export class CompararComponent implements OnInit {
         }
       }
     });
+  }
+
+  DispercionAP(){
+    this.show_Dispercion=true;
   }
 
   //configuración de la sección dispersión del impacto en cimentación

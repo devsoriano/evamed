@@ -22,9 +22,7 @@ export class BarChartComponent implements OnInit {
   @Input('porcentaje') porcentaje : any;
   @Input() showMe:boolean;
   @Input() Bandera_bar:boolean;
-  @Input() LClick:string;
-  @Input() clicknterior:string;
-  @Input() seleccion_columna:any;
+  @Input() lastClick:string;
 
 
   private colores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89'};
@@ -32,13 +30,12 @@ export class BarChartComponent implements OnInit {
   private coloresGraph2 = { n1: '#5A1002', n2: '#902511', n3: '#BE3218', n4: '#EB3F20', n5: '#EB5720', n6: '#EB7620', n7: '#EB9520', n8: '#EBAD20', n9: '#EBC420', n10: '#EBDB20', n11: '#CCEB20', n12: '#76EB20'}
   private coloresBW = {Producción : '#B1B1B1', Construccion : '#6A6A6A', Uso : '#686868', FinDeVida : '#969696'};
 
-  private lastClick='Ninguno';
+  //private lastClick='Ninguno';
   private hovered = null;
   private centrosX = {};
   private proyectos = [];
   private inicializado = false;
   @Output() lastClickEvent = new EventEmitter<string>();
-  @Output() selectEvent = new EventEmitter<any>();
   private maxValue = 0;
 
   public barChartOptions: ChartOptions = {
@@ -75,13 +72,6 @@ export class BarChartComponent implements OnInit {
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
-    this.lastClick = this.LClick;
-    if(this.showMe==false){
-      console.log("LC:",this.LClick,"SC:",this.seleccion_columna);
-      this.lastClick=this.clicknterior;
-      this.lastClick=this.LClick;
-      this.focusColumnas(this.seleccion_columna);
-    }
     console.log("Bar");
   }
 
@@ -317,15 +307,6 @@ export class BarChartComponent implements OnInit {
   }
 
   public focusColumnas(seleccion: any){
-    // Selecciona las columnas deacuerdo con la etiqueta en el eje X De acuerdo a barChartLabels
-    /*console.log("selección: ",seleccion,"Click: ",this.lastClick, "CA:",this.clicknterior);
-    this.selectEvent.emit(seleccion);
-    let select;
-    if(this.showMe==false){
-      select=seleccion;
-    }else{
-      select=seleccion.label;
-    }*/
     if (this.lastClick !== seleccion.label){
       if(this.Bandera_bar){
         this.barChartData.forEach((datos, index) => {

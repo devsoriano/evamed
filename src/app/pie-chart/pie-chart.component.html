@@ -1,4 +1,4 @@
-<div class="div-principal" *ngIf="showMePartially">
+<div class="graficas-especificas" *ngIf="showMePartially">
   <div style="display:block" *ngFor="let item of inputProyect;let i = index">
     <mat-card>
       <mat-card-header>
@@ -7,13 +7,18 @@
       <canvas #MyChart='base-chart' #canvas baseChart
         [datasets]="pieChartData[i]"
         [options]="pieChartOptions"
-        [labels]="pieChartLabels[i]"
         [chartType]="pieChartType"></canvas>
+
+      <mat-list role="list">
+        <mat-list-item role="listitem">Item 1</mat-list-item>
+        <mat-list-item role="listitem">Item 2</mat-list-item>
+        <mat-list-item role="listitem">Item 3</mat-list-item>
+      </mat-list>
     </mat-card>
   </div>
 </div>
 
-<div class="div-principal" *ngIf="showMe_elementos">
+<div class="graficas-especificas" *ngIf="showMe_elementos">
   <canvas #MyChart='base-chart' #canvas baseChart
     [datasets]="pieChartData[0]"
     [options]="pieChartOptions_elementos"
