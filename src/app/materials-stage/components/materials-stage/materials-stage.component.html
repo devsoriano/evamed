@@ -284,13 +284,18 @@
       <div class="form-update-material">
         <div class="Row">
           <div class="Col">
+            <h3>Edición de material</h3>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
             <div class="label-general">
               Nombre comercial
             </div>
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
+                  class="input-general-renuew"
                   [(ngModel)]="dataMaterialSelected.Material"
                   matInput 
                   type="text"
@@ -307,7 +312,7 @@
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
+                  class="input-general-renuew width-90"
                   [(ngModel)]="dataMaterialSelected.Cantidad"
                   matInput 
                   type="text"
@@ -322,7 +327,7 @@
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
+                  class="input-general-renuew width-90"
                   [(ngModel)]="dataMaterialSelected.Unidad"
                   matInput 
                   type="text"
@@ -339,13 +344,18 @@
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
-                  [(ngModel)]="dataMaterialSelected.Comentarios"
+                  class="input-general-renuew"
+                  [(ngModel)]="dataMaterialSelected['Descripción de Material']"
                   matInput 
                   type="text"
                 >
               </mat-form-field>
             </div>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <h3>Transporte de puntoi de venta a sitio de construcción</h3>
           </div>
         </div>
       </div>
