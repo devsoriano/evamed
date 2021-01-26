@@ -11,7 +11,7 @@ export interface DialogData {
   catalogoEsqHabitacional: any;
   catalogoEstados: any;
   usoSeleccionado: number;
-  paisSeleccionado: string;
+  paisSeleccionado: any;
   tipoSeleccionado: string;
   ciudadSeleccionada: any;
   vidaUtilSeleccionado: string;
