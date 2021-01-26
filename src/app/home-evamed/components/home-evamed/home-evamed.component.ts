@@ -76,6 +76,14 @@ export class HomeEvamedComponent implements OnInit {
         });
       });
     });
+    /*this.materialsService.getfake().subscribe( data => {
+      data.map( item => {
+        this.materialsService.addFake({
+          name_material: item.name_material,
+          unit_id: item.unit_id
+        }).subscribe();
+      });
+    });*/
   }
 
   ngOnInit(): void { }

@@ -32,4 +32,28 @@ export class MaterialsService {
     );
   }
 
+  getfake() {
+    return this.http.get<any>(
+      'http://127.0.0.1:8000/api-projects/materials/',
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  addFake( schemeData: object ) {
+    return this.http.post<any>(
+      environment.api_materials,
+      schemeData
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+
+
+
 }
