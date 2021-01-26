@@ -7,6 +7,7 @@ import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { MaterialsService } from './../../../core/services/materials/materials.service';
 
 @Component({
   selector: 'app-home-evamed',
@@ -42,6 +43,7 @@ export class HomeEvamedComponent implements OnInit {
     public dialog: MatDialog,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
+    private materialsService: MaterialsService,
     private projects: ProjectsService,
     private users: UserService
   ) {
@@ -72,7 +74,6 @@ export class HomeEvamedComponent implements OnInit {
           }
           this.countProjectList = this.projectsList.length;
         });
-        console.log(this.projectsList);
       });
     });
   }
