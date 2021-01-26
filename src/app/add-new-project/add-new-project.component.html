@@ -88,6 +88,38 @@
       </div>
     </div>
   </div>
+  <div class="Row" *ngIf="data.paisSeleccionado === 1">
+    <div class="Col">
+      <div class="label-general">
+        Estado
+      </div>
+      <div>
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="data.estadoSeleccionado" (selectionChange)="select(data.estadoSeleccionado)">
+            <mat-option *ngFor="let estado of data.catalogoEstados" [value]="estado.id">
+              {{estado.name_state}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="Col">
+      <div class="label-general">
+        Ciudad
+      </div>
+      <div>
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="data.ciudadSeleccionada" >
+            <mat-option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.id">
+              {{ciudad.name_city}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
   <div class="Row">
     <div class="Col">
       <div class="label-general">

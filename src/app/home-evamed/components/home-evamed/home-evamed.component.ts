@@ -7,7 +7,6 @@ import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { MaterialsService } from './../../../core/services/materials/materials.service';
 
 @Component({
   selector: 'app-home-evamed',
@@ -23,11 +22,15 @@ export class HomeEvamedComponent implements OnInit {
   catalogoTipo: any;
   catalogoVidaUtil: any;
   catalogoEsqHabitacional: any;
+  catalogoEstados: any;
+  catalogoCiudades: any;
   usoSeleccionado: number;
   paisSeleccionado: string;
   tipoSeleccionado: string;
   vidaUtilSeleccionado: string;
   esqHabitacionalSeleccionado: string;
+  estadoSeleccionado: any;
+  ciudadSeleccionada: any;
   superficieConstruida: string;
   superficieHabitable: string;
   noNiveles: string;
@@ -43,7 +46,6 @@ export class HomeEvamedComponent implements OnInit {
     public dialog: MatDialog,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
-    private materialsService: MaterialsService,
     private projects: ProjectsService,
     private users: UserService
   ) {
@@ -84,9 +86,14 @@ export class HomeEvamedComponent implements OnInit {
         }).subscribe();
       });
     });*/
+    this.catalogsService.getStates().subscribe( data => {
+      this.catalogoEstados = data;
+    });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    console.log('entra al oninit');
+  }
 
   logout() {
     this.auth.logout()
@@ -140,6 +147,7 @@ export class HomeEvamedComponent implements OnInit {
         catalogoTipo: this.catalogoTipo,
         catalogoVidaUtil: this.catalogoVidaUtil,
         catalogoEsqHabitacional: this.catalogoEsqHabitacional,
+        catalogoEstados: this.catalogoEstados,
         usoSeleccionado: this.usoSeleccionado,
         paisSeleccionado: this.paisSeleccionado,
         tipoSeleccionado: this.tipoSeleccionado,
@@ -147,12 +155,16 @@ export class HomeEvamedComponent implements OnInit {
         superficieHabitable: this.superficieHabitable,
         vidaUtilSeleccionado: this.vidaUtilSeleccionado,
         esqHabitacionalSeleccionado: this.esqHabitacionalSeleccionado,
+        estadoSeleccionado: this.estadoSeleccionado,
+        ciudadSeleccionada: this.ciudadSeleccionada,
         noNiveles: this.noNiveles,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       try {
+        console.log('valores a insertar');
+        console.log(result);
         this.projectsService.addProject({
           name_project: result.nombre,
           builded_surface: parseInt(result.superficieConstruida, 10),
@@ -163,7 +175,10 @@ export class HomeEvamedComponent implements OnInit {
           country_id: result.paisSeleccionado,
           useful_life_id: result.vidaUtilSeleccionado,
           housing_scheme_id: result.esqHabitacionalSeleccionado === undefined ? null : result.esqHabitacionalSeleccionado,
-          user_platform_id: parseInt(localStorage.getItem('email-id'), 10)
+          user_platform_id: parseInt(localStorage.getItem('email-id'), 10),
+          city_id_origin: result.ciudadSeleccionada === undefined ? null : result.ciudadSeleccionada,
+          citi_id_end: null,
+          distance: null
         }).subscribe(data => {
           sessionStorage.setItem('primaryDataProject', JSON.stringify(data));
           this.openDialogCTOP();

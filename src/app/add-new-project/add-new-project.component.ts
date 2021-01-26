@@ -1,3 +1,4 @@
+import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -8,11 +9,14 @@ export interface DialogData {
   catalogoTipo: any;
   catalogoVidaUtil: any;
   catalogoEsqHabitacional: any;
+  catalogoEstados: any;
   usoSeleccionado: number;
   paisSeleccionado: string;
   tipoSeleccionado: string;
+  ciudadSeleccionada: any;
   vidaUtilSeleccionado: string;
   esqHabitacionalSeleccionado: string;
+  estadoSeleccionado: any;
   superficieConstruida: string;
   superficieHabitable: string;
   noNiveles: string;
@@ -25,16 +29,32 @@ export interface DialogData {
   styleUrls: ['./add-new-project.component.scss']
 })
 export class AddNewProjectComponent implements OnInit {
+
+  catalogoCiudades: any;
+
   constructor(
+    private catalogsService: CatalogsService,
     public dialogRef: MatDialogRef<AddNewProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
+  ) {
   }
 
-  ngOnInit(): void {
+  onNoClick(): void {
+    this.dialogRef.close(this.data);
+  }
+
+  ngOnInit(): void { 
+  }
+
+  select(id) {
+    this.catalogoCiudades = [];
+    this.catalogsService.getCities().subscribe( data => {
+      data.map( item => {
+        if ( item.state_id === id) {
+          this.catalogoCiudades.push(item);
+        }
+      });
+    });
   }
 
 }

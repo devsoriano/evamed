@@ -3,6 +3,7 @@ import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { Router } from '@angular/router';
+import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 
 @Component({
   selector: 'app-materials-stage',
@@ -38,15 +39,28 @@ export class MaterialsStageComponent implements OnInit {
   selectedMaterial: boolean;
   dataMaterialSelected: any;
   materialsList: any;
+  estadoSeleccionado: any;
+  ciudadSeleccionada: any;
+  catalogoEstados: any;
+  catalogoCiudades: any;
+  vidaUtilSeleccionado: string;
+  catalogoVidaUtil: string;
 
   constructor(
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
-    private router: Router
+    private router: Router,
+    private catalogsService: CatalogsService
   ) { 
     this.materialsService.getMaterials().subscribe( data => {
       this.materialsList = data;
-    })
+    });
+    this.catalogsService.getStates().subscribe( data => {
+      this.catalogoEstados = data;
+    });
+    this.catalogsService.usefulLifeCatalog().subscribe(data => {
+      this.catalogoVidaUtil = data;
+    });
   }
 
   ngOnInit() {
@@ -160,6 +174,17 @@ export class MaterialsStageComponent implements OnInit {
         });
       });
     }); */
+  }
+
+  select(id) {
+    this.catalogoCiudades = [];
+    this.catalogsService.getCities().subscribe( data => {
+      data.map( item => {
+        if ( item.state_id === id) {
+          this.catalogoCiudades.push(item);
+        }
+      });
+    });
   }
 
   onNgModelChangeRevit(event) {

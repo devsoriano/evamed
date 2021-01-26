@@ -26,6 +26,9 @@ const standards = '/standards/';
 const sourceInformationData = '/source-information-data/';
 const typeEnergyData = '/type-energy-data/';
 const users = '/users-platform/';
+const states = '/states/';
+const cities = '/cities/';
+const localDistances = '/local-distances/';
 
 export const environment = {
   production: true,
@@ -54,6 +57,9 @@ export const environment = {
   api_source_information_data: `${apiEvamed}${sourceInformationData}`,
   api_type_energy_data: `${apiEvamed}${typeEnergyData}`,
   api_users: `${apiEvamed}${users}`,
+  api_states: `${apiEvamed}${states}`,
+  api_cities: `${apiEvamed}${cities}`,
+  api_local_distances: `${apiEvamed}${localDistances}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
