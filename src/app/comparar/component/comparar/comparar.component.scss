@@ -134,7 +134,7 @@ ng-template{
     margin-bottom: 5px;
   }
 
-  button{
+  .boton-principal{
     margin-left: 8px;
     text-align: left;
     background-color: #efefefc7;
@@ -146,13 +146,19 @@ ng-template{
     opacity: 1;
   }
 
+  .boton-icono{
+    border-radius: 50%;
+    font-size: 18px;
+    padding: 0px;
+    border:none;
+  }
+
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
     border-radius: 50%;
     font-size: 18px;
-    text-align: center;
+     text-align: center;
     padding-top: 4px;
     color: #FFFFFF;
-    margin-left: 4px;
   }
 
 }

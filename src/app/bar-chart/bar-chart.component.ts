@@ -69,6 +69,7 @@ export class BarChartComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
@@ -84,7 +85,7 @@ export class BarChartComponent implements OnInit {
       this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
   }
 
-  agregarProyecto(cambio:any){
+  /*agregarProyecto(cambio:any){
     this.inputProyects=cambio;
     this.iniciaIndicadores();
     this.iniciaDatos();
@@ -92,7 +93,7 @@ export class BarChartComponent implements OnInit {
     // this.chartDir.chart.update();
     // this.ngOnInit()
 
-  }
+  }*/
 
   public togglePorcentaje(vao:boolean){
     this.porcentaje = vao;
@@ -130,13 +131,16 @@ export class BarChartComponent implements OnInit {
   private iniciaIndicadores() {
     // se obtienen todos los indicadores en los proyectos
     this.barChartLabels = [];
+    console.log('Q');
     if(this.Bandera_bar){
       this.barChartLabels = ['Imapacto', 'Imapacto 1', 'Imapacto 2', 'Imapacto 3', 'Imapacto 4', 'Imapacto 5', 'Imapacto 6', 'Imapacto 7'];
     }else{
+      //console.log(this.inputProyects)
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
           if (!this.barChartLabels.includes(indicador)){
             this.barChartLabels = [...this.barChartLabels, indicador];
+            //console.log(this.barChartLabels);
           }
           proyecto.Datos[indicador].total = 0;
           proyecto.Datos[indicador].total = Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
@@ -361,7 +365,7 @@ export class BarChartComponent implements OnInit {
     //console.log(this.showMe);
     if (this.showMe) {
       if (this.hovered !== null) {
-        console.log(this.showMe);
+        //console.log(this.showMe);
         const serie = this.chartDir.chart.data.datasets[this.hovered['_datasetIndex']].label;
         if (this.hovered.inRange(e.offsetX, e.offsetY)) {
           if (this.lastClick !== serie) {
@@ -409,7 +413,7 @@ export class BarChartComponent implements OnInit {
         }
       }else{
         if (datos.label !== serie){
-          console.log("datos: ",datos.label,"serie: ",serie);
+          //console.log("datos: ",datos.label,"serie: ",serie);
           color = this.coloresBW[ datos.label ];
         }else{
           color = this.colores[ datos.label];

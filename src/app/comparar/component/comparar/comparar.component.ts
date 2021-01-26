@@ -74,6 +74,7 @@ export class CompararComponent implements OnInit {
   show_Dispercion:boolean=false;
   selectedValue: string;
   seleccion_columna:any;
+  delete_fase:boolean=true;
   click_anterior:'Ninguno';
   labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
   proyectosMostrados_elementos=[{
@@ -190,6 +191,31 @@ export class CompararComponent implements OnInit {
     this.router.navigateByUrl('home-evamed');
   }
 
+  //eliminar fase de ciclo de visa y redistribución;
+  ajusteDeGraficaFASE(fase:string){
+    if (this.delete_fase){
+      this.outproyect_bar.forEach(proyecto => {
+        const indicadores = Object.keys(proyecto.Datos);
+        indicadores.forEach(element => {
+          delete this.outproyect_bar[proyecto.id].Datos[element][fase];
+        })
+      })
+      this.delete_fase=false;
+      this.iniciaBarras();
+    }else{
+
+      this.outproyect_bar[0] = this.datos_bar[0];
+
+      console.log(this.outproyect_bar);
+
+      this.iniciaBarras();
+
+      this.delete_fase = true;
+
+    }
+    console.log('Cambio');
+  }
+
   //agregar proyecto a graficas
 
   iniciar_graficas(id:number){
@@ -204,9 +230,13 @@ export class CompararComponent implements OnInit {
       }
     });
 
-    let analisis = this.getAnalisisBarras(id);
+    /*let analisis = this.getAnalisisBarras(id);
     let analisisRad = this.getAnalisisRadial(id);
-    let analisisPie = this.getAnalisisPie(id);
+    let analisisPie = this.getAnalisisPie(id);*/
+    let analisis = this.datos_bar[id];
+    let analisisRad = this.datos_radar[id];
+    let analisisPie = this.datos_pie[id];
+
     this.outproyect_bar.push(analisis);
     this.outproyect_radar.push(analisisRad);
     this.outproyect_pie.push(analisisPie);
@@ -229,6 +259,7 @@ export class CompararComponent implements OnInit {
   }
 
   iniciaBarras(){
+    console.log('que');
     this.container.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
     const grafica = this.container.createComponent(componentFactory);
@@ -285,6 +316,7 @@ export class CompararComponent implements OnInit {
     };
 
     // Etapa de construccion
+
 
     let standardId = this.standarsList.filter(s => s['name_standard'] == 'A1-A3' )[0]['id'];
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
@@ -724,36 +756,16 @@ export class CompararComponent implements OnInit {
           card: false
         }];
     })
-    this.Impactos_menu=[{
-      value : 'PCG100',
-      viewValue : 'PCG100'
-    },
-    {
-      value : 'PAAe',
-      viewValue : 'PAAe'
-    },
-    {
-      value : 'PAAf',
-      viewValue : 'PAAf'
-    },
-    {
-      value: 'PFOF',
-      viewValue: 'PFOF'
-    },
-    {
-      value: 'PA',
-      viewValue: 'PA'
-    },
-    {
-      value: 'PE',
-      viewValue: 'PE'
-    },
-        {
-      value: 'PAO',
-      viewValue: 'PAO'
-    }
-  ]
-    this.iniciar_graficas(this.idProyectoActivo);
+
+    //this.iniciar_graficas(this.idProyectoActivo);
+
+    if (!this.proyect_active.some((item) => item == 0)) {
+      this.iniciar_graficas(0);
+    } else if (!this.proyect_active.some((item) => item == 1)) {
+      this.iniciar_graficas(1);
+      } else {
+      this.iniciar_graficas(2);
+      }
 
   }
 
@@ -971,5 +983,848 @@ export class CompararComponent implements OnInit {
       this.childBar.forEach(c => c.focusSeries(n));
     }
   }
+
+  public datos_bar = [
+    {
+      Nombre: 'Proyecto 1',
+      id: 0,
+      Datos: {
+        'Indicador X': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 2': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 3': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 4': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 5': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 6': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 7': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        }
+      }
+    },
+    {
+      Nombre: 'Proyecto 2',
+      id: 1,
+      Datos: {
+        'Indicador X': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 2': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 3': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 4': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 5': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 6': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 7': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        }
+      }
+    },
+    {
+      Nombre: 'Proyecto 3',
+      id: 2,
+      Datos: {
+        'Indicador X': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 2': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 3': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 4': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 5': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 6': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        },
+        'Indicador 7': {
+          Producción: Math.random(),
+          Construccion: Math.random(),
+          Uso: Math.random(),
+          FinDeVida: Math.random(),
+        }
+      }
+    }
+  ];
+
+  datos_radar = [
+    {
+      Nombre: 'Proyecto 1',
+      id: 0,
+      Datos: {
+        'Producción': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'Construccion': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'Uso': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'FinDeVida': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+      }
+    },
+    {
+      Nombre: 'Proyecto 2',
+      id: 1,
+      Datos: {
+        'Producción': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'Construccion': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'Uso': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'FinDeVida': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+      }
+    },
+    {
+      Nombre: 'Proyecto 3',
+      id: 2,
+      Datos: {
+        'Producción': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'Construccion': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'Uso': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+        'FinDeVida': {
+          'Indicador X': Math.random(),
+          'Indicador 2': Math.random(),
+          'Indicador 3': Math.random(),
+          'Indicador 4': Math.random(),
+          'Indicador 5': Math.random(),
+          'Indicador 6': Math.random(),
+          'Indicador 7': Math.random(),
+        },
+      }
+    }
+  ];
+
+  datos_pie = [
+    {
+      Nombre: 'Proyecto 1',
+      id: 0,
+      Datos: {
+        'Indicador X': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 2': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 3': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 4': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 5': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 6': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 7': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        }
+      }
+    },
+    {
+      Nombre: 'Proyecto 2',
+      id: 1,
+      Datos: {
+        'Indicador X': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 2': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 3': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 4': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 5': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 6': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 7': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        }
+      }
+    },
+    {
+      Nombre: 'Proyecto 3',
+      id: 2,
+      Datos: {
+        'Indicador X': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 2': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 3': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 4': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 5': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 6': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        },
+        'Indicador 7': {
+          'Producción': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Construccion': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'Uso': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          },
+          'FinDeVida': {
+            'Subproceso 1': Math.random(),
+            'Subproceso 2': Math.random(),
+            'Subproceso 3': Math.random(),
+            'Subproceso 4': Math.random()
+          }
+        }
+      }
+    }
+  ];
 
 }
