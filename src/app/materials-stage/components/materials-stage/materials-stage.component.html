@@ -284,13 +284,18 @@
       <div class="form-update-material">
         <div class="Row">
           <div class="Col">
+            <h3>Edición de material</h3>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
             <div class="label-general">
               Nombre comercial
             </div>
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
+                  class="input-general-renuew"
                   [(ngModel)]="dataMaterialSelected.Material"
                   matInput 
                   type="text"
@@ -307,7 +312,7 @@
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
+                  class="input-general-renuew width-90"
                   [(ngModel)]="dataMaterialSelected.Cantidad"
                   matInput 
                   type="text"
@@ -322,7 +327,7 @@
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
+                  class="input-general-renuew width-90"
                   [(ngModel)]="dataMaterialSelected.Unidad"
                   matInput 
                   type="text"
@@ -339,13 +344,67 @@
             <div>
               <mat-form-field>
                 <input
-                  class="input-general"
-                  [(ngModel)]="dataMaterialSelected.Comentarios"
+                  class="input-general-renuew"
+                  [(ngModel)]="dataMaterialSelected['Descripción de Material']"
                   matInput 
                   type="text"
                 >
               </mat-form-field>
             </div>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <h3>Transporte de fábrica a sitio de proyecto</h3>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <div class="label-general">
+              Estado
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general custom-middle">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select [(ngModel)]="estadoSeleccionado" (selectionChange)="select(estadoSeleccionado)" >
+                  <mat-option *ngFor="let estado of catalogoEstados" [value]="estado.id">
+                    {{estado.name_state}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="Col">
+            <div class="label-general">
+              Ciudad
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general custom-middle">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select [(ngModel)]="ciudadSeleccionada" >
+                  <mat-option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.id">
+                    {{ciudad.name_city}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="Row second-row">
+          <div class="Col">
+            <h3>Tiempo de vida</h3>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field appearance="outline" class="select-general custom-middle">
+              <mat-label>Seleccione una opción</mat-label>
+              <mat-select [(ngModel)]="vidaUtilSeleccionado">
+                <mat-option *ngFor="let vidaUtil of catalogoVidaUtil" [value]="vidaUtil.id">
+                  {{vidaUtil.name_useful_life}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
       </div>

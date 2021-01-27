@@ -3,6 +3,7 @@ import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { Router } from '@angular/router';
+import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 
 @Component({
   selector: 'app-materials-stage',
@@ -37,12 +38,30 @@ export class MaterialsStageComponent implements OnInit {
   sectionDynamo: boolean;
   selectedMaterial: boolean;
   dataMaterialSelected: any;
+  materialsList: any;
+  estadoSeleccionado: any;
+  ciudadSeleccionada: any;
+  catalogoEstados: any;
+  catalogoCiudades: any;
+  vidaUtilSeleccionado: string;
+  catalogoVidaUtil: string;
 
   constructor(
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private catalogsService: CatalogsService
+  ) { 
+    this.materialsService.getMaterials().subscribe( data => {
+      this.materialsList = data;
+    });
+    this.catalogsService.getStates().subscribe( data => {
+      this.catalogoEstados = data;
+    });
+    this.catalogsService.usefulLifeCatalog().subscribe(data => {
+      this.catalogoVidaUtil = data;
+    });
+  }
 
   ngOnInit() {
     this.selectedMaterial = false;
@@ -142,8 +161,9 @@ export class MaterialsStageComponent implements OnInit {
       }
       // this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
     }
-    console.log('Avance indicador');
-    Object.entries(this.SOR).forEach(([key, value]) => {
+
+    // console.log('Avance indicador');
+    /* Object.entries(this.SOR).forEach(([key, value]) => {
       this.contentData[parseInt(key, 10) + 1].map(data => {
         value.map(sc => {
           if (data.Sistema_constructivo === sc) {
@@ -152,6 +172,17 @@ export class MaterialsStageComponent implements OnInit {
             }
           }
         });
+      });
+    }); */
+  }
+
+  select(id) {
+    this.catalogoCiudades = [];
+    this.catalogsService.getCities().subscribe( data => {
+      data.map( item => {
+        if ( item.state_id === id) {
+          this.catalogoCiudades.push(item);
+        }
       });
     });
   }
@@ -186,6 +217,8 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   saveStepOne() {
+    const projectId = this.projectId;
+
     // Save Modelo Revit and Usuario
     Object.entries(this.SOR).forEach(([key, value]) => {
       this.contentData[parseInt(key, 10) + 1].map(data => {
@@ -200,7 +233,7 @@ export class MaterialsStageComponent implements OnInit {
                       quantity: data.Cantidad,
                       provider_distance: 0,
                       material_id:  materialData.id,
-                      project_id: this.projectId,
+                      project_id: projectId,
                       origin_id: 1,
                       section_id: parseInt(key, 10) + 1,
                       value: null
@@ -231,7 +264,7 @@ export class MaterialsStageComponent implements OnInit {
                       quantity: data.Cantidad,
                       provider_distance: 0,
                       material_id:  materialData.id,
-                      project_id: this.projectId,
+                      project_id: projectId,
                       origin_id: 2,
                       section_id: parseInt(key, 10) + 1,
                       value: null
@@ -247,8 +280,46 @@ export class MaterialsStageComponent implements OnInit {
         });
       });
     });
-
-    this.router.navigateByUrl('construction-stage');
+    
+    let i;
+    let originalData = [];
+    for ( i = 1; i <= this.sheetNames.length; i++ ) { 
+      originalData.push(this.contentData[i]);
+    }
+    
+    originalData.map( (data, key) => {
+      data.map( dataSheet => {
+        if ( dataSheet.Material !== null ) {
+          this.materialsService.searchMaterial(dataSheet.Material).subscribe( material => { 
+            material.map( materialData => { 
+              if (materialData.name_material === dataSheet.Material) { 
+                console.log(dataSheet);
+                let originId = 0 
+                if (dataSheet.Origen === 'Calculado en Dynamo' ) { 
+                  originId = 2;
+                }
+                if ( dataSheet.Origen === 'Modelo de Revit' || dataSheet.Origen === 'Usuario' ) { 
+                  originId = 1;
+                }
+                this.projectsService.addSchemeProjectOriginal({
+                  construction_system: dataSheet.Sistema_constructivo,
+                  quantity: dataSheet.Cantidad,
+                  provider_distance: 0,
+                  material_id:  materialData.id,
+                  project_id: projectId,
+                  origin_id: originId,
+                  section_id: key + 1,
+                  value: null
+                }).subscribe( data => {
+                  console.log('Success save original schema!');
+                  this.router.navigateByUrl('construction-stage');
+                });
+              }
+            });
+          });
+        }
+      });
+    }); 
   }
 
   showMaterials(event, sc, origin) {
@@ -286,7 +357,10 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   onSelectedMaterial(event, value) {
-    this.dataMaterialSelected = value.selected[0]?.value;
+    console.log('estoy seleccionando un material!!!!!!!!!!!!!!!');
+    console.log(value.selected[0]?.value);
+    this.dataMaterialSelected = value.selected[0]?.value.value;
+    console.log(this.dataMaterialSelected.value);
     this.selectedMaterial = true;
   }
 

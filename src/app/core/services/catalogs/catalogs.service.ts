@@ -112,5 +112,24 @@ export class CatalogsService {
     );
   }
 
+  getStates() {
+    return this.http.get<any>(
+      environment.api_states,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getCities() {
+    return this.http.get<any>(
+      environment.api_cities,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 
 }

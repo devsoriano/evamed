@@ -42,7 +42,7 @@ export class MaterialStageUpdateComponent implements OnInit {
     private projectsService: ProjectsService,
     private router: Router
   ) { 
-    this.projectsService.getMaterialSchemeProyect().subscribe(data => {
+    this.projectsService.getMaterialSchemeProyectOrigin().subscribe(data => {
       const listData2 = [];
       data.map( item => {
         if (item.project_id === parseInt(localStorage.getItem('idProyectoConstrucción'), 10)) {
@@ -104,19 +104,6 @@ export class MaterialStageUpdateComponent implements OnInit {
       }
       // this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
     }
-
-    // console.log('Avance indicador //////////////////////');
-    // Object.entries(this.SOR).forEach(([key, value]) => {
-    //  this.contentData[parseInt(key, 10) + 1].map(data => {
-    //    value.map(sc => {
-    //      if (data.Sistema_constructivo === sc) {
-    //        if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
-    //          console.log(parseInt(key, 10) + 1);
-    //        }
-    //      }
-    //    });
-    //  });
-    // });
   }
 
   onNgModelChangeRevit(event) {

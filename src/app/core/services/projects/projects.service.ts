@@ -44,9 +44,30 @@ export class ProjectsService {
     );
   }
 
-  getMaterialSchemeProyect(){
+  addSchemeProjectOriginal( schemeData: object ) {
+    return this.http.post<any>(
+      environment.api_scheme_project_original,
+      schemeData
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getMaterialSchemeProyect() {
     return this.http.get<any>(
       environment.api_scheme_project,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getMaterialSchemeProyectOrigin() {
+    return this.http.get<any>(
+      environment.api_scheme_project_original,
     ).pipe(
       tap((data) => {
         return data;
