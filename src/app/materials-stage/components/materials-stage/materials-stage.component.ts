@@ -37,14 +37,16 @@ export class MaterialsStageComponent implements OnInit {
   sectionRevit: boolean;
   sectionDynamo: boolean;
   selectedMaterial: boolean;
+  showSearch: boolean;
   dataMaterialSelected: any;
   materialsList: any;
   estadoSeleccionado: any;
   ciudadSeleccionada: any;
   catalogoEstados: any;
   catalogoCiudades: any;
-  vidaUtilSeleccionado: string;
-  catalogoVidaUtil: string;
+  vidaUtilSeleccionado: any;
+  reemplazos: any;
+  busqueda: any
 
   constructor(
     private materialsService: MaterialsService,
@@ -58,15 +60,20 @@ export class MaterialsStageComponent implements OnInit {
     this.catalogsService.getStates().subscribe( data => {
       this.catalogoEstados = data;
     });
-    this.catalogsService.usefulLifeCatalog().subscribe(data => {
-      this.catalogoVidaUtil = data;
-    });
   }
 
   ngOnInit() {
     this.selectedMaterial = false;
+    this.showSearch = false;
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
+    this.catalogsService.usefulLifeCatalog().subscribe(data => {
+      data.map( item => {
+        if (item.id === PDP.useful_life_id) {
+          this.vidaUtilSeleccionado = item.name_useful_life;
+        }
+      });
+    });
 
     this.sheetNames = [];
     this.nameProject = PDP.name_project;
@@ -325,6 +332,7 @@ export class MaterialsStageComponent implements OnInit {
   showMaterials(event, sc, origin) {
     event.stopPropagation();
     this.selectedMaterial = false;
+    this.showSearch = false;
     const materiales = [];
     this.listData.map( (data, key) => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
@@ -353,19 +361,16 @@ export class MaterialsStageComponent implements OnInit {
 
   duplicateMaterial(event, sc, origin) {
     event.stopPropagation();
-    console.log('entra a restore material');
   }
 
   onSelectedMaterial(event, value) {
-    console.log('estoy seleccionando un material!!!!!!!!!!!!!!!');
-    console.log(value.selected[0]?.value);
     this.dataMaterialSelected = value.selected[0]?.value.value;
-    console.log(this.dataMaterialSelected.value);
     this.selectedMaterial = true;
   }
 
   onReturnListMaterials() {
     this.selectedMaterial = false;
+    this.showSearch = false;
   }
 
   addElement() {
@@ -390,5 +395,13 @@ export class MaterialsStageComponent implements OnInit {
 
   goToEndLife() {
     this.router.navigateByUrl('end-life-stage');
+  }
+
+  goToSearchInfo() {
+    this.showSearch = true;
+    this.selectedMaterial = false;
+  }
+
+  searchInfo() {
   }
 }

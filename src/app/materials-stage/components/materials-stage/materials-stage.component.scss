@@ -57,6 +57,8 @@ p.p-instrucciones {
 
 .container-details {
   width: 40%;
+  height: 100%;
+  overflow: auto;
 }
 
 .list-elements {
@@ -224,11 +226,13 @@ div.step-four div.mdl-stepper-circle {
   margin-left: 5%;
 }
 
-mat-form-field.select-general.custom-middle {
-  width: 150px!important;
-  position: absolute;
+
+/** Aditional CSS **/
+.select-middle {
+  width: 44%!important;
 }
 
-.Row.second-row {
-  margin-top: 60px;
+.form-search {
+  margin-top: 20px;
+  width: 90%;
 }
