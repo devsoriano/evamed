@@ -40,7 +40,8 @@ export class BarChartComponent implements OnInit {
 
   public barChartOptions: ChartOptions = {
     responsive: true,
-    title: { display: true },
+    title: { display: true,
+              padding:9 },
     legend: { display: false },
     tooltips: { enabled: false },
     events: ['touchstart', 'mousemove', 'click'],
