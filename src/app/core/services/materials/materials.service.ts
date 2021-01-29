@@ -34,7 +34,18 @@ export class MaterialsService {
 
   getfake() {
     return this.http.get<any>(
-      'http://127.0.0.1:8000/api-projects/materials/',
+      'http://127.0.0.1:8000/api-projects/material-scheme-data/',
+      //'https://evamed-rest-api.herokuapp.com/api-projects/material-scheme-data/',
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  deleteFake( id: number ) {
+    return this.http.delete(
+      `https://evamed-rest-api.herokuapp.com/api-projects/material-scheme-data/${id}/`
     ).pipe(
       tap((data) => {
         return data;
@@ -44,7 +55,7 @@ export class MaterialsService {
 
   addFake( schemeData: object ) {
     return this.http.post<any>(
-      environment.api_materials,
+      'https://evamed-rest-api.herokuapp.com/api-projects/material-scheme-data/',
       schemeData
     ).pipe(
       tap((data) => {

@@ -7,7 +7,7 @@ import { ChooseTypeOfProjectComponent } from './../../../choose-type-of-project/
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-
+import { MaterialsService } from './../../../core/services/materials/materials.service';
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -47,7 +47,8 @@ export class HomeEvamedComponent implements OnInit {
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
     private projects: ProjectsService,
-    private users: UserService
+    private users: UserService,
+    private materialsService: MaterialsService
   ) {
     this.catalogsService.usesCatalog().subscribe(data => {
       this.catalogoUsos = data;
@@ -78,22 +79,35 @@ export class HomeEvamedComponent implements OnInit {
         });
       });
     });
-    /*this.materialsService.getfake().subscribe( data => {
-      data.map( item => {
-        this.materialsService.addFake({
-          name_material: item.name_material,
+     // this.materialsService.getfake().subscribe( data => {
+     //  data.map( item => {
+     //   if(item.id > 2201 && item.id < 2400) {
+          // this.materialsService.deleteFake(item.id).subscribe();
+     //     this.materialsService.addFake({
+     //       value: item.value,
+     //       material_id: item.material_id,
+     //       standard_id: item.standard_id,
+     //       potential_type_id: item.potential_type_id,
+     //       unit_id: item.unit_id
+     //     }).subscribe();
+     //   }
+        
+        /*this.materialsService.addFake({
+          value: item.value,
+          material_id: item.material_id,
+          standard_id: item.standard_id,
+          potential_type_id: item.potential_type_id,
           unit_id: item.unit_id
-        }).subscribe();
-      });
-    });*/
+        }).subscribe();*/
+        
+    //  });
+    //}); 
     this.catalogsService.getStates().subscribe( data => {
       this.catalogoEstados = data;
     });
   }
 
-  ngOnInit(): void { 
-    console.log('entra al oninit');
-  }
+  ngOnInit(): void {}
 
   logout() {
     this.auth.logout()
@@ -163,8 +177,6 @@ export class HomeEvamedComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       try {
-        console.log('valores a insertar');
-        console.log(result);
         this.projectsService.addProject({
           name_project: result.nombre,
           builded_surface: parseInt(result.superficieConstruida, 10),

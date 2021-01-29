@@ -242,7 +242,7 @@
     </section>
 
     <!--Materials section-->
-    <section class="container-details" *ngIf="selectedMaterial===false">
+    <section class="container-details" *ngIf="selectedMaterial===false && showSearch===false">
       <div class="tab-title-sections">
         <p>Materiales</p>
         <button
@@ -305,7 +305,7 @@
           </div>
         </div>
         <div class="Row">
-          <div class="Col">
+          <div class="Col select-middle">
             <div class="label-general">
               Cantidad
             </div>
@@ -320,7 +320,7 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="Col">
+          <div class="Col select-middle">
             <div class="label-general">
               Unidad
             </div>
@@ -359,12 +359,12 @@
           </div>
         </div>
         <div class="Row">
-          <div class="Col">
+          <div class="Col select-middle">
             <div class="label-general">
               Estado
             </div>
             <div>
-              <mat-form-field appearance="outline" class="select-general custom-middle">
+              <mat-form-field appearance="outline" class="select-general">
                 <mat-label>Seleccione una opción</mat-label>
                 <mat-select [(ngModel)]="estadoSeleccionado" (selectionChange)="select(estadoSeleccionado)" >
                   <mat-option *ngFor="let estado of catalogoEstados" [value]="estado.id">
@@ -374,14 +374,14 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="Col">
+          <div class="Col select-middle">
             <div class="label-general">
               Ciudad
             </div>
             <div>
-              <mat-form-field appearance="outline" class="select-general custom-middle">
+              <mat-form-field appearance="outline" class="select-general">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select [(ngModel)]="ciudadSeleccionada" >
+                <mat-select [(ngModel)]="ciudadSeleccionada">
                   <mat-option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.id">
                     {{ciudad.name_city}}
                   </mat-option>
@@ -390,25 +390,87 @@
             </div>
           </div>
         </div>
-        <div class="Row second-row">
+        <div class="Row">
           <div class="Col">
             <h3>Tiempo de vida</h3>
           </div>
         </div>
         <div class="Row">
+          <div class="Col select-middle">
+            <div class="label-general">
+              Tiempo de vida
+            </div>
+            <div>
+              <mat-form-field>
+                <input
+                  class="input-general-renuew width-90"
+                  [(ngModel)]="vidaUtilSeleccionado"
+                  matInput 
+                  type="text"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="Col select-middle">
+            <div class="label-general">
+              Reemplazos
+            </div>
+            <div>
+              <mat-form-field>
+                <input
+                  class="input-general-renuew width-90"
+                  [(ngModel)]="reemplazos"
+                  matInput 
+                  type="text"
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="Row">
           <div class="Col">
-            <mat-form-field appearance="outline" class="select-general custom-middle">
-              <mat-label>Seleccione una opción</mat-label>
-              <mat-select [(ngModel)]="vidaUtilSeleccionado">
-                <mat-option *ngFor="let vidaUtil of catalogoVidaUtil" [value]="vidaUtil.id">
-                  {{vidaUtil.name_useful_life}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <h3>Fuente de información de impacto ambiental</h3>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <button (click)="goToSearchInfo()">Buscar fuente</button>
           </div>
         </div>
       </div>
     </div>
+
+    <!--Form search -->
+    <div class="container-details" *ngIf="showSearch===true">
+      <div class="form-search">
+        <div class="Row">
+          <div class="Col">
+            <h3>Realiza tu búsqueda</h3>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field>
+              <input
+                class="input-general-renuew"
+                [(ngModel)]="busqueda"
+                matInput 
+                type="text"
+              >
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <mat-tab-group mat-align-tabs="start">
+              <mat-tab label="EPD's">EPD's</mat-tab>
+              <mat-tab label="Base de datos">Base de datos</mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </section>
 </div>
 
