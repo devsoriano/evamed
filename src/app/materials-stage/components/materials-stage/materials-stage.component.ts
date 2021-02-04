@@ -91,44 +91,6 @@ export class MaterialsStageComponent implements OnInit {
     });
 
     this.contentData = data.data;
-
-    this.initialChange();
-  }
-
-  initialChange() {
-    this.selectedSheet = 'Cimentación';
-    this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
-    this.listData = this.contentData[this.indexSheet + 1];
-    const SCRevit = [];
-    const SCDynamo = [];
-    // const SCUsuario = [];
-
-    this.listData.map( sc => {
-      if (sc.Origen === 'Modelo de Revit' || sc.Origen === 'Usuario') {
-        SCRevit.push(sc.Sistema_constructivo);
-      }
-      if (sc.Origen === 'Calculado en Dynamo') {
-        SCDynamo.push(sc.Sistema_constructivo);
-      }
-      // if (sc.Origen === 'Usuario') {
-      //  SCUsuario.push(sc.Sistema_constructivo);
-      // }
-    });
-
-    this.ListSCRevit = [...new Set(SCRevit)];
-    this.ListSCDynamo = [...new Set(SCDynamo)];
-    // this.ListSCUsuario = [...new Set(SCUsuario)];
-
-    let i;
-    for ( i = 0; i <= this.sheetNames.length; i++ ) {
-      if (this.indexSheet === i && this.SOR !== undefined) {
-        this.selectedOptionsRevit = this.SOR[i];
-      }
-      if (this.indexSheet === i && this.SOD !== undefined) {
-        this.selectedOptionsDynamo = this.SOD[i];
-      }
-      // this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
-    }
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -243,7 +205,9 @@ export class MaterialsStageComponent implements OnInit {
                       project_id: projectId,
                       origin_id: 1,
                       section_id: parseInt(key, 10) + 1,
-                      value: null
+                      value: null,
+                      distanceInit: null,
+                      distanceEnd: null
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -274,7 +238,9 @@ export class MaterialsStageComponent implements OnInit {
                       project_id: projectId,
                       origin_id: 2,
                       section_id: parseInt(key, 10) + 1,
-                      value: null
+                      value: null,
+                      distanceInit: null,
+                      distanceEnd: null
                     }).subscribe( data => {
                       console.log('Success Dynamo!');
                       console.log(data);
@@ -316,7 +282,9 @@ export class MaterialsStageComponent implements OnInit {
                   project_id: projectId,
                   origin_id: originId,
                   section_id: key + 1,
-                  value: null
+                  value: null,
+                  distanceInit: null,
+                  distanceEnd: null
                 }).subscribe( data => {
                   console.log('Success save original schema!');
                   this.router.navigateByUrl('construction-stage');
