@@ -40,8 +40,6 @@ export class MaterialsStageComponent implements OnInit {
   showSearch: boolean;
   dataMaterialSelected: any;
   materialsList: any;
-  estadoSeleccionado: any;
-  ciudadSeleccionada: any;
   catalogoEstados: any;
   catalogoCiudades: any;
   vidaUtilSeleccionado: any;

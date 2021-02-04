@@ -366,7 +366,10 @@
             <div>
               <mat-form-field appearance="outline" class="select-general">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select [(ngModel)]="estadoSeleccionado" (selectionChange)="select(estadoSeleccionado)" >
+                <mat-select 
+                  [(ngModel)]="dataMaterialSelected.estadoSeleccionado" 
+                  (selectionChange)="select(dataMaterialSelected.estadoSeleccionado)" 
+                >
                   <mat-option *ngFor="let estado of catalogoEstados" [value]="estado.id">
                     {{estado.name_state}}
                   </mat-option>
@@ -381,7 +384,9 @@
             <div>
               <mat-form-field appearance="outline" class="select-general">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select [(ngModel)]="ciudadSeleccionada">
+                <mat-select 
+                  [(ngModel)]="dataMaterialSelected.ciudadSeleccionada"
+                >
                   <mat-option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.id">
                     {{ciudad.name_city}}
                   </mat-option>
