@@ -8,3 +8,11 @@
     display:block;
   }
 }
+
+.graficas-especificas-seccionUno{
+  display: grid;
+  grid-template-columns: repeat(3, 350px);
+  column-gap: 20px;
+  row-gap: 50px;
+  justify-items: stretch;
+}

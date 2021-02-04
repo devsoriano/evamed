@@ -18,19 +18,22 @@ export class BarChartComponent implements OnInit {
 
   private hoverIniciado = false;
 
+
   @Input() inputProyects: any;
   @Input('porcentaje') porcentaje : any;
   @Input() showMe:boolean;
   @Input() Bandera_bar:boolean;
-  @Input() lastClick:string;
-
+  @Input() Columna_seleccionada:string;
+  @Input() banera_enfoqueSerie_externo:boolean;
+  @Input() serie_input:string;
+  @Input() bandera_enfoqueColumna:boolean;
 
   private colores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89'};
   private coloresBWGraph2 = { n1: 'rgb(90, 16, 2,0.5)', n2: 'rgb(144, 37, 17,0.5)', n3: 'rgb(190, 50, 24,0.5)', n4: 'rgb(235, 63, 32,0.5)', n5: 'rgb(235, 87, 32,0.5)', n6: 'rgb(235, 118, 32,0.5)', n7: 'rgb(235, 149, 32,0.5)', n8: 'rgb(235, 173, 32,0.5)', n9: 'rgb(235, 196, 32,0.5)', n10: 'rgb(235, 219, 32,0.5)', n11: 'rgb(204, 235, 32,0.5)', n12: 'rgb(118, 235, 32,0.5)' }
   private coloresGraph2 = { n1: '#5A1002', n2: '#902511', n3: '#BE3218', n4: '#EB3F20', n5: '#EB5720', n6: '#EB7620', n7: '#EB9520', n8: '#EBAD20', n9: '#EBC420', n10: '#EBDB20', n11: '#CCEB20', n12: '#76EB20'}
   private coloresBW = {Producción : '#B1B1B1', Construccion : '#6A6A6A', Uso : '#686868', FinDeVida : '#969696'};
 
-  //private lastClick='Ninguno';
+  private lastClick='Ninguno';
   private hovered = null;
   private centrosX = {};
   private proyectos = [];
@@ -40,8 +43,7 @@ export class BarChartComponent implements OnInit {
 
   public barChartOptions: ChartOptions = {
     responsive: true,
-    title: { display: true,
-              padding:9 },
+    title: { display: true },
     legend: { display: false },
     tooltips: { enabled: false },
     events: ['touchstart', 'mousemove', 'click'],
@@ -74,6 +76,12 @@ export class BarChartComponent implements OnInit {
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
+    if(this.banera_enfoqueSerie_externo){
+      this.focusSeries(this.serie_input);
+    }
+    /*if(this.bandera_enfoqueColumna){
+      this.focusColumnas(this.Columna_seleccionada);
+    }*/
     console.log("Bar");
   }
 
@@ -81,26 +89,8 @@ export class BarChartComponent implements OnInit {
 
       // Ya que se inicializa el componente
       this.canvas = this.chartDir.chart.canvas;
-      // console.log(this.chartDir.chart);
       this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
       this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
-  }
-
-  /*agregarProyecto(cambio:any){
-    this.inputProyects=cambio;
-    this.iniciaIndicadores();
-    this.iniciaDatos();
-    this.ajustaEjeY();
-    // this.chartDir.chart.update();
-    // this.ngOnInit()
-
-  }*/
-
-  public togglePorcentaje(vao:boolean){
-    this.porcentaje = vao;
-    this.iniciaDatos();
-   //this.ajustaEjeY();
-    //this.chartDir.chart.update();
   }
 
   // configuración de datos (lectura de datos de entrada)
@@ -132,11 +122,10 @@ export class BarChartComponent implements OnInit {
   private iniciaIndicadores() {
     // se obtienen todos los indicadores en los proyectos
     this.barChartLabels = [];
-    console.log('Q');
     if(this.Bandera_bar){
       this.barChartLabels = ['Imapacto', 'Imapacto 1', 'Imapacto 2', 'Imapacto 3', 'Imapacto 4', 'Imapacto 5', 'Imapacto 6', 'Imapacto 7'];
     }else{
-      //console.log(this.inputProyects)
+      //console.log(proyecto)
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
           if (!this.barChartLabels.includes(indicador)){
@@ -336,7 +325,9 @@ export class BarChartComponent implements OnInit {
       }
       this.chartDir.update();
       this.lastClick = seleccion.label;
+      this.showMe=false;
     } else {
+      this.showMe=true;
       this.resetColores();
       this.lastClick = null;
     }
@@ -413,8 +404,8 @@ export class BarChartComponent implements OnInit {
           color = this.coloresGraph2[datos.label];
         }
       }else{
+        //console.log(this.banera_enfoqueSerie_externo,serie);
         if (datos.label !== serie){
-          //console.log("datos: ",datos.label,"serie: ",serie);
           color = this.coloresBW[ datos.label ];
         }else{
           color = this.colores[ datos.label];
@@ -425,8 +416,8 @@ export class BarChartComponent implements OnInit {
       this.barChartData[index].backgroundColor = color;
       this.barChartData[index].hoverBackgroundColor = color;
     });
-
     this.chartDir.update();
+
   }
 
   public onChartHover(e: any): void {

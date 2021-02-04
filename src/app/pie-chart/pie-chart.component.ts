@@ -107,6 +107,7 @@ export class PieChartComponent implements OnInit {
     let auxdatos = []
     let datos = []
     let aux=[];
+    let subprocesos = [['A1','A2','A3'],['A4','A5'],['B4','B6'],['C1','C2','C3','C4']];
     this.pieChartLabels=[]
     //carga datos para sección de resultados "Elementos constructivos por ciclo de vida"
     // console.log(this.Bandera_resultado,indicador)
@@ -138,10 +139,10 @@ export class PieChartComponent implements OnInit {
             if (auxlabel[element]===ID) {
               color = this.colores[element];
               auxdatos = aux[auxlabel[element]]
-              Object.keys(aux[auxlabel[element]]).forEach(marcador => {
-                auxdataLabel=[...auxdataLabel,
-                  { label: marcador,
-                    Color: color}];
+              Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
+                console.log(subprocesos[element][index]);
+                this.pieChartLabels = [...this.pieChartLabels, subprocesos[element][index]];
+
                 datos = [...datos, (auxdatos[marcador]*100).toFixed(2)];
               });
             }
@@ -151,7 +152,6 @@ export class PieChartComponent implements OnInit {
             backgroundColor: color
           }]
           this.pieChartData = [...this.pieChartData,auxdata];
-          this.pieChartLabels=[...this.pieChartLabels,auxdataLabel];
           datos=[];
           auxdataLabel = [];
           console.log(this.pieChartLabels);

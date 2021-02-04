@@ -6,13 +6,15 @@
         <br>
         {{subtitulo}}
       </mat-card-header>
+    </mat-card>
+    <div>
       <canvas #MyChart='base-chart' #canvas baseChart
       [datasets]="radarChartData[i]"
       [options]="radarChartOptions"
       [labels]="radarChartLabels"
       [chartType]="radarChartType">
       </canvas>
-    </mat-card>
+    </div>
   </div>
   <div>
   </div>
