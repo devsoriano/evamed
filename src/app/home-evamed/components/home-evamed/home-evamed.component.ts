@@ -67,7 +67,7 @@ export class HomeEvamedComponent implements OnInit {
     });
     this.users.searchUser(localStorage.getItem('email-login')).subscribe( data => {
       this.user = data[0].name;
-      this.sector = data[0].sector;
+      this.sector = data[0].institution;
       localStorage.setItem('email-id', data[0].id);
       this.projectsList = [];
       this.projects.getProjects().subscribe( data => {
