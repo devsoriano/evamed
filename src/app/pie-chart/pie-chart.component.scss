@@ -1,6 +1,6 @@
 .graficas-especificas {
   display: grid;
-  grid-template-columns: repeat(2, 450px);
+  grid-template-columns: repeat(2, 550px);
   column-gap: 50px;
   row-gap: 50px;
   margin: 20px;
@@ -11,7 +11,7 @@
 
 .graficas-especificas-seccionUno{
   display: grid;
-  grid-template-columns: repeat(3, 350px);
+  grid-template-columns: repeat(2, 550px);
   column-gap: 20px;
   row-gap: 50px;
   justify-items: stretch;
