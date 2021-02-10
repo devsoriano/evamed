@@ -76,12 +76,6 @@ export class BarChartComponent implements OnInit {
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
-    if(this.banera_enfoqueSerie_externo){
-      this.focusSeries(this.serie_input);
-    }
-    /*if(this.bandera_enfoqueColumna){
-      this.focusColumnas(this.Columna_seleccionada);
-    }*/
     console.log("Bar");
   }
 
@@ -92,7 +86,7 @@ export class BarChartComponent implements OnInit {
       this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
       this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
   }
-
+ 
   // configuración de datos (lectura de datos de entrada)
   private ajustaEjeY() {
     // se se usan porcentajes, limita el eje y de 0 a 100
@@ -129,6 +123,7 @@ export class BarChartComponent implements OnInit {
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
           if (!this.barChartLabels.includes(indicador)){
+          
             this.barChartLabels = [...this.barChartLabels, indicador];
             //console.log(this.barChartLabels);
           }
@@ -199,6 +194,9 @@ export class BarChartComponent implements OnInit {
     }
     //console.log(datos)
     this.barChartData = datos;
+    if (this.banera_enfoqueSerie_externo) {
+      this.focusSeries(this.serie_input);
+    }
   }
 
   // configurcion de estilo (Titulos de proyectos)
@@ -416,6 +414,7 @@ export class BarChartComponent implements OnInit {
       this.barChartData[index].backgroundColor = color;
       this.barChartData[index].hoverBackgroundColor = color;
     });
+
     this.chartDir.update();
 
   }
