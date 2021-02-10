@@ -361,12 +361,40 @@
         <div class="Row">
           <div class="Col select-middle">
             <div class="label-general">
+              País
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select [(ngModel)]="dataMaterialSelected.paisSeleccionado">
+                  <mat-option *ngFor="let pais of catalogoPaises" [value]="pais.id">
+                    {{pais.name_country}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="Col select-middle">
+            <div class="label-general">
+              Tipo de transporte
+            </div>
+            <div>
+              
+            </div>
+          </div>
+        </div> 
+        <div class="Row" *ngIf="dataMaterialSelected.paisSeleccionado === 1">
+          <div class="Col select-middle">
+            <div class="label-general">
               Estado
             </div>
             <div>
               <mat-form-field appearance="outline" class="select-general">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select [(ngModel)]="estadoSeleccionado" (selectionChange)="select(estadoSeleccionado)" >
+                <mat-select 
+                  [(ngModel)]="dataMaterialSelected.estadoSeleccionado" 
+                  (selectionChange)="selectState(dataMaterialSelected.estadoSeleccionado)" 
+                >
                   <mat-option *ngFor="let estado of catalogoEstados" [value]="estado.id">
                     {{estado.name_state}}
                   </mat-option>
@@ -381,7 +409,9 @@
             <div>
               <mat-form-field appearance="outline" class="select-general">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select [(ngModel)]="ciudadSeleccionada">
+                <mat-select 
+                  [(ngModel)]="dataMaterialSelected.ciudadSeleccionada"
+                >
                   <mat-option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.id">
                     {{ciudad.name_city}}
                   </mat-option>
@@ -404,9 +434,10 @@
               <mat-form-field>
                 <input
                   class="input-general-renuew width-90"
-                  [(ngModel)]="vidaUtilSeleccionado"
+                  [(ngModel)]="dataMaterialSelected.vidaUtil"
                   matInput 
                   type="text"
+                  readonly
                 >
               </mat-form-field>
             </div>
@@ -419,8 +450,9 @@
               <mat-form-field>
                 <input
                   class="input-general-renuew width-90"
-                  [(ngModel)]="reemplazos"
+                  [(ngModel)]="dataMaterialSelected.reemplazos"
                   matInput 
+                  (ngModelChange)="changeLifeTime(dataMaterialSelected.reemplazos)"
                   type="text"
                 >
               </mat-form-field>
@@ -450,14 +482,23 @@
         </div>
         <div class="Row">
           <div class="Col">
-            <mat-form-field>
-              <input
-                class="input-general-renuew"
-                [(ngModel)]="busqueda"
-                matInput 
-                type="text"
-              >
-            </mat-form-field>
+            <form class="example-form">
+              <mat-form-field class="example-full-width">
+                <input 
+                  class="input-general-renuew"
+                  type="text" 
+                  matInput 
+                  [formControl]="myControl" 
+                  [matAutocomplete]="auto"
+                  [(ngModel)]="dataMaterialSelected.materialDB"
+                >
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option.name_material}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
           </div>
         </div>
         <div class="Row">

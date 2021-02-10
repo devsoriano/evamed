@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialsStageRoutingModule } from './materials-stage-routing.module';
 import { MaterialsStageComponent } from './components/materials-stage/materials-stage.component';
 import { SharedModule } from '../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
 
 @NgModule({
@@ -13,6 +13,7 @@ import { MaterialModule } from './../material/material.module';
     MaterialsStageRoutingModule,
     SharedModule,
     FormsModule,
+    ReactiveFormsModule,
     MaterialModule
   ]
 })

@@ -12,6 +12,26 @@ export class CatalogsService {
     private http: HttpClient,
   ) { }
 
+  getLocalDistances() {
+    return this.http.get<any>(
+      environment.api_local_distances,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getExternalDistances() {
+    return this.http.get<any>(
+      environment.api_exterternal_distances,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   usesCatalog() {
     return this.http.get<any>(
       environment.api_uses,
