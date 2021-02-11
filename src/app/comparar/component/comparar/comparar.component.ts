@@ -228,6 +228,7 @@ export class CompararComponent implements OnInit {
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
         this.proyect[index].card = true;
+        this.proyect[index].num = this.proyect_active.length;
       }
     });
 
@@ -242,6 +243,7 @@ export class CompararComponent implements OnInit {
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     this.iniciaBarras();
     this.containerGraficas.clear();
+    this.banderaGrapg == 0;
     this.iniciaBarrasSeccionDos();
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
@@ -315,10 +317,10 @@ export class CompararComponent implements OnInit {
       Datos: {}
     };
 
-    let Label = ['Abiotic depletion', 
-            'Abiotic depletion (fossil fuels)', 'Global warming', 
-            'Ozone layer deplation', 'Photochemical oxidation',
-            'Acidification', 'Eutrophication', 'Water scarcity potential']
+    let Label = ['Agotamiento de\nRecursos Abióticos\nMinerales',
+      'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
+      'Agotamiento de\nla Capa de Ozono', 'Calentamiento Global',
+      'Acidificación', ' Eutrofización', 'Escasez de agua']
 
     // Etapa de Producción
 
@@ -376,7 +378,7 @@ export class CompararComponent implements OnInit {
           resultado_impacto = resultado_impacto + (peso*ps['quantity']*(nacional+internacional))
         })
         //Faltaría preparar los filtros adecuados para la lógica. En especial para tomar el tipo y valor del transporte
-        
+
         //A5 instalación
         let CSEs = this.CSEList.filter(c => c['project_id'] == idProyecto);
         CSEs.forEach(CSE => {
@@ -451,10 +453,10 @@ export class CompararComponent implements OnInit {
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
     let impacto_ban = true;
 
-    let Label = ['Abiotic depletion', 
-        'Abiotic depletion (fossil fuels)', 'Global warming', 
-        'Ozone layer deplation', 'Photochemical oxidation',
-        'Acidification', 'Eutrophication', 'Water scarcity potential']
+    let Label = ['Agotamiento de\nRecursos Abióticos\nMinerales',
+      'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
+      'Agotamiento de\nla Capa de Ozono', 'Calentamiento Global',
+      'Acidificación', ' Eutrofización', 'Escasez de agua']
 
     this.potentialTypesList.forEach((impacto,index) => {
       this.impactosIgnorar2.forEach(ignorar => {
@@ -587,10 +589,10 @@ export class CompararComponent implements OnInit {
     };
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
     let impacto_ban = true
-    let Label = ['Abiotic depletion', 
-    'Abiotic depletion (fossil fuels)', 'Global warming', 
-    'Ozone layer deplation', 'Photochemical oxidation',
-    'Acidification', 'Eutrophication', 'Water scarcity potential']
+    let Label = ['Agotamiento de Recursos Abióticos Minerales',
+      'Agotamiento de Recursos Abióticos Fósiles', 'Calentamiento Global',
+      'Agotamiento de la Capa de Ozono', 'Calentamiento Global',
+      'Acidificación', ' Eutrofización', 'Escasez de agua']
 
     this.potentialTypesList.forEach((impacto,index) => {
       this.impactosIgnorar2.forEach(ignorar => {
@@ -759,7 +761,8 @@ export class CompararComponent implements OnInit {
         {
           Nombre: proyecto['name_project'],
           id: proyecto['id'],
-          card: false
+          card: false,
+          num:0
         }];
     })
 
@@ -782,9 +785,17 @@ export class CompararComponent implements OnInit {
     this.proyect.forEach((proyecto, index) => {
       if (proyecto.id == ID) {
         this.proyect[index].card = false;
+        this.proyect[index].num = 0;
       }
     });
     this.proyect_active = this.proyect_active.filter(item => item != ID);
+    this.proyect_active.forEach((element,index) =>{
+      this.proyect.forEach(pr =>{
+        if(pr.id == element.id){
+          this.proyect[index].num = index+1;
+        }
+      })
+    })
     this.proyectosMostrados_elementos = this.proyectosMostrados_elementos.filter(({ idproyecto }) => idproyecto != ID);
     this.outproyect_bar = this.outproyect_bar.filter(({id}) => id != ID);
     this.outproyect_radar = this.outproyect_radar.filter(({ id }) => id != ID);
@@ -802,7 +813,21 @@ export class CompararComponent implements OnInit {
     //cordinate with bar graph
     this.showVar_1 = false;
     this.showVar = false;
-    this.selector = $event;
+    console.log(Array.isArray($event))
+    if (Array.isArray($event)){
+      let sl
+      $event.forEach((element,index) => {
+        if(index == 0){
+          sl=element
+        }else{
+          sl = sl.concat(' ',element)
+        }
+      });
+      this.selector = sl;
+    }else{
+      this.selector = $event;
+    }
+
     if ($event==null){
       this.bandera = 0;
       this.hover = true;
@@ -811,7 +836,7 @@ export class CompararComponent implements OnInit {
       this.hover = false;
       this.ID = ' ';
     }
-    console.log(this.selector);
+
     this.containerGraficas.clear();
   }
 

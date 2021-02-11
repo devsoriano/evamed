@@ -20,8 +20,9 @@
       </mat-menu>
     </div>
     <div>
-      <div *ngFor="let item of proyect" class="button-graph">
+      <div *ngFor="let item of proyect;let i = index" class="button-graph">
         <mat-card *ngIf="item.card" class="card">
+          {{item.num}}
           <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
           {{item.Nombre}}
         </mat-card>

@@ -126,16 +126,15 @@ export class PieChartComponent implements OnInit {
           this.pieChartData = [...this.pieChartData, auxdata];
         }
       });
-    //carga datos para sección de resultados "Impactos ambientales por impctos del ciclo de vida"
     }else if(this.Bandera_resultado == 2){
       this.pieChartData = [];
       if(indicador===' '){
 
       }else{
         this.inputProyect.forEach(proyecto => {
+          console.log(indicador)
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
-            //console.log(element)
             if (auxlabel[element]===ID) {
               color = this.colores[element];
               auxdatos = aux[auxlabel[element]]

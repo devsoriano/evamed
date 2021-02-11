@@ -62,7 +62,14 @@ export class BarChartComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels, {
-    afterDraw: this.agregaTitulosProyectos.bind(this)
+    afterDraw: this.agregaTitulosProyectos.bind(this),
+    beforeInit: function (chart) {
+      chart.data.labels.forEach(function (e, i, a) {
+        if (/\n/.test(e)) {
+          a[i] = e.split(/\n/);
+        }
+      });
+    }
   }];
 
 
@@ -86,7 +93,7 @@ export class BarChartComponent implements OnInit {
       this.canvas.addEventListener('mousemove', e => { this.onHover(e); });
       this.canvas.addEventListener('mousedown', e => { this.onMouseDown(e); });
   }
- 
+
   // configuración de datos (lectura de datos de entrada)
   private ajustaEjeY() {
     // se se usan porcentajes, limita el eje y de 0 a 100
@@ -123,7 +130,7 @@ export class BarChartComponent implements OnInit {
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
           if (!this.barChartLabels.includes(indicador)){
-          
+
             this.barChartLabels = [...this.barChartLabels, indicador];
             //console.log(this.barChartLabels);
           }
