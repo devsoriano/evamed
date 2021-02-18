@@ -136,7 +136,7 @@ export class CompararComponent implements OnInit {
   transporte_list:any = transporte;
   conversion_list:any = conversion;
   botones_grafica_activos: boolean =false;
-  ColumnsToDisplay = ['Agotamiento de\nRecursos Abióticos\nMinerales',
+  columnsToDisplay = ['Agotamiento de\nRecursos Abióticos\nMinerales',
     'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
     'Agotamiento de\nla Capa de Ozono',
     'Acidificación', ' Eutrofización', 'Escasez de agua']
@@ -219,33 +219,35 @@ export class CompararComponent implements OnInit {
 
   //eliminar fase de ciclo de visa y redistribución;
   ajusteDeGraficaFASE(fase:string){
-    this.outproyect_bar.forEach((proyecto, index) => {
-      let indicadores = Object.keys(proyecto.Datos);
-      indicadores.forEach(element => {
-        let aux = Object.keys(this.outproyect_bar[index].Datos[element])
-        if(aux.includes(fase)){
-          this.delete_fase = true;
-        }
-      })
-    })
-
-    if (this.delete_fase){
-      this.outproyect_bar.forEach((proyecto, index)=> {
+    if (this.resultdosGraficos){
+      this.outproyect_bar.forEach((proyecto, index) => {
         let indicadores = Object.keys(proyecto.Datos);
         indicadores.forEach(element => {
-          delete this.outproyect_bar[index].Datos[element][fase];
+          let aux = Object.keys(this.outproyect_bar[index].Datos[element])
+          if(aux.includes(fase)){
+            this.delete_fase = true;
+          }
         })
       })
-      this.delete_fase=false;
-    }else{
-      this.proyect_active.forEach(element => {
-        this.outproyect_bar=[];
-        let analisis = this.getAnalisisBarras(element);
-        this.outproyect_bar.push(analisis);
-        this.delete_fase = true;
-      })
+
+      if (this.delete_fase){
+        this.outproyect_bar.forEach((proyecto, index)=> {
+          let indicadores = Object.keys(proyecto.Datos);
+          indicadores.forEach(element => {
+            delete this.outproyect_bar[index].Datos[element][fase];
+          })
+        })
+        this.delete_fase=false;
+      }else{
+        this.proyect_active.forEach(element => {
+          this.outproyect_bar=[];
+          let analisis = this.getAnalisisBarras(element);
+          this.outproyect_bar.push(analisis);
+          this.delete_fase = true;
+        })
+      }
+      this.iniciaBarras();
     }
-    this.iniciaBarras();
   }
 
   //agregar proyecto a graficas
@@ -794,7 +796,7 @@ export class CompararComponent implements OnInit {
     this.botones_grafica_activos = false;
     this.resultdosTabla = false;
     this.resultdosGraficos = true;
-
+    this.iniciaBarras();
   }
 
   //controlar la activación de elementos en la interacción con los tipos de resultados
@@ -923,40 +925,42 @@ export class CompararComponent implements OnInit {
   grafica(x: string) {
     //activate graph selectioned
 
-    this.containerGraficas.clear();
-    this.bandera_resultado = 2;
-    if (this.banderaGrapg == 0) {
-      this.banderaGrapg++;
-      this.ID = ' ';
-    }
-    if(x===this.ID ){
-      if (this.bandera == 1) {
-        this.showVar = false;
-      } else {
-        this.showVar_1 = false;
-        this.hover = true;
-        this.bandera_serie_Seleccionada = false;
-        //this.childBar.forEach(c => c.resetColores());
-      }
-      this.banderaGrapg=0;
-      this.ID = x;
+    if (this.resultdosGraficos){
       this.containerGraficas.clear();
-      //this.iniciaBarras();
-    }else{
-      this.ID = x;
-      if (this.bandera == 1) {
-        this.showVar = true;
-        this.showVar_1 =false;
-        //this.bandera_serie_Seleccionada = false;
-        this.iniciaPie();
-      } else {
-        this.showVar_1 = true;
-        this.showVar=false;
-        this.hover=false;
-        //this.bandera_serie_Seleccionada = true;
-        this.serie_Seleccionada=x;
-        this.iniciaRadiales();
+      this.bandera_resultado = 2;
+      if (this.banderaGrapg == 0) {
+        this.banderaGrapg++;
+        this.ID = ' ';
+      }
+      if(x===this.ID ){
+        if (this.bandera == 1) {
+          this.showVar = false;
+        } else {
+          this.showVar_1 = false;
+          this.hover = true;
+          this.bandera_serie_Seleccionada = false;
+          //this.childBar.forEach(c => c.resetColores());
+        }
+        this.banderaGrapg=0;
+        this.ID = x;
+        this.containerGraficas.clear();
         //this.iniciaBarras();
+      }else{
+        this.ID = x;
+        if (this.bandera == 1) {
+          this.showVar = true;
+          this.showVar_1 =false;
+          //this.bandera_serie_Seleccionada = false;
+          this.iniciaPie();
+        } else {
+          this.showVar_1 = true;
+          this.showVar=false;
+          this.hover=false;
+          //this.bandera_serie_Seleccionada = true;
+          this.serie_Seleccionada=x;
+          this.iniciaRadiales();
+          //this.iniciaBarras();
+        }
       }
     }
   }
