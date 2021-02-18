@@ -45,7 +45,7 @@ export const environment = {
   api_energy_units: `${apiEvamed}${energyUnits}`,
   api_volume_units: `${apiEvamed}${volumeUnits}`,
   api_scheme_project: `${apiEvamed}${schemeProject}`,
-  api_scheme_project_original: `${apiEvamed}${schemeProject}`,
+  api_scheme_project_original: `${apiEvamed}${schemeProjectOriginal}`,
   api_construction_stage: `${apiEvamed}${constructionStage}`,
   api_annual_consumption_required: `${apiEvamed}${annualConsumptionRequired}`,
   api_type_energy: `${apiEvamed}${typeEnergy}`,

@@ -54,7 +54,12 @@ export class HomeEvamedComponent implements OnInit {
       this.catalogoUsos = data;
     });
     this.catalogsService.countriesCatalog().subscribe(data => {
-      this.catalogoPaises = data;
+      this.catalogoPaises = [];
+      data.map( item => {
+        if (item.id === 1) {
+          this.catalogoPaises.push(item);
+        }  
+      });
     });
     this.catalogsService.typeProjectCatalog().subscribe(data => {
       this.catalogoTipo = data;
@@ -189,7 +194,6 @@ export class HomeEvamedComponent implements OnInit {
           housing_scheme_id: result.esqHabitacionalSeleccionado === undefined ? null : result.esqHabitacionalSeleccionado,
           user_platform_id: parseInt(localStorage.getItem('email-id'), 10),
           city_id_origin: result.ciudadSeleccionada === undefined ? null : result.ciudadSeleccionada,
-          citi_id_end: null,
           distance: null
         }).subscribe(data => {
           sessionStorage.setItem('primaryDataProject', JSON.stringify(data));

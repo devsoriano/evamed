@@ -379,7 +379,7 @@
               Tipo de transporte
             </div>
             <div>
-              
+            <!--Vehículo de carga comercial ligera (GLO)-Ecoinvent 3default de trnsportes!-->
             </div>
           </div>
         </div> 
@@ -435,9 +435,9 @@
                 <input
                   class="input-general-renuew width-90"
                   [(ngModel)]="dataMaterialSelected.vidaUtil"
+                  (ngModelChange)="changeReplaces(dataMaterialSelected.vidaUtil)"
                   matInput 
                   type="text"
-                  readonly
                 >
               </mat-form-field>
             </div>

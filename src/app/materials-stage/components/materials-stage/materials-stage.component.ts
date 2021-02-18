@@ -56,6 +56,7 @@ export class MaterialsStageComponent implements OnInit {
   vidaUtilSeleccionado: any;
   ciudadOrigenSeleccionada: any;
   reemplazos: any;
+  distanciaInicial: any;
 
   myControl = new FormControl();
   options: Material[];
@@ -191,8 +192,16 @@ export class MaterialsStageComponent implements OnInit {
 
   onSelectedMaterial(event, value) {
     this.dataMaterialSelected = value.selected[0]?.value.value;
-    console.log('Data material selected');
+    
+    this.dataMaterialSelected.vidaUtil === undefined ? 
+      this.dataMaterialSelected.vidaUtil = parseInt(this.vidaUtilSeleccionado, 10) : 
+      this.dataMaterialSelected.vidaUtil;
+    this.dataMaterialSelected.reemplazos === undefined ? 
+      this.dataMaterialSelected.reemplazos = 0 : 
+      this.dataMaterialSelected.reemplazos;
+
     console.log(this.dataMaterialSelected);
+
     this.catalogsService.getCities().subscribe( 
       data => {
         data.map( item => {
@@ -207,9 +216,14 @@ export class MaterialsStageComponent implements OnInit {
 
   changeLifeTime(reemplazos) {
     let lifeTime = this.vidaUtilSeleccionado;
-    lifeTime = (parseInt(this.vidaUtilSeleccionado, 10) / ( parseInt(reemplazos, 10) + 1 ) ); //corregir reemplazos + 1, cálculo inverso
-    lifeTime === NaN ? lifeTime = this.vidaUtilSeleccionado : lifeTime;
+    lifeTime = (parseInt(this.vidaUtilSeleccionado, 10) / (parseInt(reemplazos, 10) + 1));
     this.dataMaterialSelected.vidaUtil = lifeTime;
+  }
+
+  changeReplaces(vidaUtil) {
+    let replaces = 0;
+    replaces = (parseInt(this.vidaUtilSeleccionado, 10)) / parseInt(vidaUtil, 10);
+    this.dataMaterialSelected.reemplazos = Math.ceil(replaces);
   }
 
   selectState(id) {
@@ -266,45 +280,39 @@ export class MaterialsStageComponent implements OnInit {
               this.materialsService.searchMaterial(data.Material).subscribe( material => {
                 material.map( materialData => {
                   if (materialData.name_material === data.Material) {
-                    /*console.log('aqui es donde empieza el proceso de lógica 1!!!!!!!!!!!!!!!');
-
                     if ( data.paisSeleccionado !== '' || data.paisSeleccionado !== undefined ) {
                       if ( data.paisSeleccionado === 1 ) { // México
                         //lógica para distancia de ciudades
                         this.catalogsService.getLocalDistances().subscribe( localDistance => {
-                          console.log('lógica para obtener distancias/////////////////////////////////////////');
                           localDistance.map( item => {
-                            console.log(item.city_id_origin);
-                            console.log(item.city_id_end);
-                            console.log('valores a comparar');
-                            console.log(this.ciudadOrigenSeleccionada);
-                            console.log(data.ciudadSeleccionada);
-                            if ( item.city_id_origin === this.ciudadOrigenSeleccionada && 
-                              item.city_id_end === data.ciudadSeleccionada ) {
-                                console.log('entra a la condicional');
-                                console.log(parseInt(item.distance, 10));
-                              }
+                            if ( item.city_id_end === this.ciudadOrigenSeleccionada &&
+                                item.city_id_origin === data.ciudadSeleccionada ) {
+                              this.distanciaInicial = parseInt(item.distance, 10);
+                            }
+                            if ( item.city_id_origin === this.ciudadOrigenSeleccionada &&
+                               item.city_id_end === data.ciudadSeleccionada ) {
+                              this.distanciaInicial = parseInt(item.distance, 10);
+                            }
                           })
                         });
-                      } else {
-                        //logica para distancia de países
-                      }
-                    } else {
-                      data.reemplazos = 0;
-                    }*/
+                      } 
+                    }
                     
                     this.projectsService.addSchemeProject({
                       construction_system: data.Sistema_constructivo,
+                      comercial_name: data.Material,
                       quantity: data.Cantidad,
                       provider_distance: 0,
-                      material_id:  materialData.id,
+                      material_id: materialData.id,
                       project_id: projectId,
                       origin_id: 1,
                       section_id: parseInt(key, 10) + 1,
                       value: null,
-                      distanceInit: Math.floor(Math.random() * 10),
-                      distanceEnd: Math.floor(Math.random() * 10),
-                      replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos
+                      distance_init: this.distanciaInicial === undefined ? 0 : this.distanciaInicial,
+                      distance_end: 0,
+                      replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
+                      city_id_origin: this.ciudadOrigenSeleccionada,
+                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -327,20 +335,41 @@ export class MaterialsStageComponent implements OnInit {
               this.materialsService.searchMaterial(data.Material).subscribe( material => {
                 material.map( materialData => {
                   if (materialData.name_material === data.Material) {
+                    if ( data.paisSeleccionado !== '' || data.paisSeleccionado !== undefined ) {
+                      if ( data.paisSeleccionado === 1 ) { // México
+                        //lógica para distancia de ciudades
+                        this.catalogsService.getLocalDistances().subscribe( localDistance => {
+                          localDistance.map( item => {
+                            if ( item.city_id_end === this.ciudadOrigenSeleccionada &&
+                                item.city_id_origin === data.ciudadSeleccionada ) {
+                              this.distanciaInicial = parseInt(item.distance, 10);
+                            }
+                            if ( item.city_id_origin === this.ciudadOrigenSeleccionada &&
+                               item.city_id_end === data.ciudadSeleccionada ) {
+                              this.distanciaInicial = parseInt(item.distance, 10);
+                            }
+                          })
+                        });
+                      } 
+                    } 
+                    
                     this.projectsService.addSchemeProject({
                       construction_system: data.Sistema_constructivo,
+                      comercial_name: data.Material,
                       quantity: data.Cantidad,
                       provider_distance: 0,
-                      material_id:  materialData.id,
+                      material_id: materialData.id,
                       project_id: projectId,
                       origin_id: 2,
                       section_id: parseInt(key, 10) + 1,
                       value: null,
-                      distanceInit: Math.floor(Math.random() * 10),
-                      distanceEnd: Math.floor(Math.random() * 10),
-                      replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos
+                      distance_init: this.distanciaInicial === undefined ? 0 : this.distanciaInicial,
+                      distance_end: 0,
+                      replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
+                      city_id_origin: this.ciudadOrigenSeleccionada,
+                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada
                     }).subscribe( data => {
-                      console.log('Success Dynamo!');
+                      console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
                     });
                   }
@@ -364,29 +393,43 @@ export class MaterialsStageComponent implements OnInit {
           this.materialsService.searchMaterial(dataSheet.Material).subscribe( material => { 
             material.map( materialData => { 
               if (materialData.name_material === dataSheet.Material) { 
-                // console.log(dataSheet);
-                let originId = 0 
-                if (dataSheet.Origen === 'Calculado en Dynamo' ) { 
-                  originId = 2;
-                }
-                if ( dataSheet.Origen === 'Modelo de Revit' || dataSheet.Origen === 'Usuario' ) { 
-                  originId = 1;
-                }
-                /*this.projectsService.addSchemeProjectOriginal({
+                if ( dataSheet.paisSeleccionado !== '' || dataSheet.paisSeleccionado !== undefined ) {
+                  if ( dataSheet.paisSeleccionado === 1 ) { // México
+                    //lógica para distancia de ciudades
+                    this.catalogsService.getLocalDistances().subscribe( localDistance => {
+                      localDistance.map( item => {
+                        if ( item.city_id_end === this.ciudadOrigenSeleccionada &&
+                            item.city_id_origin === dataSheet.ciudadSeleccionada ) {
+                          this.distanciaInicial = parseInt(item.distance, 10);
+                        }
+                        if ( item.city_id_origin === this.ciudadOrigenSeleccionada &&
+                           item.city_id_end === dataSheet.ciudadSeleccionada ) {
+                          this.distanciaInicial = parseInt(item.distance, 10);
+                        }
+                      })
+                    });
+                  } 
+                } 
+
+                this.projectsService.addSchemeProjectOriginal({
                   construction_system: dataSheet.Sistema_constructivo,
+                  comercial_name: dataSheet.Material,
                   quantity: dataSheet.Cantidad,
                   provider_distance: 0,
-                  material_id:  materialData.id,
+                  material_id: materialData.id,
                   project_id: projectId,
-                  origin_id: originId,
+                  origin_id: dataSheet.Origen === 'Calculado en Dynamo' ? 2 : dataSheet.Origen === 'Modelo de Revit' || dataSheet.Origen === 'Usuario' ? 1 : 0,
                   section_id: key + 1,
                   value: null,
-                  distanceInit: null,
-                  distanceEnd: null
+                  distance_init: null,
+                  distance_end: null,
+                  replaces: dataSheet.reemplazos === '' || dataSheet.reemplazos === undefined ? 0 : dataSheet.reemplazos,
+                  city_id_origin: this.ciudadOrigenSeleccionada,
+                  city_id_end: dataSheet.ciudadSeleccionada === '' || dataSheet.ciudadSeleccionada === undefined ? null : dataSheet.ciudadSeleccionada
                 }).subscribe( data => {
                   console.log('Success save original schema!');
                   this.router.navigateByUrl('construction-stage');
-                });*/
+                });
               }
             });
           });
