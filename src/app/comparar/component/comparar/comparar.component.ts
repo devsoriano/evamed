@@ -1,4 +1,5 @@
-import { NgModule, Component, OnInit, Input, ViewChildren, ViewChild, QueryList, ViewContainerRef, ComponentFactoryResolver, ElementRef, ComponentRef} from '@angular/core';
+import { Component } from '@angular/core';
+import { NgModule, OnInit, Input, ViewChildren, ViewChild, QueryList, ViewContainerRef, ComponentFactoryResolver, ElementRef, ComponentRef} from '@angular/core';
 import { element } from 'protractor';
 import { BarChartSimpleComponent } from 'src/app/bar-chart-simple/bar-chart-simple.component';
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
@@ -12,6 +13,7 @@ import { couldStartTrivia } from 'typescript';
 import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
 import { Router } from '@angular/router';
 import { CompileSummaryKind } from '@angular/compiler';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import transporte from 'src/app/comparar/component/comparar/transportes.json';
 import conversion from 'src/app/comparar/component/comparar/Conversiones.json';
 
@@ -24,6 +26,13 @@ interface impactos_menu{
   selector: 'app-comparar',
   templateUrl: './comparar.component.html',
   styleUrls: ['./comparar.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 @NgModule({
@@ -97,9 +106,13 @@ export class CompararComponent implements OnInit {
   impacto_seleccionado=' ';
   serie_Seleccionada:string;
   bandera_serie_Seleccionada:boolean=false;
+  resultdosGraficos:boolean=true;
+  resultdosTabla: boolean = false;
+  DatosTabla=[]
+
 
   // vars analisis
-  idProyectoActivo: number = 46;
+  idProyectoActivo: number;
 
   projectsList: [];
   materialList: [];
@@ -116,12 +129,17 @@ export class CompararComponent implements OnInit {
   TEList: [];
   ULList: [];
   ECDPList: [];
+  sectionList : [];
 
   impactosIgnorar = [11, 12, 13, 14]
   impactosIgnorar2 = ['PARNR','POT','Human toxicity','Fresh water aquatic ecotox.', 'Marine aquatic ecotoxicity', 'Terrestrial ecotoxicity']
   transporte_list:any = transporte;
   conversion_list:any = conversion;
-
+  botones_grafica_activos: boolean =false;
+  ColumnsToDisplay = ['Agotamiento de\nRecursos Abióticos\nMinerales',
+    'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
+    'Agotamiento de\nla Capa de Ozono',
+    'Acidificación', ' Eutrofización', 'Escasez de agua']
 
   constructor(
     private materials: MaterialsService,
@@ -146,7 +164,8 @@ export class CompararComponent implements OnInit {
       this.analisis.getElectricityConsumptionData(),
       this.analisis.getTypeEnergyData(),
       this.analisis.getUsefulLife(),
-      this.analisis.getECDP()
+      this.analisis.getECDP(),
+      this.analisis.getSectionsList()
     ])
     .subscribe(([
       TE,
@@ -163,7 +182,8 @@ export class CompararComponent implements OnInit {
       ECD,
       TED,
       UL,
-      ECDP
+      ECDP,
+      sectionsList
     ]) => {
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
       // console.log('id recibido', this.idProyectoActivo)
@@ -183,6 +203,7 @@ export class CompararComponent implements OnInit {
       this.TEList = TE;
       this.ULList = UL;
       this.ECDPList = ECDP;
+      this.sectionList = sectionsList;
       this.menu_inicio();
     });
 
@@ -198,9 +219,19 @@ export class CompararComponent implements OnInit {
 
   //eliminar fase de ciclo de visa y redistribución;
   ajusteDeGraficaFASE(fase:string){
+    this.outproyect_bar.forEach((proyecto, index) => {
+      let indicadores = Object.keys(proyecto.Datos);
+      indicadores.forEach(element => {
+        let aux = Object.keys(this.outproyect_bar[index].Datos[element])
+        if(aux.includes(fase)){
+          this.delete_fase = true;
+        }
+      })
+    })
+
     if (this.delete_fase){
       this.outproyect_bar.forEach((proyecto, index)=> {
-        const indicadores = Object.keys(proyecto.Datos);
+        let indicadores = Object.keys(proyecto.Datos);
         indicadores.forEach(element => {
           delete this.outproyect_bar[index].Datos[element][fase];
         })
@@ -241,10 +272,14 @@ export class CompararComponent implements OnInit {
     this.outproyect_radar.push(analisisRad);
     this.outproyect_pie.push(analisisPie);
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
-    this.iniciaBarras();
+    if(this.resultdosTabla){
+      this.TablaResultados();
+    }else{
+      this.iniciaBarras();
+    }
     this.containerGraficas.clear();
     this.banderaGrapg == 0;
-    this.iniciaBarrasSeccionDos();
+    //this.iniciaBarrasSeccionDos();
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
       showpie: true,
@@ -262,19 +297,19 @@ export class CompararComponent implements OnInit {
   }
 
   iniciaBarras(){
-    this.container.clear();
-    //serie_Seleccionada: string;
-    //bandera_serie_Seleccionada: boolean = false;
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
-    const grafica = this.container.createComponent(componentFactory);
-    grafica.instance.porcentaje = this.bandera_porcentaje;
-    grafica.instance.inputProyects = this.outproyect_bar;
-    grafica.instance.showMe = true;
-    grafica.instance.Bandera_bar=false;
-    grafica.instance.Columna_seleccionada = this.selector;
-    grafica.instance.banera_enfoqueSerie_externo = this.bandera_serie_Seleccionada;
-    grafica.instance.serie_input = this.serie_Seleccionada;
-    grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
+    if (this.resultdosGraficos){
+      this.container.clear();
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
+      const grafica = this.container.createComponent(componentFactory);
+      grafica.instance.porcentaje = this.bandera_porcentaje;
+      grafica.instance.inputProyects = this.outproyect_bar;
+      grafica.instance.showMe = true;
+      grafica.instance.Bandera_bar=false;
+      grafica.instance.Columna_seleccionada = this.selector;
+      grafica.instance.banera_enfoqueSerie_externo = this.bandera_serie_Seleccionada;
+      grafica.instance.serie_input = this.serie_Seleccionada;
+      grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
+    }
   }
 
   //creación de gráfica de barras para la sección de impactos ambientales por
@@ -319,7 +354,7 @@ export class CompararComponent implements OnInit {
 
     let Label = ['Agotamiento de\nRecursos Abióticos\nMinerales',
       'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
-      'Agotamiento de\nla Capa de Ozono', 'Calentamiento Global',
+      'Agotamiento de\nla Capa de Ozono',
       'Acidificación', ' Eutrofización', 'Escasez de agua']
 
     // Etapa de Producción
@@ -377,7 +412,6 @@ export class CompararComponent implements OnInit {
           //console.log(peso*ps['quantity']*(nacional+internacional))
           resultado_impacto = resultado_impacto + (peso*ps['quantity']*(nacional+internacional))
         })
-        //Faltaría preparar los filtros adecuados para la lógica. En especial para tomar el tipo y valor del transporte
 
         //A5 instalación
         let CSEs = this.CSEList.filter(c => c['project_id'] == idProyecto);
@@ -417,7 +451,8 @@ export class CompararComponent implements OnInit {
             if (materiales_subetapa.length > 0) {
               materiales_subetapa.forEach((material, index) => {
                 //Aquí faltaría multiplicar por el reemplazo
-                resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'])
+                //replaces
+                resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity']*ps['replaces'])
               })
             }
           })
@@ -455,7 +490,7 @@ export class CompararComponent implements OnInit {
 
     let Label = ['Agotamiento de\nRecursos Abióticos\nMinerales',
       'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
-      'Agotamiento de\nla Capa de Ozono', 'Calentamiento Global',
+      'Agotamiento de\nla Capa de Ozono',
       'Acidificación', ' Eutrofización', 'Escasez de agua']
 
     this.potentialTypesList.forEach((impacto,index) => {
@@ -549,8 +584,7 @@ export class CompararComponent implements OnInit {
             let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
             if (materiales_subetapa.length > 0) {
               materiales_subetapa.forEach((material, index) => {
-                //Aquí faltaría multiplicar por el reemplazo
-                resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'])
+                resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces'])
               })
             }
           })
@@ -591,7 +625,7 @@ export class CompararComponent implements OnInit {
     let impacto_ban = true
     let Label = ['Agotamiento de Recursos Abióticos Minerales',
       'Agotamiento de Recursos Abióticos Fósiles', 'Calentamiento Global',
-      'Agotamiento de la Capa de Ozono', 'Calentamiento Global',
+      'Agotamiento de la Capa de Ozono',
       'Acidificación', ' Eutrofización', 'Escasez de agua']
 
     this.potentialTypesList.forEach((impacto,index) => {
@@ -612,7 +646,7 @@ export class CompararComponent implements OnInit {
             let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
             if (materiales_subetapa.length > 0) {
               materiales_subetapa.forEach((material, index) => {
-                resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'])
+                resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces'])
               })
             }
           })
@@ -674,15 +708,6 @@ export class CompararComponent implements OnInit {
         } catch {
           vidaUtil = 1;
         }
-        //B6
-        consumos.forEach(consumo => {
-          let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
-          if (valor_impacto.length > 0) {
-            resultado_impacto = resultado_impacto + consumo['quantity'] * valor_impacto[0]['value'] * vidaUtil
-          }
-        })
-        analisisProyectos['Datos'][Label[index]]['Uso']['B6'] = resultado_impacto;
-        resultado_impacto=0;
         //B4
         //las etapas son las mismas que en la sección de producción
         etapas.forEach(subetapa => {
@@ -697,6 +722,15 @@ export class CompararComponent implements OnInit {
           })
         })
         analisisProyectos['Datos'][Label[index]]['Uso']['B4'] = resultado_impacto;
+        resultado_impacto=0;
+        //B6
+        consumos.forEach(consumo => {
+          let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
+          if (valor_impacto.length > 0) {
+            resultado_impacto = resultado_impacto + consumo['quantity'] * valor_impacto[0]['value'] * vidaUtil
+          }
+        })
+        analisisProyectos['Datos'][Label[index]]['Uso']['B6'] = resultado_impacto;
         //console.log('Uso:',resultado_impacto)
         //Fin de vida
         resultado_impacto = 0;
@@ -722,6 +756,46 @@ export class CompararComponent implements OnInit {
     return analisisProyectos;
   }
 
+  //creación de tabla de resultado
+  TablaResultados(){
+    this.botones_grafica_activos=true;
+    this.container.clear();
+    let auxL = ['Producción', 'Construccion', 'Uso', 'FinDeVida'];
+    //se prepara la información por filas
+    let aux=[]
+    let auxdata = []
+    auxL.forEach(ciclo => {
+      let aux2=[]
+      this.outproyect_bar.forEach((element,index)=>{
+        if(this.outproyect_bar.length>=2){
+          Object.keys(element.Datos).forEach(impacto => {
+            if(!aux2.includes(impacto)){
+              aux2.push(impacto)
+              auxdata[impacto]={}
+            }
+            auxdata[impacto][element.id] = element.Datos[impacto][ciclo]
+          });
+        }else{
+          Object.keys(element.Datos).forEach( impacto => {
+            auxdata[impacto] = element.Datos[impacto][ciclo]
+          });
+        }
+      })
+      aux=[...aux, auxdata];
+    })
+    this.DatosTabla = aux;
+    console.log(this.DatosTabla);
+    this.resultdosTabla=true;
+    this.resultdosGraficos=false;
+  }
+
+  //regreso a gráfica
+  GraficasResultados(){
+    this.botones_grafica_activos = false;
+    this.resultdosTabla = false;
+    this.resultdosGraficos = true;
+
+  }
 
   //controlar la activación de elementos en la interacción con los tipos de resultados
   show($event){

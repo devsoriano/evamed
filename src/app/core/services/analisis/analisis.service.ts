@@ -36,7 +36,7 @@ export class AnalisisService {
   }
 
   //api_type_energy
-  
+
   getTypeEnergy(){
     return this.http.get<any>(
       environment.api_type_energy,
@@ -142,6 +142,16 @@ export class AnalisisService {
   getMaterialSchemeData() {
     return this.http.get<any>(
       environment.api_material_scheme_data,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getSectionsList(){
+    return this.http.get<any>(
+      environment.api_sections,
     ).pipe(
       tap((data) => {
         return data;

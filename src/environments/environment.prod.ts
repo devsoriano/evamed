@@ -30,6 +30,7 @@ const states = '/states/';
 const cities = '/cities/';
 const localDistances = '/local-distances/';
 const externalDistance = '/external-distance/';
+const sections = '/sections/';
 
 export const environment = {
   production: true,
@@ -62,6 +63,7 @@ export const environment = {
   api_cities: `${apiEvamed}${cities}`,
   api_local_distances: `${apiEvamed}${localDistances}`,
   api_exterternal_distances: `${apiEvamed}${externalDistance}`,
+  api_sections: `${apiEvamed}${sections}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
