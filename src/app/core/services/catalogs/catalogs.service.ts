@@ -152,4 +152,14 @@ export class CatalogsService {
     );
   }
 
+  getTransports() {
+    return this.http.get<any>(
+      environment.api_transports,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
 }

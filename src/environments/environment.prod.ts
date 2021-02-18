@@ -2,6 +2,7 @@
 const apiEvamed = 'https://evamed-rest-api.herokuapp.com/api-projects';
 // apis
 const projects = '/projects/';
+const transports = '/transports/';
 const uses = '/uses/';
 const countries = '/countries/';
 const typeProject = '/type-project/';
@@ -34,6 +35,7 @@ const externalDistance = '/external-distance/';
 export const environment = {
   production: true,
   api_projects: `${apiEvamed}${projects}`,
+  api_transports: `${apiEvamed}${transports}`,
   api_uses: `${apiEvamed}${uses}`,
   api_countries: `${apiEvamed}${countries}`,
   api_type_project: `${apiEvamed}${typeProject}`,

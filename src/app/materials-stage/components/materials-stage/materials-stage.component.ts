@@ -53,6 +53,8 @@ export class MaterialsStageComponent implements OnInit {
   catalogoPaises: any;
   catalogoEstados: any;
   catalogoCiudades: any;
+  catalogoTransportesLocal: any;
+  catalogoTransportesExtrangero: any;
   vidaUtilSeleccionado: any;
   ciudadOrigenSeleccionada: any;
   reemplazos: any;
@@ -78,7 +80,10 @@ export class MaterialsStageComponent implements OnInit {
     this.catalogsService.getStates().subscribe( data => {
       this.catalogoEstados = data;
     });
-
+    this.catalogsService.getTransports().subscribe(data => {
+      this.catalogoTransportesLocal = data;
+      this.catalogoTransportesExtrangero = data;
+    })
   }
 
   ngOnInit() {
@@ -312,7 +317,9 @@ export class MaterialsStageComponent implements OnInit {
                       distance_end: 0,
                       replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
                       city_id_origin: this.ciudadOrigenSeleccionada,
-                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada
+                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada,
+                      transport_id_origin: data.transporteLocal === undefined ? null : data.transporteLocal,
+                      transport_id_end: data.transporteExtrangero === undefined ? null : data.transporteExtrangero
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -367,7 +374,9 @@ export class MaterialsStageComponent implements OnInit {
                       distance_end: 0,
                       replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
                       city_id_origin: this.ciudadOrigenSeleccionada,
-                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada
+                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada,
+                      transport_id_origin: data.transporteLocal === undefined ? null : data.transporteLocal,
+                      transport_id_end: data.transporteExtrangero === undefined ? null : data.transporteExtrangero
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -425,7 +434,9 @@ export class MaterialsStageComponent implements OnInit {
                   distance_end: null,
                   replaces: dataSheet.reemplazos === '' || dataSheet.reemplazos === undefined ? 0 : dataSheet.reemplazos,
                   city_id_origin: this.ciudadOrigenSeleccionada,
-                  city_id_end: dataSheet.ciudadSeleccionada === '' || dataSheet.ciudadSeleccionada === undefined ? null : dataSheet.ciudadSeleccionada
+                  city_id_end: dataSheet.ciudadSeleccionada === '' || dataSheet.ciudadSeleccionada === undefined ? null : dataSheet.ciudadSeleccionada,
+                  transport_id_origin: dataSheet.transporteLocal === undefined ? null : dataSheet.transporteLocal,
+                  transport_id_end: dataSheet.transporteExtrangero === undefined ? null : dataSheet.transporteExtrangero
                 }).subscribe( data => {
                   console.log('Success save original schema!');
                   this.router.navigateByUrl('construction-stage');
