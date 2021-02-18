@@ -62,7 +62,14 @@ export class BarChartComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels, {
-    afterDraw: this.agregaTitulosProyectos.bind(this)
+    afterDraw: this.agregaTitulosProyectos.bind(this),
+    beforeInit: function (chart) {
+      chart.data.labels.forEach(function (e, i, a) {
+        if (/\n/.test(e)) {
+          a[i] = e.split(/\n/);
+        }
+      });
+    }
   }];
 
 
@@ -76,12 +83,6 @@ export class BarChartComponent implements OnInit {
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
-    if(this.banera_enfoqueSerie_externo){
-      this.focusSeries(this.serie_input);
-    }
-    /*if(this.bandera_enfoqueColumna){
-      this.focusColumnas(this.Columna_seleccionada);
-    }*/
     console.log("Bar");
   }
 
@@ -129,6 +130,7 @@ export class BarChartComponent implements OnInit {
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
           if (!this.barChartLabels.includes(indicador)){
+
             this.barChartLabels = [...this.barChartLabels, indicador];
             //console.log(this.barChartLabels);
           }
@@ -199,6 +201,9 @@ export class BarChartComponent implements OnInit {
     }
     //console.log(datos)
     this.barChartData = datos;
+    if (this.banera_enfoqueSerie_externo) {
+      this.focusSeries(this.serie_input);
+    }
   }
 
   // configurcion de estilo (Titulos de proyectos)
@@ -416,6 +421,7 @@ export class BarChartComponent implements OnInit {
       this.barChartData[index].backgroundColor = color;
       this.barChartData[index].hoverBackgroundColor = color;
     });
+
     this.chartDir.update();
 
   }

@@ -22,7 +22,7 @@ export class PieChartComponent implements OnInit {
   @Output() ClickEvent = new EventEmitter<any>();
 
   private colores: any[] = [
-    ['#4DBE89', '#96e2bd', '#4dba8b', '#1f8253'],
+    ['#2E9A67', '#4DBE89', '#60E3A6', '#1f8253'],
     ['#148A93', '#0da8b6', '#64dee6', '#67c1c9'],
     ['#8F5091', '#d37cd4', '#8c4c90', '#6c1d6c'],
     ['#DEA961', '#d99d1c', '#d59a3d', '#f5e381'],
@@ -30,7 +30,7 @@ export class PieChartComponent implements OnInit {
   ];
 
   private colores_elementos:any[]=[
-    ['#4DBE89', 'rgb(77, 180, 137)', 'rgb(77, 170, 137)', 'rgb(77, 160, 137)', 'rgb(77, 150, 137)', 'rgb(77, 140, 137)', 'rgb(77, 130, 137)', 'rgb(77, 120, 137)', 'rgb(77, 110, 137)'],
+    ['#4DBE89', 'rgb(77, 170, 137)', 'rgb(77, 160, 137)', 'rgb(77, 150, 137)', 'rgb(77, 140, 137)', 'rgb(77, 130, 137)', 'rgb(77, 120, 137)', 'rgb(77, 110, 137)'],
     ['#148A93', 'rgb(20, 128, 147)', 'rgb(20, 118, 147)', 'rgb(20, 108, 147)', 'rgb(20, 98, 147)', 'rgb(20, 88, 147)', 'rgb(20, 78, 147)', 'rgb(20, 68, 147)', 'rgb(20, 58, 147)'],
     ['#8F5091', 'rgb(143, 70, 145)', 'rgb(143, 60, 145)', 'rgb(143, 50, 145)', 'rgb(143, 40, 145)', 'rgb(143, 30, 145)', 'rgb(143, 20, 145)', 'rgb(143, 10, 145)', 'rgb(143, 0, 145)'],
     ['#DEA961', 'rgb(222, 179, 97)', 'rgb(222, 169, 97)', 'rgb(222, 159, 97)', 'rgb(222, 149, 97)', 'rgb(222, 139, 97)', 'rgb(222, 129, 97)', 'rgb(222, 119, 97)', 'rgb(222, 109, 97)']
@@ -116,7 +116,7 @@ export class PieChartComponent implements OnInit {
       this.inputProyect.forEach(element => {
         if(element.id==this.proyecto){
           auxlabel.forEach(label=>{
-            auxdatos = [...auxdatos, (element.Datos[indicador][label]).toFixed(2)]
+            auxdatos = [...auxdatos, (element.Datos[indicador][label])]
           });
           color=this.colores[4];
           auxdata = [{
@@ -126,24 +126,21 @@ export class PieChartComponent implements OnInit {
           this.pieChartData = [...this.pieChartData, auxdata];
         }
       });
-    //carga datos para sección de resultados "Impactos ambientales por impctos del ciclo de vida"
     }else if(this.Bandera_resultado == 2){
       this.pieChartData = [];
       if(indicador===' '){
 
       }else{
         this.inputProyect.forEach(proyecto => {
+          console.log(indicador)
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
-            //console.log(element)
             if (auxlabel[element]===ID) {
               color = this.colores[element];
               auxdatos = aux[auxlabel[element]]
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
-                console.log(subprocesos[element][index]);
-                this.pieChartLabels = [...this.pieChartLabels, subprocesos[element][index]];
-
-                datos = [...datos, (auxdatos[marcador]*100).toFixed(2)];
+                auxdataLabel = [...auxdataLabel, marcador];
+                datos = [...datos, (auxdatos[marcador]*100)];
               });
             }
           });
@@ -152,13 +149,13 @@ export class PieChartComponent implements OnInit {
             backgroundColor: color
           }]
           this.pieChartData = [...this.pieChartData,auxdata];
+          this.pieChartLabels=[...this.pieChartLabels,auxdataLabel];
           datos=[];
           auxdataLabel = [];
-          console.log(this.pieChartLabels);
         });
 
       }
-      // console.log(this.pieChartData)
+       //console.log(this.pieChartData)
 
     }else{
       this.pieChartData =[];

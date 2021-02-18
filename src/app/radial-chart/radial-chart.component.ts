@@ -95,12 +95,36 @@ export class RadialChartComponent implements OnInit {
         pcolor = this.pointcolores[indicador];
       }
     });
+
+    /*this.inputProyect.forEach(proyecto => {
+      Object.keys(proyecto.Datos[auxlabel[0]]).forEach(element => {
+        valores_suma[element]=0;
+      });
+      Object.keys(auxlabel).forEach(indicador => {
+          auxdatos = proyecto.Datos[auxlabel[indicador]]
+          Object.keys(proyecto.Datos[auxlabel[indicador]]).forEach(element => {
+            valores_suma[element]=valores_suma[element]+auxdatos[element];
+          });
+      })
+    });*/
+       //console.log(suma)
     this.inputProyect.forEach(proyecto => {
+      let suma = 0;
+      let valores_suma = [];
+      Object.keys(proyecto.Datos[auxlabel[0]]).forEach(element => {
+        valores_suma[element] = 0;
+      });
+      Object.keys(auxlabel).forEach(indicador => {
+        auxdatos = proyecto.Datos[auxlabel[indicador]]
+        Object.keys(proyecto.Datos[auxlabel[indicador]]).forEach(element => {
+          valores_suma[element] = valores_suma[element] + auxdatos[element];
+        });
+      })
       Object.keys(auxlabel).forEach(indicador => {
         if (auxlabel[indicador] === ID) {
           auxdatos = proyecto.Datos[auxlabel[indicador]]
           Object.keys(proyecto.Datos[auxlabel[indicador]]).forEach(element => {
-            datos = [...datos, (auxdatos[element]).toFixed(2)];
+            datos = [...datos, ((auxdatos[element]*100)/valores_suma[element]).toFixed(2)];
           });
         }
       });
@@ -118,7 +142,6 @@ export class RadialChartComponent implements OnInit {
       auxdata=[];
       auxdatos=[];
     });
-    console.log(this.radarChartData)
 
   }
 
