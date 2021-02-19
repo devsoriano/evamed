@@ -359,13 +359,13 @@
         </div>
         <div class="Row">
           <div class="Col">
-            <h3>Transporte de fábrica a sitio de proyecto</h3>
+            <h3>Transporte de lugar de origen a sitio del proyecto</h3>
           </div>
         </div>
         <div class="Row">
           <div class="Col">
-            <div class="label-general">
-              País
+            <div class="label-general"> 
+              Lugar de origen del material
             </div>
             <div>
               <mat-form-field appearance="outline" class="select-general">
@@ -416,27 +416,10 @@
             </div>
           </div>
         </div>
-        <div class="Row">
-          <div class="Col">
-            <div class="label-general">
-              Tipo de transporte en el interior de la república Mexicana
-            </div>
-            <div>
-              <mat-form-field appearance="outline" class="select-general">
-                <mat-label>Seleccione una opción</mat-label>
-                <mat-select [(ngModel)]="dataMaterialSelected.transporteLocal">
-                  <mat-option *ngFor="let transporte of catalogoTransportesLocal" [value]="transporte.id">
-                    {{transporte.name_transport}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
         <div class="Row" *ngIf="dataMaterialSelected.paisSeleccionado !== 1 && dataMaterialSelected.paisSeleccionado !== undefined">
           <div class="Col">
             <div class="label-general">
-              Tipo de transporte desde extrangero hasta México
+              Tipo de transporte desde el extranjero
             </div>
             <div>
               <mat-form-field appearance="outline" class="select-general">
@@ -452,7 +435,24 @@
         </div>
         <div class="Row">
           <div class="Col">
-            <h3>Tiempo de vida</h3>
+            <div class="label-general">
+              Tipo de transporte utilizado en el interior del país
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select [(ngModel)]="dataMaterialSelected.transporteLocal">
+                  <mat-option *ngFor="let transporte of catalogoTransportesLocal" [value]="transporte.id">
+                    {{transporte.name_transport}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <h3>Tiempo de vida del material</h3>
           </div>
         </div>
         <div class="Row">
