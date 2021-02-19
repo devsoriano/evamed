@@ -77,9 +77,11 @@
             <div>
               <mat-form-field appearance="outline" class="select-general">
                 <mat-select formControlName="sector">
-                  <mat-option value="option1">Option 1</mat-option>
-                  <mat-option value="option2">Option 2</mat-option>
-                  <mat-option value="option3">Option 3</mat-option>
+                  <mat-option value="option1">Academia</mat-option>
+                  <mat-option value="option2">Iniciativa privada</mat-option>
+                  <mat-option value="option3">Sector público</mat-option>
+                  <mat-option value="option3">ONG</mat-option>
+                  <mat-option value="option3">Otro</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -91,9 +93,41 @@
             <div>
               <mat-form-field appearance="outline" class="select-general">
                 <mat-select  formControlName="country">
-                  <mat-option value="option1">México</mat-option>
-                  <mat-option value="option2">España</mat-option>
-                  <mat-option value="option3">Chile</mat-option>
+                  <mat-option value="Antigua y Barbuda">Antigua y Barbuda</mat-option>
+                  <mat-option value="Argentina">Argentina</mat-option>
+                  <mat-option value="Bahamas">Bahamas</mat-option>
+                  <mat-option value="Barbados">Barbados</mat-option>
+                  <mat-option value="Belice">Belice</mat-option>
+                  <mat-option value="Bolivia">Bolivia</mat-option>
+                  <mat-option value="Brasil">Brasil</mat-option>
+                  <mat-option value="Canadá">Canadá</mat-option>
+                  <mat-option value="Chile">Chile</mat-option>
+                  <mat-option value="Colombia">Colombia</mat-option>
+                  <mat-option value="Costa Rica">Costa Rica</mat-option>
+                  <mat-option value="Cuba">Cuba</mat-option>
+                  <mat-option value="Dominica">Dominica</mat-option>
+                  <mat-option value="Ecuador">Ecuador</mat-option>
+                  <mat-option value="El Salvador">El Salvador</mat-option>
+                  <mat-option value="Estados Unidos">Estados Unidos</mat-option>
+                  <mat-option value="Granada">Granada</mat-option>
+                  <mat-option value="Guatemala">Guatemala</mat-option>
+                  <mat-option value="Guyana">Guyana</mat-option>
+                  <mat-option value="Haití">Haití</mat-option>
+                  <mat-option value="Honduras">Honduras</mat-option>
+                  <mat-option value="Jamaica">Jamaica</mat-option>
+                  <mat-option value="México">México</mat-option>
+                  <mat-option value="Nicaragua">Nicaragua</mat-option>
+                  <mat-option value="Panamá">Panamá</mat-option>
+                  <mat-option value="Paraguay">Paraguay</mat-option>
+                  <mat-option value="Perú">Perú</mat-option>
+                  <mat-option value="República Dominicana">República Dominicana</mat-option>
+                  <mat-option value="San Cristóbal y Nieves">San Cristóbal y Nieves</mat-option>
+                  <mat-option value="San Vicente y las Granadinas">San Vicente y las Granadinas</mat-option>
+                  <mat-option value="Santa Lucía">Santa Lucía</mat-option>
+                  <mat-option value="Surinam">Surinam</mat-option>
+                  <mat-option value="Trinidad y Tobago">Trinidad y Tobago</mat-option>
+                  <mat-option value="Uruguay">Uruguay</mat-option>
+                  <mat-option value="Venezuela">Venezuela</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -110,6 +144,20 @@
               formControlName="password"
               matInput 
               type="password"
+            >
+          </div>
+        </div>
+        <div class="container-label-input">
+          <div class="label-context-login">
+            Repetir contraseña
+          </div>
+          <div>
+            <input
+              class="input-context-login"
+              placeholder="Coloca aquí tu contraseña"
+              formControlName="password-2"
+              matInput 
+              type="password-2"
             >
           </div>
         </div>

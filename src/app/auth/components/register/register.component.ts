@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from './../../../core/services/user/user.service';
 import { AuthService } from './../../../core/services/auth.service';
+import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 
 @Component({
   selector: 'app-register',
@@ -12,14 +13,19 @@ import { AuthService } from './../../../core/services/auth.service';
 export class RegisterComponent implements OnInit {
 
   form: FormGroup;
+  catalogoPaises: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private user: UserService
+    private user: UserService,
+    private catalogsService: CatalogsService,
   ) {
     this.buildForm();
+    this.catalogsService.countriesCatalog().subscribe(data => {
+      this.catalogoPaises = data;
+    });
   }
 
   ngOnInit() {
