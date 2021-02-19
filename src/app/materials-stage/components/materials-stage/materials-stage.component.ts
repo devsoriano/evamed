@@ -228,7 +228,7 @@ export class MaterialsStageComponent implements OnInit {
   changeReplaces(vidaUtil) {
     let replaces = 0;
     replaces = (parseInt(this.vidaUtilSeleccionado, 10)) / parseInt(vidaUtil, 10);
-    this.dataMaterialSelected.reemplazos = Math.ceil(replaces);
+    this.dataMaterialSelected.reemplazos = Math.ceil(replaces) - 1;
   }
 
   selectState(id) {
