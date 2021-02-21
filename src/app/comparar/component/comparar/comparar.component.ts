@@ -62,7 +62,7 @@ export class CompararComponent implements OnInit {
   bandera:number;
   showVar: boolean = false;
   showVar_1: boolean = false;
-  ID:string;
+  ID:string=' ';
   proyecto:string;
   banderaGrapg:number=0;
   proyect=[];
@@ -108,7 +108,8 @@ export class CompararComponent implements OnInit {
   bandera_serie_Seleccionada:boolean=false;
   resultdosGraficos:boolean=true;
   resultdosTabla: boolean = false;
-  DatosTabla=[]
+  DatosTabla=[];
+  classBotones ='boton-principal';
 
 
   // vars analisis
@@ -924,6 +925,10 @@ export class CompararComponent implements OnInit {
   //Despliegue gráficas de pie o radar
   grafica(x: string) {
     //activate graph selectioned
+    if(this.ID != ' '){
+      console.log('in');
+      document.getElementById(this.ID).className = 'boton-principal';
+    }
 
     if (this.resultdosGraficos){
       this.containerGraficas.clear();
@@ -942,7 +947,7 @@ export class CompararComponent implements OnInit {
           //this.childBar.forEach(c => c.resetColores());
         }
         this.banderaGrapg=0;
-        this.ID = x;
+        this.ID = ' ';
         this.containerGraficas.clear();
         //this.iniciaBarras();
       }else{
@@ -961,6 +966,10 @@ export class CompararComponent implements OnInit {
           this.iniciaRadiales();
           //this.iniciaBarras();
         }
+      }
+      if (this.ID != ' ') {
+        let boton = document.getElementById(this.ID);
+        boton.className = 'boton-select'
       }
     }
   }
