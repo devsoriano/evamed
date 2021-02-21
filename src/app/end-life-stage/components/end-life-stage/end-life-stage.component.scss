@@ -69,8 +69,21 @@ p.p-instrucciones {
 /**Stepers**/
 .mdl-stepper-horizontal-alternative {
   display: table;
+  width: 95%;
+  margin-top: 10px !important;
+}
+
+.aux-yellow {
+  color: #EDC903 !important;
+}
+
+.mdl-stepper-tag {
+  position: absolute;
+  margin-top: -50px;
+  margin-left: 160px;
+  font-weight: 600;
+  color: #767676;
   width: 100%;
-  margin-top: 10px!important;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step {

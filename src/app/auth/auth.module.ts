@@ -12,7 +12,11 @@ import { RecoverPasswordComponent } from './components/recover-password/recover-
 
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent, RecoverPasswordComponent],
+  declarations: [
+    LoginComponent, 
+    RegisterComponent, 
+    RecoverPasswordComponent
+  ],
   imports: [
     CommonModule,
     AuthRoutingModule,

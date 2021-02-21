@@ -196,8 +196,11 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   onSelectedMaterial(event, value) {
+    console.log('selección de materiales ***************************');
     this.dataMaterialSelected = value.selected[0]?.value;
     this.selectedMaterial = true;
+
+    console.log(this.dataMaterialSelected);
   }
 
   onReturnListMaterials() {

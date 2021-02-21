@@ -9,21 +9,25 @@
     <div class="mdl-stepper-horizontal-alternative">
       <div class="mdl-stepper-step step-one-selected">
         <div class="mdl-stepper-circle" (click)="goToMaterialStage()"></div>
+        <div class="mdl-stepper-tag aux-yellow"> Producción </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-two">
         <div class="mdl-stepper-circle" (click)="goToConstructionStage()"></div>
+        <div class="mdl-stepper-tag"> Construcción </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-three">
         <div class="mdl-stepper-circle" (click)="goToUsageStage()"></div>
+        <div class="mdl-stepper-tag"> Uso </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-four">
         <div class="mdl-stepper-circle" (click)="goToEndLife()"></div>
+        <div class="mdl-stepper-tag"> Fin de vida </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
@@ -355,13 +359,13 @@
         </div>
         <div class="Row">
           <div class="Col">
-            <h3>Transporte de fábrica a sitio de proyecto</h3>
+            <h3>Transporte de lugar de origen a sitio del proyecto</h3>
           </div>
         </div>
         <div class="Row">
-          <div class="Col select-middle">
-            <div class="label-general">
-              País
+          <div class="Col">
+            <div class="label-general"> 
+              Lugar de origen del material
             </div>
             <div>
               <mat-form-field appearance="outline" class="select-general">
@@ -372,14 +376,6 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-            </div>
-          </div>
-          <div class="Col select-middle">
-            <div class="label-general">
-              Tipo de transporte
-            </div>
-            <div>
-            <!--Vehículo de carga comercial ligera (GLO)-Ecoinvent 3default de trnsportes!-->
             </div>
           </div>
         </div> 
@@ -420,9 +416,43 @@
             </div>
           </div>
         </div>
+        <div class="Row" *ngIf="dataMaterialSelected.paisSeleccionado !== 1 && dataMaterialSelected.paisSeleccionado !== undefined">
+          <div class="Col">
+            <div class="label-general">
+              Tipo de transporte desde el extranjero
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select [(ngModel)]="dataMaterialSelected.transporteExtrangero">
+                  <mat-option *ngFor="let transporte of catalogoTransportesExtrangero" [value]="transporte.id">
+                    {{transporte.name_transport}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
         <div class="Row">
           <div class="Col">
-            <h3>Tiempo de vida</h3>
+            <div class="label-general">
+              Tipo de transporte utilizado en el interior del país
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general">
+                <mat-label>Seleccione una opción</mat-label>
+                <mat-select [(ngModel)]="dataMaterialSelected.transporteLocal">
+                  <mat-option *ngFor="let transporte of catalogoTransportesLocal" [value]="transporte.id">
+                    {{transporte.name_transport}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="Row">
+          <div class="Col">
+            <h3>Tiempo de vida del material</h3>
           </div>
         </div>
         <div class="Row">
