@@ -82,6 +82,7 @@ export class HomeEvamedComponent implements OnInit {
           }
           this.countProjectList = this.projectsList.length;
         });
+        this.projectsList.reverse();
       });
     });
      // this.materialsService.getfake().subscribe( data => {
@@ -151,6 +152,7 @@ export class HomeEvamedComponent implements OnInit {
             }
             this.countProjectList = this.projectsList.length;
           });
+          this.projectsList.reverse();
         });
       });
     });

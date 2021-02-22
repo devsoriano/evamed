@@ -496,7 +496,9 @@
         </div>
         <div class="Row">
           <div class="Col">
-            <button (click)="goToSearchInfo()">Buscar fuente</button>
+            <div class="button-read" (click)="goToSearchInfo()">
+              {{dataMaterialSelected.materialDB === undefined ? 'Buscar fuente' : dataMaterialSelected.materialDB.name_material}}
+            </div>
           </div>
         </div>
       </div>
