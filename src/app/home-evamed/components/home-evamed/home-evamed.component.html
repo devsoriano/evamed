@@ -5,6 +5,14 @@
         Tus proyectos
       </div>
       <div class="filter-options">
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select [(ngModel)]="filtroUsoSeleccionado" (selectionChange)="selectUse(filtroUsoSeleccionado)">
+            <mat-option *ngFor="let uso of filtroCatalogoUsos" [value]="uso.id">
+              {{uso.name_use}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
     <div class="container-principal" *ngIf="countProjectList === 0">

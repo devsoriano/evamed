@@ -10,6 +10,7 @@ export interface DialogData {
   catalogoVidaUtil: any;
   catalogoEsqHabitacional: any;
   catalogoEstados: any;
+  filtroUsoSeleccionado: number;
   usoSeleccionado: number;
   paisSeleccionado: any;
   tipoSeleccionado: string;

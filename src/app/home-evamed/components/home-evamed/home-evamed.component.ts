@@ -17,6 +17,8 @@ import { MaterialsService } from './../../../core/services/materials/materials.s
 export class HomeEvamedComponent implements OnInit {
 
   nombre: string;
+  filtroUsoSeleccionado: any;
+  filtroCatalogoUsos: any;
   catalogoUsos: any;
   catalogoPaises: any;
   catalogoTipo: any;
@@ -36,6 +38,7 @@ export class HomeEvamedComponent implements OnInit {
   noNiveles: string;
   optionSelected: string;
   projectsList: any = 0;
+  tempProjectsList: any = 0;
   countProjectList: number;
   user: string;
   sector: string;
@@ -52,6 +55,7 @@ export class HomeEvamedComponent implements OnInit {
   ) {
     this.catalogsService.usesCatalog().subscribe(data => {
       this.catalogoUsos = data;
+      this.filtroCatalogoUsos = data;
     });
     this.catalogsService.countriesCatalog().subscribe(data => {
       this.catalogoPaises = [];
@@ -83,6 +87,7 @@ export class HomeEvamedComponent implements OnInit {
           this.countProjectList = this.projectsList.length;
         });
         this.projectsList.reverse();
+        this.tempProjectsList = this.projectsList;
       });
     });
      // this.materialsService.getfake().subscribe( data => {
@@ -120,6 +125,16 @@ export class HomeEvamedComponent implements OnInit {
     .then(() => {
       this.router.navigate(['/auth/login']);
     });
+  }
+
+  selectUse(id) {
+    this.projectsList = [];
+    this.tempProjectsList.map(item => {
+      if (item.use_id === id) {
+        this.projectsList.push(item);
+      }
+    });
+    this.projectsList.reverse();
   }
 
   openDialogCTOP() {
