@@ -909,7 +909,11 @@ export class CompararComponent implements OnInit {
     this.outproyect_radar = this.outproyect_radar.filter(({ id }) => id != ID);
     this.outproyect_pie = this.outproyect_pie.filter(({ id }) => id != ID);
 
-    this.iniciaBarras();
+    if (this.resultdosTabla) {
+      this.TablaResultados();
+    } else {
+      this.iniciaBarras();
+    }
     this.iniciaRadiales();
     this.iniciaPie();
 
