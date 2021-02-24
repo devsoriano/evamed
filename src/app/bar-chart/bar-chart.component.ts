@@ -45,7 +45,19 @@ export class BarChartComponent implements OnInit {
     responsive: true,
     title: { display: true },
     legend: { display: false },
-    tooltips: { enabled: false },
+    tooltips: {enabled: false,
+      mode: 'label',
+      callbacks: {
+        label: function (tooltipItem, data) {
+          var indice = tooltipItem.index;
+          var value = data.datasets[0].data[indice];
+          var value2 = value.toString();
+          var value3 = value2.split(/(?=(?:...)*$)/);
+          var final = value3.join(',');
+          return final;
+        }
+      }
+    },
     events: ['touchstart', 'mousemove', 'click'],
     plugins: {
       datalabels: {
@@ -113,7 +125,7 @@ export class BarChartComponent implements OnInit {
           display: true,
           ticks: {
             beginAtZero: true,
-            max: this.maxValue
+            max: this.maxValue,
           }
         }]
       };

@@ -131,8 +131,8 @@ export class PieChartComponent implements OnInit {
       if(indicador===' '){
 
       }else{
+        console.log(this.inputProyect)
         this.inputProyect.forEach(proyecto => {
-          console.log(indicador)
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
             if (auxlabel[element]===ID) {
@@ -140,7 +140,7 @@ export class PieChartComponent implements OnInit {
               auxdatos = aux[auxlabel[element]]
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
                 auxdataLabel = [...auxdataLabel, marcador];
-                datos = [...datos, (auxdatos[marcador]*100)];
+                datos = [...datos, auxdatos[marcador]];
               });
             }
           });

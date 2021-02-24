@@ -8,7 +8,7 @@ import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.componen
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { AnalisisService } from './../../../core/services/analisis/analisis.service';
-import { forkJoin, observable } from 'rxjs';
+import { concat, forkJoin, observable } from 'rxjs';
 import { couldStartTrivia } from 'typescript';
 import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
 import { Router } from '@angular/router';
@@ -401,13 +401,13 @@ export class CompararComponent implements OnInit {
             if(ps['distanceInit'] == null){
               internacional=0;
             }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['Transporte'] == 'Transporte por oceano, contenedores (GLO)-Ecoinvent 3')
+              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 1)
               internacional=value_transport[0]['valor']*ps['distanceInit'];
             }
             if(ps['distanceEnd'] == null){
               nacional=0;
             }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['Transporte'] == 'Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3')
+              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 4)
               nacional=value_transport[0]['valor']*ps['distanceEnd'];
             }
             let conversion_val = this.conversion_list.filter(val => val['id_material'] == ps['material_id'])
@@ -415,12 +415,9 @@ export class CompararComponent implements OnInit {
             if(conversion_val.length > 0){
               peso=conversion_val[0]['value']
             }
-            //console.log(peso*ps['quantity']*(nacional+internacional))
             resultado_impacto = resultado_impacto + (peso*ps['quantity']*(nacional+internacional))
           })
         }
-
-
         //A5 instalación
         let CSEs = this.CSEList.filter(c => c['project_id'] == idProyecto);
         if(CSEs.length > 0){
@@ -546,13 +543,13 @@ export class CompararComponent implements OnInit {
             if(ps['distanceInit'] == null){
               internacional=0;
             }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['Transporte'] == 'Transporte por oceano, contenedores (GLO)-Ecoinvent 3')
+              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 1)
               internacional=value_transport[0]['valor']*ps['distanceInit'];
             }
             if(ps['distanceEnd'] == null){
               nacional=0;
             }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['Transporte'] == 'Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3')
+              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 4)
               nacional=value_transport[0]['valor']*ps['distanceEnd'];
             }
             let conversion_val = this.conversion_list.filter(val => val['id_material'] == ps['material_id'])
@@ -675,7 +672,7 @@ export class CompararComponent implements OnInit {
               let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
               if (materiales_subetapa.length > 0) {
                 materiales_subetapa.forEach((material, index) => {
-                  resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces'])
+                  resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'])
                 })
               }
             })
@@ -696,13 +693,13 @@ export class CompararComponent implements OnInit {
             if (ps['distanceInit'] == null) {
               internacional = 0;
             } else {
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['Transporte'] == 'Transporte por oceano, contenedores (GLO)-Ecoinvent 3')
+              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 1)
               internacional = value_transport[0]['valor'] * ps['distanceInit'];
             }
             if (ps['distanceEnd'] == null) {
               nacional = 0;
             } else {
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['Transporte'] == 'Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3')
+              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 4)
               nacional = value_transport[0]['valor'] * ps['distanceEnd'];
             }
             let conversion_val = this.conversion_list.filter(val => val['id_material'] == ps['material_id'])
@@ -803,28 +800,25 @@ export class CompararComponent implements OnInit {
     let auxL = ['Producción', 'Construccion', 'Uso', 'FinDeVida'];
     //se prepara la información por filas
     let aux=[]
-    let auxdata = []
     auxL.forEach(ciclo => {
-      let aux2=[]
+      let auxdata = {}
+      let auximpactos =[]
       this.outproyect_bar.forEach((element,index)=>{
-        if(this.outproyect_bar.length>=2){
-          Object.keys(element.Datos).forEach(impacto => {
-            if(!aux2.includes(impacto)){
-              aux2.push(impacto)
-              auxdata[impacto]={}
-            }
-            auxdata[impacto][element.id] = element.Datos[impacto][ciclo]
-          });
-        }else{
-          Object.keys(element.Datos).forEach( impacto => {
-            auxdata[impacto] = element.Datos[impacto][ciclo]
-          });
-        }
+        Object.keys(element.Datos).forEach(impacto => {
+          if(!auximpactos.includes(impacto)){
+            auximpactos.push(impacto)
+            auxdata[impacto] = (element.Datos[impacto][ciclo]).toFixed(2)
+          }else{
+            let last = auxdata[impacto].toString()
+            auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
+            auxdata[impacto] = auxdata[impacto].concat((element.Datos[impacto][ciclo]).toFixed(2))
+          }
+        });
       })
       aux=[...aux, auxdata];
     })
     this.DatosTabla = aux;
-    console.log(this.DatosTabla);
+    //console.log(this.DatosTabla);
     this.resultdosTabla=true;
     this.resultdosGraficos=false;
   }

@@ -1,379 +1,316 @@
 [
   {
-    "id": 1,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 1,
     "valor": 0.0000000601
   },
     {
-    "id": 2,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 1,
     "valor": 0.00000007
   },
     {
-    "id": 3,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 1,
     "valor": 0.0000409
   },
     {
-    "id": 4,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 1,
     "valor": 0.00000158
   },
     {
-    "id": 5,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 1,
     "valor": 0.00000456
   },
     {
-    "id": 6,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 1,
     "valor": 0.0000255
   },
     {
-    "id": 7,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 1,
     "valor": 0.0000078
   },
   {
-    "id": 8,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 2,
     "valor": 0.0829
   },
     {
-    "id": 9,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 2,
     "valor": 0.12
   },
     {
-    "id": 10,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 2,
     "valor": 26
   },
     {
-    "id": 11,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 2,
     "valor": 1.44
   },
     {
-    "id": 12,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 2,
     "valor": 2.55
   },
     {
-    "id": 13,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 2,
     "valor": 7.74
   },
     {
-    "id": 14,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 2,
     "valor": 3.26
   },
   {
-    "id": 15,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 3,
     "valor": 0.0065
   },
     {
-    "id": 16,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 3,
     "valor": 0.00934
   },
     {
-    "id": 17,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 3,
     "valor": 1.84
   },
     {
-    "id": 18,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 3,
     "valor": 0.0936
   },
     {
-    "id": 19,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 3,
     "valor": 0.172
   },
     {
-    "id": 20,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 3,
     "valor": 0.541
   },
     {
-    "id": 21,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 3,
     "valor": 0.224
   },
   {
-    "id": 22,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 4,
     "valor": 0.00000000103
   },
     {
-    "id": 23,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 4,
     "valor": 0.0000000015
   },
     {
-    "id": 24,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 4,
     "valor": 0.000000296
   },
     {
-    "id": 25,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 4,
     "valor": 0.0000000172
   },
     {
-    "id": 26,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 4,
     "valor": 0.0000000302
   },
     {
-    "id": 27,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 4,
     "valor": 0.0000000884
   },
     {
-    "id": 28,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 4,
     "valor": 0.0000000382
   },
   {
-    "id": 29,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 5,
     "valor": 0.0000043
   },
     {
-    "id": 30,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 5,
     "valor": 0.00000638
   },
     {
-    "id": 31,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 5,
     "valor": 0.000694
   },
     {
-    "id": 32,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 5,
     "valor": 0.0000141
   },
     {
-    "id": 33,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 5,
     "valor": 0.0000268
   },
     {
-    "id": 34,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 5,
     "valor": 0.000088
   },
     {
-    "id": 35,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 5,
     "valor": 0.0000351
   },
   {
-    "id": 36,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 6,
     "valor": 0.000154
   },
     {
-    "id": 37,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 6,
     "valor": 0.000245
   },
     {
-    "id": 38,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 6,
     "valor": 0.0082
   },
     {
-    "id": 39,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 6,
     "valor": 0.000485
   },
     {
-    "id": 40,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 6,
     "valor": 0.000872
   },
     {
-    "id": 41,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 6,
     "valor": 0.00259
   },
     {
-    "id": 42,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 6,
     "valor": 0.0011
   },
   {
-    "id": 43,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 7,
     "valor": 0.000016
   },
     {
-    "id": 44,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 7,
     "valor": 0.0000274
   },
     {
-    "id": 45,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 7,
     "valor": 0.00228
   },
     {
-    "id": 46,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 7,
     "valor": 0.000116
   },
     {
-    "id": 47,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 7,
     "valor": 0.000211
   },
     {
-    "id": 48,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 7,
     "valor": 0.000654
   },
     {
-    "id": 49,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 7,
     "valor": 0.00027
   },
   {
-    "id": 50,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 8,
     "valor": 0.000159
   },
     {
-    "id": 51,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 8,
     "valor": 0.000189
   },
     {
-    "id": 52,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 8,
     "valor": 0.126
   },
     {
-    "id": 53,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 8,
     "valor": 0.0054
   },
     {
-    "id": 54,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 8,
     "valor": 0.00856
   },
     {
-    "id": 55,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 8,
     "valor": 0.0324
   },
     {
-    "id": 56,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 8,
     "valor": 0.0119
   },
   {
-    "id": 57,
-    "Transporte": "Transporte por oceano, Buque carguero (GLO)-Ecoinvent 3",
+    "id_transport": 1,
     "id_potencial": 9,
     "valor": 0
   },
     {
-    "id": 58,
-    "Transporte": "Transporte por oceano, contenedores (GLO)-Ecoinvent 3",
+    "id_transport": 2,
     "id_potencial": 9,
     "valor": 0
   },
     {
-    "id": 59,
-    "Transporte": "Vehículo de carga comercial ligera (GLO)-Ecoinvent 3",
+    "id_transport": 3,
     "id_potencial": 9,
     "valor": 0
   },
     {
-    "id": 60,
-    "Transporte": "Vehículo de carga, mayor a 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 4,
     "id_potencial": 9,
     "valor": 0
   },
     {
-    "id": 61,
-    "Transporte": "Vehículo de carga, entre  16 y 32 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 5,
     "id_potencial": 9,
     "valor": 0
   },
     {
-    "id": 62,
-    "Transporte": "Vehículo de carga, entre  3.5 y 7.5 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 6,
     "id_potencial": 9,
     "valor": 0
   },
     {
-    "id": 63,
-    "Transporte": "Vehículo de carga, entre  7.5 y 16 Ton, tipo EURO 3 (RoW)-Ecoinvent 3",
+    "id_transport": 7,
     "id_potencial": 9,
     "valor": 0
   }

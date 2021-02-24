@@ -12,6 +12,28 @@
   margin: auto;
 }
 
+  .Tabla-Datos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+
+    th {
+      padding-left: 15px;
+    }
+
+    tr {
+      white-space: nowrap;
+      font-size: 0.8em;
+      padding: 16px 16px 16px 0;
+      height: 72px;
+
+      & td {
+        padding-left: 16px;
+        font-size: 1.2em;
+      }
+    }
+  }
+
 .sectionOne{
   font-size: 15px;
   color: #92BE00;
