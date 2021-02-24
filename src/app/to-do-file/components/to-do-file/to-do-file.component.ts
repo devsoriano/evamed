@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { FileSaverService } from 'ngx-filesaver';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { PrevStepsComponent } from 'src/app/prev-steps/prev-steps.component';
 
 type AOA = any[][];
 
@@ -18,7 +19,7 @@ export class ToDoFileComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private fileSaverService: FileSaverService,
-    private router: Router
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -44,12 +45,10 @@ export class ToDoFileComponent implements OnInit {
       let i = 0;
       /* save data */
       for ( i = 0; i < wb.SheetNames.length; i++) {
-        console.log('prueba rápida!!!!!!');
         partialData = XLSX.utils.sheet_to_json(
           wb.Sheets[wb.SheetNames[i]],
           { raw: true, defval: null }
         );
-        console.log(partialData);
         totalData.push(partialData);
       }
 
@@ -58,8 +57,6 @@ export class ToDoFileComponent implements OnInit {
         sheetNames: wb.SheetNames,
         data: totalData
       };
-      console.log('excel°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°');
-      console.log(totalData);
       sessionStorage.setItem('dataProject', JSON.stringify(toRead));
       // this.router.navigateByUrl('materials-stage');
     };
@@ -97,6 +94,8 @@ export class ToDoFileComponent implements OnInit {
   }
 
   saveFile() {
-    this.router.navigateByUrl('materials-stage');
+    this.dialog.open(PrevStepsComponent);
   }
+
+  
 }
