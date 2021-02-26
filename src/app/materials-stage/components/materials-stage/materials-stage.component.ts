@@ -35,9 +35,9 @@ export class MaterialsStageComponent implements OnInit {
   selectedOptionsRevit: string[] = [];
   selectedOptionsDynamo: string[] = [];
   selectedOptionsUsuario: string[] = [];
-  panelOpenFirst = false;
-  panelOpenSecond = false;
-  panelOpenThird = false;
+  panelOpenFirst: boolean = true;
+  panelOpenSecond: boolean = true;
+  panelOpenThird: boolean = true;
   allMaterials = [];
   nameProject: string;
   projectId: number;
@@ -146,6 +146,8 @@ export class MaterialsStageComponent implements OnInit {
   // Lógica para autocompletado
 
   onGroupsChange(options: MatListOption[]) {
+
+    console.log(this.panelOpenFirst);
     options.map(option => {
       this.selectedSheet = option.value;
     });

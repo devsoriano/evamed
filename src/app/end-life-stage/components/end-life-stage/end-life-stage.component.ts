@@ -76,6 +76,7 @@ export class EndLifeStageComponent implements OnInit {
     this.contentData = data.data;
 
     this.initialChange();
+    this.indexSheet = undefined;
   }
 
   initialChange() {

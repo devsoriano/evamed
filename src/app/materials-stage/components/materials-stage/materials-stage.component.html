@@ -61,11 +61,7 @@
         <img *ngSwitchDefault src="../../../../assets/map/12.jpg" class="image-element" alt="" />
       </div>
       <div class="list-elements">
-        <mat-selection-list
-          #sheets
-          [multiple]="false"
-          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)"
-        >
+        <mat-selection-list #sheets [multiple]="false" (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)" >
           <mat-list-option
             *ngFor="let sheet of sheetNames"
             [value]="sheet"
@@ -89,21 +85,14 @@
         </button>
       </div>
       <mat-accordion *ngIf="indexSheet!==undefined">
-        <mat-expansion-panel
-          (opened)="panelOpenFirst = true"
-          (closed)="panelOpenFirst = false"
-        >
+        <mat-expansion-panel (opened)="panelOpenFirst = true" (closed)="panelOpenFirst = false" [expanded]="true">
           <!--List Revit or template-->
           <mat-expansion-panel-header>
             <mat-panel-title>
               Registrados en REVIT y/o Template EVAMED
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <mat-selection-list
-            #sistemas_constructivos
-            [(ngModel)]="selectedOptionsRevit"
-            (ngModelChange)="onNgModelChangeRevit($event)"
-          >
+          <mat-selection-list #sistemas_constructivos [(ngModel)]="selectedOptionsRevit" (ngModelChange)="onNgModelChangeRevit($event)">
             <mat-list-option
               *ngFor="let sc of ListSCRevit"
               [value]="sc"
@@ -118,18 +107,10 @@
                 </div>
               </div>
               <div>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="removeMaterial($event, sc, 'revit-user')"
-                >
+                <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'revit-user')">
                   <mat-icon class="custom-icon">restore_from_trash</mat-icon>
                 </button>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="restoreMaterial($event, sc, 'revit-user')"
-                >
+                <button class="custom-button-icon" mat-icon-button (click)="restoreMaterial($event, sc, 'revit-user')">
                   <mat-icon class="custom-icon">restore_page</mat-icon>
                 </button>
                 <button
@@ -147,21 +128,14 @@
       </mat-accordion>
 
       <mat-accordion *ngIf="indexSheet!==undefined">
-        <mat-expansion-panel
-          (opened)="panelOpenSecond = true"
-          (closed)="panelOpenSecond = false"
-        >
+        <mat-expansion-panel (opened)="panelOpenSecond = true" (closed)="panelOpenSecond = false" [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Opciones EVAMED
             </mat-panel-title>
           </mat-expansion-panel-header>
 
-          <mat-selection-list
-            #sistemas_constructivos
-            [(ngModel)]="selectedOptionsDynamo"
-            (ngModelChange)="onNgModelChangeDynamo($event)"
-          >
+          <mat-selection-list #sistemas_constructivos [(ngModel)]="selectedOptionsDynamo" (ngModelChange)="onNgModelChangeDynamo($event)">
             <mat-list-option
               *ngFor="let sc of ListSCDynamo"
               [value]="sc"
@@ -175,11 +149,7 @@
                 </div>
               </div>
               <div>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="removeMaterial($event, sc, 'dynamo')"
-                >
+                <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'dynamo')" >
                   <mat-icon class="custom-icon">restore_from_trash</mat-icon>
                 </button>
                 <button
