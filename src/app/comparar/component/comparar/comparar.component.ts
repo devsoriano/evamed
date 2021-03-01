@@ -379,7 +379,9 @@ export class CompararComponent implements OnInit {
         if(schemeProyect.length > 0){
           etapas.forEach(subetapa => {
             schemeProyect.forEach(ps => {
-              let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
+              let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'])
+              console.log(materiales_subetapa)
+              materiales_subetapa = materiales_subetapa.filter(msd => msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
               if(materiales_subetapa.length > 0){
                 materiales_subetapa.forEach((material,index) => {
                   resultado_impacto = resultado_impacto + ( materiales_subetapa[index]['value'] * ps['quantity'] )
