@@ -17,7 +17,7 @@ export class ConstructionStageComponent implements OnInit {
   sheetNames: any;
   contentData: any;
   listData: any;
-  indexSheet: number;
+  indexSheet: any;
   SistemasConstructivos: any;
   catalogoFuentes: any;
   catalogoUnidadEnergia: [];
@@ -81,6 +81,8 @@ export class ConstructionStageComponent implements OnInit {
     this.contentData = data.data;
 
     this.initialChange();
+    this.indexSheet = undefined;
+    console.log(this.indexSheet);
   }
 
   initialChange() {
@@ -124,6 +126,7 @@ export class ConstructionStageComponent implements OnInit {
     }
 
     this.selectedSheet = selectedSheet;
+    console.log(this.indexSheet);
   }
 
   addFormEC() {

@@ -67,9 +67,9 @@
       </div>
     </section>
     <!--Formulario de energía consumida-->
-    <section class="container-systems">
+    <section class="container-systems" *ngIf="indexSheet!==undefined">
       <h3>1. Energía consumida durante el proceso deconstructivo</h3>
-      <div class="container-ec" *ngIf="indexSheet!==undefined">
+      <div class="container-ec">
         <div *ngFor="let data of dataArrayEC; let i=index;">
           <div class="Row top-0">
             <div class="Col col-small-space">

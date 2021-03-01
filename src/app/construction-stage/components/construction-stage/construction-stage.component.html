@@ -70,9 +70,9 @@
 
     <section class="container-systems">
       <!--Accorion multiple-->
-      <mat-accordion class="example-headers-align" multi>
+      <mat-accordion *ngIf="indexSheet !== undefined" class="example-headers-align" multi>
         <!--Expansion panel 1. -->
-        <mat-expansion-panel *ngIf="indexSheet!==undefined">
+        <mat-expansion-panel [expanded]="true">
           <!--Expansion panel header-->
           <mat-expansion-panel-header class="custom-expansion-panel-header">
             <mat-panel-title class="custom-mat-panel-title">

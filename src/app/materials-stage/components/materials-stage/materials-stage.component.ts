@@ -35,9 +35,9 @@ export class MaterialsStageComponent implements OnInit {
   selectedOptionsRevit: string[] = [];
   selectedOptionsDynamo: string[] = [];
   selectedOptionsUsuario: string[] = [];
-  panelOpenFirst = false;
-  panelOpenSecond = false;
-  panelOpenThird = false;
+  panelOpenFirst: boolean = true;
+  panelOpenSecond: boolean = true;
+  panelOpenThird: boolean = true;
   allMaterials = [];
   nameProject: string;
   projectId: number;
@@ -133,6 +133,7 @@ export class MaterialsStageComponent implements OnInit {
     this.contentData = data.data;
   }
 
+  // Lógica para autocompletado
   displayFn(material: Material): string {
     return material && material.name_material ? material.name_material : '';
   }
@@ -142,8 +143,11 @@ export class MaterialsStageComponent implements OnInit {
 
     return this.options.filter(option => option.name_material.toLowerCase().indexOf(filterValue) === 0);
   }
+  // Lógica para autocompletado
 
   onGroupsChange(options: MatListOption[]) {
+
+    console.log(this.panelOpenFirst);
     options.map(option => {
       this.selectedSheet = option.value;
     });
@@ -198,14 +202,27 @@ export class MaterialsStageComponent implements OnInit {
   onSelectedMaterial(event, value) {
     this.dataMaterialSelected = value.selected[0]?.value.value;
     
+    this.dataMaterialSelected.paisSeleccionado === undefined ? 
+    this.dataMaterialSelected.paisSeleccionado = 1 : 
+    this.dataMaterialSelected.paisSeleccionado;
+
+    this.dataMaterialSelected.estadoSeleccionado === undefined ? 
+    this.dataMaterialSelected.estadoSeleccionado = 1 : 
+    this.dataMaterialSelected.estadoSeleccionado;
+
+    this.selectState(1);
+
+    this.dataMaterialSelected.ciudadSeleccionada === undefined ? 
+    this.dataMaterialSelected.ciudadSeleccionada = 1 : 
+    this.dataMaterialSelected.ciudadSeleccionada;
+
     this.dataMaterialSelected.vidaUtil === undefined ? 
       this.dataMaterialSelected.vidaUtil = parseInt(this.vidaUtilSeleccionado, 10) : 
       this.dataMaterialSelected.vidaUtil;
+
     this.dataMaterialSelected.reemplazos === undefined ? 
       this.dataMaterialSelected.reemplazos = 0 : 
       this.dataMaterialSelected.reemplazos;
-
-    console.log(this.dataMaterialSelected);
 
     this.catalogsService.getCities().subscribe( 
       data => {
@@ -216,6 +233,24 @@ export class MaterialsStageComponent implements OnInit {
         });
       }
     );
+
+    this.catalogoTransportesLocal = [];
+    this.catalogsService.getTransports().subscribe(
+      data => {
+        if ( this.dataMaterialSelected.paisSeleccionado === 1 ) {
+          data.map( item => {
+           if ( item.id >= 3  ) {
+              this.catalogoTransportesLocal.push(item)
+            }
+          });
+        }
+      }
+    );
+
+    this.dataMaterialSelected.paisSeleccionado === 1 ? 
+    this.dataMaterialSelected.transporteLocal = 3 : 
+    this.dataMaterialSelected.transporteLocal;
+
     this.selectedMaterial = true;
   }
 
@@ -238,6 +273,54 @@ export class MaterialsStageComponent implements OnInit {
         data.map( item => {
           if ( item.state_id === id) {
             this.catalogoCiudades.push(item);
+          }
+        });
+      }
+    );
+  }
+
+  selectCountry(id) {
+    this.catalogsService.getExternalDistances().subscribe(
+      data => {
+        data.map( item => {
+          let typeTransport = 'mar';
+          if( id === (item.id + 1) ) {
+            console.log(item);
+            switch(item.region) {
+              case 'PACIFICO' || 'ATLANTICO':
+                typeTransport = 'mar';
+                break;
+              case 'NORTE' || 'SUR':
+                typeTransport = 'terreste';
+                break;
+              default:
+                break;
+            }
+
+            this.catalogoTransportesExtrangero = [];
+            console.log(typeTransport);
+            if ( typeTransport === 'terreste') {
+              this.catalogsService.getTransports().subscribe(
+                data => {
+                  data.map( item => {
+                    if ( item.id >= 3  ) {
+                      this.catalogoTransportesExtrangero.push(item)
+                    }
+                  });
+                }
+              );
+            } else {
+              this.catalogsService.getTransports().subscribe(
+                data => {
+                  data.map( item => {
+                   if ( item.id < 3  ) {
+                      this.catalogoTransportesExtrangero.push(item)
+                    }
+                  });
+                }
+              );
+            }
+
           }
         });
       }
