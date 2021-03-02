@@ -6,11 +6,13 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
 import { AddConstructiveElementComponent } from './components/add-constructive-element/add-constructive-element.component';
+import { AddConstructiveSystemComponent } from './components/add-constructive-system/add-constructive-system.component';
 
 @NgModule({
   declarations: [
     AddConstructiveElementComponent,
-    MaterialsStageComponent
+    MaterialsStageComponent,
+    AddConstructiveSystemComponent
   ],
   imports: [
     CommonModule,
