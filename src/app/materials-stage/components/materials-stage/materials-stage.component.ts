@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AddConstructiveElementComponent } from '../add-constructive-element/add-constructive-element.component';
 import { MatDialog } from '@angular/material/dialog';
-import { removeSummaryDuplicates } from '@angular/compiler';
 
 export interface Material {
   id: number;
@@ -159,7 +158,7 @@ export class MaterialsStageComponent implements OnInit {
     const SCUsuario = [];
 
     this.listData.map( sc => {
-      if (sc.Origen === 'Modelo de Revit' || sc.Origen === 'Usuario') {
+      if (sc.Origen === 'Modelo de Revit') {
         SCRevit.push(sc.Sistema_constructivo);
       } 
       if (sc.Origen === 'Calculado en Dynamo') {
@@ -182,7 +181,7 @@ export class MaterialsStageComponent implements OnInit {
       if (this.indexSheet === i && this.SOD !== undefined) {
         this.selectedOptionsDynamo = this.SOD[i];
       }
-      if (this.indexSheet === i && this.SOD !== undefined) {
+      if (this.indexSheet === i && this.SOU !== undefined) {
         this.selectedOptionsUsuario = this.SOU[i]
       }
     }

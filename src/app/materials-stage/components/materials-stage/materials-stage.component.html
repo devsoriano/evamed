@@ -174,10 +174,7 @@
       </mat-accordion>
 
       <mat-accordion  *ngIf="indexSheet!==undefined">
-        <mat-expansion-panel
-          (opened)="panelOpenThird = true"
-          (closed)="panelOpenThird = false"
-        >
+        <mat-expansion-panel (opened)="panelOpenThird = true" (closed)="panelOpenThird = false" [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Creados por el usuario
