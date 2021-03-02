@@ -158,13 +158,13 @@ export class MaterialsStageComponent implements OnInit {
     const SCUsuario = [];
 
     this.listData.map( sc => {
-      if (sc.Origen === 'Modelo de Revit') {
+      if (sc.Origen === 'Modelo de Revit' || sc.Origen === 'Usuario') {
         SCRevit.push(sc.Sistema_constructivo);
       } 
       if (sc.Origen === 'Calculado en Dynamo') {
         SCDynamo.push(sc.Sistema_constructivo);
       } 
-      if (sc.Origen === 'Usuario') {
+      if (sc.Origen === 'Usuario_Plataforma') {
         SCUsuario.push(sc.Sistema_constructivo);
       }
     });
@@ -628,7 +628,7 @@ export class MaterialsStageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.sheetNames.push(result.newConstructiveElement);
       this.contentData.push([{
-        Origen: 'Usuario',
+        Origen: 'Usuario_Plataforma',
         Sistema_constructivo: result.newConstructiveSystem
       }]);
     });
