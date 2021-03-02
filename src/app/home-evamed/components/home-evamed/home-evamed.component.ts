@@ -214,6 +214,9 @@ export class HomeEvamedComponent implements OnInit {
           distance: null
         }).subscribe(data => {
           sessionStorage.setItem('primaryDataProject', JSON.stringify(data));
+          console.log('estado seleccionado');
+          console.log(result.estadoSeleccionado);
+          sessionStorage.setItem('estadoSeleccionado', result.estadoSeleccionado);
           this.openDialogCTOP();
         });
       } catch (e){

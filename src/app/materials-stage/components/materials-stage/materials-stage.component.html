@@ -234,7 +234,7 @@
         <mat-list-option *ngFor="let material of listMateriales | keyvalue" [value]="material">
           <div class="table-materials"> 
             <div class="col-key">
-              {{material.key}}.
+              {{ material.value.key }}.
             </div>
             <div class="col-material">
               {{material.value.Material}}
@@ -246,7 +246,9 @@
               {{material.value.Unidad}}
             </div>
             <div class="col-icon">
-              <mat-icon class="custom-icon custom-error">check_circle</mat-icon>
+              <div class="col-unidad">
+                <mat-icon class="custom-icon">{{material.value.signal ? 'check_circle' : 'error'}}</mat-icon>
+              </div>
             </div>
           </div>
         </mat-list-option>

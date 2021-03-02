@@ -99,14 +99,8 @@ export class MaterialsStageComponent implements OnInit {
     this.showSearch = false;
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
-
-    //lógica para obtener distancia inicial de los materiales
-    if( PDP.country_id > 1 ) { //Resto del mundo
-      
-    } else {
-      this.ciudadOrigenSeleccionada = PDP.city_id_origin
-    } 
-
+    this.ciudadOrigenSeleccionada = PDP.city_id_origin
+    
     this.catalogsService.usefulLifeCatalog().subscribe(data => {
       data.map( item => {
         if (item.id === PDP.useful_life_id) {
@@ -207,13 +201,13 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.paisSeleccionado;
 
     this.dataMaterialSelected.estadoSeleccionado === undefined ? 
-    this.dataMaterialSelected.estadoSeleccionado = 1 : 
+    this.dataMaterialSelected.estadoSeleccionado = parseInt(sessionStorage.getItem('estadoSeleccionado')) : 
     this.dataMaterialSelected.estadoSeleccionado;
 
-    this.selectState(1);
+    this.selectState(parseInt(sessionStorage.getItem('estadoSeleccionado')));
 
     this.dataMaterialSelected.ciudadSeleccionada === undefined ? 
-    this.dataMaterialSelected.ciudadSeleccionada = 1 : 
+    this.dataMaterialSelected.ciudadSeleccionada = this.ciudadOrigenSeleccionada: 
     this.dataMaterialSelected.ciudadSeleccionada;
 
     this.dataMaterialSelected.vidaUtil === undefined ? 
@@ -400,9 +394,9 @@ export class MaterialsStageComponent implements OnInit {
                       distance_end: 0,
                       replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
                       city_id_origin: this.ciudadOrigenSeleccionada,
-                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada,
-                      transport_id_origin: data.transporteLocal === undefined ? null : data.transporteLocal,
-                      transport_id_end: data.transporteExtrangero === undefined ? null : data.transporteExtrangero
+                      city_id_end: data.ciudadSeleccionada === undefined ? 1 : data.ciudadSeleccionada,
+                      transport_id_origin: data.transporteLocal === undefined ? 1 : data.transporteLocal,
+                      transport_id_end: data.transporteExtrangero === undefined ? 1 : data.transporteExtrangero
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -457,9 +451,9 @@ export class MaterialsStageComponent implements OnInit {
                       distance_end: 0,
                       replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
                       city_id_origin: this.ciudadOrigenSeleccionada,
-                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada,
-                      transport_id_origin: data.transporteLocal === undefined ? null : data.transporteLocal,
-                      transport_id_end: data.transporteExtrangero === undefined ? null : data.transporteExtrangero
+                      city_id_end: data.ciudadSeleccionada === undefined ? 1 : data.ciudadSeleccionada,
+                      transport_id_origin: data.transporteLocal === undefined ? 1 : data.transporteLocal,
+                      transport_id_end: data.transporteExtrangero === undefined ? 1 : data.transporteExtrangero
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -537,14 +531,33 @@ export class MaterialsStageComponent implements OnInit {
     this.selectedMaterial = false;
     this.showSearch = false;
     const materiales = [];
-    this.listData.map( (data, key) => {
+    let counterRevit = 1;
+
+    this.listData.map( (data) => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
         if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
+          data.signal = false
+          this.materialsService.searchMaterial(data.Material).subscribe( material => { 
+            material.map( materialData => {
+              if (materialData.name_material === data.Material) {
+                data.signal = true;
+              }
+            })
+          });
+          data.key = counterRevit++;
           materiales.push(data);
         }
       }
       if (data.Sistema_constructivo === sc && origin === 'dynamo') {
         if (data.Origen === 'Calculado en Dynamo') {
+          data.signal = false
+          this.materialsService.searchMaterial(data.Material).subscribe( material => { 
+            material.map( materialData => {
+              if (materialData.name_material === data.Material) {
+                data.signal = true
+              }
+            })
+          });
           materiales.push(data);
         }
       }
