@@ -134,7 +134,6 @@ export class PieChartComponent implements OnInit {
       if(indicador===' '){
 
       }else{
-        console.log(this.inputProyect)
         this.inputProyect.forEach(proyecto => {
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
