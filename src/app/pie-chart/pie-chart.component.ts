@@ -41,7 +41,10 @@ export class PieChartComponent implements OnInit {
     elements: { arc: { borderWidth: 0 } },
     plugins: {
       datalabels: {
-        display: false
+        color: '#FFFFFF',
+        font: {
+          size: 8,
+        }
       }
     }
   };
@@ -131,7 +134,6 @@ export class PieChartComponent implements OnInit {
       if(indicador===' '){
 
       }else{
-        console.log(this.inputProyect)
         this.inputProyect.forEach(proyecto => {
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
@@ -140,7 +142,7 @@ export class PieChartComponent implements OnInit {
               auxdatos = aux[auxlabel[element]]
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
                 auxdataLabel = [...auxdataLabel, marcador];
-                datos = [...datos, auxdatos[marcador]];
+                datos = [...datos, (auxdatos[marcador]).toFixed(2)];
               });
             }
           });

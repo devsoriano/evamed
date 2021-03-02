@@ -346,311 +346,13 @@ export class CompararComponent implements OnInit {
     grafica.instance.Bandera_resultado=2;
   }
 
-  getAnalisisBarras(idProyecto){
-
-    //Creación de espacio para guardar los datos del proyecto
-    let analisisProyectos : Record<string,any> = {
-      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
-      id: idProyecto,
-      Datos: {}
-    };
-
-    let Label = ['Agotamiento de\nRecursos Abióticos\nMinerales',
-    'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
-    'Agotamiento de\nla Capa de Ozono',
-    'Acidificación', ' Eutrofización', 'Escasez de agua']
-
-    // Etapa de Producción
-
-    let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
-    let impacto_ban = true;
-
-    this.potentialTypesList.forEach( (impacto,index) => {
-      this.impactosIgnorar2.forEach(ignorar =>{
-        if (impacto['name_potential_type'] === ignorar){
-          impacto_ban = false;
-        }
-      })
-      if(impacto_ban){
-        analisisProyectos.Datos[Label[index]] = {};
-        let resultado_impacto = 0;
-        //Cálculos de la sección de producción
-        let etapas = [2,3,4] //Subetaps A1 A2 y A3
-        if(schemeProyect.length > 0){
-          etapas.forEach(subetapa => {
-            schemeProyect.forEach(ps => {
-              let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
-              if(materiales_subetapa.length > 0){
-                materiales_subetapa.forEach((material,index) => {
-                  resultado_impacto = resultado_impacto + ( materiales_subetapa[index]['value'] * ps['quantity'] )
-                })
-              }
-            })
-          })
-        }
-        analisisProyectos['Datos'][Label[index]]['Producción'] = resultado_impacto;
-        //console.log('resultado producción = ',resultado_impacto)
-        resultado_impacto=0;
-        //Construcción
-        //A4 Transport
-        if (schemeProyect.length > 0) {
-          schemeProyect.forEach(ps => {
-            let internacional;
-            let nacional;
-            //falta adaptarlo para jalar directamente los tipos de transporte de la base de datos.
-            if(ps['distanceInit'] == null){
-              internacional=0;
-            }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 1)
-              internacional=value_transport[0]['valor']*ps['distanceInit'];
-            }
-            if(ps['distanceEnd'] == null){
-              nacional=0;
-            }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 4)
-              nacional=value_transport[0]['valor']*ps['distanceEnd'];
-            }
-            let conversion_val = this.conversion_list.filter(val => val['id_material'] == ps['material_id'])
-            let peso = 1
-            if(conversion_val.length > 0){
-              peso=conversion_val[0]['value']
-            }
-            resultado_impacto = resultado_impacto + (peso*ps['quantity']*(nacional+internacional))
-          })
-        }
-        //A5 instalación
-        let CSEs = this.CSEList.filter(c => c['project_id'] == idProyecto);
-        if(CSEs.length > 0){
-          CSEs.forEach(CSE => {
-            let energia = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id'] && sid['potential_type_id'] == impacto['id'])
-            if(energia.length > 0){
-              energia.forEach((element,index) => {
-                resultado_impacto = resultado_impacto + (energia[index]['value'] * CSE['quantity']);
-              })
-            }
-          });
-        }
-        analisisProyectos['Datos'][Label[index]]['Construccion'] = resultado_impacto;
-        //console.log('A5:',resultado_impacto);
-        //Uso
-        resultado_impacto=0;
-        let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
-        if(listaACR.length > 0){
-          let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == listaACR[0]['id']);
-          let vidaUtilID = this.projectsList.filter(p => p['id'] == idProyecto)[0]['useful_life_id']
-          let vidaUtil: any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
-          try {
-            vidaUtil = parseFloat(vidaUtil);
-          } catch {
-            vidaUtil = 1;
-          }
-          //B6
-          consumos.forEach(consumo => {
-            let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
-            if(valor_impacto.length > 0){
-              resultado_impacto = resultado_impacto + consumo['quantity'] * valor_impacto[0]['value'] * vidaUtil
-            }
-          })
-        }
-        //B4
-        //las etapas son las mismas que en la sección de producción
-        if (schemeProyect.length > 0) {
-          etapas.forEach(subetapa => {
-            schemeProyect.forEach(ps => {
-              let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
-              if (materiales_subetapa.length > 0) {
-                materiales_subetapa.forEach((material, index) => {
-                  //Aquí faltaría multiplicar por el reemplazo
-                  //replaces
-                  resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity']*ps['replaces'])
-                })
-              }
-            })
-          })
-        }
-        analisisProyectos['Datos'][Label[index]]['Uso'] = resultado_impacto;
-        //console.log('Uso:',resultado_impacto)
-
-        //Fin de vida
-        resultado_impacto = 0;
-        //C1
-        let ECDPs = this.ECDPList.filter(c => c['project_id'] == idProyecto);
-        if(ECDPs.length > 0){
-          ECDPs.forEach(ECDP => {
-            let energia = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id'] && sid['potential_type_id'] == impacto['id'])
-            resultado_impacto = resultado_impacto + (ECDP['quantity'] * energia[0]['value'])
-          })
-        }
-        analisisProyectos['Datos'][Label[index]]['FinDeVida'] = resultado_impacto;
-        //console.log('Fin de vida',resultado_impacto)
-      }
-      impacto_ban=true;
-    })
-    //console.log(analisisProyectos)
-    return analisisProyectos;
-  }
-
-  getAnalisisRadial(idProyecto){
-    let analisisProyectos : Record<string,any> = {
-      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
-      id: idProyecto,
-      Datos: {}
-    };
-    let totales : Record<string,any> = {}
-
-    let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
-    let impacto_ban = true;
-
-    let Label = ['Agotamiento de\nRecursos Abióticos\nMinerales',
-      'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
-      'Agotamiento de\nla Capa de Ozono',
-      'Acidificación', ' Eutrofización', 'Escasez de agua']
-
-    this.potentialTypesList.forEach((impacto,index) => {
-      this.impactosIgnorar2.forEach(ignorar => {
-        if (impacto['name_potential_type'] === ignorar) {
-          impacto_ban = false;
-        }
-      })
-      if (impacto_ban) {
-        let resultado_impacto = 0;
-        //Cálculos de la sección de producción
-        let etapas = [2, 3, 4] //Subetaps A1 A2 y A3
-        if(schemeProyect.length > 0){
-          etapas.forEach(subetapa => {
-            schemeProyect.forEach(ps => {
-              let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
-              if (materiales_subetapa.length > 0) {
-                materiales_subetapa.forEach((material, index) => {
-                  resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'])
-                })
-              }
-            })
-          })
-        }
-        if (!Object.keys(analisisProyectos['Datos']).includes('Producción')) {
-          analisisProyectos.Datos['Producción'] = {};
-        }
-        analisisProyectos['Datos']['Producción'][Label[index]] = resultado_impacto;
-        //console.log('resultado producción = ',resultado_impacto)
-        resultado_impacto = 0;
-        //Construcción
-        //A4 Transporte
-        if (schemeProyect.length > 0) {
-          schemeProyect.forEach(ps => {
-            let internacional;
-            let nacional;
-            if(ps['distanceInit'] == null){
-              internacional=0;
-            }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 1)
-              internacional=value_transport[0]['valor']*ps['distanceInit'];
-            }
-            if(ps['distanceEnd'] == null){
-              nacional=0;
-            }else{
-              let value_transport = this.transporte_list.filter(val => val['id_potencial'] == impacto['id'] && val['id_transport'] == 4)
-              nacional=value_transport[0]['valor']*ps['distanceEnd'];
-            }
-            let conversion_val = this.conversion_list.filter(val => val['id_material'] == ps['material_id'])
-            let peso = 1
-            if(conversion_val.length > 0){
-              peso=conversion_val[0]['value']
-            }
-            //console.log(peso*ps['quantity']*(nacional+internacional))
-            resultado_impacto = resultado_impacto + (peso*ps['quantity']*(nacional+internacional))
-          })
-        }
-        //A5 instalación
-        let CSEs = this.CSEList.filter(c => c['project_id'] == idProyecto);
-        if(CSEs.length > 0){
-          CSEs.forEach(CSE => {
-            let energia = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id'] && sid['potential_type_id'] == impacto['id'])
-            if (energia.length > 0) {
-              energia.forEach((element, index) => {
-                resultado_impacto = resultado_impacto + (energia[index]['value'] * CSE['quantity']);
-              })
-            }
-          });
-        }
-        if (!Object.keys(analisisProyectos['Datos']).includes('Construccion')) {
-          analisisProyectos.Datos['Construccion'] = {};
-        }
-        analisisProyectos['Datos']['Construccion'][Label[index]] = resultado_impacto;
-        //console.log('A5:',resultado_impacto);
-        //Uso
-        resultado_impacto = 0;
-        let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
-        if(listaACR.length > 0){
-          let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == listaACR[0]['id']);
-          let vidaUtilID = this.projectsList.filter(p => p['id'] == idProyecto)[0]['useful_life_id']
-          let vidaUtil: any = this.ULList.filter(ul => ul['id'] == vidaUtilID)[0]['name_useful_life'];
-          try {
-            vidaUtil = parseFloat(vidaUtil);
-          } catch {
-            vidaUtil = 1;
-          }
-          //B6
-          consumos.forEach(consumo => {
-            let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
-            if (valor_impacto.length > 0) {
-              resultado_impacto = resultado_impacto + consumo['quantity'] * valor_impacto[0]['value'] * vidaUtil
-            }
-          })
-        }
-        //B4
-        //las etapas son las mismas que en la sección de producción
-        if (schemeProyect.length > 0) {
-          etapas.forEach(subetapa => {
-            schemeProyect.forEach(ps => {
-              let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
-              if (materiales_subetapa.length > 0) {
-                materiales_subetapa.forEach((material, index) => {
-                  resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces'])
-                })
-              }
-            })
-          })
-        }
-        if (!Object.keys(analisisProyectos['Datos']).includes('Uso')) {
-          analisisProyectos.Datos['Uso'] = {};
-        }
-        analisisProyectos['Datos']['Uso'][Label[index]] = resultado_impacto;
-        //console.log('Uso:',resultado_impacto)
-
-        //Fin de vida
-        resultado_impacto = 0;
-        //C1
-        let ECDPs = this.ECDPList.filter(c => c['project_id'] == idProyecto);
-        if(ECDPs.length > 0){
-          ECDPs.forEach(ECDP => {
-            let energia = this.SIDList.filter(sid => sid['sourceInformarion_id'] == ECDP['source_information_id'] && sid['potential_type_id'] == impacto['id'])
-            resultado_impacto = resultado_impacto + (ECDP['quantity'] * energia[0]['value'])
-          })
-        }
-        if (!Object.keys(analisisProyectos['Datos']).includes('FinDeVida')) {
-          analisisProyectos.Datos['FinDeVida'] = {};
-        }
-        analisisProyectos['Datos']['FinDeVida'][Label[index]] = resultado_impacto;
-        //console.log('Fin de vida',resultado_impacto)
-      }
-      impacto_ban = true;
-    })
-    //console.log(analisisProyectos)
-    return analisisProyectos;
-  }
-
-  getAnalisisPie(idProyecto){
-    let analisisProyectos: Record<string, any> = {
-      Nombre: this.projectsList.filter(p => p['id'] == idProyecto)[0]['name_project'],
-      id: idProyecto,
-      Datos: {}
-    };
+  OperacionesDeFase(idProyecto){
+    let Datos={}
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
     let impacto_ban = true
-    let Label = ['Agotamiento de Recursos Abióticos Minerales',
-      'Agotamiento de Recursos Abióticos Fósiles', 'Calentamiento Global',
-      'Agotamiento de la Capa de Ozono',
+    let Label = ['Agotamiento de\nRecursos Abióticos\nMinerales',
+      'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
+      'Agotamiento de\nla Capa de Ozono', 'Oxidación Fotoquímica',
       'Acidificación', ' Eutrofización', 'Escasez de agua']
 
     this.potentialTypesList.forEach((impacto, index) => {
@@ -660,11 +362,11 @@ export class CompararComponent implements OnInit {
         }
       })
       if (impacto_ban) {
-        analisisProyectos.Datos[Label[index]] = {};
+        Datos[Label[index]] = {};
         let resultado_impacto = 0;
         //Cálculos de la sección de producción
         let etapas = [2, 3, 4] //Subetaps A1 A2 y A3
-        analisisProyectos['Datos'][Label[index]]['Producción'] = {}
+        Datos[Label[index]]['Producción'] = {}
         etapas.forEach(subetapa => {
           let subproceso = this.standarsList.filter(s => s['id'] == subetapa)[0]['name_standard'];
           if (schemeProyect.length > 0) {
@@ -677,13 +379,13 @@ export class CompararComponent implements OnInit {
               }
             })
           }
-          analisisProyectos['Datos'][Label[index]]['Producción'][subproceso] = resultado_impacto;
+          Datos[Label[index]]['Producción'][subproceso] = resultado_impacto;
           resultado_impacto = 0;
         })
         //console.log('resultado producción = ',resultado_impacto)
         resultado_impacto = 0;
         //Construcción
-        analisisProyectos['Datos'][Label[index]]['Construccion'] = {};
+        Datos[Label[index]]['Construccion'] = {};
         //A4 Transporte
         if (schemeProyect.length > 0) {
 
@@ -711,7 +413,7 @@ export class CompararComponent implements OnInit {
             resultado_impacto = resultado_impacto + (peso * ps['quantity'] * (nacional + internacional))
           })
         }
-        analisisProyectos['Datos'][Label[index]]['Construccion']['A4'] = resultado_impacto;
+        Datos[Label[index]]['Construccion']['A4'] = resultado_impacto;
         //console.log('A4:',resultado_impacto);
         resultado_impacto = 0;
         //A5 instalación
@@ -726,11 +428,11 @@ export class CompararComponent implements OnInit {
             }
           });
         }
-        analisisProyectos['Datos'][Label[index]]['Construccion']['A5'] = resultado_impacto;
+        Datos[Label[index]]['Construccion']['A5'] = resultado_impacto;
         //console.log('A5:',resultado_impacto);
         //Uso
         resultado_impacto = 0;
-        analisisProyectos['Datos'][Label[index]]['Uso'] = {};
+        Datos[Label[index]]['Uso'] = {};
         //B4
         //las etapas son las mismas que en la sección de producción
         etapas.forEach(subetapa => {
@@ -745,7 +447,7 @@ export class CompararComponent implements OnInit {
             })
           }
         })
-        analisisProyectos['Datos'][Label[index]]['Uso']['B4'] = resultado_impacto;
+        Datos[Label[index]]['Uso']['B4'] = resultado_impacto;
         resultado_impacto = 0;
         //B6
         let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
@@ -765,11 +467,11 @@ export class CompararComponent implements OnInit {
             }
           })
         }
-        analisisProyectos['Datos'][Label[index]]['Uso']['B6'] = resultado_impacto;
+        Datos[Label[index]]['Uso']['B6'] = resultado_impacto;
         //console.log('Uso:',resultado_impacto)
         //Fin de vida
         resultado_impacto = 0;
-        analisisProyectos['Datos'][Label[index]]['FinDeVida'] = {};
+        Datos[Label[index]]['FinDeVida'] = {};
         //C1
         let ECDPs = this.ECDPList.filter(c => c['project_id'] == idProyecto);
         if (ECDPs.length > 0) {
@@ -778,18 +480,85 @@ export class CompararComponent implements OnInit {
             resultado_impacto = resultado_impacto + (ECDP['quantity'] * energia[0]['value'])
           })
         }
-        analisisProyectos['Datos'][Label[index]]['FinDeVida']['C1'] = resultado_impacto;
+        Datos[Label[index]]['FinDeVida']['C1'] = resultado_impacto;
         //C2
-        analisisProyectos['Datos'][Label[index]]['FinDeVida']['C2'] = 0;
+        Datos[Label[index]]['FinDeVida']['C2'] = 0;
         //C3
-        analisisProyectos['Datos'][Label[index]]['FinDeVida']['C3'] = 0;
+        Datos[Label[index]]['FinDeVida']['C3'] = 0;
         //C4
-        analisisProyectos['Datos'][Label[index]]['FinDeVida']['C4'] = 0;
+        Datos[Label[index]]['FinDeVida']['C4'] = 0;
         //console.log('Fin de vida',resultado_impacto)
       }
       impacto_ban = true;
     })
-    //console.log(analisisProyectos)
+
+    return Datos
+  }
+
+  getAnalisisBarras(idProyecto){
+
+    //Creación de espacio para guardar los datos del proyecto
+    let analisisProyectos : Record<string,any> = {
+      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
+
+    //Datos[impacto][fase]
+    let auxDatos = this.OperacionesDeFase(idProyecto)
+    Object.keys(auxDatos).forEach(impacto => {
+      analisisProyectos.Datos[impacto] = {}
+      Object.keys(auxDatos[impacto]).forEach(fase => {
+        analisisProyectos.Datos[impacto][fase] = 0
+        Object.keys(auxDatos[impacto][fase]).forEach(subetapa => {
+          analisisProyectos.Datos[impacto][fase] = analisisProyectos.Datos[impacto][fase] + auxDatos[impacto][fase][subetapa]
+        })
+      })
+    })
+    return analisisProyectos;
+  }
+
+  getAnalisisRadial(idProyecto){
+    let analisisProyectos : Record<string,any> = {
+      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
+
+    //Datos[Fase][impacto]
+    let auxDatos = this.OperacionesDeFase(idProyecto)
+    let auxFases=[]
+    Object.keys(auxDatos).forEach(impacto =>{
+      Object.keys(auxDatos[impacto]).forEach(fase =>{
+        if(!auxFases.includes(fase)){
+          auxFases.push(fase);
+          analisisProyectos.Datos[fase] = {}
+        }
+        analisisProyectos.Datos[fase][impacto] = 0
+        Object.keys(auxDatos[impacto][fase]).forEach(subetapa => {
+          analisisProyectos.Datos[fase][impacto] = analisisProyectos.Datos[fase][impacto] + auxDatos[impacto][fase][subetapa]
+        })
+      })
+    })
+    return analisisProyectos;
+  }
+
+  getAnalisisPie(idProyecto){
+    let analisisProyectos: Record<string, any> = {
+      Nombre: this.projectsList.filter(p => p['id'] == idProyecto)[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
+    //Datos[impacto][fase][subetapa]
+    let auxDatos = this.OperacionesDeFase(idProyecto)
+    Object.keys(auxDatos).forEach(impacto => {
+      let impacto_ambiental = impacto.replace(/\n/g, " ");
+      analisisProyectos.Datos[impacto_ambiental] = {}
+      Object.keys(auxDatos[impacto]).forEach(fase => {
+        analisisProyectos.Datos[impacto_ambiental][fase] = auxDatos[impacto][fase]
+      })
+    })
+
     return analisisProyectos;
   }
 
@@ -925,7 +694,6 @@ export class CompararComponent implements OnInit {
     //cordinate with bar graph
     this.showVar_1 = false;
     this.showVar = false;
-    console.log(Array.isArray($event))
     if (Array.isArray($event)){
       let sl
       $event.forEach((element,index) => {
