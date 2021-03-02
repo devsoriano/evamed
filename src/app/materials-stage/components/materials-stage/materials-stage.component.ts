@@ -7,6 +7,9 @@ import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { AddConstructiveElementComponent } from '../add-constructive-element/add-constructive-element.component';
+import { MatDialog } from '@angular/material/dialog';
+import { removeSummaryDuplicates } from '@angular/compiler';
 
 export interface Material {
   id: number;
@@ -22,7 +25,6 @@ export interface Material {
 
 
 export class MaterialsStageComponent implements OnInit {
-
   selectedSheet: any;
   sheetNames: any;
   contentData: any;
@@ -59,6 +61,8 @@ export class MaterialsStageComponent implements OnInit {
   ciudadOrigenSeleccionada: any;
   reemplazos: any;
   distanciaInicial: any;
+  newConstructiveElement: string;
+  newConstructiveSystem: string;
 
   myControl = new FormControl();
   options: Material[];
@@ -68,7 +72,8 @@ export class MaterialsStageComponent implements OnInit {
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
     private router: Router,
-    private catalogsService: CatalogsService
+    private catalogsService: CatalogsService,
+    public dialog: MatDialog,
   ) { 
     this.materialsService.getMaterials().subscribe( data => {
       this.materialsList = data;
@@ -137,36 +142,37 @@ export class MaterialsStageComponent implements OnInit {
 
     return this.options.filter(option => option.name_material.toLowerCase().indexOf(filterValue) === 0);
   }
-  // Lógica para autocompletado
 
   onGroupsChange(options: MatListOption[]) {
-
-    console.log(this.panelOpenFirst);
     options.map(option => {
       this.selectedSheet = option.value;
     });
 
     this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
+    if (this.indexSheet >= 11 ) {
+      this.indexSheet = this.indexSheet + 5;
+    }
     this.listData = this.contentData[this.indexSheet + 1];
+    
     const SCRevit = [];
     const SCDynamo = [];
-    // const SCUsuario = [];
+    const SCUsuario = [];
 
     this.listData.map( sc => {
       if (sc.Origen === 'Modelo de Revit' || sc.Origen === 'Usuario') {
         SCRevit.push(sc.Sistema_constructivo);
-      }
+      } 
       if (sc.Origen === 'Calculado en Dynamo') {
         SCDynamo.push(sc.Sistema_constructivo);
+      } 
+      if (sc.Origen === 'Usuario') {
+        SCUsuario.push(sc.Sistema_constructivo);
       }
-      // if (sc.Origen === 'Usuario') {
-      //  SCUsuario.push(sc.Sistema_constructivo);
-      // }
     });
 
     this.ListSCRevit = [...new Set(SCRevit)];
     this.ListSCDynamo = [...new Set(SCDynamo)];
-    // this.ListSCUsuario = [...new Set(SCUsuario)];
+    this.ListSCUsuario = [...new Set(SCUsuario)];
 
     let i;
     for ( i = 0; i <= this.sheetNames.length; i++ ) {
@@ -176,7 +182,9 @@ export class MaterialsStageComponent implements OnInit {
       if (this.indexSheet === i && this.SOD !== undefined) {
         this.selectedOptionsDynamo = this.SOD[i];
       }
-      // this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
+      if (this.indexSheet === i && this.SOD !== undefined) {
+        this.selectedOptionsUsuario = this.SOU[i]
+      }
     }
 
     // console.log('Avance indicador');
@@ -279,7 +287,6 @@ export class MaterialsStageComponent implements OnInit {
         data.map( item => {
           let typeTransport = 'mar';
           if( id === (item.id + 1) ) {
-            console.log(item);
             switch(item.region) {
               case 'PACIFICO' || 'ATLANTICO':
                 typeTransport = 'mar';
@@ -292,7 +299,6 @@ export class MaterialsStageComponent implements OnInit {
             }
 
             this.catalogoTransportesExtrangero = [];
-            console.log(typeTransport);
             if ( typeTransport === 'terreste') {
               this.catalogsService.getTransports().subscribe(
                 data => {
@@ -532,6 +538,7 @@ export class MaterialsStageComponent implements OnInit {
     this.showSearch = false;
     const materiales = [];
     let counterRevit = 1;
+    let countDynamo = 1;
 
     this.listData.map( (data) => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
@@ -558,6 +565,7 @@ export class MaterialsStageComponent implements OnInit {
               }
             })
           });
+          data.key = countDynamo++;
           materiales.push(data);
         }
       }
@@ -582,10 +590,6 @@ export class MaterialsStageComponent implements OnInit {
   onReturnListMaterials() {
     this.selectedMaterial = false;
     this.showSearch = false;
-  }
-
-  addElement() {
-    console.log('add element');
   }
 
   addSC() {
@@ -613,6 +617,22 @@ export class MaterialsStageComponent implements OnInit {
     this.selectedMaterial = false;
   }
 
-  searchInfo() {
+  addConstructiveElementsDialog() {
+    const dialogRef = this.dialog.open(AddConstructiveElementComponent, {
+      width: '680px',
+      data: {
+        newConstructiveElement: this.newConstructiveElement,
+        newConstructiveSystem: this.newConstructiveSystem
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.sheetNames.push(result.newConstructiveElement);
+      this.contentData.push([{
+        Origen: 'Usuario',
+        Sistema_constructivo: result.newConstructiveSystem
+      }]);
+    });
   }
+
 }

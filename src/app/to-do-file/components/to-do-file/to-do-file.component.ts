@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { FileSaverService } from 'ngx-filesaver';
 import { MatDialog } from '@angular/material/dialog';
-import { PrevStepsComponent } from 'src/app/prev-steps/prev-steps.component';
+import { PrevStepsComponent } from 'src/app/to-do-file/components/prev-steps/prev-steps.component';
 
 type AOA = any[][];
 
