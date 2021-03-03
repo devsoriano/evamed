@@ -8,6 +8,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AddConstructiveElementComponent } from '../add-constructive-element/add-constructive-element.component';
+import { AddConstructiveSystemComponent } from '../add-constructive-system/add-constructive-system.component';
 import { MatDialog } from '@angular/material/dialog';
 
 export interface Material {
@@ -591,10 +592,6 @@ export class MaterialsStageComponent implements OnInit {
     this.showSearch = false;
   }
 
-  addSC() {
-    console.log('add SC');
-  }
-
   goToMaterialStage() {
     this.router.navigateByUrl('material-stage');
   }
@@ -632,6 +629,20 @@ export class MaterialsStageComponent implements OnInit {
         Sistema_constructivo: result.newConstructiveSystem
       }]);
     });
+  }
+
+  addConstructiveSystemDialog() {
+    const dialogRef = this.dialog.open(AddConstructiveSystemComponent, {
+      width: '680px',
+      data: {
+        newConstructiveSystem: this.newConstructiveSystem
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+
   }
 
 }

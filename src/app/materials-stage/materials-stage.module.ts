@@ -10,8 +10,8 @@ import { AddConstructiveSystemComponent } from './components/add-constructive-sy
 
 @NgModule({
   declarations: [
-    AddConstructiveElementComponent,
     MaterialsStageComponent,
+    AddConstructiveElementComponent,
     AddConstructiveSystemComponent
   ],
   imports: [
@@ -23,10 +23,12 @@ import { AddConstructiveSystemComponent } from './components/add-constructive-sy
     MaterialModule
   ],
   exports: [
-    AddConstructiveElementComponent
+    AddConstructiveElementComponent,
+    AddConstructiveSystemComponent
   ],
   entryComponents: [
-    AddConstructiveElementComponent
+    AddConstructiveElementComponent,
+    AddConstructiveSystemComponent
   ]
 })
 export class MaterialsStageModule { }

@@ -79,7 +79,7 @@
         <p>Seleccione el sistema constructivo base a aplicar</p>
         <button
           mat-icon-button
-          (click)="addSC()"
+          (click)="addConstructiveSystemDialog()"
         >
           <mat-icon>add_circle</mat-icon>
         </button>
@@ -227,9 +227,7 @@
     <section class="container-details" *ngIf="selectedMaterial===false && showSearch===false">
       <div class="tab-title-sections">
         <p>Materiales</p>
-        <button
-          mat-icon-button
-        >
+        <button mat-icon-button >
           <mat-icon>add_circle</mat-icon>
         </button>
       </div>
