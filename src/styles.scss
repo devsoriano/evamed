@@ -252,11 +252,11 @@ img.logo-header {
   margin-top: 20px;
 
   .content-container {
-    width: 75%;
+    width: 70%;
   }
 
   .description-container {
-    width: 25%;
+    width: 30%;
     margin-top: 60px;
   }
 }
@@ -267,6 +267,7 @@ img.logo-header {
   display: flex;
   justify-content: space-between;
   padding-bottom: 10px;
+  margin-bottom: -20px;
 }
 
 .title-standard-second {
@@ -399,7 +400,7 @@ mat-panel-title.mat-expansion-panel-header-title {
 
 mat-list-option.item-list-option.mat-list-item.mat-list-option.mat-focus-indicator.mat-accent.ng-star-inserted {
   border-bottom: 1px solid #EFEFEF;
-  height: 40px;
+  height: 34px !important;
 }
 
 .item-by-list {
@@ -417,6 +418,11 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
   border-radius: 0px 33px 33px 0px !important;
   font-weight: 500 !important;
   width: 180px!important;
+  height: 38px !important;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  height: 38px !important;
 }
 
 
