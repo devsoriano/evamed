@@ -255,7 +255,6 @@ export class MaterialsStageComponent implements OnInit {
 
     this.materialsList.map(material => {
       if( material.name_material === this.dataMaterialSelected.Material ) {
-        console.log(material.name_material);
         this.dataMaterialSelected.name_material_db = material.name_material;
       }
     });
