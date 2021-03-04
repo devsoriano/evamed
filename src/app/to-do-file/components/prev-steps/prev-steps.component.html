@@ -7,7 +7,16 @@
 <!-- Close Header modal-->
 <!--Cuerpo de modal-->
 <div mat-dialog-content class="dialog-content">
-  datos
+  <div class="info">
+    <div class="logo">
+      <mat-icon class="custom-icon">
+        check_circle
+      </mat-icon>
+    </div>
+    <div class="text">{{ConstructiveSystems}} Sistemas constructivos</div>
+    <div class="text">{{TotalMaterialsDB}} Materiales identificados</div>
+    <div class="text">{{TotalMaterialsDB - TotalExistDB}} Materiales no identificados</div>
+  </div>
 </div>
 <!-- Close Cuerpo de modal-->
 <!--Botonera-->
