@@ -63,7 +63,7 @@ export class CompararComponent implements OnInit {
   showVar: boolean = false;
   showVar_1: boolean = false;
   ID:string=' ';
-  proyecto={nombre:' ', num_epic: 0};
+  proyecto={nombre:' ', num_epic: 0, num_epd: 0};
   banderaGrapg:number=0;
   proyect=[];
   proyect_active=[];
@@ -138,6 +138,7 @@ export class CompararComponent implements OnInit {
   conversion_list:any = conversion;
   botones_grafica_activos: boolean =false;
   materiales_EPIC=0;
+  materiales_EPD=0;
   columnsToDisplay = ['Agotamiento de\nRecursos Abióticos\nMinerales',
     'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
     'Agotamiento de\nla Capa de Ozono',
@@ -270,6 +271,7 @@ export class CompararComponent implements OnInit {
         this.proyect[index].card = true;
         this.proyect[index].num = this.proyect_active.length;
         this.proyect[index].num_epic=this.materiales_EPIC;
+        this.proyect[index].num_epd = this.materiales_EPD;
       }
     });
 
@@ -381,12 +383,13 @@ export class CompararComponent implements OnInit {
                 })
               }else{
                 materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
-                if (materiales_subetapa.length > 0) {
+                if (materiales_subetapa.length > 0 && materiales_subetapa['potential_type_id'] == 3) {
                   resultado_impacto = resultado_impacto +materiales_subetapa[0]['value'] * ps['quantity']
                   this.materiales_EPIC=this.materiales_EPIC+1;
                 }
               }
             })
+            this.materiales_EPD = schemeProyect.length - this.materiales_EPIC;
           }
           Datos[Label[index]]['Producción'][subproceso] = resultado_impacto;
           resultado_impacto = 0;
@@ -643,6 +646,7 @@ export class CompararComponent implements OnInit {
         this.proyecto.nombre = proyecto['name_project']
         let aux=this.OperacionesDeFase(proyecto['id'])
         this.proyecto.num_epic= this.materiales_EPIC
+        this.proyecto.num_epd = this.materiales_EPD
         return;
       }
       this.proyect = [...this.proyect,
@@ -652,7 +656,7 @@ export class CompararComponent implements OnInit {
           card: false,
           num:0,
           num_epic: 0,
-          card_epic: false
+          num_epd:0
         }];
     })
 

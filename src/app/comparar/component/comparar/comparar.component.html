@@ -114,12 +114,14 @@
                 <mat-card class="card">
                   Para el proyecto {{proyecto.nombre}} <br>
                   se tomaron en cuenta {{proyecto.num_epic}} de materiales EPIC<br>
+                  y {{proyecto.num_epd}} de materiales EPD
                 </mat-card>
               </div>
               <div *ngFor="let item of proyect;let i = index" class="button-graph">
                 <mat-card *ngIf="item.card" class="card">
                   Para el proyecto {{item.Nombre}} <br>
                   se tomaron en cuenta {{item.num_epic}} de materiales EPIC<br>
+                  y {{item.num_epd}} de materiales EPD
                 </mat-card>
               </div>
             </div>
