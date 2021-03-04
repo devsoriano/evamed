@@ -252,7 +252,9 @@
             </div>
             <div class="col-icon">
               <div class="col-unidad">
-                <mat-icon class="custom-icon">{{material.value.signal ? 'check_circle' : 'error'}}</mat-icon>
+                <mat-icon class="custom-icon">
+                  {{material.value.signal || dataMaterialSelected.name_material_db === undefined ? 'check_circle' : 'error'}}
+                </mat-icon>
               </div>
             </div>
           </div>
@@ -475,7 +477,8 @@
         <div class="Row">
           <div class="Col">
             <div class="button-read" (click)="goToSearchInfo()">
-              {{dataMaterialSelected.materialDB === undefined ? 'Buscar fuente' : dataMaterialSelected.materialDB.name_material}}
+              {{ dataMaterialSelected.materialDB === undefined ? 'Buscar fuente' : dataMaterialSelected.materialDB.name_material }}
+              {{ dataMaterialSelected.name_material_db === undefined ? '' : dataMaterialSelected.name_material_db }}
             </div>
           </div>
         </div>

@@ -219,12 +219,12 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.ciudadSeleccionada;
 
     this.dataMaterialSelected.vidaUtil === undefined ? 
-      this.dataMaterialSelected.vidaUtil = parseInt(this.vidaUtilSeleccionado, 10) : 
-      this.dataMaterialSelected.vidaUtil;
+    this.dataMaterialSelected.vidaUtil = parseInt(this.vidaUtilSeleccionado, 10) : 
+    this.dataMaterialSelected.vidaUtil;
 
     this.dataMaterialSelected.reemplazos === undefined ? 
-      this.dataMaterialSelected.reemplazos = 0 : 
-      this.dataMaterialSelected.reemplazos;
+    this.dataMaterialSelected.reemplazos = 0 : 
+    this.dataMaterialSelected.reemplazos;
 
     this.catalogsService.getCities().subscribe( 
       data => {
@@ -252,6 +252,13 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.paisSeleccionado === 1 ? 
     this.dataMaterialSelected.transporteLocal = 3 : 
     this.dataMaterialSelected.transporteLocal;
+
+    this.materialsList.map(material => {
+      if( material.name_material === this.dataMaterialSelected.Material ) {
+        console.log(material.name_material);
+        this.dataMaterialSelected.name_material_db = material.name_material;
+      }
+    });
 
     this.selectedMaterial = true;
   }
