@@ -7,6 +7,9 @@ import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { AddConstructiveElementComponent } from '../add-constructive-element/add-constructive-element.component';
+import { AddConstructiveSystemComponent } from '../add-constructive-system/add-constructive-system.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface Material {
   id: number;
@@ -22,7 +25,6 @@ export interface Material {
 
 
 export class MaterialsStageComponent implements OnInit {
-
   selectedSheet: any;
   sheetNames: any;
   contentData: any;
@@ -59,6 +61,8 @@ export class MaterialsStageComponent implements OnInit {
   ciudadOrigenSeleccionada: any;
   reemplazos: any;
   distanciaInicial: any;
+  newConstructiveElement: string;
+  newConstructiveSystem: string;
 
   myControl = new FormControl();
   options: Material[];
@@ -68,7 +72,8 @@ export class MaterialsStageComponent implements OnInit {
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
     private router: Router,
-    private catalogsService: CatalogsService
+    private catalogsService: CatalogsService,
+    public dialog: MatDialog,
   ) { 
     this.materialsService.getMaterials().subscribe( data => {
       this.materialsList = data;
@@ -99,14 +104,8 @@ export class MaterialsStageComponent implements OnInit {
     this.showSearch = false;
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
-
-    //lógica para obtener distancia inicial de los materiales
-    if( PDP.country_id > 1 ) { //Resto del mundo
-      
-    } else {
-      this.ciudadOrigenSeleccionada = PDP.city_id_origin
-    } 
-
+    this.ciudadOrigenSeleccionada = PDP.city_id_origin
+    
     this.catalogsService.usefulLifeCatalog().subscribe(data => {
       data.map( item => {
         if (item.id === PDP.useful_life_id) {
@@ -143,36 +142,37 @@ export class MaterialsStageComponent implements OnInit {
 
     return this.options.filter(option => option.name_material.toLowerCase().indexOf(filterValue) === 0);
   }
-  // Lógica para autocompletado
 
   onGroupsChange(options: MatListOption[]) {
-
-    console.log(this.panelOpenFirst);
     options.map(option => {
       this.selectedSheet = option.value;
     });
 
     this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
+    if (this.indexSheet >= 11 ) {
+      this.indexSheet = this.indexSheet + 5;
+    }
     this.listData = this.contentData[this.indexSheet + 1];
+    
     const SCRevit = [];
     const SCDynamo = [];
-    // const SCUsuario = [];
+    const SCUsuario = [];
 
     this.listData.map( sc => {
       if (sc.Origen === 'Modelo de Revit' || sc.Origen === 'Usuario') {
         SCRevit.push(sc.Sistema_constructivo);
-      }
+      } 
       if (sc.Origen === 'Calculado en Dynamo') {
         SCDynamo.push(sc.Sistema_constructivo);
+      } 
+      if (sc.Origen === 'Usuario_Plataforma') {
+        SCUsuario.push(sc.Sistema_constructivo);
       }
-      // if (sc.Origen === 'Usuario') {
-      //  SCUsuario.push(sc.Sistema_constructivo);
-      // }
     });
 
     this.ListSCRevit = [...new Set(SCRevit)];
     this.ListSCDynamo = [...new Set(SCDynamo)];
-    // this.ListSCUsuario = [...new Set(SCUsuario)];
+    this.ListSCUsuario = [...new Set(SCUsuario)];
 
     let i;
     for ( i = 0; i <= this.sheetNames.length; i++ ) {
@@ -182,7 +182,9 @@ export class MaterialsStageComponent implements OnInit {
       if (this.indexSheet === i && this.SOD !== undefined) {
         this.selectedOptionsDynamo = this.SOD[i];
       }
-      // this.indexSheet === i && this.SOU !== undefined ? this.selectedOptionsUsuario = this.SOU[i] : this.selectedOptionsUsuario;
+      if (this.indexSheet === i && this.SOU !== undefined) {
+        this.selectedOptionsUsuario = this.SOU[i]
+      }
     }
 
     // console.log('Avance indicador');
@@ -207,22 +209,22 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.paisSeleccionado;
 
     this.dataMaterialSelected.estadoSeleccionado === undefined ? 
-    this.dataMaterialSelected.estadoSeleccionado = 1 : 
+    this.dataMaterialSelected.estadoSeleccionado = parseInt(sessionStorage.getItem('estadoSeleccionado')) : 
     this.dataMaterialSelected.estadoSeleccionado;
 
-    this.selectState(1);
+    this.selectState(parseInt(sessionStorage.getItem('estadoSeleccionado')));
 
     this.dataMaterialSelected.ciudadSeleccionada === undefined ? 
-    this.dataMaterialSelected.ciudadSeleccionada = 1 : 
+    this.dataMaterialSelected.ciudadSeleccionada = this.ciudadOrigenSeleccionada: 
     this.dataMaterialSelected.ciudadSeleccionada;
 
     this.dataMaterialSelected.vidaUtil === undefined ? 
-      this.dataMaterialSelected.vidaUtil = parseInt(this.vidaUtilSeleccionado, 10) : 
-      this.dataMaterialSelected.vidaUtil;
+    this.dataMaterialSelected.vidaUtil = parseInt(this.vidaUtilSeleccionado, 10) : 
+    this.dataMaterialSelected.vidaUtil;
 
     this.dataMaterialSelected.reemplazos === undefined ? 
-      this.dataMaterialSelected.reemplazos = 0 : 
-      this.dataMaterialSelected.reemplazos;
+    this.dataMaterialSelected.reemplazos = 0 : 
+    this.dataMaterialSelected.reemplazos;
 
     this.catalogsService.getCities().subscribe( 
       data => {
@@ -250,6 +252,12 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.paisSeleccionado === 1 ? 
     this.dataMaterialSelected.transporteLocal = 3 : 
     this.dataMaterialSelected.transporteLocal;
+
+    this.materialsList.map(material => {
+      if( material.name_material === this.dataMaterialSelected.Material ) {
+        this.dataMaterialSelected.name_material_db = material.name_material;
+      }
+    });
 
     this.selectedMaterial = true;
   }
@@ -285,7 +293,6 @@ export class MaterialsStageComponent implements OnInit {
         data.map( item => {
           let typeTransport = 'mar';
           if( id === (item.id + 1) ) {
-            console.log(item);
             switch(item.region) {
               case 'PACIFICO' || 'ATLANTICO':
                 typeTransport = 'mar';
@@ -298,7 +305,6 @@ export class MaterialsStageComponent implements OnInit {
             }
 
             this.catalogoTransportesExtrangero = [];
-            console.log(typeTransport);
             if ( typeTransport === 'terreste') {
               this.catalogsService.getTransports().subscribe(
                 data => {
@@ -400,9 +406,9 @@ export class MaterialsStageComponent implements OnInit {
                       distance_end: 0,
                       replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
                       city_id_origin: this.ciudadOrigenSeleccionada,
-                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada,
-                      transport_id_origin: data.transporteLocal === undefined ? null : data.transporteLocal,
-                      transport_id_end: data.transporteExtrangero === undefined ? null : data.transporteExtrangero
+                      city_id_end: data.ciudadSeleccionada === undefined ? 1 : data.ciudadSeleccionada,
+                      transport_id_origin: data.transporteLocal === undefined ? 1 : data.transporteLocal,
+                      transport_id_end: data.transporteExtrangero === undefined ? 1 : data.transporteExtrangero
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -457,9 +463,9 @@ export class MaterialsStageComponent implements OnInit {
                       distance_end: 0,
                       replaces: data.reemplazos === '' || data.reemplazos === undefined ? 0 : data.reemplazos,
                       city_id_origin: this.ciudadOrigenSeleccionada,
-                      city_id_end: data.ciudadSeleccionada === undefined ? null : data.ciudadSeleccionada,
-                      transport_id_origin: data.transporteLocal === undefined ? null : data.transporteLocal,
-                      transport_id_end: data.transporteExtrangero === undefined ? null : data.transporteExtrangero
+                      city_id_end: data.ciudadSeleccionada === undefined ? 1 : data.ciudadSeleccionada,
+                      transport_id_origin: data.transporteLocal === undefined ? 1 : data.transporteLocal,
+                      transport_id_end: data.transporteExtrangero === undefined ? 1 : data.transporteExtrangero
                     }).subscribe( data => {
                       console.log('Success Modelo Revit o Usuario!');
                       console.log(data);
@@ -537,14 +543,35 @@ export class MaterialsStageComponent implements OnInit {
     this.selectedMaterial = false;
     this.showSearch = false;
     const materiales = [];
-    this.listData.map( (data, key) => {
+    let counterRevit = 1;
+    let countDynamo = 1;
+
+    this.listData.map( (data) => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
         if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
+          data.signal = false
+          this.materialsService.searchMaterial(data.Material).subscribe( material => { 
+            material.map( materialData => {
+              if (materialData.name_material === data.Material) {
+                data.signal = true;
+              }
+            })
+          });
+          data.key = counterRevit++;
           materiales.push(data);
         }
       }
       if (data.Sistema_constructivo === sc && origin === 'dynamo') {
         if (data.Origen === 'Calculado en Dynamo') {
+          data.signal = false
+          this.materialsService.searchMaterial(data.Material).subscribe( material => { 
+            material.map( materialData => {
+              if (materialData.name_material === data.Material) {
+                data.signal = true
+              }
+            })
+          });
+          data.key = countDynamo++;
           materiales.push(data);
         }
       }
@@ -571,14 +598,6 @@ export class MaterialsStageComponent implements OnInit {
     this.showSearch = false;
   }
 
-  addElement() {
-    console.log('add element');
-  }
-
-  addSC() {
-    console.log('add SC');
-  }
-
   goToMaterialStage() {
     this.router.navigateByUrl('material-stage');
   }
@@ -600,6 +619,36 @@ export class MaterialsStageComponent implements OnInit {
     this.selectedMaterial = false;
   }
 
-  searchInfo() {
+  addConstructiveElementsDialog() {
+    const dialogRef = this.dialog.open(AddConstructiveElementComponent, {
+      width: '680px',
+      data: {
+        newConstructiveElement: this.newConstructiveElement,
+        newConstructiveSystem: this.newConstructiveSystem
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.sheetNames.push(result.newConstructiveElement);
+      this.contentData.push([{
+        Origen: 'Usuario_Plataforma',
+        Sistema_constructivo: result.newConstructiveSystem
+      }]);
+    });
   }
+
+  addConstructiveSystemDialog() {
+    const dialogRef = this.dialog.open(AddConstructiveSystemComponent, {
+      width: '680px',
+      data: {
+        newConstructiveSystem: this.newConstructiveSystem
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+
+  }
+
 }

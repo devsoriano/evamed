@@ -46,10 +46,16 @@
 
 .user-card {
   margin-top: 20px;
+  box-shadow: revert;
+  border: 1px solid #CBCBCB;
+  border-radius: 8px;
 }
 
 .card-project {
   margin: 10px 16px 16px 0;
+  border: 1px solid #CBCBCB;
+  border-radius: 8px !important;
+  box-shadow: revert;
 }
 
 .second-mat-tab-group {
@@ -81,8 +87,17 @@
   }
 }
 
+mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+  font-size: 32px;
+  margin-left: -20px;
+  margin-top: -10px;
+}
+
 .header-tag {
   display: flex;
+  position: absolute;
+  width: 40%;
+  z-index: 100;
   
   .container-tag {
     position: absolute;
