@@ -383,7 +383,7 @@ export class CompararComponent implements OnInit {
                 })
               }else{
                 materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
-                if (materiales_subetapa.length > 0 && materiales_subetapa['potential_type_id'] == 3) {
+                if (materiales_subetapa.length > 0) {
                   resultado_impacto = resultado_impacto +materiales_subetapa[0]['value'] * ps['quantity']
                   this.materiales_EPIC=this.materiales_EPIC+1;
                 }
