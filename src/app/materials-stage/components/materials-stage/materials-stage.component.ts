@@ -259,6 +259,15 @@ export class MaterialsStageComponent implements OnInit {
       }
     });
 
+    this.dataMaterialSelected.materialSelectedDB = 'Buscar material';
+    if ( this.dataMaterialSelected.name_material_db === undefined ) {
+      if ( this.dataMaterialSelected.materialDB !== undefined) {
+        this.dataMaterialSelected.materialSelectedDB = this.dataMaterialSelected.materialDB.name_material;
+      }
+    } else {
+      this.dataMaterialSelected.materialSelectedDB = this.dataMaterialSelected.name_material_db;
+    }
+
     this.selectedMaterial = true;
   }
 
@@ -548,11 +557,19 @@ export class MaterialsStageComponent implements OnInit {
 
     this.listData.map( (data) => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
+      
         if (data.Origen === 'Modelo de Revit' || data.Origen === 'Usuario') {
-          data.signal = false
-          this.materialsService.searchMaterial(data.Material).subscribe( material => { 
+          data.signal = false;
+          let materialABuscar = data.Material
+          if (data.materialSelectedDB !== undefined) {
+            if ( data.materialDB !== undefined ) {
+              materialABuscar = data.materialDB.name_material;
+            }
+          } 
+
+          this.materialsService.searchMaterial(materialABuscar).subscribe( material => { 
             material.map( materialData => {
-              if (materialData.name_material === data.Material) {
+              if (materialData.name_material === materialABuscar) {
                 data.signal = true;
               }
             })
@@ -564,7 +581,13 @@ export class MaterialsStageComponent implements OnInit {
       if (data.Sistema_constructivo === sc && origin === 'dynamo') {
         if (data.Origen === 'Calculado en Dynamo') {
           data.signal = false
-          this.materialsService.searchMaterial(data.Material).subscribe( material => { 
+          let materialABuscar = data.Material
+          if (data.materialSelectedDB !== undefined) {
+            if ( data.materialSelectedDB !== 'Buscar material') {
+              materialABuscar = data.materialSelectedDB;
+            }
+          }
+          this.materialsService.searchMaterial(materialABuscar).subscribe( material => { 
             material.map( materialData => {
               if (materialData.name_material === data.Material) {
                 data.signal = true
