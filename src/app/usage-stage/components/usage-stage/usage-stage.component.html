@@ -97,7 +97,7 @@
 
             <div class="Tab-container">
               <div class="Row top-0">
-                <div class="Col">
+                <div class="Col principal">
                   <label class="label-small-input">
                     Tipo
                   </label>
@@ -111,22 +111,8 @@
                   </mat-form-field>
                 </div>
               </div>
-
               <div class="Row top-0">
-                <div class="Col">
-                  <mat-radio-group
-                    [(ngModel)]="selectedPreference"
-                    class="container-radios"
-                  >
-                    <mat-radio-button *ngFor="let preference of preferences" [value]="preference">
-                      {{preference}}
-                    </mat-radio-button>
-                  </mat-radio-group>
-                </div>
-              </div>
-
-              <div class="Row top-0">
-                <div class="Col">
+                <div class="Col secundary">
                   <label class="label-small-input">
                     Cantidad
                   </label>
@@ -141,7 +127,7 @@
                   </mat-form-field>
                 </div>
                 
-                <div class="Col">
+                <div class="Col secundary">
                   <label class="label-small-input">
                     Unidad
                   </label>
@@ -155,7 +141,7 @@
                   </mat-form-field>
                 </div>
 
-                <div class="Col">
+                <div class="Col secundary">
                   <label class="label-small-input">
                     Porcentaje
                   </label>
@@ -187,80 +173,69 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
 
-            <div class="Row top-0">
-              <div class="Col">
-                <label class="label-small-input">
-                  Tipo
-                </label>
-                <mat-form-field appearance="outline" class="custom-formField">
-                  <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="tipoCombustible" name="fuente">
-                    <mat-option *ngFor="let tipo of catalogoTipoEnergiaCombustible" [value]="tipo.id">
-                      {{tipo.name_type_energy}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+            <div class="Tab-container">
+              <div class="Row top-0">
+                <div class="Col principal">
+                  <label class="label-small-input">
+                    Tipo
+                  </label>
+                  <mat-form-field appearance="outline" class="custom-formField">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select  [(ngModel)]="tipoCombustible" name="fuente">
+                      <mat-option *ngFor="let tipo of catalogoTipoEnergiaCombustible" [value]="tipo.id">
+                        {{tipo.name_type_energy}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </div>
-            </div>
 
-            <div class="Row top-0">
-              <div class="Col">
-                <mat-radio-group
-                  [(ngModel)]="selectedPreference"
-                  class="container-radios"
-                >
-                  <mat-radio-button *ngFor="let preference of preferences" [value]="preference">
-                    {{preference}}
-                  </mat-radio-button>
-                </mat-radio-group>
-              </div>
+              <div class="Row top-0">
+                <div class="Col secundary">
+                  <label class="label-small-input">
+                    Cantidad
+                  </label>
+                  <mat-form-field>
+                    <input
+                      class="input-general"
+                      [(ngModel)]="cantidadCombustible"
+                      name="cantidad"
+                      matInput 
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+                
+                <div class="Col secundary">
+                  <label class="label-small-input">
+                    Unidad
+                  </label>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select  [(ngModel)]="unidadCombustible" name="fuente">
+                      <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
+                        {{unidad.name_energy_unit}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+    
+                <div class="Col secundary">
+                  <label class="label-small-input">
+                    Porcentaje
+                  </label>
+                  <mat-form-field>
+                    <input
+                      class="input-general"
+                      [(ngModel)]="porcentajeCombustible"
+                      name="cantidad"
+                      matInput 
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+              </div>    
             </div>
-
-            <div class="Row top-0">
-              <div class="Col">
-                <label class="label-small-input">
-                  Cantidad
-                </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="cantidadCombustible"
-                    name="cantidad"
-                    matInput 
-                    type="text"
-                   >
-                </mat-form-field>
-              </div>
-              
-              <div class="Col">
-                <label class="label-small-input">
-                  Unidad
-                </label>
-                <mat-form-field appearance="outline">
-                  <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="unidadCombustible" name="fuente">
-                    <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
-                      {{unidad.name_energy_unit}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-  
-              <div class="Col">
-                <label class="label-small-input">
-                  Porcentaje
-                </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="porcentajeCombustible"
-                    name="cantidad"
-                    matInput 
-                    type="text"
-                  >
-                </mat-form-field>
-              </div>
-            </div>    
           </mat-expansion-panel>
         </mat-accordion>
          <!--Páneles fotovoltaicos-->
@@ -275,64 +250,53 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
 
-            <div class="Row top-0">
-              <div class="Col">
-                <mat-radio-group
-                  [(ngModel)]="selectedPreference"
-                  class="container-radios"
-                >
-                  <mat-radio-button *ngFor="let preference of preferences" [value]="preference">
-                    {{preference}}
-                  </mat-radio-button>
-                </mat-radio-group>
-              </div>
+            <div class="Tab-container">
+              <div class="Row top-0">
+                <div class="Col secundary">
+                  <label class="label-small-input">
+                    Cantidad
+                  </label>
+                  <mat-form-field>
+                    <input
+                      class="input-general"
+                      [(ngModel)]="cantidadPanelesFotovoltaicos"
+                      name="cantidad"
+                      matInput 
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+                
+                <div class="Col secundary">
+                  <label class="label-small-input">
+                    Unidad
+                  </label>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select  [(ngModel)]="unidadPanelesFotovoltaicos" name="fuente">
+                      <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
+                        {{unidad.name_energy_unit}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="Col secundary">
+                  <label class="label-small-input">
+                    Porcentaje
+                  </label>
+                  <mat-form-field>
+                    <input
+                      class="input-general"
+                      [(ngModel)]="porcentajePanelesFotovoltaicos"
+                      name="cantidad"
+                      matInput 
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+              </div>    
             </div>
-
-            <div class="Row top-0">
-              <div class="Col">
-                <label class="label-small-input">
-                  Cantidad
-                </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="cantidadPanelesFotovoltaicos"
-                    name="cantidad"
-                    matInput 
-                    type="text"
-                   >
-                </mat-form-field>
-              </div>
-              
-              <div class="Col">
-                <label class="label-small-input">
-                  Unidad
-                </label>
-                <mat-form-field appearance="outline">
-                  <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="unidadPanelesFotovoltaicos" name="fuente">
-                    <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
-                      {{unidad.name_energy_unit}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-              <div class="Col">
-                <label class="label-small-input">
-                  Porcentaje
-                </label>
-                <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="porcentajePanelesFotovoltaicos"
-                    name="cantidad"
-                    matInput 
-                    type="text"
-                  >
-                </mat-form-field>
-              </div>
-            </div>    
           </mat-expansion-panel>
         </mat-accordion>
       </div>
