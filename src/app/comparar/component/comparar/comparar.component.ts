@@ -383,7 +383,7 @@ export class CompararComponent implements OnInit {
                 })
               }else{
                 materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
-                if (materiales_subetapa.length > 0) {
+                if (materiales_subetapa.length > 0 && impacto['id'] == 3) {
                   resultado_impacto = resultado_impacto +materiales_subetapa[0]['value'] * ps['quantity']
                   this.materiales_EPIC=this.materiales_EPIC+1;
                 }
@@ -454,6 +454,12 @@ export class CompararComponent implements OnInit {
                 materiales_subetapa.forEach((material, index) => {
                   resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces'])
                 })
+              }else{
+                materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
+                if (materiales_subetapa.length > 0 && impacto['id'] == 3) {
+                  resultado_impacto = resultado_impacto + materiales_subetapa[0]['value'] * ps['quantity']
+                  this.materiales_EPIC = this.materiales_EPIC + 1;
+                }
               }
             })
           }
