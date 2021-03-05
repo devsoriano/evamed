@@ -63,7 +63,7 @@ export class CompararComponent implements OnInit {
   showVar: boolean = false;
   showVar_1: boolean = false;
   ID:string=' ';
-  proyecto:string;
+  proyecto={nombre:' ', num_epic: 0, num_epd: 0};
   banderaGrapg:number=0;
   proyect=[];
   proyect_active=[];
@@ -137,6 +137,8 @@ export class CompararComponent implements OnInit {
   transporte_list:any = transporte;
   conversion_list:any = conversion;
   botones_grafica_activos: boolean =false;
+  materiales_EPIC=0;
+  materiales_EPD=0;
   columnsToDisplay = ['Agotamiento de\nRecursos Abióticos\nMinerales',
     'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
     'Agotamiento de\nla Capa de Ozono',
@@ -259,17 +261,19 @@ export class CompararComponent implements OnInit {
       return;
     }
     this.proyect_active.push(id);
+
+    let analisis = this.getAnalisisBarras(id);
+    let analisisRad = this.getAnalisisRadial(id);
+    let analisisPie = this.getAnalisisPie(id);
+
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
         this.proyect[index].card = true;
         this.proyect[index].num = this.proyect_active.length;
+        this.proyect[index].num_epic=this.materiales_EPIC;
+        this.proyect[index].num_epd = this.materiales_EPD;
       }
     });
-
-    let analisis = this.getAnalisisBarras(id);
-    //console.log(analisis);
-    let analisisRad = this.getAnalisisRadial(id);
-    let analisisPie = this.getAnalisisPie(id);
 
     this.outproyect_bar.push(analisis);
     this.outproyect_radar.push(analisisRad);
@@ -355,6 +359,7 @@ export class CompararComponent implements OnInit {
       'Agotamiento de\nla Capa de Ozono', 'Oxidación Fotoquímica',
       'Acidificación', ' Eutrofización', 'Escasez de agua']
 
+    this.materiales_EPIC = 0;
     this.potentialTypesList.forEach((impacto, index) => {
       this.impactosIgnorar2.forEach(ignorar => {
         if (impacto['name_potential_type'] === ignorar) {
@@ -376,8 +381,15 @@ export class CompararComponent implements OnInit {
                 materiales_subetapa.forEach((material, index) => {
                   resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'])
                 })
+              }else{
+                materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
+                if (materiales_subetapa.length > 0 && impacto['id'] == 3) {
+                  resultado_impacto = resultado_impacto +materiales_subetapa[0]['value'] * ps['quantity']
+                  this.materiales_EPIC=this.materiales_EPIC+1;
+                }
               }
             })
+            this.materiales_EPD = schemeProyect.length - this.materiales_EPIC;
           }
           Datos[Label[index]]['Producción'][subproceso] = resultado_impacto;
           resultado_impacto = 0;
@@ -388,7 +400,6 @@ export class CompararComponent implements OnInit {
         Datos[Label[index]]['Construccion'] = {};
         //A4 Transporte
         if (schemeProyect.length > 0) {
-
           schemeProyect.forEach(ps => {
             let internacional;
             let nacional;
@@ -443,6 +454,12 @@ export class CompararComponent implements OnInit {
                 materiales_subetapa.forEach((material, index) => {
                   resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces'])
                 })
+              }else{
+                materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
+                if (materiales_subetapa.length > 0 && impacto['id'] == 3) {
+                  resultado_impacto = resultado_impacto + materiales_subetapa[0]['value'] * ps['quantity']
+                  this.materiales_EPIC = this.materiales_EPIC + 1;
+                }
               }
             })
           }
@@ -567,27 +584,28 @@ export class CompararComponent implements OnInit {
     this.botones_grafica_activos=true;
     this.container.clear();
     let auxL = ['Producción', 'Construccion', 'Uso', 'FinDeVida'];
+    let aux_color = ['#4DBE89', '#148A93', '#8F5091','#DEA961']
     //se prepara la información por filas
     let aux=[]
-    auxL.forEach(ciclo => {
+    auxL.forEach((ciclo,index) => {
       let auxdata = {}
       let auximpactos =[]
-      this.outproyect_bar.forEach((element,index)=>{
+      this.outproyect_bar.forEach((element)=>{
         Object.keys(element.Datos).forEach(impacto => {
           if(!auximpactos.includes(impacto)){
             auximpactos.push(impacto)
-            auxdata[impacto] = (element.Datos[impacto][ciclo]).toFixed(2)
+            auxdata[impacto] = (element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }else{
             let last = auxdata[impacto].toString()
             auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
-            auxdata[impacto] = auxdata[impacto].concat((element.Datos[impacto][ciclo]).toFixed(2))
+            auxdata[impacto] = auxdata[impacto].concat((element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
           }
         });
       })
-      aux=[...aux, auxdata];
+      aux=[...aux, {data:auxdata,
+                    color: aux_color[index]}];
     })
     this.DatosTabla = aux;
-    //console.log(this.DatosTabla);
     this.resultdosTabla=true;
     this.resultdosGraficos=false;
   }
@@ -631,7 +649,10 @@ export class CompararComponent implements OnInit {
   menu_inicio(){
     this.projectsList.forEach(proyecto => {
       if (proyecto['id'] == this.idProyectoActivo){
-        this.proyecto = proyecto['name_project']
+        this.proyecto.nombre = proyecto['name_project']
+        let aux=this.OperacionesDeFase(proyecto['id'])
+        this.proyecto.num_epic= this.materiales_EPIC
+        this.proyecto.num_epd = this.materiales_EPD
         return;
       }
       this.proyect = [...this.proyect,
@@ -639,12 +660,13 @@ export class CompararComponent implements OnInit {
           Nombre: proyecto['name_project'],
           id: proyecto['id'],
           card: false,
-          num:0
+          num:0,
+          num_epic: 0,
+          num_epd:0
         }];
     })
 
     this.iniciar_graficas(this.idProyectoActivo);
-
   }
 
   //activar gráfica de porcentaje
