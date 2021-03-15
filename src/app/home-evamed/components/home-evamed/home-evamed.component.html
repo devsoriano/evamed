@@ -33,12 +33,9 @@
           </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item>
-              <span>Hacer copia</span>
-            </button>
-            <button mat-menu-item>
               <span>Duplicar</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="renameProject(project.id)">
               <span>Renombrar</span>
             </button>
             <button mat-menu-item (click)="deleteProject(project.id)">

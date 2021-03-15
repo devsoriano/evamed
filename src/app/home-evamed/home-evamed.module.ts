@@ -13,13 +13,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ChartsModule } from 'ng2-charts';
+import { ChangeNameProjectComponent } from './components/change-name-project/change-name-project.component';
 
 
 @NgModule({
   declarations: [
     HomeEvamedComponent,
     AddNewProjectComponent,
-    ChooseTypeOfProjectComponent
+    ChooseTypeOfProjectComponent,
+    ChangeNameProjectComponent
   ],
   imports: [
     CommonModule,
@@ -36,11 +38,13 @@ import { ChartsModule } from 'ng2-charts';
   exports: [
     HomeEvamedComponent,
     AddNewProjectComponent,
-    ChooseTypeOfProjectComponent
+    ChooseTypeOfProjectComponent,
+    ChangeNameProjectComponent
   ],
   entryComponents: [
     AddNewProjectComponent,
-    ChooseTypeOfProjectComponent
+    ChooseTypeOfProjectComponent,
+    ChangeNameProjectComponent
   ]
 })
 export class HomeEvamedModule { }

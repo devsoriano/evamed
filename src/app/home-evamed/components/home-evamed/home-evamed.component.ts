@@ -7,7 +7,7 @@ import { ChooseTypeOfProjectComponent } from '../choose-type-of-project/choose-t
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { MaterialsService } from './../../../core/services/materials/materials.service';
+import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -42,6 +42,7 @@ export class HomeEvamedComponent implements OnInit {
   countProjectList: number;
   user: string;
   sector: string;
+  nameProject: string;
 
   constructor(
     private auth: AuthService,
@@ -50,19 +51,19 @@ export class HomeEvamedComponent implements OnInit {
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
     private projects: ProjectsService,
-    private users: UserService,
-    private materialsService: MaterialsService
+    private users: UserService
   ) {
     this.catalogsService.usesCatalog().subscribe(data => {
       this.catalogoUsos = data;
       this.filtroCatalogoUsos = data;
+      this.filtroCatalogoUsos.push({id: 0, name_use: "Todos"});
     });
     this.catalogsService.countriesCatalog().subscribe(data => {
       this.catalogoPaises = [];
       data.map( item => {
         if (item.id === 1) {
           this.catalogoPaises.push(item);
-        }  
+        }
       });
     });
     this.catalogsService.typeProjectCatalog().subscribe(data => {
@@ -90,29 +91,6 @@ export class HomeEvamedComponent implements OnInit {
         this.tempProjectsList = this.projectsList;
       });
     });
-     // this.materialsService.getfake().subscribe( data => {
-     //  data.map( item => {
-     //   if(item.id > 2201 && item.id < 2400) {
-          // this.materialsService.deleteFake(item.id).subscribe();
-     //     this.materialsService.addFake({
-     //       value: item.value,
-     //       material_id: item.material_id,
-     //       standard_id: item.standard_id,
-     //       potential_type_id: item.potential_type_id,
-     //       unit_id: item.unit_id
-     //     }).subscribe();
-     //   }
-        
-        /*this.materialsService.addFake({
-          value: item.value,
-          material_id: item.material_id,
-          standard_id: item.standard_id,
-          potential_type_id: item.potential_type_id,
-          unit_id: item.unit_id
-        }).subscribe();*/
-        
-    //  });
-    //}); 
     this.catalogsService.getStates().subscribe( data => {
       this.catalogoEstados = data;
     });
@@ -131,6 +109,10 @@ export class HomeEvamedComponent implements OnInit {
     this.projectsList = [];
     this.tempProjectsList.map(item => {
       if (item.use_id === id) {
+        this.projectsList.push(item);
+      }
+
+      if (id === 0) {
         this.projectsList.push(item);
       }
     });
@@ -170,6 +152,19 @@ export class HomeEvamedComponent implements OnInit {
           this.projectsList.reverse();
         });
       });
+    });
+  }
+
+  renameProject(id) {
+    const dialogRef = this.dialog.open(ChangeNameProjectComponent, {
+      width: '680px',
+      data: {
+        nameProject: this.nameProject
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('result')
+      console.log(result);
     });
   }
 

@@ -33,12 +33,20 @@ export class RegisterComponent implements OnInit {
 
   register(event: Event) {
     event.preventDefault();
+
     if (this.form.valid) {
+
       const value = this.form.value;
-      this.user.addUser(value).subscribe(data => {});
-      this.authService.createUser(value.email, value.password).then(() => {
-        this.router.navigate(['/auth/login']);
-      });
+
+      if ( value.password === value.password2 ) {
+        this.user.addUser(value).subscribe(data => {});
+        this.authService.createUser(value.email, value.password).then(() => {
+          this.router.navigate(['/auth/login']);
+        });
+      } else {
+        alert('las contraseñas deben de coincidir');
+      }
+
     }
   }
 
@@ -48,6 +56,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required]],
       institution: ['', [Validators.required]],
       password: ['', [Validators.required]],
+      password2: ['', [Validators.required]],
       sector: ['', [Validators.required]],
       country: ['', [Validators.required]],
     });
