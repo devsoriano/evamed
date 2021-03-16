@@ -203,6 +203,8 @@ export class MaterialsStageComponent implements OnInit {
 
   onSelectedMaterial(event, value) {
     this.dataMaterialSelected = value.selected[0]?.value.value;
+    console.log('entra a esta basura***********************************');
+    console.log(this.dataMaterialSelected);
 
     this.dataMaterialSelected.paisSeleccionado === undefined ?
     this.dataMaterialSelected.paisSeleccionado = 1 :
@@ -239,15 +241,17 @@ export class MaterialsStageComponent implements OnInit {
     this.catalogoTransportesLocal = [];
     this.catalogsService.getTransports().subscribe(
       data => {
-        if ( this.dataMaterialSelected.paisSeleccionado === 1 ) {
+        // if ( this.dataMaterialSelected.paisSeleccionado === 1 ) {
           data.map( item => {
            if ( item.id >= 3  ) {
               this.catalogoTransportesLocal.push(item)
             }
           });
-        }
+        // }
       }
     );
+
+    console.log(this.catalogoTransportesLocal);
 
     this.dataMaterialSelected.paisSeleccionado === 1 ?
     this.dataMaterialSelected.transporteLocal = 3 :
