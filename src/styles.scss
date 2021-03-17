@@ -20,6 +20,7 @@ body {
 
 .label-small-input {
   font-size: 12px;
+  font-weight: 500;
   color: #CBCBCB;
 }
 
@@ -523,4 +524,8 @@ span.mat-checkbox-label {
 .mat-form-field-appearance-legacy .mat-form-field-wrapper,
 .mat-form-field-wrapper {
   padding-bottom: .25em !important;
+}
+
+.mat-select-panel {
+  max-width: 100% !important;
 }

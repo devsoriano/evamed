@@ -86,7 +86,7 @@
                 <label class="label-small-input">
                   Fuente
                 </label>
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="custom-input">
                   <mat-label>Seleccione una opción</mat-label>
                   <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
                     <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
@@ -104,7 +104,7 @@
                     class="input-general"
                     [(ngModel)]="data.cantidad"
                     name="cantidad_{{i}}"
-                    matInput 
+                    matInput
                     type="number"
                   >
                 </mat-form-field>
@@ -150,9 +150,9 @@
             <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
-        
+
         <!--Expansion panel 2. -->
-        <mat-expansion-panel *ngIf="indexSheet!==undefined">
+        <mat-expansion-panel [expanded]="true">
           <!--Expansion panel header-->
           <mat-expansion-panel-header class="custom-expansion-panel-header">
             <mat-panel-title class="custom-mat-panel-title">
@@ -184,7 +184,7 @@
                     class="input-general"
                     [(ngModel)]="data.cantidad"
                     name="cantidad{{i}}"
-                    matInput 
+                    matInput
                     type="number"
                   >
                 </mat-form-field>
@@ -230,9 +230,9 @@
             <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
-      
+
         <!--Expansion panel 3. -->
-        <mat-expansion-panel *ngIf="indexSheet!==undefined">
+        <mat-expansion-panel [expanded]="true">
           <!--Expansion panel header-->
           <mat-expansion-panel-header  class="custom-expansion-panel-header">
             <mat-panel-title class="custom-mat-panel-title">
@@ -264,7 +264,7 @@
                     class="input-general"
                     [(ngModel)]="data.cantidad"
                     name="cantidad{{i}}"
-                    matInput 
+                    matInput
                     type="number"
                   >
                 </mat-form-field>
@@ -327,7 +327,7 @@
     mat-button
     class="yellow-button"
     (click)="saveStepTwo()"
-  > 
-    Continuar 
+  >
+    Continuar
   </button>
 </div>

@@ -79,28 +79,7 @@ export class ConstructionStageComponent implements OnInit {
       }
     });
     this.contentData = data.data;
-
-    this.initialChange();
     this.indexSheet = undefined;
-    console.log(this.indexSheet);
-  }
-
-  initialChange() {
-    // take index of selection
-    this.indexSheet = this.sheetNames.indexOf('Cimentación');
-    // take memory of saved data
-    let i;
-    for ( i = 0; i <= this.sheetNames.length; i++ ) {
-      if ( this.indexSheet === i && this.EC !== undefined ) {
-        this.dataArrayEC = this.EC[i];
-      }
-      if ( this.indexSheet === i && this.AC !== undefined ) {
-        this.dataArrayAC = this.AC[i];
-      }
-      if ( this.indexSheet === i && this.DG !== undefined ) {
-        this.dataArrayDG = this.DG[i];
-      }
-    }
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -127,6 +106,9 @@ export class ConstructionStageComponent implements OnInit {
 
     this.selectedSheet = selectedSheet;
     console.log(this.indexSheet);
+    this.addFormEC();
+    this.addFormAC();
+    this.addFormDG();
   }
 
   addFormEC() {
