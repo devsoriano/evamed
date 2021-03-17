@@ -56,7 +56,6 @@ p.p-instrucciones {
 }
 
 .container-details {
-  // width: 25.9rem;
   display: block!important;
   height: 23.5rem;
 }
@@ -250,12 +249,12 @@ div.step-four div.mdl-stepper-circle {
 .button-read {
   border: 2px solid #97969C;
   padding: 10px;
-  margin: 14px;
+  margin: 10px 10px 10px 0px;
   border-radius: 10px;
-  color: #97969C;
-  font-weight: 600;
-  font-size: 16px;
+  color: #000;
+  font-size: 14px;
   cursor: pointer;
+  width: 100%;
 }
 
 .conditional-section {
