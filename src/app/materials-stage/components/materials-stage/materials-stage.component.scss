@@ -259,5 +259,22 @@ div.step-four div.mdl-stepper-circle {
   width: 25.9rem;
 }
 
+.container-options {
+  display: none;
+
+  &:hover {
+    display: block;
+  }
+}
+
+.item-by-list {
+  width: 100%;
+
+  &:hover + .container-options {
+    display: block;
+  }
+}
+
+
 
 

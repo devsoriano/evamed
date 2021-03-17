@@ -101,8 +101,8 @@
               class="item-list-option"
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
-              <div style="display:flex; align-items:center; width: 60%;" (click)="showMaterials($event, sc, 'revit-user')">
-                <div style="display:flex; flex-direction:column" class="item-by-list">
+              <div style="display:flex; align-items:center; width: 65.8%;" (click)="showMaterials($event, sc, 'revit-user')" class="item-by-list">
+                <div style="display:flex; flex-direction:column">
                   {{sc}}
                 </div>
               </div>
@@ -141,14 +141,15 @@
               [value]="sc"
               [disableRipple]="true"
               checkboxPosition="before"
+              class="item-list-option"
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
-              <div style="display:flex; align-items:center; width: 60%;" (click)="showMaterials($event, sc, 'dynamo')">
+              <div style="display:flex; align-items:center; width: 65.8%;" (click)="showMaterials($event, sc, 'dynamo')" class="item-by-list">
                 <div style="display:flex; flex-direction:column">
                   {{sc}}
                 </div>
               </div>
-              <div>
+              <div class="container-options">
                 <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'dynamo')" >
                   <mat-icon class="custom-icon">restore_from_trash</mat-icon>
                 </button>
