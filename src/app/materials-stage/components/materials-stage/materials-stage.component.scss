@@ -56,7 +56,9 @@ p.p-instrucciones {
 }
 
 .container-details {
-  overflow: auto;
+  width: 25.9rem;
+  display: block!important;
+  height: 23.5rem;
 }
 
 .list-elements {
@@ -230,7 +232,6 @@ div.step-four div.mdl-stepper-circle {
 
 .form-update-material {
   width: 90%;
-  margin-left: 5%;
 }
 
 
@@ -257,6 +258,7 @@ div.step-four div.mdl-stepper-circle {
 
 .conditional-section {
   width: 25.9rem;
+  overflow: auto;
 }
 
 .container-options {
@@ -268,7 +270,6 @@ div.step-four div.mdl-stepper-circle {
 }
 
 .item-by-list {
-  width: 100%;
 
   &:hover + .container-options {
     display: block;
