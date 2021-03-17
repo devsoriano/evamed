@@ -271,12 +271,11 @@
         <!--Form material-->
         <div class="container-details" *ngIf="selectedMaterial===true">
           <!-- <a class="return" (click)="onReturnListMaterials()"> < </a> -->
+          <div class="header-form">
+            <span class="return" (click)="onReturnListMaterials()"> < </span>
+            <span class="title">Edición de material</span>
+          </div>
           <div class="form-update-material">
-            <div class="Row">
-              <div class="Col">
-                <h3>Edición de material</h3>
-              </div>
-            </div>
             <div class="Row">
               <div class="Col">
                 <div class="label-general">
@@ -347,7 +346,7 @@
             </div>
             <div class="Row">
               <div class="Col">
-                <h3>Transporte de lugar de origen a sitio del proyecto</h3>
+                <div class="subtitle">Transporte de lugar de origen a sitio del proyecto</div>
               </div>
             </div>
             <div class="Row">
@@ -441,7 +440,7 @@
             </div>
             <div class="Row">
               <div class="Col">
-                <h3>Tiempo de vida del material</h3>
+                <div class="subtitle">Tiempo de vida del material</div>
               </div>
             </div>
             <div class="Row">
@@ -480,7 +479,7 @@
             </div>
             <div class="Row">
               <div class="Col">
-                <h3>Fuente de información de impacto ambiental</h3>
+                <div class="subtitle">Fuente de información de impacto ambiental</div>
               </div>
             </div>
             <div class="Row">

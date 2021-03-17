@@ -33,7 +33,7 @@ body {
 
 .label-general {
   color: #ACA8A8 !important;
-  font-size: 14px !important;
+  font-size: 12px !important;
   margin-top: 10px !important;
   margin-bottom: -12px !important;
 }
@@ -517,4 +517,9 @@ span.mat-checkbox-label {
 
 .width-90 {
   width: 136px !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-wrapper,
+.mat-form-field-wrapper {
+  padding-bottom: .25em !important;
 }

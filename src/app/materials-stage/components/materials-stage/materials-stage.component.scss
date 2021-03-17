@@ -56,7 +56,7 @@ p.p-instrucciones {
 }
 
 .container-details {
-  width: 25.9rem;
+  // width: 25.9rem;
   display: block!important;
   height: 23.5rem;
 }
@@ -231,9 +231,11 @@ div.step-four div.mdl-stepper-circle {
 }
 
 .form-update-material {
-  width: 90%;
+  width: 85%;
+  margin-top: 10px;
+  margin-left: 15px;
+  display: inline-block;
 }
-
 
 /** Aditional CSS **/
 .select-middle {
@@ -276,6 +278,26 @@ div.step-four div.mdl-stepper-circle {
   }
 }
 
+.header-form {
+  margin-top: 4px;
+  margin-left: 14px;
 
+  span.return {
+    font-weight: 700;
+    font-size: 18px;
+    color: #92BE00;
+    cursor: pointer;
+  }
 
+  span.title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
 
+.subtitle {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
