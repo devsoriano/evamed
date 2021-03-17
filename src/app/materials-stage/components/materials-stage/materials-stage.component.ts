@@ -63,6 +63,7 @@ export class MaterialsStageComponent implements OnInit {
   distanciaInicial: any;
   newConstructiveElement: string;
   newConstructiveSystem: string;
+  SCseleccionado: string = '';
 
   myControl = new FormControl();
   options: Material[];
@@ -203,8 +204,6 @@ export class MaterialsStageComponent implements OnInit {
 
   onSelectedMaterial(event, value) {
     this.dataMaterialSelected = value.selected[0]?.value.value;
-    console.log('entra a esta basura***********************************');
-    console.log(this.dataMaterialSelected);
 
     this.dataMaterialSelected.paisSeleccionado === undefined ?
     this.dataMaterialSelected.paisSeleccionado = 1 :
@@ -250,8 +249,6 @@ export class MaterialsStageComponent implements OnInit {
         // }
       }
     );
-
-    console.log(this.catalogoTransportesLocal);
 
     this.dataMaterialSelected.paisSeleccionado === 1 ?
     this.dataMaterialSelected.transporteLocal = 3 :
@@ -552,6 +549,7 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   showMaterials(event, sc, origin) {
+    this.SCseleccionado = '/ ' + sc;
     event.stopPropagation();
     this.selectedMaterial = false;
     this.showSearch = false;

@@ -371,7 +371,7 @@ a.a-redirect {
 /**style tabs**/
 .tab-title-sections {
   font-size: 12px;
-  height: 40px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -386,7 +386,7 @@ a.a-redirect {
 
 mat-expansion-panel-header {
   background-color: #EFEFEF!important;
-  height: 40px!important;
+  height: 34px!important;
 }
 
 mat-panel-title.mat-expansion-panel-header-title {
@@ -398,10 +398,6 @@ mat-panel-title.mat-expansion-panel-header-title {
 mat-list-option.item-list-option.mat-list-item.mat-list-option.mat-focus-indicator.mat-accent.ng-star-inserted {
   border-bottom: 1px solid #EFEFEF;
   height: 34px !important;
-}
-
-.item-by-list {
-  font-size: 14px;
 }
 
 mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
