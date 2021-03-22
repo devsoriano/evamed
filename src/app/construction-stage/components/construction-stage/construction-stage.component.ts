@@ -20,7 +20,7 @@ export class ConstructionStageComponent implements OnInit {
   indexSheet: any;
   SistemasConstructivos: any;
   catalogoFuentes: any;
-  catalogoUnidadEnergia: [];
+  catalogoUnidadEnergia: any;
   catalogoUnidadVolumen: [];
   catalogoUnidadMasa: [];
   nameProject: string;
@@ -49,7 +49,13 @@ export class ConstructionStageComponent implements OnInit {
       this.catalogoFuentes = fuentes;
     });
     this.catalogsService.getEnergyUnits().subscribe(data => {
-      this.catalogoUnidadEnergia = data;
+      let energia = [];
+      data.map( unidad => {
+        if ( unidad.name_energy_unit === 'Hrs' ) {
+          energia.push(unidad)
+        }
+      })
+      this.catalogoUnidadEnergia = energia;
     });
     this.catalogsService.getVolumeUnits().subscribe(data => {
       this.catalogoUnidadVolumen = data;
