@@ -53,7 +53,7 @@
               class="input-general"
               [(ngModel)]="cantidad"
               name="cantidad"
-              matInput 
+              matInput
               type="text"
             >
           </mat-form-field>
@@ -120,13 +120,14 @@
                     <input
                       class="input-general"
                       [(ngModel)]="cantidadMixElectrico"
+                      (ngModelChange)="changeCantidadME(cantidadMixElectrico)"
                       name="cantidad"
-                      matInput 
+                      matInput
                       type="text"
                     >
                   </mat-form-field>
                 </div>
-                
+
                 <div class="Col secundary">
                   <label class="label-small-input">
                     Unidad
@@ -149,13 +150,14 @@
                     <input
                       class="input-general"
                       [(ngModel)]="porcentajeMixElectrico"
+                      (ngModelChange)="changePorcentajeME(porcentajeMixElectrico)"
                       name="cantidad"
-                      matInput 
+                      matInput
                       type="text"
                     >
                   </mat-form-field>
                 </div>
-              </div>   
+              </div>
             </div>
 
           </mat-expansion-panel>
@@ -199,13 +201,14 @@
                     <input
                       class="input-general"
                       [(ngModel)]="cantidadCombustible"
+                      (ngModelChange)="changeCantidadC(cantidadCombustible)"
                       name="cantidad"
-                      matInput 
+                      matInput
                       type="text"
                     >
                   </mat-form-field>
                 </div>
-                
+
                 <div class="Col secundary">
                   <label class="label-small-input">
                     Unidad
@@ -219,7 +222,7 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-    
+
                 <div class="Col secundary">
                   <label class="label-small-input">
                     Porcentaje
@@ -228,13 +231,14 @@
                     <input
                       class="input-general"
                       [(ngModel)]="porcentajeCombustible"
+                      (ngModelChange)="changePorcentajeC(porcentajeCombustible)"
                       name="cantidad"
-                      matInput 
+                      matInput
                       type="text"
                     >
                   </mat-form-field>
                 </div>
-              </div>    
+              </div>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -260,13 +264,14 @@
                     <input
                       class="input-general"
                       [(ngModel)]="cantidadPanelesFotovoltaicos"
+                      (ngModelChange)="changeCantidadPF(cantidadPanelesFotovoltaicos)"
                       name="cantidad"
-                      matInput 
+                      matInput
                       type="text"
                     >
                   </mat-form-field>
                 </div>
-                
+
                 <div class="Col secundary">
                   <label class="label-small-input">
                     Unidad
@@ -289,13 +294,14 @@
                     <input
                       class="input-general"
                       [(ngModel)]="porcentajePanelesFotovoltaicos"
+                      (ngModelChange)="changePorcentajePF(porcentajePanelesFotovoltaicos)"
                       name="cantidad"
-                      matInput 
+                      matInput
                       type="text"
                     >
                   </mat-form-field>
                 </div>
-              </div>    
+              </div>
             </div>
           </mat-expansion-panel>
         </mat-accordion>
@@ -310,7 +316,7 @@
     mat-button
     class="yellow-button"
     (click)="saveStepThree()"
-  > 
-    Continuar 
+  >
+    Continuar
   </button>
 </div>

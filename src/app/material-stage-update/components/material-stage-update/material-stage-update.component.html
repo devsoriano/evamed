@@ -76,23 +76,19 @@
         </mat-selection-list>
       </div>
     </section>
-    
+
     <!--Section construction systems-->
     <section class="container-systems">
       <div class="tab-title-sections">
         <p>Seleccione el sistema constructivo base a aplicar</p>
         <button
           mat-icon-button
-          (click)="addSC()"
         >
           <mat-icon>add_circle</mat-icon>
         </button>
       </div>
       <mat-accordion *ngIf="indexSheet!==undefined">
-        <mat-expansion-panel
-          (opened)="panelOpenFirst = true"
-          (closed)="panelOpenFirst = false"
-        >
+        <mat-expansion-panel (opened)="panelOpenFirst = true" (closed)="panelOpenFirst = false" [expanded]="true">
           <!--List Revit or template-->
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -102,34 +98,25 @@
           <mat-selection-list
             #sistemas_constructivos
             [(ngModel)]="selectedOptionsRevit"
-            (ngModelChange)="onNgModelChangeRevit($event)"
-          >
+            (ngModelChange)="onNgModelChangeRevit($event)">
             <mat-list-option
               *ngFor="let sc of ListSCRevit"
               [value]="sc"
               [disableRipple]="true"
-              checkboxPosition="before" 
+              checkboxPosition="before"
               class="item-list-option"
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
-              <div style="display:flex; align-items:center; width: 70%;" (click)="showMaterials($event, sc, 'revit-user')">
-                <div style="display:flex; flex-direction:column" class="item-by-list">
+              <div style="display:flex; align-items:center; width: 65.8%;" (click)="showMaterials($event, sc, 'revit-user')" class="item-by-list">
+                <div style="display:flex; flex-direction:column">
                   {{sc}}
                 </div>
               </div>
-              <div>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="removeMaterial($event, sc, 'revit-user')"
-                >
+              <div class="container-options">
+                <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'revit-user')">
                   <mat-icon class="custom-icon">restore_from_trash</mat-icon>
                 </button>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="restoreMaterial($event, sc, 'revit-user')"
-                >
+                <button class="custom-button-icon" mat-icon-button (click)="restoreMaterial($event, sc, 'revit-user')">
                   <mat-icon class="custom-icon">restore_page</mat-icon>
                 </button>
                 <button
@@ -147,10 +134,7 @@
       </mat-accordion>
 
       <mat-accordion *ngIf="indexSheet!==undefined">
-        <mat-expansion-panel
-          (opened)="panelOpenSecond = true"
-          (closed)="panelOpenSecond = false"
-        >
+        <mat-expansion-panel (opened)="panelOpenSecond = true" (closed)="panelOpenSecond = false" [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Opciones EVAMED
@@ -166,20 +150,17 @@
               *ngFor="let sc of ListSCDynamo"
               [value]="sc"
               [disableRipple]="true"
-              checkboxPosition="before" 
+              checkboxPosition="before"
+              class="item-list-option"
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
-              <div style="display:flex; align-items:center; width: 70%;" (click)="showMaterials($event, sc, 'dynamo')">
+              <div style="display:flex; align-items:center; width: 65.8%;" (click)="showMaterials($event, sc, 'dynamo')" class="item-by-list">
                 <div style="display:flex; flex-direction:column">
                   {{sc}}
                 </div>
               </div>
-              <div>
-                <button
-                  class="custom-button-icon"
-                  mat-icon-button
-                  (click)="removeMaterial($event, sc, 'dynamo')"
-                >
+              <div class="container-options">
+                <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'dynamo')" >
                   <mat-icon class="custom-icon">restore_from_trash</mat-icon>
                 </button>
                 <button
@@ -204,10 +185,7 @@
       </mat-accordion>
 
       <mat-accordion  *ngIf="indexSheet!==undefined">
-        <mat-expansion-panel
-          (opened)="panelOpenThird = true"
-          (closed)="panelOpenThird = false"
-        >
+        <mat-expansion-panel (opened)="panelOpenThird = true" (closed)="panelOpenThird = false" [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Creados por el usuario
@@ -222,20 +200,31 @@
               *ngFor="let sc of ListSCUsuario"
               [value]="sc"
               [disableRipple]="true"
-              checkboxPosition="before" 
+              checkboxPosition="before"
             >
             <div style="display:flex; justify-content:space-between;align-items:center">
-              <div style="display:flex;align-items:center">
+              <div style="display:flex;align-items:center;width:65.8%;" (click)="showMaterials($event, sc, 'user')">
                 <div style="display:flex; flex-direction:column">
                   {{sc}}
                 </div>
               </div>
               <div>
+                <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'user')" >
+                  <mat-icon class="custom-icon">restore_from_trash</mat-icon>
+                </button>
                 <button
+                  class="custom-button-icon"
                   mat-icon-button
-                  (click)="showMaterials($event, sc, 'usuario-local')"
+                  (click)="restoreMaterial($event, sc, 'user')"
                 >
-                  <mat-icon>visibility</mat-icon>
+                  <mat-icon class="custom-icon">restore_page</mat-icon>
+                </button>
+                <button
+                  class="custom-button-icon"
+                  mat-icon-button
+                  (click)="duplicateMaterial($event, sc, 'user')"
+                >
+                  <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
                 </button>
               </div>
             </div>
@@ -246,115 +235,55 @@
     </section>
 
     <!--Materials section-->
-    <section class="container-details" *ngIf="selectedMaterial===false">
+    <section class="container-details" >
       <div class="tab-title-sections">
-        <p>Materiales</p>
-        <button
-          mat-icon-button
-          (click)="addElement()"
-        >
+        <p>Materiales<span class="sc-selected"> {{ 'seccion de materiales' }} </span></p>
+        <button mat-icon-button >
           <mat-icon>add_circle</mat-icon>
         </button>
       </div>
-      <mat-selection-list 
-        #materials 
-        [multiple]="false"
-        (selectionChange)="onSelectedMaterial($event, materials.selectedOptions)"
-      >
-        <mat-list-option *ngFor="let material of listMateriales | keyvalue" [value]="material">
-          <div class="table-materials"> 
-            <div class="col-key">
-              {{material.key}}.
+
+      <!--Contenedor de condicionales-->
+      <div class="conditional-section">
+
+        <!--Listado de materiales-->
+        <mat-selection-list
+          #materials
+          [multiple]="false"
+          (selectionChange)="onSelectedMaterial($event, materials.selectedOptions)"
+          *ngIf="selectedMaterial===false && showSearch===false"
+        >
+          <mat-list-option *ngFor="let material of listMateriales | keyvalue" [value]="material">
+            <div class="table-materials">
+              <div class="col-key">
+                {{ material.value.key }}.
+              </div>
+              <div class="col-material">
+                {{material.value.Material}}
+              </div>
+              <div class="col-cantidad">
+                {{material.value.Cantidad}}
+              </div>
+              <div class="col-unidad">
+                {{material.value.Unidad}}
+              </div>
+              <div class="col-icon">
+                <div class="col-unidad">
+                  <mat-icon class="custom-icon">check_circle</mat-icon>
+                </div>
+              </div>
             </div>
-            <div class="col-material">
-              {{material.value.Material}}
-            </div>
-            <div class="col-cantidad">
-              {{material.value.Cantidad}}
-            </div>
-            <div class="col-unidad">
-              {{material.value.Unidad}}
-            </div>
-            <div class="col-icon">
-              <mat-icon class="custom-icon custom-error">check_circle</mat-icon>
-            </div>
-          </div>
-        </mat-list-option>
-      </mat-selection-list>
-    </section>
-    <!--Form material-->
-    <div class="container-details" *ngIf="selectedMaterial===true">
-      <a class="return" (click)="onReturnListMaterials()"> < </a>
-      <div class="form-update-material">
-        <div class="Row">
-          <div class="Col">
-            <div class="label-general">
-              Nombre comercial
-            </div>
-            <div>
-              <mat-form-field>
-                <input
-                  class="input-general"
-                  [(ngModel)]="dataMaterialSelected.Material"
-                  matInput 
-                  type="text"
-                >
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-        <div class="Row">
-          <div class="Col">
-            <div class="label-general">
-              Cantidad
-            </div>
-            <div>
-              <mat-form-field>
-                <input
-                  class="input-general"
-                  [(ngModel)]="dataMaterialSelected.Cantidad"
-                  matInput 
-                  type="text"
-                >
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="Col">
-            <div class="label-general">
-              Unidad
-            </div>
-            <div>
-              <mat-form-field>
-                <input
-                  class="input-general"
-                  [(ngModel)]="dataMaterialSelected.Unidad"
-                  matInput 
-                  type="text"
-                >
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-        <div class="Row">
-          <div class="Col">
-            <div class="label-general">
-              Comentarios
-            </div>
-            <div>
-              <mat-form-field>
-                <input
-                  class="input-general"
-                  [(ngModel)]="dataMaterialSelected.Comentarios"
-                  matInput 
-                  type="text"
-                >
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
+          </mat-list-option>
+        </mat-selection-list>
+
+
       </div>
-    </div>
+
+    </section>
+
   </section>
+
+
 </div>
 
 <!--Section continue-->
@@ -363,7 +292,7 @@
     mat-button
     class="yellow-button custom-continue"
     (click)="updateStepOne()"
-  > 
-    Continuar 
+  >
+    Continuar
   </button>
 </div>

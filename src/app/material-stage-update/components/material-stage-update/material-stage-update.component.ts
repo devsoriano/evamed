@@ -36,13 +36,14 @@ export class MaterialStageUpdateComponent implements OnInit {
   sectionDynamo: boolean;
   selectedMaterial: boolean;
   dataMaterialSelected: any;
+  showSearch: boolean;
 
   constructor(
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
     private router: Router
-  ) { 
-    this.projectsService.getMaterialSchemeProyectOrigin().subscribe(data => {
+  ) {
+    this.projectsService.getMaterialSchemeProyect().subscribe(data => {
       const listData2 = [];
       data.map( item => {
         if (item.project_id === parseInt(localStorage.getItem('idProyectoConstrucción'), 10)) {
@@ -55,7 +56,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.selectedMaterial = false;
-    
+
     this.nameProject = 'Genérico';
 
     this.sheetNames = [
@@ -71,6 +72,8 @@ export class MaterialStageUpdateComponent implements OnInit {
       'Inst. especiales',
       'Otros',
     ];
+
+    this.showSearch = false;
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -79,15 +82,15 @@ export class MaterialStageUpdateComponent implements OnInit {
     });
 
     this.indexSheet = this.sheetNames.indexOf(this.selectedSheet);
- 
+
     let ListGetSCRevit = [];
     let ListGetSCDimano = [];
     this.listData2.map( item => {
       if (item.origin_id === 1 && this.indexSheet + 1 === item.section_id) {
-        ListGetSCRevit.push(item.construction_system) 
+        ListGetSCRevit.push(item.construction_system)
       }
       if (item.origin_id === 2 && this.indexSheet + 1 === item.section_id) {
-        ListGetSCDimano.push(item.construction_system) 
+        ListGetSCDimano.push(item.construction_system)
       }
     });
 
@@ -146,16 +149,24 @@ export class MaterialStageUpdateComponent implements OnInit {
     // let originId = 1;
     // origin === 'revit-user' ? originId = 1 : originId = 2;
     const listMateriales = [];
+    let counterRevit = 1;
+    let countDynamo = 1;
+
     this.listData2.map( item => {
       const prevData = [];
-      if (item.construction_system === sc && origin === 'revit-user') { 
+      if (item.construction_system === sc && origin === 'revit-user') {
         if (item.origin_id === 1 || item.origin_id === 3) {
           this.materialsService.searchMaterial(item.material_id).subscribe( material => {
-            material.map( materialData => { 
+            material.map( materialData => {
               if ( (item.material_id === materialData.id) && (item.section_id === this.indexSheet + 1) ) {
+                console.log('Material Data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                console.log(materialData);
+                console.log('Item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                console.log(item);
                 prevData['Material'] = materialData.name_material;
                 prevData['Cantidad'] = item.quantity;
-                listMateriales.push(prevData); 
+                prevData['key'] = counterRevit++;
+                listMateriales.push(prevData);
               }
             });
           });
@@ -165,11 +176,12 @@ export class MaterialStageUpdateComponent implements OnInit {
         if (item.origin_id === 2) {
           console.log('entra a opciones dynamo');
           this.materialsService.searchMaterial(item.material_id).subscribe( material => {
-            material.map( materialData => { 
+            material.map( materialData => {
               if ( item.material_id === materialData.id ) {
                 prevData['Material'] = materialData.name_material;
                 prevData['Cantidad'] = item.quantity;
-                listMateriales.push(prevData); 
+                prevData['key'] = countDynamo++;
+                listMateriales.push(prevData);
               }
             });
           });
@@ -197,6 +209,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onSelectedMaterial(event, value) {
     console.log('selección de materiales ***************************');
+    console.log(value.selected)
     this.dataMaterialSelected = value.selected[0]?.value;
     this.selectedMaterial = true;
 
