@@ -94,7 +94,7 @@
                   class="input-general"
                   [(ngModel)]="data.cantidad"
                   name="cantidad_{{i}}"
-                  matInput 
+                  matInput
                   type="number"
                 >
               </mat-form-field>
@@ -133,15 +133,9 @@
           <mat-icon>add_circle</mat-icon>
         </button>
 
-        <button
-          mat-button
-          (click)="onSaveEC()"
-        >
-          <mat-icon>save</mat-icon>
-        </button>
       </div>
       <h3>2. Tratamiento de desechos generados</h3>
-      <div class="Row top-0">
+      <div class="Row top-0"  *ngFor="let dataTD of dataArrayTD; let i=index;">
         <div class="Col col-small-space">
           <label class="label-small-input">
             Vertedero
@@ -149,9 +143,9 @@
           <mat-form-field>
             <input
               class="input-general"
-              [(ngModel)]="vertedero"
+              [(ngModel)]="dataTD.vertedero"
               name="vertedero"
-              matInput 
+              matInput
               type="number"
             >
           </mat-form-field>
@@ -163,9 +157,9 @@
           <mat-form-field>
             <input
               class="input-general"
-              [(ngModel)]="reciclaje"
+              [(ngModel)]="dataTD.reciclaje"
               name="reciclaje"
-              matInput 
+              matInput
               type="number"
             >
           </mat-form-field>
@@ -177,17 +171,20 @@
           <mat-form-field>
             <input
               class="input-general"
-              [(ngModel)]="reuso"
+              [(ngModel)]="dataTD.reuso"
               name="reuso"
-              matInput 
+              matInput
               type="number"
             >
           </mat-form-field>
         </div>
       </div>
-    </section>
-    <section class="container-details">
-      
+      <button
+          mat-button
+          (click)="onSaveEC()"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
     </section>
   </section>
 </div>
@@ -198,7 +195,7 @@
     mat-button
     class="yellow-button"
     (click)="saveStepFour()"
-  > 
-    Continuar 
+  >
+    Continuar
   </button>
 </div>

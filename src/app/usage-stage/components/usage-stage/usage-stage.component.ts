@@ -34,7 +34,7 @@ export class UsageStageComponent implements OnInit {
   panelOpenThird = false;
   selectedPreference: string;
   preferences: string[] = ['cantidad', 'porcentaje'];
-  catalogoUnidadEnergia: [];
+  catalogoUnidadEnergia: any;
   catalogoTipoEnergiaElectrica: any;
   catalogoTipoEnergiaCombustible: any;
 
@@ -44,11 +44,15 @@ export class UsageStageComponent implements OnInit {
     private electricitConsumptionService: ElectricitConsumptionService
   ) {
     this.catalogsService.getEnergyUnits().subscribe((data) => {
-      this.catalogoUnidadEnergia = data;
+      let catalogoUnidades = [];
+      data.map((unidad) => {
+        if (unidad.name_energy_unit === 'kWh') {
+          catalogoUnidades.push(unidad);
+        }
+      });
+      this.catalogoUnidadEnergia = catalogoUnidades;
     });
     this.catalogsService.getTypeEnergy().subscribe((data) => {
-      console.log('catalogo');
-      console.log(data);
       // this.catalogoTipoEnergia = data;
       const tipoEnergiaElectrica = [];
       const tipoEnergiaCombustible = [];
@@ -78,6 +82,10 @@ export class UsageStageComponent implements OnInit {
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     this.projectId = PDP.id;
     this.nameProject = PDP.name_project;
+    this.unidadPanelesFotovoltaicos = 1;
+    this.unidad = 1;
+    this.unidadCombustible = 1;
+    this.unidadMixElectrico = 1;
   }
 
   changeCantidadME(cantidadMixElectrico) {

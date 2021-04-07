@@ -13,7 +13,7 @@ import { MaterialModule } from './../material/material.module';
     EndLifeStageRoutingModule,
     SharedModule,
     FormsModule,
-    MaterialModule
-  ]
+    MaterialModule,
+  ],
 })
-export class EndLifeStageModule { }
+export class EndLifeStageModule {}
