@@ -8,6 +8,8 @@ import { ProjectsService } from './../../../core/services/projects/projects.serv
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
+import { Calculos } from '../../../calculos/calculos'
+
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -48,6 +50,7 @@ export class HomeEvamedComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     public dialog: MatDialog,
+    private calculos: Calculos,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
     private projects: ProjectsService,
@@ -94,6 +97,7 @@ export class HomeEvamedComponent implements OnInit {
     this.catalogsService.getStates().subscribe( data => {
       this.catalogoEstados = data;
     });
+    //this.calculos;
   }
 
   ngOnInit(): void {}

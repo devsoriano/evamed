@@ -50,6 +50,12 @@
                   <mat-button-toggle [disabled]="botones_grafica_activos" class="button-impactos" (click)="porcentaje(false,1)">#</mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
+              <div>
+                <mat-button-toggle-group>
+                  <mat-button-toggle class="button-impactos" (click) = "AjustePorMetro(1)"><mat-icon class="icons-options">border_all</mat-icon></mat-button-toggle>
+                  <mat-button-toggle class="button-impactos" (click) = "AjustePorMetro(0)"><mat-icon class="icons-options">branding_watermark</mat-icon></mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
             </div>
           </div>
           <div class="campo-grafica-bar" >
