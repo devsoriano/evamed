@@ -1,46 +1,49 @@
-.div-principal{
-  //align-self: center;
-  width: 120%;
-  position:absolute;
+.div-principal {
+  position: absolute;
   top: 126px;
   left: 110px;
-  width: 1450px;
 }
 
-.campo-grafica-bar{
-  width: 85%;
+.mat-master {
+  width: 940px;
+}
+
+.container-principal-tab {
+  width: 940px;
+}
+.campo-grafica-bar {
   margin: auto;
 }
 
-  .Tabla-Datos {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
+.Tabla-Datos {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
 
-    th {
-      padding-left: 15px;
-    }
-
-    tr {
-      white-space: nowrap;
-      font-size: 0.8em;
-      padding: 16px 16px 16px 0;
-      height: 72px;
-
-      & td {
-        padding-left: 16px;
-        font-size: 1.2em;
-      }
-    }
+  th {
+    padding-left: 15px;
   }
 
-.sectionOne{
+  tr {
+    white-space: nowrap;
+    font-size: 0.8em;
+    padding: 16px 16px 16px 0;
+    height: 72px;
+
+    & td {
+      padding-left: 16px;
+      font-size: 1.2em;
+    }
+  }
+}
+
+.sectionOne {
   font-size: 15px;
-  color: #92BE00;
+  color: #92be00;
   padding: 0px;
 
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
-    color: #92BE00;
+    color: #92be00;
   }
 }
 
@@ -48,11 +51,11 @@
   display: inline-grid;
   grid-template-columns: auto auto;
   margin-bottom: 15px;
-  .menu-proyectos{
-    background-color: #FFFFFF;
+  .menu-proyectos {
+    background-color: #ffffff;
     border: 2px solid;
     border-radius: 10px;
-    border-color: #CBCBCB;
+    border-color: #cbcbcb;
     opacity: 1;
     letter-spacing: 0px;
     color: #767676;
@@ -67,14 +70,14 @@
     }
   }
 
-  .button-graph{
+  .button-graph {
     display: inline-block;
-    margin-right:10px;
+    margin-right: 10px;
     font-size: 10px;
     height: 8px;
     text-align: right;
-    .card{
-      background-color: #E2DDDD;
+    .card {
+      background-color: #e2dddd;
       margin-right: 0;
       padding: 0;
       padding-left: 21px;
@@ -93,25 +96,25 @@
   }
 }
 
-ng-template{
+ng-template {
   letter-spacing: 0px;
   color: #343434;
   opacity: 1;
   font-size: 15px;
 }
 
-.div-impactos-ambientales{
+.div-impactos-ambientales {
   margin: 20px;
-  p{
+  p {
     letter-spacing: 0px;
     color: #343434;
     opacity: 1;
     font-size: 15px;
   }
-  .icons-options{
+  .icons-options {
     font-size: 15px;
   }
-  .sub-container{
+  .sub-container {
     font-size: 20px;
     letter-spacing: 0px;
     //color: #FFFFFF;
@@ -119,14 +122,14 @@ ng-template{
     display: inline-grid;
     grid-template-columns: 122px 122px;
     column-gap: 16px;
-    .button-impactos{
+    .button-impactos {
       width: 64px;
       height: 40px;
     }
   }
 }
 
-.secondary-text{
+.secondary-text {
   letter-spacing: 0px;
   color: #343434;
   opacity: 1;
@@ -134,29 +137,29 @@ ng-template{
   margin-top: 52px;
 }
 
-.div-secondary-graph{
+.div-secondary-graph {
   display: inline-grid;
   grid-template-columns: auto auto;
 
-  p{
+  p {
     letter-spacing: 0px;
     color: #343434;
     opacity: 1;
     font-size: 12px;
   }
 
-  ul{
+  ul {
     list-style-type: none;
     margin-bottom: 0;
-    margin-right:10px;
+    margin-right: 10px;
     padding: 0;
   }
 
-  li{
+  li {
     margin-bottom: 5px;
   }
 
-  .boton-principal{
+  .boton-principal {
     margin-left: 8px;
     text-align: left;
     background-color: #efefefc7;
@@ -169,8 +172,8 @@ ng-template{
     opacity: 1;
   }
 
-  .boton-select{
-    background-color: #FFFFFF;
+  .boton-select {
+    background-color: #ffffff;
     box-shadow: 0px 3px 6px #00000029;
     border-radius: 5px;
     opacity: 1;
@@ -181,24 +184,23 @@ ng-template{
     letter-spacing: 0px;
   }
 
-  .boton-icono{
+  .boton-icono {
     border-radius: 50%;
     font-size: 18px;
     padding: 0px;
-    border:none;
+    border: none;
   }
 
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
     border-radius: 50%;
     font-size: 18px;
-     text-align: center;
+    text-align: center;
     padding-top: 4px;
-    color: #FFFFFF;
+    color: #ffffff;
   }
-
 }
 
-.simple-text{
+.simple-text {
   font-size: 14px;
   letter-spacing: 0px;
   padding-top: 21px;
@@ -206,7 +208,7 @@ ng-template{
   opacity: 1;
 }
 
-.tittle-proyect{
+.tittle-proyect {
   font-size: 20px;
   font-style: medium;
   letter-spacing: 0px;
@@ -214,28 +216,27 @@ ng-template{
   opacity: 1;
 }
 
-
 .uno {
-  background: #4DBE89;
+  background: #4dbe89;
 }
 
 .dos {
-  background: #148A93;
+  background: #148a93;
 }
 
 .tres {
-  background: #8F5091;
+  background: #8f5091;
 }
 
 .cuatro {
-  background: #DEA961;
+  background: #dea961;
 }
-.div-elementos-constructivos{
+.div-elementos-constructivos {
   display: inline-grid;
   grid-template-columns: 300px 400px auto;
   height: 150px;
   column-gap: 20px;
-  p{
+  p {
     text-align: left;
     font-size: 15px;
     letter-spacing: 0px;
@@ -244,10 +245,10 @@ ng-template{
   }
 }
 
-.div-second-tab{
+.div-second-tab {
   width: 85%;
   margin: auto;
-  p{
+  p {
     letter-spacing: 0px;
     color: #707070;
     opacity: 1;
@@ -261,7 +262,7 @@ ng-template{
       padding-top: 4px;
       width: 144px;
       height: 34px;
-      background: #EFEFEF;
+      background: #efefef;
       text-align: left;
       border-radius: 4px;
       font-size: 15px;
@@ -271,33 +272,32 @@ ng-template{
       border: 0;
     }
     mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
-      color:#ACA8A8;
+      color: #aca8a8;
       padding: 0px;
       font-size: 15px;
     }
   }
-
 }
 
-.img-edificio{
+.img-edificio {
   display: inline-block;
   margin-top: 93px;
   margin-left: 52px;
   margin-bottom: 130px;
-  img{
+  img {
     margin: 0px;
     padding: 0px;
-    background: #FFFFFF;
+    background: #ffffff;
     //box-shadow: 0px 3px 6px #00000029;
-      border: 1px solid;
-      border-radius: 11px;
-      opacity: 1;
+    border: 1px solid;
+    border-radius: 11px;
+    opacity: 1;
   }
 }
 
-.last-div-section-two{
+.last-div-section-two {
   display: inline-block;
-  p{
+  p {
     font-size: 15px;
     letter-spacing: 0px;
     color: #343434;
@@ -305,34 +305,34 @@ ng-template{
   }
 }
 
-seccion-ciclo{
+seccion-ciclo {
   display: inline-block;
 }
-Fases-ciclo{
+Fases-ciclo {
   display: inline-block;
   column-gap: 0px;
   height: 20px;
 }
 
-.icon-fases{
+.icon-fases {
   width: 28px;
   border-radius: 0px 10px 10px 0px;
   opacity: 1;
-  color: #FFFFFF;
+  color: #ffffff;
   text-align: center;
 }
-.card-fases{
+.card-fases {
   width: 40px;
   font-family: normal normal normal;
   font-size: 10px;
-  background: #EFEFEF
+  background: #efefef;
 }
 
-mat-select{
+mat-select {
   width: 218px;
   height: 40px;
-  background: #FFFFFF;
-  border: 2px solid #CBCBCB;
+  background: #ffffff;
+  border: 2px solid #cbcbcb;
   opacity: 1;
 }
 .example-section {
@@ -353,16 +353,16 @@ mat-select{
 .example-margin {
   margin: 0 10px;
 }
-.card-indicador{
+.card-indicador {
   display: grid;
   grid-template-columns: repeat(3, 350px);
   border-width: 1px;
   border-style: solid;
-  border-color: #CBCBCB;
+  border-color: #cbcbcb;
   border-radius: 17px;
   margin-bottom: 15px;
-  padding:0%;
-  p{
+  padding: 0%;
+  p {
     text-align: left;
     font-family: normal normal normal;
     font-size: 10px;
@@ -372,25 +372,25 @@ mat-select{
   }
 }
 
-.elementos-seccionUno{
+.elementos-seccionUno {
   display: grid;
   grid-template-columns: repeat(1, 350);
   height: 300px;
   border-right-width: 1px;
   border-right-style: solid;
-  border-right-color: #CBCBCB;
+  border-right-color: #cbcbcb;
 
-  .Botones{
-      display: grid;
-      grid-template-rows: 15px;
-      grid-template-columns: repeat(2, 150px 100px);
-      column-gap: 50px;
-      margin-bottom: 5px;
+  .Botones {
+    display: grid;
+    grid-template-rows: 15px;
+    grid-template-columns: repeat(2, 150px 100px);
+    column-gap: 50px;
+    margin-bottom: 5px;
   }
 }
 
-.elementos-seccionDos{
+.elementos-seccionDos {
   border-right-width: 1px;
   border-right-style: solid;
-  border-right-color: #CBCBCB;
+  border-right-color: #cbcbcb;
 }
