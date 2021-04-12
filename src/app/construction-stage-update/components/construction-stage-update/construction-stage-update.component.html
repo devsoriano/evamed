@@ -72,7 +72,7 @@
       <!--Accorion multiple-->
       <mat-accordion class="example-headers-align" multi>
         <!--Expansion panel 1. -->
-        <mat-expansion-panel *ngIf="indexSheet!==undefined">
+        <mat-expansion-panel *ngIf="indexSheet!==undefined" [expanded]="true">
           <!--Expansion panel header-->
           <mat-expansion-panel-header class="custom-expansion-panel-header">
             <mat-panel-title class="custom-mat-panel-title">
@@ -104,7 +104,7 @@
                     class="input-general"
                     [(ngModel)]="data.cantidad"
                     name="cantidad_{{i}}"
-                    matInput 
+                    matInput
                     type="number"
                   >
                 </mat-form-field>
@@ -115,7 +115,7 @@
                 </label>
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                  <mat-select  [(ngModel)]="data.energy_unit_id" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
                       {{unidad.name_energy_unit}}
                     </mat-option>
@@ -150,7 +150,7 @@
             <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
-        
+
         <!--Expansion panel 2. -->
         <mat-expansion-panel *ngIf="indexSheet!==undefined">
           <!--Expansion panel header-->
@@ -184,7 +184,7 @@
                     class="input-general"
                     [(ngModel)]="data.cantidad"
                     name="cantidad{{i}}"
-                    matInput 
+                    matInput
                     type="number"
                   >
                 </mat-form-field>
@@ -230,7 +230,7 @@
             <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
-      
+
         <!--Expansion panel 3. -->
         <mat-expansion-panel *ngIf="indexSheet!==undefined">
           <!--Expansion panel header-->
@@ -264,7 +264,7 @@
                     class="input-general"
                     [(ngModel)]="data.cantidad"
                     name="cantidad{{i}}"
-                    matInput 
+                    matInput
                     type="number"
                   >
                 </mat-form-field>
@@ -327,7 +327,7 @@
     mat-button
     class="yellow-button"
     (click)="saveStepTwo()"
-  > 
+  >
     Editar
   </button>
 </div>
