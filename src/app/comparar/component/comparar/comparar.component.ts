@@ -14,8 +14,6 @@ import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view
 import { Router } from '@angular/router';
 import { CompileSummaryKind } from '@angular/compiler';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import transporte from 'src/app/comparar/component/comparar/transportes.json';
-import conversion from 'src/app/comparar/component/comparar/Conversiones.json';
 import { Calculos } from '../../../calculos/calculos'
 import { throwMatDuplicatedDrawerError } from '@angular/material/sidenav';
 
@@ -118,10 +116,7 @@ export class CompararComponent implements OnInit {
   // vars analisis
   idProyectoActivo: number;
   botones_grafica_activos: boolean =false;
-  columnsToDisplay = ['Agotamiento de\nRecursos Abióticos\nMinerales',
-    'Agotamiento de\nRecursos Abióticos\nFósiles', 'Calentamiento Global',
-    'Agotamiento de\nla Capa de Ozono',
-    'Acidificación', ' Eutrofización', 'Escasez de agua']
+  columnsToDisplay = []
 
   constructor(
     private materials: MaterialsService,
@@ -152,7 +147,7 @@ export class CompararComponent implements OnInit {
     .subscribe(([
     ]) => {
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
-      // console.log('id recibido', this.idProyectoActivo)
+      this.columnsToDisplay = this.calculos.ImpactosSeleccionados();
       this.menu_inicio();
     });
 

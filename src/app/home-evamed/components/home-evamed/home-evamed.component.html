@@ -292,32 +292,48 @@
           <div class="mat-tab-resultados">
             <div>
               <div class="seccionUno">
-
                 <p>Selecciona impacto ambiental</p>
-                <select>
-                  <option value="val1">Calentamiento global</option>
-                  <option value="val1">Op2</option>
-                  <option value="val1">Op3</option>
-                </select>
+                <mat-form-field appearance="outline" class="select-general">
+                  <mat-select [(ngModel)]="filtroImpactoSeleccionado" (selectionChange)="selectImpactoAmbiental(filtroImpactoSeleccionado)">
+                    <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
+                      {{impacto.name_complete_potential_type}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
                 <p>Fases de ciclo de vida</p>
                 <ul>
-                   <li> <button mat-stroked-button>
-                     <div class="some-text">
-                     <a>Materiales</a><a>18% / 1,000 co2</a></div>
-                     <mat-icon class="uno">visibility_off</mat-icon></button>
+                   <li> <button mat-stroked-button class="button-info">
+                      <div class="some-text">
+                      <a>Materiales</a><a>18% / 1,000 co2</a></div>
+                      </button>
+                      <button mat-stroked-button class='button-icon'>
+                        <mat-icon class="uno">visibility_off</mat-icon>
+                      </button>
                    </li>
-                   <li> <button mat-stroked-button>
-                     <div class="some-text">
-                     <a>Construcción</a><a>20% / 1,000 co2</a></div>
-                     <mat-icon class="dos">visibility_off</mat-icon></button> </li>
-                   <li> <button mat-stroked-button>
-                     <div class="some-text">
-                     <a>Uso</a><a>31% / 1,000 co2</a></div>
-                     <mat-icon class="tres">visibility_off</mat-icon></button> </li>
-                   <li> <button mat-stroked-button>
-                     <div class="some-text">
-                     <a>Fin de vida</a><a>16% / 1,000 co2</a></div>
-                     <mat-icon class="cuatro">visibility_off</mat-icon></button> </li>
+                   <li> <button mat-stroked-button class="button-info">
+                      <div class="some-text">
+                      <a>Construcción</a><a>20% / 1,000 co2</a></div>
+                      </button> 
+                      <button mat-stroked-button class='button-icon'>
+                        <mat-icon class="dos">visibility_off</mat-icon>
+                      </button>
+                    </li>
+                   <li> <button mat-stroked-button class="button-info">
+                      <div class="some-text">
+                      <a>Uso</a><a>31% / 1,000 co2</a></div>
+                      </button>  
+                      <button mat-stroked-button class='button-icon'>
+                        <mat-icon class="tres">visibility_off</mat-icon>
+                      </button>
+                    </li>
+                   <li> <button mat-stroked-button class="button-info">
+                      <div class="some-text">
+                      <a>Fin de vida</a><a>16% / 1,000 co2</a></div>
+                      </button>
+                      <button mat-stroked-button class='button-icon'>
+                        <mat-icon class="cuatro">visibility_off</mat-icon>
+                      </button>
+                    </li>
                 </ul>
               </div>
               <button mat-stroked-button class="Detalle"

@@ -9,6 +9,9 @@ import { CatalogsService } from './../../../core/services/catalogs/catalogs.serv
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
 import { Calculos } from '../../../calculos/calculos'
+import { element } from 'protractor';
+import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
+import { isTypeNode } from 'typescript';
 
 @Component({
   selector: 'app-home-evamed',
@@ -45,6 +48,9 @@ export class HomeEvamedComponent implements OnInit {
   user: string;
   sector: string;
   nameProject: string;
+  filtroImpactoSeleccionado: any;
+  catologoImpactoAmbiental: any;
+  auxDataProjectList: any;
 
   constructor(
     private auth: AuthService,
@@ -82,10 +88,18 @@ export class HomeEvamedComponent implements OnInit {
       this.user = data[0].name;
       this.sector = data[0].institution;
       localStorage.setItem('email-id', data[0].id);
+      this.auxDataProjectList = [];
       this.projectsList = [];
       this.projects.getProjects().subscribe( data => {
         data.map( item => {
           if ( item.user_platform_id === parseInt(localStorage.getItem('email-id'), 10)) {
+            let auxDatos:Record<string,any>={
+              id:item.id,
+              datos:this.calculos.OperacionesDeFase(item.id),
+              porcentaje:this.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
+              impactoSelect:'Agotamiento de\nRecursos Abióticos\nMinerales'
+            }
+            this.auxDataProjectList.push(auxDatos)
             this.projectsList.push(item);
           }
           this.countProjectList = this.projectsList.length;
@@ -97,7 +111,9 @@ export class HomeEvamedComponent implements OnInit {
     this.catalogsService.getStates().subscribe( data => {
       this.catalogoEstados = data;
     });
-    //this.calculos;
+    this.catalogsService.getPotentialTypes().subscribe( data => {
+      this.catologoImpactoAmbiental = data;
+    });
   }
 
   ngOnInit(): void {}
@@ -107,6 +123,30 @@ export class HomeEvamedComponent implements OnInit {
     .then(() => {
       this.router.navigate(['/auth/login']);
     });
+  }
+
+  ValoresProcentaje(data){
+    let auxData=[];
+    Object.keys(data).forEach(element => {
+      let auxsumimpacto=0;
+      let auxsumetapa={};
+      auxsumetapa[element]={}
+      Object.keys(data[element]).forEach( etapa => {
+        Object.keys(data[element][etapa]).forEach( subetapa => {
+          auxsumimpacto = auxsumimpacto + data[element][etapa][subetapa]
+        })
+      })
+      Object.keys(data[element]).forEach( etapa => {
+        auxsumetapa[element][etapa] = {}
+        auxsumetapa[element][etapa]['num']=0;
+        Object.keys(data[element][etapa]).forEach( subetapa => {
+          auxsumetapa[element][etapa]['num'] = auxsumetapa[element][etapa]['num'] + data[element][etapa][subetapa]
+        })
+        auxsumetapa[element][etapa]['porcentaje'] = (auxsumetapa[element][etapa]['num']/auxsumimpacto) * 100
+      })
+      auxData.push(auxsumetapa)
+    })
+    return auxData;
   }
 
   selectUse(id) {
@@ -121,6 +161,10 @@ export class HomeEvamedComponent implements OnInit {
       }
     });
     this.projectsList.reverse();
+  }
+
+  selectImpactoAmbiental(value){
+    console.log(value)
   }
 
   openDialogCTOP() {
