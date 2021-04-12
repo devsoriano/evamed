@@ -147,13 +147,13 @@ export class ConstructionStageUpdateComponent implements OnInit {
       }
       // Flujo normal
       if (this.indexSheet === i && this.EC !== undefined) {
-        this.EC[i] = this.dataArrayEC;
+        this.dataArrayEC = this.EC[i];
       }
       if (this.indexSheet === i && this.AC !== undefined) {
-        this.AC[i] = this.dataArrayAC;
+        this.dataArrayAC = this.AC[i];
       }
       if (this.indexSheet === i && this.DG !== undefined) {
-        this.DG[i] = this.dataArrayDG;
+        this.dataArrayDG = this.DG[i];
       }
     }
 
@@ -235,7 +235,27 @@ export class ConstructionStageUpdateComponent implements OnInit {
     console.log('update steep two');
 
     try {
-      console.log(this.EC);
+      Object.entries(this.EC).forEach(([key, ec]) => {
+        let ecAny: any;
+        ecAny = ec;
+        ecAny.map((data) => {
+          this.constructionStageService
+            .addConstructiveSistemElement({
+              quantity: data.cantidad,
+              project_id: localStorage.getItem('idProyectoConstrucción'),
+              section_id: parseInt(key, 10) + 1,
+              constructive_process_id: 1,
+              volume_unit_id: null,
+              energy_unit_id: data.energy_unit_id,
+              bulk_unit_id: null,
+              source_information_id: data.fuente,
+            })
+            .subscribe((data) => {
+              console.log('Success EC!!!!!!!');
+              console.log(data);
+            });
+        });
+      });
     } catch (error) {
       console.log(error);
     }
