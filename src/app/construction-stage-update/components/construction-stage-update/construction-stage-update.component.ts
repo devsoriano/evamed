@@ -8,9 +8,8 @@ import { ConstructionStageService } from 'src/app/core/services/construction-sta
 @Component({
   selector: 'app-construction-stage-update',
   templateUrl: './construction-stage-update.component.html',
-  styleUrls: ['./construction-stage-update.component.scss']
+  styleUrls: ['./construction-stage-update.component.scss'],
 })
-
 export class ConstructionStageUpdateComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
@@ -20,7 +19,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
   indexSheet: number;
   SistemasConstructivos: any;
   catalogoFuentes: any;
-  catalogoUnidadEnergia: [];
+  catalogoUnidadEnergia: any;
   catalogoUnidadVolumen: [];
   catalogoUnidadMasa: [];
   nameProject: string;
@@ -38,33 +37,44 @@ export class ConstructionStageUpdateComponent implements OnInit {
     private constructionStageService: ConstructionStageService,
     private router: Router
   ) {
-    this.catalogsService.getSourceInformation().subscribe(data => {
+    this.catalogsService.getSourceInformation().subscribe((data) => {
       const fuentes = [];
-      data.map( fuente => {
+      data.map((fuente) => {
         if (fuente.name_source_information !== 'Mexicaniuh - CADIS') {
           fuentes.push(fuente);
         }
       });
       this.catalogoFuentes = fuentes;
     });
-    this.catalogsService.getEnergyUnits().subscribe(data => {
-      this.catalogoUnidadEnergia = data;
-    });
-    this.catalogsService.getVolumeUnits().subscribe(data => {
-      this.catalogoUnidadVolumen = data;
-    });
-    this.catalogsService.getBulkUnits().subscribe(data => {
-      this.catalogoUnidadMasa = data;
-    });
-    this.constructionStageService.getConstructiveSystemElement().subscribe(data => {
-      const CSE = [];
-      data.map( item => {
-        if (item.project_id === parseInt(localStorage.getItem('idProyectoConstrucción'), 10)) {
-          CSE.push(item);
+    this.catalogsService.getEnergyUnits().subscribe((data) => {
+      let energia = [];
+      data.map((unidad) => {
+        if (unidad.name_energy_unit === 'Hrs') {
+          energia.push(unidad);
         }
       });
-      this.CSE = CSE;
+      this.catalogoUnidadEnergia = energia;
     });
+    this.catalogsService.getVolumeUnits().subscribe((data) => {
+      this.catalogoUnidadVolumen = data;
+    });
+    this.catalogsService.getBulkUnits().subscribe((data) => {
+      this.catalogoUnidadMasa = data;
+    });
+    this.constructionStageService
+      .getConstructiveSystemElement()
+      .subscribe((data) => {
+        const CSE = [];
+        data.map((item) => {
+          if (
+            item.project_id ===
+            parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
+          ) {
+            CSE.push(item);
+          }
+        });
+        this.CSE = CSE;
+      });
   }
 
   ngOnInit() {
@@ -88,7 +98,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
   onGroupsChange(options: MatListOption[]) {
     let selectedSheet;
     // map these MatListOptions to their values
-    options.map(option => {
+    options.map((option) => {
       selectedSheet = option.value;
     });
     // take index of selection
@@ -100,8 +110,8 @@ export class ConstructionStageUpdateComponent implements OnInit {
     let getDataDG = [];
     this.CSE.map((item, key) => {
       const prevData = [];
-      if (item.section_id === ( this.indexSheet + 1 )) {
-        switch(item.constructive_process_id) {
+      if (item.section_id === this.indexSheet + 1) {
+        switch (item.constructive_process_id) {
           case 1:
             prevData['cantidad'] = item.quantity;
             prevData['fuente'] = item.source_information_id;
@@ -128,22 +138,22 @@ export class ConstructionStageUpdateComponent implements OnInit {
 
     // take memory of saved data
     let i;
-    for ( i = 0; i <= this.sheetNames.length; i++ ) {
+    for (i = 0; i <= this.sheetNames.length; i++) {
       // Initial data exist
-      if ( this.indexSheet === i ) {
+      if (this.indexSheet === i) {
         this.dataArrayEC = getDataEC;
         this.dataArrayAC = getDataAC;
         this.dataArrayDG = getDataDG;
       }
       // Flujo normal
-      if ( this.indexSheet === i && this.EC !== undefined ) {
-        this.dataArrayEC = this.EC[i];
+      if (this.indexSheet === i && this.EC !== undefined) {
+        this.EC[i] = this.dataArrayEC;
       }
-      if ( this.indexSheet === i && this.AC !== undefined ) {
-        this.dataArrayAC = this.AC[i];
+      if (this.indexSheet === i && this.AC !== undefined) {
+        this.AC[i] = this.dataArrayAC;
       }
-      if ( this.indexSheet === i && this.DG !== undefined ) {
-        this.dataArrayDG = this.DG[i];
+      if (this.indexSheet === i && this.DG !== undefined) {
+        this.DG[i] = this.dataArrayDG;
       }
     }
 
@@ -174,7 +184,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
   }
 
   addFormAC() {
-    if ( this.dataArrayAC === undefined ) {
+    if (this.dataArrayAC === undefined) {
       this.dataArrayAC = [];
     }
     this.dataArrayAC.push([]);
@@ -219,11 +229,16 @@ export class ConstructionStageUpdateComponent implements OnInit {
     }
   }
 
-  onNgModelChange(event) {
-  }
+  onNgModelChange(event) {}
 
   saveStepTwo() {
     console.log('update steep two');
+
+    try {
+      console.log(this.EC);
+    } catch (error) {
+      console.log(error);
+    }
     // this.router.navigateByUrl('usage-stage');
   }
 
@@ -242,5 +257,4 @@ export class ConstructionStageUpdateComponent implements OnInit {
   goToEndLife() {
     this.router.navigateByUrl('end-life-stage');
   }
-
 }
