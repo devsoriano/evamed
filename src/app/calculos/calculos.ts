@@ -4,8 +4,8 @@ import { AnalisisService } from '../core/services/analisis/analisis.service'
 import { forkJoin,Observable,Subject } from 'rxjs';
 import { ComponentFactoryResolver } from '@angular/core';
 import { Router } from '@angular/router';
-import conversion from 'src/app/comparar/component/comparar/Conversiones.json';
-import transporte from 'src/app/comparar/component/comparar/transportes.json';
+import conversion from 'src/app/calculos/Conversiones.json';
+import transporte from 'src/app/calculos/transportes.json';
 import { Injectable } from '@angular/core';
 import { stringify } from '@angular/compiler/src/util';
 

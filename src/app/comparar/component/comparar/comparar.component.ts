@@ -9,13 +9,10 @@ import { ProjectsService } from './../../../core/services/projects/projects.serv
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { AnalisisService } from './../../../core/services/analisis/analisis.service';
 import { concat, forkJoin, observable } from 'rxjs';
-import { couldStartTrivia } from 'typescript';
-import { getAttrsForDirectiveMatching } from '@angular/compiler/src/render3/view/util';
 import { Router } from '@angular/router';
-import { CompileSummaryKind } from '@angular/compiler';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Calculos } from '../../../calculos/calculos'
-import { throwMatDuplicatedDrawerError } from '@angular/material/sidenav';
+import { threadId } from 'node:worker_threads';
 
 interface impactos_menu{
   value: string;
@@ -111,6 +108,7 @@ export class CompararComponent implements OnInit {
   resultdosTabla: boolean = false;
   DatosTabla=[];
   classBotones ='boton-principal';
+  fasesEliminadas = [];
 
 
   // vars analisis
@@ -164,32 +162,29 @@ export class CompararComponent implements OnInit {
   //eliminar fase de ciclo de visa y redistribución;
   ajusteDeGraficaFASE(fase:string){
     if (this.resultdosGraficos){
-      this.outproyect_bar.forEach((proyecto, index) => {
-        let indicadores = Object.keys(proyecto.Datos);
-        indicadores.forEach(element => {
-          let aux = Object.keys(this.outproyect_bar[index].Datos[element])
-          if(aux.includes(fase)){
-            this.delete_fase = true;
+      if(this.fasesEliminadas.includes(fase)){
+        this.fasesEliminadas.forEach((element,index) => {
+          if(element == fase){
+            this.fasesEliminadas.splice(index,1)
           }
         })
-      })
+      }else{
+        this.fasesEliminadas.push(fase);
+      }
 
-      if (this.delete_fase){
+      this.proyect_active.forEach(element => {
+        this.outproyect_bar=[];
+        let analisis = this.getAnalisisBarras(element);
+        this.outproyect_bar.push(analisis);
+      })
+      this.fasesEliminadas.forEach(value => {
         this.outproyect_bar.forEach((proyecto, index)=> {
           let indicadores = Object.keys(proyecto.Datos);
           indicadores.forEach(element => {
-            delete this.outproyect_bar[index].Datos[element][fase];
+            delete this.outproyect_bar[index].Datos[element][value];
           })
         })
-        this.delete_fase=false;
-      }else{
-        this.proyect_active.forEach(element => {
-          this.outproyect_bar=[];
-          let analisis = this.getAnalisisBarras(element);
-          this.outproyect_bar.push(analisis);
-          this.delete_fase = true;
-        })
-      }
+      })
       this.iniciaBarras();
     }
   }
@@ -391,6 +386,7 @@ export class CompararComponent implements OnInit {
     this.outproyect_bar = [];
     this.outproyect_pie = [];
     this.outproyect_radar = [];
+    this.fasesEliminadas = [];
     this.proyect_active.forEach(id => {
       if(flag==0){
         this.bandera_por_metro = true  
