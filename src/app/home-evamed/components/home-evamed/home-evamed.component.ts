@@ -84,6 +84,9 @@ export class HomeEvamedComponent implements OnInit {
     this.catalogsService.housingSchemeCatalog().subscribe(data => {
       this.catalogoEsqHabitacional = data;
     });
+    this.catalogsService.getPotentialTypes().subscribe( data => {
+      this.catologoImpactoAmbiental = data;
+    });
     this.users.searchUser(localStorage.getItem('email-login')).subscribe( data => {
       this.user = data[0].name;
       this.sector = data[0].institution;
@@ -96,23 +99,22 @@ export class HomeEvamedComponent implements OnInit {
             let auxDatos:Record<string,any>={
               id:item.id,
               datos:this.calculos.OperacionesDeFase(item.id),
-              porcentaje:this.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
-              impactoSelect:'Agotamiento de\nRecursos Abióticos\nMinerales'
+              porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
+              impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type'])
             }
             this.auxDataProjectList.push(auxDatos)
             this.projectsList.push(item);
           }
           this.countProjectList = this.projectsList.length;
         });
+        this.auxDataProjectList.reverse();
         this.projectsList.reverse();
         this.tempProjectsList = this.projectsList;
+        console.log(this.auxDataProjectList[0].porcentaje[this.auxDataProjectList[0].impactoSelect])
       });
     });
     this.catalogsService.getStates().subscribe( data => {
       this.catalogoEstados = data;
-    });
-    this.catalogsService.getPotentialTypes().subscribe( data => {
-      this.catologoImpactoAmbiental = data;
     });
   }
 
@@ -123,30 +125,6 @@ export class HomeEvamedComponent implements OnInit {
     .then(() => {
       this.router.navigate(['/auth/login']);
     });
-  }
-
-  ValoresProcentaje(data){
-    let auxData=[];
-    Object.keys(data).forEach(element => {
-      let auxsumimpacto=0;
-      let auxsumetapa={};
-      auxsumetapa[element]={}
-      Object.keys(data[element]).forEach( etapa => {
-        Object.keys(data[element][etapa]).forEach( subetapa => {
-          auxsumimpacto = auxsumimpacto + data[element][etapa][subetapa]
-        })
-      })
-      Object.keys(data[element]).forEach( etapa => {
-        auxsumetapa[element][etapa] = {}
-        auxsumetapa[element][etapa]['num']=0;
-        Object.keys(data[element][etapa]).forEach( subetapa => {
-          auxsumetapa[element][etapa]['num'] = auxsumetapa[element][etapa]['num'] + data[element][etapa][subetapa]
-        })
-        auxsumetapa[element][etapa]['porcentaje'] = (auxsumetapa[element][etapa]['num']/auxsumimpacto) * 100
-      })
-      auxData.push(auxsumetapa)
-    })
-    return auxData;
   }
 
   selectUse(id) {

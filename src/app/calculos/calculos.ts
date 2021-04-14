@@ -36,6 +36,7 @@ export class Calculos {
   sectionList : [];
 
   impactosIgnorar2 = ['PARNR','POT','Human toxicity','Fresh water aquatic ecotox.', 'Marine aquatic ecotoxicity', 'Terrestrial ecotoxicity']
+  nombreImpactosCompleto = [];
 
   constructor(
     private materials: MaterialsService,
@@ -275,9 +276,9 @@ export class Calculos {
 
   ValoresProcentaje(data){
     let auxData=[];
+    let auxsumetapa={};
     Object.keys(data).forEach(element => {
       let auxsumimpacto=0;
-      let auxsumetapa={};
       auxsumetapa[element]={}
       Object.keys(data[element]).forEach( etapa => {
         Object.keys(data[element][etapa]).forEach( subetapa => {
@@ -292,9 +293,9 @@ export class Calculos {
         })
         auxsumetapa[element][etapa]['porcentaje'] = (auxsumetapa[element][etapa]['num']/auxsumimpacto) * 100
       })
-      auxData.push(auxsumetapa)
     })
-    return auxData;
+
+    return auxsumetapa;
   }
 
   ImpactosSeleccionados(){
@@ -314,7 +315,13 @@ export class Calculos {
       }
       impacto_ban = true;
     }) 
+
+    this.nombreImpactosCompleto = auxNombre;
     return auxNombre;
+  }
+
+  ajustarNombre(name:string){
+    return name.split(' ').join('\n');
   }
 
 }

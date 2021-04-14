@@ -21,7 +21,7 @@
         <div class="message-plus">Crea tu primer proyecto</div>
       </div>
     </div>
-    <mat-card *ngFor="let project of projectsList" class="card-project">
+    <mat-card *ngFor="let project of projectsList; let i = index" class="card-project">
       <div class="header-tag">
         <div class="more-vert">
           <button 
@@ -294,7 +294,7 @@
               <div class="seccionUno">
                 <p>Selecciona impacto ambiental</p>
                 <mat-form-field appearance="outline" class="select-general">
-                  <mat-select [(ngModel)]="filtroImpactoSeleccionado" (selectionChange)="selectImpactoAmbiental(filtroImpactoSeleccionado)">
+                  <mat-select [(ngModel)]="auxDataProjectList[i].impactoSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoSelect)">
                     <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
                       {{impacto.name_complete_potential_type}}
                     </mat-option>
@@ -304,7 +304,7 @@
                 <ul>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Materiales</a><a>18% / 1,000 co2</a></div>
+                      <a>Materiales</a><a>{{auxDataProjectList[i].impactoSelect}}</a></div>
                       </button>
                       <button mat-stroked-button class='button-icon'>
                         <mat-icon class="uno">visibility_off</mat-icon>
