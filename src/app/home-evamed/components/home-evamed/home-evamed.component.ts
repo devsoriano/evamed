@@ -85,7 +85,7 @@ export class HomeEvamedComponent implements OnInit {
       this.catalogoEsqHabitacional = data;
     });
     this.catalogsService.getPotentialTypes().subscribe( data => {
-      this.catologoImpactoAmbiental = data;
+      this.catologoImpactoAmbiental = this.calculos.FiltradoDeImpactos(data);
     });
     this.users.searchUser(localStorage.getItem('email-login')).subscribe( data => {
       this.user = data[0].name;
@@ -100,7 +100,8 @@ export class HomeEvamedComponent implements OnInit {
               id:item.id,
               datos:this.calculos.OperacionesDeFase(item.id),
               porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
-              impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type'])
+              impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
+              unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type']
             }
             this.auxDataProjectList.push(auxDatos)
             this.projectsList.push(item);
@@ -110,7 +111,7 @@ export class HomeEvamedComponent implements OnInit {
         this.auxDataProjectList.reverse();
         this.projectsList.reverse();
         this.tempProjectsList = this.projectsList;
-        console.log(this.auxDataProjectList[0].porcentaje[this.auxDataProjectList[0].impactoSelect])
+        //console.log(this.auxDataProjectList[0].porcentaje[this.auxDataProjectList[0].impactoSelect]['Construccion']['num'])
       });
     });
     this.catalogsService.getStates().subscribe( data => {
@@ -141,8 +142,14 @@ export class HomeEvamedComponent implements OnInit {
     this.projectsList.reverse();
   }
 
-  selectImpactoAmbiental(value){
-    console.log(value)
+  selectImpactoAmbiental(impacto,index){ 
+    this.auxDataProjectList[index].impactoSelect = this.calculos.ajustarNombre(impacto)
+    this.catologoImpactoAmbiental.forEach((element,index) => {
+      if(element.name_complete_potential_type === impacto){
+        this.auxDataProjectList[index].unit_impacto = element.unit_potential_type;
+        console.log(this.auxDataProjectList[index].unit_impacto)
+      }
+    })
   }
 
   openDialogCTOP() {

@@ -294,7 +294,7 @@
               <div class="seccionUno">
                 <p>Selecciona impacto ambiental</p>
                 <mat-form-field appearance="outline" class="select-general">
-                  <mat-select [(ngModel)]="auxDataProjectList[i].impactoSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoSelect)">
+                  <mat-select [(ngModel)]="auxDataProjectList[i].impactoSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoSelect,i)" required>
                     <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
                       {{impacto.name_complete_potential_type}}
                     </mat-option>
@@ -304,7 +304,9 @@
                 <ul>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Materiales</a><a>{{auxDataProjectList[i].impactoSelect}}</a></div>
+                      <a>Materiales</a>
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['porcentaje']}}%
+                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}} {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
                       <button mat-stroked-button class='button-icon'>
                         <mat-icon class="uno">visibility_off</mat-icon>
@@ -312,7 +314,8 @@
                    </li>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Construcción</a><a>20% / 1,000 co2</a></div>
+                      <a>Construcción</a>
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}% / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}} </a></div>
                       </button> 
                       <button mat-stroked-button class='button-icon'>
                         <mat-icon class="dos">visibility_off</mat-icon>
@@ -320,7 +323,8 @@
                     </li>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Uso</a><a>31% / 1,000 co2</a></div>
+                      <a>Uso</a>
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}% / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}} </a></div>
                       </button>  
                       <button mat-stroked-button class='button-icon'>
                         <mat-icon class="tres">visibility_off</mat-icon>
@@ -328,7 +332,8 @@
                     </li>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Fin de vida</a><a>16% / 1,000 co2</a></div>
+                      <a>Fin de vida</a>
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}% / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}} </a></div>
                       </button>
                       <button mat-stroked-button class='button-icon'>
                         <mat-icon class="cuatro">visibility_off</mat-icon>

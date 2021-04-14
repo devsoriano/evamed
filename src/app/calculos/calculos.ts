@@ -291,7 +291,8 @@ export class Calculos {
         Object.keys(data[element][etapa]).forEach( subetapa => {
           auxsumetapa[element][etapa]['num'] = auxsumetapa[element][etapa]['num'] + data[element][etapa][subetapa]
         })
-        auxsumetapa[element][etapa]['porcentaje'] = (auxsumetapa[element][etapa]['num']/auxsumimpacto) * 100
+        auxsumetapa[element][etapa]['num'] = auxsumetapa[element][etapa]['num'].toFixed(3)
+        auxsumetapa[element][etapa]['porcentaje'] = ((auxsumetapa[element][etapa]['num']/auxsumimpacto) * 100).toFixed(3)
       })
     })
 
@@ -318,6 +319,23 @@ export class Calculos {
 
     this.nombreImpactosCompleto = auxNombre;
     return auxNombre;
+  }
+
+  FiltradoDeImpactos(data){
+    let aux=[9,10,11,12,13,14]
+    let b=true;
+    let auxdata=[]
+    data.forEach((element,index) => {
+      aux.forEach(ignorar => {
+        if(element['id'] == ignorar) {
+          b=false;
+        }
+      })
+      if(b){
+        auxdata.push(element)
+      }
+    }); 
+    return auxdata;
   }
 
   ajustarNombre(name:string){
