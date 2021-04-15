@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit} from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +9,8 @@ import { CatalogsService } from './../../../core/services/catalogs/catalogs.serv
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
 import { Calculos } from '../../../calculos/calculos'
+import { ChartDataSets } from 'chart.js';
+import {BaseChartDirective } from 'ng2-charts';
 import { element } from 'protractor';
 import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 import { isTypeNode } from 'typescript';
@@ -51,6 +53,23 @@ export class HomeEvamedComponent implements OnInit {
   filtroImpactoSeleccionado: any;
   catologoImpactoAmbiental: any;
   auxDataProjectList: any;
+
+  public doughnutChartData = [120, 150, 180, 90];
+  public doughnutChartType = 'doughnut';
+  public pieChartOptions={
+    events: ['click'],
+    elements: { arc: { borderWidth: 0 } },
+    tooltips: { enabled: false },
+    hover: { mode: null },
+    plugins: {
+      datalabels: {
+        color:'#FFFFFF',
+        font: {
+          size: 8,
+        }
+      }
+    }
+  }
 
   constructor(
     private auth: AuthService,
@@ -101,7 +120,8 @@ export class HomeEvamedComponent implements OnInit {
               datos:this.calculos.OperacionesDeFase(item.id),
               porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
               impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
-              unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type']
+              unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
+              dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']))
             }
             this.auxDataProjectList.push(auxDatos)
             this.projectsList.push(item);
@@ -142,14 +162,28 @@ export class HomeEvamedComponent implements OnInit {
     this.projectsList.reverse();
   }
 
-  selectImpactoAmbiental(impacto,index){ 
-    this.auxDataProjectList[index].impactoSelect = this.calculos.ajustarNombre(impacto)
-    this.catologoImpactoAmbiental.forEach((element,index) => {
+  selectImpactoAmbiental(impacto,indexRecivido){ 
+    this.auxDataProjectList[indexRecivido].impactoSelect = this.calculos.ajustarNombre(impacto)
+    this.catologoImpactoAmbiental.forEach(element => {
       if(element.name_complete_potential_type === impacto){
-        this.auxDataProjectList[index].unit_impacto = element.unit_potential_type;
-        console.log(this.auxDataProjectList[index].unit_impacto)
+        this.auxDataProjectList[indexRecivido].unit_impacto = element.unit_potential_type;
       }
     })
+    this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].datos,this.auxDataProjectList[indexRecivido].impactoSelect)
+  }
+
+  cargaDataPie(data,impactoU){
+    let auxdata=[]
+    Object.keys(data).forEach(element => {
+      if(element === impactoU){
+        Object.keys(data[element]).forEach(ciclo => {
+          Object.keys(data[element][ciclo]).forEach(subetapa => {
+            auxdata.push(data[element][ciclo][subetapa])
+          })
+        });
+      }
+    });
+    return auxdata;
   }
 
   openDialogCTOP() {

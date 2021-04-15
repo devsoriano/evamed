@@ -288,54 +288,59 @@
             </mat-tab-group>
           </div>
         </mat-tab>
-        <mat-tab label="Resultados" class="label-principal-tab">
+        <mat-tab label="Resultados">
           <div class="mat-tab-resultados">
             <div>
               <div class="seccionUno">
                 <p>Selecciona impacto ambiental</p>
-                <mat-form-field appearance="outline" class="select-general">
-                  <mat-select [(ngModel)]="auxDataProjectList[i].impactoSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoSelect,i)" required>
-                    <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
-                      {{impacto.name_complete_potential_type}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].impactoSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoSelect,i)" required>
+                  <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
+                    {{impacto.name_complete_potential_type}}
+                  </mat-option>
+                </mat-select>
                 <p>Fases de ciclo de vida</p>
                 <ul>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a>Materiales</a>
                       <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['porcentaje']}}%
-                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}} {{auxDataProjectList[i].unit_impacto}}</a></div>
+                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}}
+                          {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
-                      <button mat-stroked-button class='button-icon'>
+                      <button class='button-icon'>
                         <mat-icon class="uno">visibility_off</mat-icon>
                       </button>
                    </li>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a>Construcción</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}% / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}} </a></div>
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}% 
+                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}} 
+                        {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button> 
-                      <button mat-stroked-button class='button-icon'>
+                      <button class='button-icon'>
                         <mat-icon class="dos">visibility_off</mat-icon>
                       </button>
                     </li>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a>Uso</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}% / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}} </a></div>
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}% 
+                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}} 
+                        {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>  
-                      <button mat-stroked-button class='button-icon'>
+                      <button class='button-icon'>
                         <mat-icon class="tres">visibility_off</mat-icon>
                       </button>
                     </li>
                    <li> <button mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a>Fin de vida</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}% / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}} </a></div>
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}% 
+                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
+                        {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
-                      <button mat-stroked-button class='button-icon'>
+                      <button class='button-icon'>
                         <mat-icon class="cuatro">visibility_off</mat-icon>
                       </button>
                     </li>
@@ -354,10 +359,12 @@
                 <button>Exportar</button>
               </div>
               <div>
-                <!--<canvas baseChart
-                  [data]="doughnutChartData"
-                  [labels]="doughnutChartLabels"
-                  [chartType]="doughnutChartType"></canvas>> -->
+                <div style="display: block">
+                  <canvas #canvas baseChart 
+                              [data]="auxDataProjectList[i].dataGraficaPie"
+                              [chartType]="doughnutChartType"
+                              [options]="pieChartOptions"></canvas>
+                </div>
               </div>
             </div>
             <div>
