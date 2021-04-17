@@ -57,6 +57,8 @@ export class HomeEvamedComponent implements OnInit {
   public doughnutChartData = [120, 150, 180, 90];
   public doughnutChartType = 'doughnut';
   public pieChartOptions={
+    responsive: false,
+    maintainAspectRatio: false,
     events: ['click'],
     elements: { arc: { borderWidth: 0 } },
     tooltips: { enabled: false },
@@ -139,7 +141,8 @@ export class HomeEvamedComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   logout() {
     this.auth.logout()

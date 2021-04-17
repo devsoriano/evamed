@@ -358,14 +358,11 @@
                    </mat-button-toggle-group>
                 <button>Exportar</button>
               </div>
-              <div>
-                <div style="display: block">
-                  <canvas #canvas baseChart 
-                              [data]="auxDataProjectList[i].dataGraficaPie"
-                              [chartType]="doughnutChartType"
-                              [options]="pieChartOptions"></canvas>
-                </div>
-              </div>
+              <canvas #MyChart='base-chart' baseChart
+                          [data]="auxDataProjectList[i].dataGraficaPie"
+                          [chartType]="doughnutChartType"
+                          [options]="pieChartOptions"
+                          width="600px"></canvas>
             </div>
             <div>
               <button mat-stroked-button class="Detalle">Generar reporte</button>

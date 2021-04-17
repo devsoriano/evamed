@@ -117,7 +117,7 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
 
 .mat-tab-resultados{
   display: flex;
-  align-items: flex-start;
+  //align-items: flex-start;
 
   >div {
 		&:nth-child(1) {
@@ -223,6 +223,11 @@ p{
   letter-spacing: 0px;
   color: #FFFFFF;
   opacity: 1;
+  text-align: center;
+}
+
+.grafica{
+  align-self: center;
 }
 
 .button-graph{
