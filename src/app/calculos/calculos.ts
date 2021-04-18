@@ -6,6 +6,7 @@ import { ComponentFactoryResolver } from '@angular/core';
 import { Router } from '@angular/router';
 import conversion from 'src/app/calculos/Conversiones.json';
 import transporte from 'src/app/calculos/transportes.json';
+import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import { Injectable } from '@angular/core';
 import { stringify } from '@angular/compiler/src/util';
 
@@ -18,6 +19,7 @@ export class Calculos {
  materiales_EPD: number;
  conversion_list:any = conversion;
  transporte_list:any = transporte;
+ subetapas_list:any = subetapasInfo;
   projectsList: [];
   materialList: [];
   materialSchemeDataList: [];
@@ -340,6 +342,11 @@ export class Calculos {
 
   ajustarNombre(name:string){
     return name.split(' ').join('\n');
+  }
+
+  findColor(subetapa){
+    let sub = this.subetapas_list.filter(s => s['abreviacion'] === subetapa);
+    return sub[0]['color'];
   }
 
 }

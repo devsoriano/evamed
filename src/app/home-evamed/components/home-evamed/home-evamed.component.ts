@@ -54,7 +54,6 @@ export class HomeEvamedComponent implements OnInit {
   catologoImpactoAmbiental: any;
   auxDataProjectList: any;
 
-  public doughnutChartData = [120, 150, 180, 90];
   public doughnutChartType = 'doughnut';
   public pieChartOptions={
     responsive: false,
@@ -133,7 +132,6 @@ export class HomeEvamedComponent implements OnInit {
         this.auxDataProjectList.reverse();
         this.projectsList.reverse();
         this.tempProjectsList = this.projectsList;
-        //console.log(this.auxDataProjectList[0].porcentaje[this.auxDataProjectList[0].impactoSelect]['Construccion']['num'])
       });
     });
     this.catalogsService.getStates().subscribe( data => {
@@ -176,17 +174,26 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   cargaDataPie(data,impactoU){
-    let auxdata=[]
+    let auxdata=[];
+    let auxColor=[];
+    let aux=[]
     Object.keys(data).forEach(element => {
       if(element === impactoU){
         Object.keys(data[element]).forEach(ciclo => {
           Object.keys(data[element][ciclo]).forEach(subetapa => {
             auxdata.push(data[element][ciclo][subetapa])
+            auxColor.push(this.calculos.findColor(subetapa))
           })
         });
       }
     });
-    return auxdata;
+    aux=[{
+      data:auxdata,
+      backgroundColor:auxColor
+    }]
+    //aux.push({backgroundColor:auxColor,data:auxdata})
+    console.log(aux);
+    return aux;
   }
 
   openDialogCTOP() {
