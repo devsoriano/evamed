@@ -6,6 +6,12 @@
         "etapa":"Producción"
     },
     {
+        "nombre_subeatapa": "Solo en calentamiento global",
+        "abreviacion": "A1-3",
+        "color": "#0A6C3E",
+        "etapa":"Producción"
+    },
+    {
         "nombre_subeatapa":"Transporte",
         "abreviacion":"A2",
         "color":"#319F6B",
