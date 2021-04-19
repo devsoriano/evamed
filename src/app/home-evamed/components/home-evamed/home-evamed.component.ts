@@ -129,7 +129,6 @@ export class HomeEvamedComponent implements OnInit {
               etapasIgnoradas:[],
               dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
             }
-            console.log(this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[]));
             this.auxDataProjectList.push(auxDatos)
             this.projectsList.push(item);
           }
@@ -208,7 +207,7 @@ export class HomeEvamedComponent implements OnInit {
           });
           if(banderaEtapa){
             Object.keys(data[element][ciclo]).forEach(subetapa => {
-              auxdata.push(data[element][ciclo][subetapa])
+              auxdata.push(data[element][ciclo][subetapa].toFixed(3))
               auxColor.push(this.calculos.findColor(subetapa))
             })
           }
@@ -260,13 +259,29 @@ export class HomeEvamedComponent implements OnInit {
       this.users.searchUser(localStorage.getItem('email-login')).subscribe( data => {
         localStorage.setItem('email-id', data[0].id);
         this.projectsList = [];
+        this.auxDataProjectList = [];
         this.projects.getProjects().subscribe( data => {
           data.map( item => {
             if ( item.user_platform_id === parseInt(localStorage.getItem('email-id'), 10) ) {
+              let auxDatos:Record<string,any>={
+                id:item.id,
+                datos:this.calculos.OperacionesDeFase(item.id),
+                porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
+                porcentajeSubepata:this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),
+                banderaEtapa:false,
+                etapaSeleccionada:"Ninguna",
+                subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
+                impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
+                unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
+                etapasIgnoradas:[],
+                dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
+              }
+              this.auxDataProjectList.push(auxDatos)
               this.projectsList.push(item);
             }
             this.countProjectList = this.projectsList.length;
           });
+          this.auxDataProjectList.reverse();
           this.projectsList.reverse();
         });
       });
