@@ -132,11 +132,6 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
 	}
 }
 
-ul {
-  list-style-type: none;
-  margin-bottom: 11px;
-  padding: 0;
-}
 p{
   font-size:15px;
   letter-spacing: 0px;
@@ -151,6 +146,12 @@ p{
   border-style: solid;
   border-radius: 10px;
   opacity: 1;
+}
+
+ul {
+  list-style-type: none;
+  margin-bottom: 11px;
+  padding: 0;
 }
 
 .seccionUno{
@@ -228,6 +229,36 @@ p{
 
 .grafica{
   align-self: center;
+}
+
+.dot {
+  height: 23px;
+  width: 19px;
+  border-radius: 50%;
+  display: inline-block;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.text-subetapas{
+  float: left;
+    text-align: left;
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    grid-template-rows: 18px;
+    font-size:10px;
+    letter-spacing: 0px;
+    color: #767676;
+    opacity: 1;
+}
+
+.mostrar-subetapas{
+  display: flex;
+  flex-direction: column;
+  li{
+    display: flex;
+    padding-bottom: 5px;
+  }
 }
 
 .button-graph{

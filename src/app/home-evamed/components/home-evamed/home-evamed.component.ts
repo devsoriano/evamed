@@ -72,6 +72,8 @@ export class HomeEvamedComponent implements OnInit {
     }
   }
 
+  pruebaColor='#A8D024';
+
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -120,6 +122,10 @@ export class HomeEvamedComponent implements OnInit {
               id:item.id,
               datos:this.calculos.OperacionesDeFase(item.id),
               porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
+              porcentajeSubepata:this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),
+              banderaEtapa:false,
+              etapaSeleccionada:"Ninguna",
+              subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
               impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
               unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
               dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']))
@@ -173,6 +179,19 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].datos,this.auxDataProjectList[indexRecivido].impactoSelect)
   }
 
+  selectEtapa(etapa,i){
+    let auxSubetapas = this.calculos.findSubetapas(etapa);
+    this.auxDataProjectList[i].subetasMostrada = auxSubetapas;
+    if(this.auxDataProjectList[i].etapaSeleccionada === etapa){
+      this.auxDataProjectList[i].banderaEtapa = false;
+      this.auxDataProjectList[i].etapaSeleccionada = "Ninguna";
+      this.auxDataProjectList[i].subetasMostrada = [{abreviacion:"nada",color:"#FFFFFF"}];
+    }else{
+      this.auxDataProjectList[i].banderaEtapa = true;
+      this.auxDataProjectList[i].etapaSeleccionada = etapa;
+    }
+  }
+
   cargaDataPie(data,impactoU){
     let auxdata=[];
     let auxColor=[];
@@ -191,8 +210,6 @@ export class HomeEvamedComponent implements OnInit {
       data:auxdata,
       backgroundColor:auxColor
     }]
-    //aux.push({backgroundColor:auxColor,data:auxdata})
-    console.log(aux);
     return aux;
   }
 

@@ -277,7 +277,6 @@ export class Calculos {
   }
 
   ValoresProcentaje(data){
-    let auxData=[];
     let auxsumetapa={};
     Object.keys(data).forEach(element => {
       let auxsumimpacto=0;
@@ -295,6 +294,29 @@ export class Calculos {
         })
         auxsumetapa[element][etapa]['num'] = auxsumetapa[element][etapa]['num'].toFixed(3)
         auxsumetapa[element][etapa]['porcentaje'] = ((auxsumetapa[element][etapa]['num']/auxsumimpacto) * 100).toFixed(3)
+      })
+    })
+
+    return auxsumetapa;
+  }
+
+  ValoresProcentajeSubeapa(data){
+    let auxsumetapa={};
+    Object.keys(data).forEach(element => {
+      let auxsumimpacto=0;
+      auxsumetapa[element]={}
+      Object.keys(data[element]).forEach( etapa => {
+        Object.keys(data[element][etapa]).forEach( subetapa => {
+          auxsumimpacto = auxsumimpacto + data[element][etapa][subetapa]
+        })
+      })
+      Object.keys(data[element]).forEach( etapa => {
+        auxsumetapa[element][etapa] = {}
+        Object.keys(data[element][etapa]).forEach( subetapa => {
+          auxsumetapa[element][etapa][subetapa] = {}
+          auxsumetapa[element][etapa][subetapa]['num'] =  data[element][etapa][subetapa].toFixed(3)
+          auxsumetapa[element][etapa][subetapa]['porcentaje'] = ((auxsumetapa[element][etapa][subetapa]['num']/auxsumimpacto) * 100).toFixed(3)
+        })
       })
     })
 
@@ -347,6 +369,11 @@ export class Calculos {
   findColor(subetapa){
     let sub = this.subetapas_list.filter(s => s['abreviacion'] === subetapa);
     return sub[0]['color'];
+  }
+
+  findSubetapas(etapa){
+    
+    return this.subetapas_list.filter(s => s['etapa'] == etapa);
   }
 
 }
