@@ -6,7 +6,7 @@
     <a class="return-proyecto">regresar a proyectos</a>
     <br><a class="tittle-proyect">{{proyecto.nombre}}</a>
   </div>
-  <p class="simple-text">Duplicados</p>
+  <p class="text-duplicados">Duplicados</p>
   <div class="div-proyectos-mostrados">
     <div>
       <button mat-button class="menu-proyectos" [matMenuTriggerFor]="menu">Selecciona una opción a visualizar
@@ -117,14 +117,14 @@
             </div>
             <div>
               <div  class="button-graph">
-                <mat-card class="card">
+                <mat-card class="card datos">
                   Para el proyecto {{proyecto.nombre}} <br>
                   se tomaron en cuenta {{proyecto.num_epic}} de materiales EPIC<br>
                   y {{proyecto.num_epd}} de materiales EPD
                 </mat-card>
               </div>
               <div *ngFor="let item of proyect;let i = index" class="button-graph">
-                <mat-card *ngIf="item.card" class="card">
+                <mat-card *ngIf="item.card" class="card datos">
                   Para el proyecto {{item.Nombre}} <br>
                   se tomaron en cuenta {{item.num_epic}} de materiales EPIC<br>
                   y {{item.num_epd}} de materiales EPD

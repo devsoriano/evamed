@@ -58,6 +58,9 @@ export class HomeEvamedComponent implements OnInit {
   public pieChartOptions={
     responsive: false,
     maintainAspectRatio: false,
+    layout:{
+      padding:0,
+    },
     events: ['click'],
     elements: { arc: { borderWidth: 0 } },
     tooltips: { enabled: false },

@@ -41,6 +41,8 @@ export class BarChartComponent implements OnInit {
   @Output() lastClickEvent = new EventEmitter<string>();
   private maxValue = 0;
 
+  
+
   public barChartOptions: ChartOptions = {
     responsive: true,
     title: { display: true },
@@ -65,7 +67,7 @@ export class BarChartComponent implements OnInit {
         anchor: 'center',
         align: 'center',
         font: {
-          size: 10,
+          size: 7,
         }
       }
     }
@@ -115,7 +117,16 @@ export class BarChartComponent implements OnInit {
           display: true,
           ticks: {
             beginAtZero: true,
-            max: 100
+            max: 100,
+            fontSize:7,
+          }
+        }],
+        xAxes: [{
+          display: true,
+          ticks: {
+            beginAtZero: true,
+            max: 100,
+            fontSize:7,
           }
         }]
       };
@@ -126,6 +137,15 @@ export class BarChartComponent implements OnInit {
           ticks: {
             beginAtZero: true,
             max: this.maxValue,
+            fontSize:10
+          }
+        }],
+        xAxes: [{
+          display: true,
+          ticks: {
+            beginAtZero: true,
+            max: 100,
+            fontSize:10,
           }
         }]
       };

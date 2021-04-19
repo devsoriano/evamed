@@ -43,7 +43,7 @@ export class PieChartComponent implements OnInit {
       datalabels: {
         color: '#FFFFFF',
         font: {
-          size: 8,
+          size: 7,
         }
       }
     }
@@ -57,7 +57,7 @@ export class PieChartComponent implements OnInit {
       datalabels: {
         color:'#FFFFFF',
         font: {
-          size: 8,
+          size: 7,
         }
       }
     }
