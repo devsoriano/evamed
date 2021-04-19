@@ -72,8 +72,6 @@ export class HomeEvamedComponent implements OnInit {
     }
   }
 
-  pruebaColor='#A8D024';
-
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -128,8 +126,10 @@ export class HomeEvamedComponent implements OnInit {
               subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
               impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
               unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
-              dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']))
+              etapasIgnoradas:[],
+              dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
             }
+            console.log(this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[]));
             this.auxDataProjectList.push(auxDatos)
             this.projectsList.push(item);
           }
@@ -171,12 +171,13 @@ export class HomeEvamedComponent implements OnInit {
 
   selectImpactoAmbiental(impacto,indexRecivido){ 
     this.auxDataProjectList[indexRecivido].impactoSelect = this.calculos.ajustarNombre(impacto)
+    this.auxDataProjectList[indexRecivido].etapasIgnoradas = []
     this.catologoImpactoAmbiental.forEach(element => {
       if(element.name_complete_potential_type === impacto){
         this.auxDataProjectList[indexRecivido].unit_impacto = element.unit_potential_type;
       }
     })
-    this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].datos,this.auxDataProjectList[indexRecivido].impactoSelect)
+    this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].datos,this.auxDataProjectList[indexRecivido].impactoSelect,this.auxDataProjectList[indexRecivido].etapasIgnoradas)
   }
 
   selectEtapa(etapa,i){
@@ -192,17 +193,26 @@ export class HomeEvamedComponent implements OnInit {
     }
   }
 
-  cargaDataPie(data,impactoU){
+  cargaDataPie(data,impactoU,etapasI){
     let auxdata=[];
     let auxColor=[];
     let aux=[]
+    let banderaEtapa=true;
     Object.keys(data).forEach(element => {
       if(element === impactoU){
         Object.keys(data[element]).forEach(ciclo => {
-          Object.keys(data[element][ciclo]).forEach(subetapa => {
-            auxdata.push(data[element][ciclo][subetapa])
-            auxColor.push(this.calculos.findColor(subetapa))
-          })
+          etapasI.forEach(ei => {
+            if(ei === ciclo){
+              banderaEtapa=false;
+            }
+          });
+          if(banderaEtapa){
+            Object.keys(data[element][ciclo]).forEach(subetapa => {
+              auxdata.push(data[element][ciclo][subetapa])
+              auxColor.push(this.calculos.findColor(subetapa))
+            })
+          }
+          banderaEtapa=true;
         });
       }
     });
@@ -211,6 +221,20 @@ export class HomeEvamedComponent implements OnInit {
       backgroundColor:auxColor
     }]
     return aux;
+  }
+
+  eliminarEtapa(etapa,i){
+    if(this.auxDataProjectList[i].etapasIgnoradas.includes(etapa)){
+      this.auxDataProjectList[i].etapasIgnoradas.forEach((element,index) => {
+        if(element === etapa){
+          this.auxDataProjectList[i].etapasIgnoradas.splice(index,1)
+        }
+      });
+    }else{
+      this.auxDataProjectList[i].etapasIgnoradas.push(etapa)
+    }
+    this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(this.auxDataProjectList[i].datos,this.auxDataProjectList[i].impactoSelect,this.auxDataProjectList[i].etapasIgnoradas);
+    console.log(this.auxDataProjectList[i].dataGraficaPie);
   }
 
   openDialogCTOP() {
