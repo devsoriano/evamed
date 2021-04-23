@@ -9,6 +9,7 @@ import transporte from 'src/app/calculos/transportes.json';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import { Injectable } from '@angular/core';
 import { stringify } from '@angular/compiler/src/util';
+import { element } from 'protractor';
 
 @Injectable({
     providedIn: 'root'
@@ -106,11 +107,11 @@ export class Calculos {
   }
 
   OperacionesDeFase(idProyecto){
-    
     let Datos={}
     let schemeProyect = this.materialSchemeProyectList.filter(msp => msp['project_id'] == idProyecto);
-    let impacto_ban = true
+    let impacto_ban = true;
     let nameImpacto:string;
+    let materialesIgnorados=[];
 
     this.materiales_EPIC = 0;
     this.potentialTypesList.forEach((impacto, index) => {
@@ -127,12 +128,11 @@ export class Calculos {
         //Cálculos de la sección de producción
         let etapas = [2, 3, 4] //Subetaps A1 A2 y A3
         Datos[nameImpacto]['Producción'] = {}
-        Datos[nameImpacto]['Producción']['A1-3'] = 0;
         let banderaMaterialEP=false;
         etapas.forEach(subetapa => {
           let subproceso = this.standarsList.filter(s => s['id'] == subetapa)[0]['name_standard'];
           if (schemeProyect.length > 0) {
-            schemeProyect.forEach(ps => {
+            schemeProyect.forEach((ps,num) => {
               let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
               if (materiales_subetapa.length > 0) {
                 banderaMaterialEP=false;
@@ -144,19 +144,20 @@ export class Calculos {
               }
               if(subetapa == 4 && banderaMaterialEP == true){
                 materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
-                    if (materiales_subetapa.length > 0 ) {
-                      Datos[nameImpacto]['Producción']['A1-3'] = Datos[nameImpacto]['Producción']['A1-3'] +materiales_subetapa[0]['value'] * ps['quantity']
-                    }
                     if (materiales_subetapa.length > 0 && impacto['id'] == 3) {
                       this.materiales_EPIC = this.materiales_EPIC +1;
+                      //Se eliminira el material de schemeProyect
+                      if(!materialesIgnorados.includes(ps['comercial_name'])){
+                        materialesIgnorados.push(ps['comercial_name']);
+                      }
                     }
+                  }
+                })
               }
+              Datos[nameImpacto]['Producción'][subproceso] = resultado_impacto;
+              resultado_impacto = 0;
             })
-          }
-          Datos[nameImpacto]['Producción'][subproceso] = resultado_impacto;
-          resultado_impacto = 0;
-        })
-        this.materiales_EPD=schemeProyect.length-this.materiales_EPIC;
+            this.materiales_EPD=schemeProyect.length-this.materiales_EPIC;
         //console.log('resultado producción = ',resultado_impacto)
         resultado_impacto = 0;
         //Construcción
@@ -191,8 +192,10 @@ export class Calculos {
             if (conversion_val.length > 0) {
               peso = conversion_val[0]['value']
             }
-            //console.log(peso*ps['quantity']*(nacional+internacional))
-            resultado_impacto = resultado_impacto + (peso * ps['quantity'] * (nacional + internacional))
+            let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1)
+            if(materiales_subetapa.length<1){
+              resultado_impacto = resultado_impacto + (peso * ps['quantity'] * (nacional + internacional))
+            }
           })
         }
         Datos[nameImpacto]['Construccion']['A4'] = resultado_impacto;
@@ -225,11 +228,6 @@ export class Calculos {
                 materiales_subetapa.forEach((material, index) => {
                   resultado_impacto = resultado_impacto + (materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces'])
                 })
-              }else{
-                materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == 1 && msd['potential_type_id'] == impacto['id'])
-                if (materiales_subetapa.length > 0) {
-                  resultado_impacto = resultado_impacto + materiales_subetapa[0]['value'] * ps['quantity']
-                }
               }
             })
           }
@@ -237,6 +235,7 @@ export class Calculos {
         Datos[nameImpacto]['Uso']['B4'] = resultado_impacto;
         resultado_impacto = 0;
         //B6
+        //Se obtiene consumo anual
         let listaACR = this.ACRList.filter(acr => acr['project_id'] == idProyecto)
         if (listaACR.length > 0) {
           let consumos = this.ECDList.filter(ecd => ecd['annual_consumption_required_id'] == listaACR[0]['id']);
@@ -249,9 +248,7 @@ export class Calculos {
           }
           consumos.forEach(consumo => {
             let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
-            if (valor_impacto.length > 0) {
-              resultado_impacto = resultado_impacto + consumo['quantity'] * valor_impacto[0]['value'] * vidaUtil
-            }
+            resultado_impacto = resultado_impacto = vidaUtil * valor_impacto[0]['value'] * consumo['quantity']
           })
         }
         Datos[nameImpacto]['Uso']['B6'] = resultado_impacto;

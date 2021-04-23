@@ -199,8 +199,8 @@ export class CompararComponent implements OnInit {
     this.proyect_active.push(id);
 
     let analisis = this.getAnalisisBarras(id);
-    let analisisRad = this.getAnalisisRadial(id);
-    let analisisPie = this.getAnalisisPie(id);
+    //let analisisRad = this.getAnalisisRadial(id);
+    //let analisisPie = this.getAnalisisPie(id);
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -212,8 +212,8 @@ export class CompararComponent implements OnInit {
     });
 
     this.outproyect_bar.push(analisis);
-    this.outproyect_radar.push(analisisRad);
-    this.outproyect_pie.push(analisisPie);
+    //this.outproyect_radar.push(analisisRad);
+    //this.outproyect_pie.push(analisisPie);
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     if(this.resultdosTabla){
       this.TablaResultados();
@@ -315,6 +315,7 @@ export class CompararComponent implements OnInit {
         }
       })
     })
+    //console.log(analisisProyectos)
     return analisisProyectos;
   }
 
@@ -379,6 +380,7 @@ export class CompararComponent implements OnInit {
       })
     })
 
+    console.log(analisisProyectos)
     return analisisProyectos;
   }
 
