@@ -207,9 +207,7 @@ export class Calculos {
           CSEs.forEach(CSE => {
             let energia = this.SIDList.filter(sid => sid['sourceInformarion_id'] == CSE['source_information_id'] && sid['potential_type_id'] == impacto['id'])
             if (energia.length > 0) {
-              energia.forEach((element, index) => {
-                resultado_impacto = resultado_impacto + (energia[index]['value'] * CSE['quantity']);
-              })
+              resultado_impacto = resultado_impacto + (energia[0]['value'] * CSE['quantity']);
             }
           });
         }
@@ -222,7 +220,7 @@ export class Calculos {
         //las etapas son las mismas que en la sección de producción
         etapas.forEach(subetapa => {
           if (schemeProyect.length > 0) {
-            schemeProyect.forEach(ps => {
+            schemeProyect.forEach((ps,num) => {
               let materiales_subetapa = this.materialSchemeDataList.filter(msd => msd['material_id'] == ps['material_id'] && msd['standard_id'] == subetapa && msd['potential_type_id'] == impacto['id'])
               if (materiales_subetapa.length > 0) {
                 materiales_subetapa.forEach((material, index) => {
@@ -233,6 +231,7 @@ export class Calculos {
           }
         })
         Datos[nameImpacto]['Uso']['B4'] = resultado_impacto;
+        //console.log('B4: ',resultado_impacto)
         resultado_impacto = 0;
         //B6
         //Se obtiene consumo anual
@@ -248,11 +247,11 @@ export class Calculos {
           }
           consumos.forEach(consumo => {
             let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
-            resultado_impacto = resultado_impacto = vidaUtil * valor_impacto[0]['value'] * consumo['quantity']
+            resultado_impacto = resultado_impacto + vidaUtil * valor_impacto[0]['value'] * consumo['quantity']
           })
         }
         Datos[nameImpacto]['Uso']['B6'] = resultado_impacto;
-        //console.log('Uso:',resultado_impacto)
+        console.log('Uso:',resultado_impacto)
         //Fin de vida
         resultado_impacto = 0;
         Datos[nameImpacto]['FinDeVida'] = {};

@@ -380,7 +380,6 @@ export class CompararComponent implements OnInit {
       })
     })
 
-    console.log(analisisProyectos)
     return analisisProyectos;
   }
 
