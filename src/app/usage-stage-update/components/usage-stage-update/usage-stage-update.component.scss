@@ -9,7 +9,7 @@
 
 nav.nav-steps {
   height: 5rem;
-  border-bottom: 1px solid #CBCBCB;
+  border-bottom: 1px solid #cbcbcb;
 }
 
 .space-row {
@@ -43,13 +43,13 @@ p.p-instrucciones {
 
 .container-sheets {
   width: 20%;
-  border-right: 1px solid #CBCBCB;
+  border-right: 1px solid #cbcbcb;
   padding: 40px;
 }
 
 .container-systems {
   width: 80%;
-  border-right: 1px solid #CBCBCB;
+  border-right: 1px solid #cbcbcb;
   padding: 40px;
   overflow: auto;
   position: relative;
@@ -97,8 +97,8 @@ p.p-instrucciones {
 }
 
 .custom-expansion-panel-header {
-  background-color: #FFF !important;
-  height: 60px!important;
+  background-color: #fff !important;
+  height: 60px !important;
 }
 
 .custom-mat-panel-title {
@@ -107,13 +107,13 @@ p.p-instrucciones {
   font-size: 14px;
 }
 
-.mat-expansion-panel:not([class*=mat-elevation-z]) {
-  border-bottom: 2px solid #CBCBCB;
+.mat-expansion-panel:not([class*="mat-elevation-z"]) {
+  border-bottom: 2px solid #cbcbcb;
   box-shadow: none;
 }
 .mat-expansion-panel:last-of-type {
-  border-bottom-right-radius: 0px!important;
-  border-bottom-left-radius:0px!important; 
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 
 .container-selected {
@@ -134,7 +134,7 @@ p.p-instrucciones {
 }
 
 .aux-yellow {
-  color: #EDC903 !important;
+  color: #edc903 !important;
 }
 
 .mdl-stepper-tag {
@@ -165,8 +165,12 @@ p.p-instrucciones {
   border-bottom-right-radius: 0;
 }
 
-.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child .mdl-stepper-bar-left,
-.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child .mdl-stepper-bar-right {
+.mdl-stepper-horizontal-alternative
+  .mdl-stepper-step:first-child
+  .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative
+  .mdl-stepper-step:last-child
+  .mdl-stepper-bar-right {
   display: none;
 }
 
@@ -174,7 +178,7 @@ p.p-instrucciones {
   width: 70px;
   height: 70px;
   margin: 0 auto;
-  background-color: #9E9E9E;
+  background-color: #9e9e9e;
   border-radius: 50%;
   text-align: center;
   line-height: 2em;
@@ -203,7 +207,7 @@ p.p-instrucciones {
   position: absolute;
   top: 30px;
   height: 1px;
-  border-top: 1px solid #BDBDBD;
+  border-top: 1px solid #bdbdbd;
 }
 
 .mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
@@ -220,30 +224,34 @@ p.p-instrucciones {
 
 /**Custom stepper**/
 div.step-one-selected div.mdl-stepper-circle {
-  background: url('./../../../../assets/images/Etapas/Produccion_.png') no-repeat 50% 50%;
-  width: 60px!important;
-  height: 60px!important;
+  background: url("./../../../../assets/images/Etapas/Produccion_.png")
+    no-repeat 50% 50%;
+  width: 60px !important;
+  height: 60px !important;
 }
 
 div.step-two div.mdl-stepper-circle {
-  background-color: #CBCBCB !important;
-  background: url('./../../../../assets/images/Etapas/Construcción_.png') no-repeat 50% 50%;
-  width: 60px!important;
-  height: 60px!important;
+  background-color: #cbcbcb !important;
+  background: url("./../../../../assets/images/Etapas/Construcción_.png")
+    no-repeat 50% 50%;
+  width: 60px !important;
+  height: 60px !important;
 }
 
 div.step-three div.mdl-stepper-circle {
-  background-color: #CBCBCB !important;
-  background: url('./../../../../assets/images/Etapas/Uso.png') no-repeat 50% 50%;
-  width: 60px!important;
-  height: 60px!important;
+  background-color: #cbcbcb !important;
+  background: url("./../../../../assets/images/Etapas/Uso.png") no-repeat 50%
+    50%;
+  width: 60px !important;
+  height: 60px !important;
 }
 
 div.step-four div.mdl-stepper-circle {
-  background-color: #CBCBCB !important;
-  background: url('./../../../../assets/images/Etapas/fin.png') no-repeat 50% 50%;
-  width: 60px!important;
-  height: 60px!important;
+  background-color: #cbcbcb !important;
+  background: url("./../../../../assets/images/Etapas/fin.png") no-repeat 50%
+    50%;
+  width: 60px !important;
+  height: 60px !important;
 }
 
 .mdl-stepper-circle {
@@ -254,4 +262,21 @@ div.step-four div.mdl-stepper-circle {
 
 .container-options-3 {
   position: absolute;
+}
+
+.Tab-container {
+  margin-left: 15%;
+  width: 70%;
+}
+
+.Col.principal {
+  width: 230px;
+}
+
+.Col.secundary {
+  width: 100px;
+}
+
+.container-options-3 {
+  width: 600px;
 }

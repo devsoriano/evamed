@@ -526,7 +526,11 @@
               <div class="Col">
                 <mat-tab-group mat-align-tabs="start">
                   <mat-tab label="EPD's">EPD's</mat-tab>
-                  <mat-tab label="Base de datos">Base de datos</mat-tab>
+                  <mat-tab label="Base de datos">
+                    <div *ngFor="let item of materialsList">
+                      {{item.name_material}}
+                    </div>
+                  </mat-tab>
                 </mat-tab-group>
               </div>
             </div>

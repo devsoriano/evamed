@@ -24,9 +24,9 @@
     <mat-card *ngFor="let project of projectsList" class="card-project">
       <div class="header-tag">
         <div class="more-vert">
-          <button 
-            mat-icon-button 
-            [matMenuTriggerFor]="menu" 
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
             aria-label="Example icon-button with a menu"
           >
             <mat-icon class="more-vert-custom">more_vert</mat-icon>
@@ -57,61 +57,19 @@
           <div class="second-mat-tab-group">
             <mat-tab-group class="container-second-tab">
               <mat-tab label="Producción" class="label-second-tab">
-                <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
+                <section class="grid-container"  >
+                  <mat-card class="card-item-custom" *ngFor="let section of serchSections(project.id)">
+                    {{section.name_section}}
                     <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
+                      <li *ngFor="let sc of serchSC(project.id, section.id)">{{sc}}</li>
                     </ul>
                     <button
                       mat-button
-                      class="yellow-button"
-                      (click)="updateMaterial(project.id)"
-                    > 
+                      class="yellow-button-mini"
+                      (click)="updateConstruction(project.id)"
+                    >
                       Editar
                     </button>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
                   </mat-card>
                 </section>
               </mat-tab>
@@ -128,7 +86,7 @@
                       mat-button
                       class="yellow-button"
                       (click)="updateConstruction(project.id)"
-                    > 
+                    >
                       Editar
                     </button>
                   </mat-card>
@@ -187,7 +145,7 @@
                       mat-button
                       class="yellow-button"
                       (click)="updateUso(project.id)"
-                    > 
+                    >
                       Editar
                     </button>
                   </mat-card>
@@ -370,14 +328,14 @@
           mat-button
           class="yellow-button"
           (click)="openDialogANP()"
-        > 
-        Crear nuevo proyecto 
+        >
+        Crear nuevo proyecto
       </button>
       </mat-card-actions>
       <mat-card-actions class="content-logout-button">
-        <button 
-          mat-button 
-          class="melon-button" 
+        <button
+          mat-button
+          class="melon-button"
           (click)="logout()"
         >
           Cerrar sesión

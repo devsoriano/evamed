@@ -149,12 +149,6 @@ export class ConstructionStageUpdateComponent implements OnInit {
       if (this.indexSheet === i && this.EC !== undefined) {
         this.dataArrayEC = this.EC[i];
       }
-      if (this.indexSheet === i && this.AC !== undefined) {
-        this.dataArrayAC = this.AC[i];
-      }
-      if (this.indexSheet === i && this.DG !== undefined) {
-        this.dataArrayDG = this.DG[i];
-      }
     }
 
     this.selectedSheet = selectedSheet;
