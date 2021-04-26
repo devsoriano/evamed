@@ -251,7 +251,7 @@ export class Calculos {
           })
         }
         Datos[nameImpacto]['Uso']['B6'] = resultado_impacto;
-        console.log('Uso:',resultado_impacto)
+        //console.log('Uso:',resultado_impacto)
         //Fin de vida
         resultado_impacto = 0;
         Datos[nameImpacto]['FinDeVida'] = {};

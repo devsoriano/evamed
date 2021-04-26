@@ -166,9 +166,11 @@ export class CompararComponent implements OnInit {
         this.fasesEliminadas.forEach((element,index) => {
           if(element == fase){
             this.fasesEliminadas.splice(index,1)
+            document.getElementById(fase.concat("Ojo")).className = 'boton-icono';
           }
         })
       }else{
+        document.getElementById(fase.concat("Ojo")).className = 'boton-ojito-select';
         this.fasesEliminadas.push(fase);
       }
 
@@ -198,9 +200,13 @@ export class CompararComponent implements OnInit {
     }
     this.proyect_active.push(id);
 
+    if (this.ID != ' ') {
+      document.getElementById(this.ID).className = 'boton-principal';
+    }
+
     let analisis = this.getAnalisisBarras(id);
-    //let analisisRad = this.getAnalisisRadial(id);
-    //let analisisPie = this.getAnalisisPie(id);
+    let analisisRad = this.getAnalisisRadial(id);
+    let analisisPie = this.getAnalisisPie(id);
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -212,8 +218,8 @@ export class CompararComponent implements OnInit {
     });
 
     this.outproyect_bar.push(analisis);
-    //this.outproyect_radar.push(analisisRad);
-    //this.outproyect_pie.push(analisisPie);
+    this.outproyect_radar.push(analisisRad);
+    this.outproyect_pie.push(analisisPie);
     // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     if(this.resultdosTabla){
       this.TablaResultados();
@@ -565,12 +571,17 @@ export class CompararComponent implements OnInit {
     if ($event==null){
       this.bandera = 0;
       this.hover = true;
+      if (this.ID != ' ') {
+        document.getElementById(this.ID).className = 'boton-principal';
+      }
     }else{
       this.bandera=1;
       this.hover = false;
+      if (this.ID != ' ') {
+        document.getElementById(this.ID).className = 'boton-principal';
+      }
       this.ID = ' ';
     }
-
     this.containerGraficas.clear();
   }
 
@@ -601,27 +612,22 @@ export class CompararComponent implements OnInit {
           this.showVar_1 = false;
           this.hover = true;
           this.bandera_serie_Seleccionada = false;
-          //this.childBar.forEach(c => c.resetColores());
         }
         this.banderaGrapg=0;
         this.ID = ' ';
         this.containerGraficas.clear();
-        //this.iniciaBarras();
       }else{
         this.ID = x;
         if (this.bandera == 1) {
           this.showVar = true;
           this.showVar_1 =false;
-          //this.bandera_serie_Seleccionada = false;
           this.iniciaPie();
         } else {
           this.showVar_1 = true;
           this.showVar=false;
           this.hover=false;
-          //this.bandera_serie_Seleccionada = true;
           this.serie_Seleccionada=x;
           this.iniciaRadiales();
-          //this.iniciaBarras();
         }
       }
       if (this.ID != ' ') {
