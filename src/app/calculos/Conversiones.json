@@ -1,0 +1,322 @@
+[
+    {
+        "id_material": 1,
+        "value": 0.0066,
+        "id_unit":1
+    },
+    {
+        "id_material": 3,
+        "value": 0.0099,
+        "id_unit":1
+    },
+    {
+        "id_material": 6,
+        "value": 0.0197106,
+        "id_unit":1
+    },
+    {
+        "id_material": 55,
+        "value": 0.0145236,
+        "id_unit":1
+    },
+    {
+        "id_material": 69,
+        "value": 2.409,
+        "id_unit":3
+    },
+    {
+        "id_material": 77,
+        "value": 1.858,
+        "id_unit":1
+    },
+    {
+        "id_material": 81,
+        "value": 0.0385,
+        "id_unit":4
+    },
+    {
+        "id_material": 85,
+        "value": 1.5,
+        "id_unit":2
+    },
+    {
+        "id_material": 201,
+        "value": 0.01075,
+        "id_unit":5
+    },
+    {
+        "id_material": 203,
+        "value": 0.0107,
+        "id_unit":5
+    },
+    {
+        "id_material": 204,
+        "value": 0.01159,
+        "id_unit":5
+    },
+    {
+        "id_material": 205,
+        "value": 0.01159,
+        "id_unit":5
+    },
+    {
+        "id_material": 210,
+        "value": 0.012033,
+        "id_unit":5
+    },
+    {
+        "id_material": 211,
+        "value": 0.01211,
+        "id_unit":5
+    },
+    {
+        "id_material": 212,
+        "value": 0.00657,
+        "id_unit":5
+    },
+    {
+        "id_material": 213,
+        "value": 0.00689,
+        "id_unit":5
+    },
+    {
+        "id_material": 214,
+        "value": 0.01194,
+        "id_unit":5
+    },
+    {
+        "id_material": 215,
+        "value": 0.01122,
+        "id_unit":5
+    },
+    {
+        "id_material": 229,
+        "value": 0.0093366,
+        "id_unit":15
+    },
+    {
+        "id_material": 230,
+        "value": 0.0132,
+        "id_unit":15
+    },
+    {
+        "id_material": 231,
+        "value": 2.335,
+        "id_unit":3
+    },
+    {
+        "id_material": 232,
+        "value": 0.55,
+        "id_unit":15
+    },
+    {
+        "id_material": 233,
+        "value": 2.335,
+        "id_unit":3
+    },
+    {
+        "id_material": 234,
+        "value": 2.335,
+        "id_unit":3
+    },
+    {
+        "id_material": 235,
+        "value": 2.409,
+        "id_unit":3
+    },
+    {
+        "id_material": 236,
+        "value": 2.409,
+        "id_unit":3
+    },
+    {
+        "id_material": 237,
+        "value": 2.327,
+        "id_unit":3
+    },
+    {
+        "id_material": 238,
+        "value": 2.327,
+        "id_unit":3
+    },
+    {
+        "id_material": 239,
+        "value": 2.4,
+        "id_unit":3
+    },
+    {
+        "id_material": 240,
+        "value": 2.327,
+        "id_unit":3
+    },
+    {
+        "id_material": 241,
+        "value": 2.4,
+        "id_unit":3
+    },
+    {
+        "id_material": 242,
+        "value": 2.4,
+        "id_unit":3
+    },
+    {
+        "id_material": 243,
+        "value": 2.332,
+        "id_unit":3
+    },
+    {
+        "id_material": 244,
+        "value": 2.332,
+        "id_unit":3
+    },
+    {
+        "id_material": 245,
+        "value": 0.02312,
+        "id_unit":5
+    },
+    {
+        "id_material": 246,
+        "value": 2.332,
+        "id_unit":3
+    },
+    {
+        "id_material": 247,
+        "value": 0.0108375,
+        "id_unit":5
+    },
+    {
+        "id_material": 248,
+        "value": 0.02312,
+        "id_unit":5
+    },
+    {
+        "id_material": 249,
+        "value": 0.0108375,
+        "id_unit":5
+    },
+    {
+        "id_material": 250,
+        "value": 0.0108375,
+        "id_unit":5
+    },
+    {
+        "id_material": 251,
+        "value": 1.445,
+        "id_unit":19
+    },
+    {
+        "id_material": 252,
+        "value": 0.0065025,
+        "id_unit":19
+    },
+    {
+        "id_material": 253,
+        "value": 8.67E-03,
+        "id_unit":19
+    },
+    {
+        "id_material": 254,
+        "value": 0.0108375,
+        "id_unit":5
+    },
+    {
+        "id_material": 255,
+        "value": 0.03468,
+        "id_unit":5
+    },
+    {
+        "id_material": 256,
+        "value": 0.02601,
+        "id_unit":5
+    },
+    {
+        "id_material": 173,
+        "value": 0.0712,
+        "id_unit":15
+    },
+    {
+        "id_material": 174,
+        "value": 7.5565,
+        "id_unit":15
+    },
+    {
+        "id_material": 175,
+        "value": 0.0812,
+        "id_unit":15
+    },
+    {
+        "id_material": 176,
+        "value": 12.74737,
+        "id_unit":15
+    },
+    {
+        "id_material": 177,
+        "value": 0.01256,
+        "id_unit":5
+    },
+    {
+        "id_material": 178,
+        "value": 0.01256,
+        "id_unit":5
+    },
+    {
+        "id_material": 179,
+        "value": 0.01067,
+        "id_unit":5
+    },
+    {
+        "id_material": 180,
+        "value": 0.012575,
+        "id_unit":5
+    },
+    {
+        "id_material": 181,
+        "value": 0.01142,
+        "id_unit":5
+    },
+    {
+        "id_material": 182,
+        "value": 0.01094,
+        "id_unit":5
+    },
+    {
+        "id_material": 192,
+        "value": 0.0067,
+        "id_unit":5
+    },
+    {
+        "id_material": 195,
+        "value": 0.00622,
+        "id_unit":5
+    },
+    {
+        "id_material": 196,
+        "value": 0.00805,
+        "id_unit":5
+    },
+    {
+        "id_material": 197,
+        "value": 0.00106,
+        "id_unit":5
+    },
+    {
+        "id_material": 198,
+        "value": 0.007,
+        "id_unit":5
+    },
+    {
+        "id_material": 199,
+        "value": 0.01106,
+        "id_unit":5
+    },
+    {
+        "id_material": 200,
+        "value": 0.01556,
+        "id_unit":5
+    },
+    {
+        "id_material": 202,
+        "value": 0.0068,
+        "id_unit":5
+    }
+]

@@ -59,6 +59,7 @@ export class HomeEvamedComponent implements OnInit {
       this.filtroCatalogoUsos = data;
       this.filtroCatalogoUsos.push({ id: 0, name_use: 'Todos' });
     });
+
     this.catalogsService.countriesCatalog().subscribe((data) => {
       this.catalogoPaises = [];
       data.map((item) => {
@@ -67,23 +68,29 @@ export class HomeEvamedComponent implements OnInit {
         }
       });
     });
+
     this.catalogsService.typeProjectCatalog().subscribe((data) => {
       this.catalogoTipo = data;
     });
+
     this.catalogsService.usefulLifeCatalog().subscribe((data) => {
       this.catalogoVidaUtil = data;
     });
+
     this.catalogsService.housingSchemeCatalog().subscribe((data) => {
       this.catalogoEsqHabitacional = data;
     });
+
     this.catalogsService.getSections().subscribe((sections) => {
       this.sections = sections;
     });
+
     this.projectsService
       .getMaterialSchemeProyect()
       .subscribe((dataMaterial) => {
         this.dataMaterial = dataMaterial;
       });
+
     this.users
       .searchUser(localStorage.getItem('email-login'))
       .subscribe((data) => {
@@ -105,6 +112,7 @@ export class HomeEvamedComponent implements OnInit {
           this.tempProjectsList = this.projectsList;
         });
       });
+
     this.catalogsService.getStates().subscribe((data) => {
       this.catalogoEstados = data;
     });

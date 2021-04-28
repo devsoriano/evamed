@@ -1,9 +1,10 @@
 .graficas-especificas {
   display: grid;
-  grid-template-columns: repeat(2, 550px);
-  column-gap: 50px;
-  row-gap: 50px;
-  margin: 20px;
+  font-size: 11px;
+  grid-template-columns: repeat(2, 386px);
+  column-gap: 20px;
+  row-gap: 10px;
+  height: auto;
   mat-card{
     display:block;
   }
@@ -11,8 +12,9 @@
 
 .graficas-especificas-seccionUno{
   display: grid;
-  grid-template-columns: repeat(2, 550px);
-  column-gap: 20px;
-  row-gap: 50px;
-  justify-items: stretch;
+  font-size: 11px;
+  grid-template-columns: repeat(2, 386px);
+  column-gap: 10px;
+  row-gap: 10px;
+  height: auto;
 }

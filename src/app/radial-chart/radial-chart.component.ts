@@ -30,28 +30,30 @@ export class RadialChartComponent implements OnInit {
 
   public radarChartOptions = {
     responsive: true,
-    legend:{display:false},
+    layout:{
+      padding:0,
+    },
+    legend:{
+      display:false,
+    },
     tooltips: { enabled: false },
     plugins: {
       datalabels: {
         display: false
       }
+    },
+    scale:{
+      pointLabels: {
+        fontSize:7,
+      },
+      ticks:{
+        fontSize:7,
+      },
     }
   };
   public radarChartLabels=[];
-  //public radarChartLabels = ['Indicador 1', 'Indicador 2', 'Indicador 3', 'Indicador 4', 'Indicador 5', 'Indicador 6'
-  // , 'Indicador 7', 'Indicador 8'];
 
   public radarChartData = [];
- /*public radarChartData = [
-    {
-      data: [80, 75, 80, 80, 75, 80, 70, 75],
-      backgroundColor: 'rgba(0,0,200,0.2)',
-      pointBackgroundColor:'#4DBE89',
-      borderColor:"transparent",
-      borderWidth:0.1
-    }
-  ];*/
   public radarChartType = 'radar';
 
   constructor() { }

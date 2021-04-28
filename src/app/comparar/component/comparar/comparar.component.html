@@ -6,7 +6,7 @@
     <a class="return-proyecto">regresar a proyectos</a>
     <br><a class="tittle-proyect">{{proyecto.nombre}}</a>
   </div>
-  <p class="simple-text">Duplicados</p>
+  <p class="text-duplicados">Duplicados</p>
   <div class="div-proyectos-mostrados">
     <div>
       <button mat-button class="menu-proyectos" [matMenuTriggerFor]="menu">Selecciona una opción a visualizar
@@ -50,6 +50,12 @@
                   <mat-button-toggle [disabled]="botones_grafica_activos" class="button-impactos" (click)="porcentaje(false,1)">#</mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
+              <div>
+                <mat-button-toggle-group>
+                  <mat-button-toggle class="button-impactos" (click) = "AjustePorMetro(1)"><mat-icon class="icons-options">border_all</mat-icon></mat-button-toggle>
+                  <mat-button-toggle class="button-impactos" (click) = "AjustePorMetro(0)"><mat-icon class="icons-options">branding_watermark</mat-icon></mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
             </div>
           </div>
           <div class="campo-grafica-bar" >
@@ -78,26 +84,26 @@
               <p>Selecciona una fase del ciclo de vida</p>
               <ul>
                 <li>
-                  <button (click)="ajusteDeGraficaFASE('Producción')" class="boton-icono">
+                  <button id="ProducciónOjo" (click)="ajusteDeGraficaFASE('Producción')" class="boton-icono">
                     <mat-icon class="uno">visibility_off</mat-icon>
                   </button>
                   <button id="Producción" class="boton-principal" mat-stroked-button (click)="grafica('Producción')">
                   Producción</button>
                 </li>
                 <li>
-                  <button (click)="ajusteDeGraficaFASE('Construccion')" class="boton-icono">
+                  <button id="ConstruccionOjo" (click)="ajusteDeGraficaFASE('Construccion')" class="boton-icono">
                     <mat-icon class="dos">visibility_off</mat-icon>
                   </button>
                   <button id="Construccion"class="boton-principal" mat-stroked-button (click)="grafica('Construccion')">
                   Construcción</button> </li>
                 <li>
-                  <button (click)="ajusteDeGraficaFASE('Uso')" class="boton-icono">
+                  <button id="UsoOjo" (click)="ajusteDeGraficaFASE('Uso')" class="boton-icono">
                     <mat-icon class="boton-principal" class="tres">visibility_off</mat-icon>
                   </button>
                   <button id="Uso" class="boton-principal" mat-stroked-button (click)="grafica('Uso')">
                   Uso</button> </li>
                 <li>
-                  <button (click)="ajusteDeGraficaFASE('FinDeVida')" class="boton-icono">
+                  <button id="FinDeVidaOjo" (click)="ajusteDeGraficaFASE('FinDeVida')" class="boton-icono">
                     <mat-icon class="cuatro">visibility_off</mat-icon>
                   </button>
                   <button id="FinDeVida" class="boton-principal" mat-stroked-button (click)="grafica('FinDeVida')">
@@ -111,14 +117,14 @@
             </div>
             <div>
               <div  class="button-graph">
-                <mat-card class="card">
+                <mat-card class="card datos">
                   Para el proyecto {{proyecto.nombre}} <br>
                   se tomaron en cuenta {{proyecto.num_epic}} de materiales EPIC<br>
                   y {{proyecto.num_epd}} de materiales EPD
                 </mat-card>
               </div>
               <div *ngFor="let item of proyect;let i = index" class="button-graph">
-                <mat-card *ngIf="item.card" class="card">
+                <mat-card *ngIf="item.card" class="card datos">
                   Para el proyecto {{item.Nombre}} <br>
                   se tomaron en cuenta {{item.num_epic}} de materiales EPIC<br>
                   y {{item.num_epd}} de materiales EPD

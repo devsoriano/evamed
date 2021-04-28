@@ -129,6 +129,14 @@ export class CatalogsService {
     );
   }
 
+  getPotentialTypes() {
+    return this.http.get<any>(environment.api_potetnial_types).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   getSections() {
     return this.http.get<any>(environment.api_sections).pipe(
       tap((data) => {
