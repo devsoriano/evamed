@@ -10,6 +10,7 @@ import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import { Injectable } from '@angular/core';
 import { stringify } from '@angular/compiler/src/util';
 import { element } from 'protractor';
+import { chainedInstruction } from '@angular/compiler/src/render3/view/util';
 
 @Injectable({
     providedIn: 'root'
@@ -245,9 +246,12 @@ export class Calculos {
           } catch {
             vidaUtil = 1;
           }
+          console.log(consumos)
           consumos.forEach(consumo => {
             let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
-            resultado_impacto = resultado_impacto + vidaUtil * valor_impacto[0]['value'] * consumo['quantity']
+            if(valor_impacto.length > 0){
+              resultado_impacto = resultado_impacto + vidaUtil * valor_impacto[0]['value'] * consumo['quantity']
+            }
           })
         }
         Datos[nameImpacto]['Uso']['B6'] = resultado_impacto;
