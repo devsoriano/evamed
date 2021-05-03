@@ -21,7 +21,7 @@
         <div class="message-plus">Crea tu primer proyecto</div>
       </div>
     </div>
-    <mat-card *ngFor="let project of projectsList; let i = index" class="card-project">
+    <mat-card *ngFor="let project of projectsList" class="card-project">
       <div class="header-tag">
         <div class="more-vert">
           <button
@@ -250,62 +250,35 @@
           <div class="mat-tab-resultados">
             <div>
               <div class="seccionUno">
+
                 <p>Selecciona impacto ambiental</p>
-                <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].impactoSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoSelect,i)" required>
-                  <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
-                    {{impacto.name_complete_potential_type}}
-                  </mat-option>
-                </mat-select>
-                <p>{{auxDataProjectList[i].impactoSelect}}</p>
+                <select>
+                  <option value="val1">Calentamiento global</option>
+                  <option value="val1">Op2</option>
+                  <option value="val1">Op3</option>
+                </select>
                 <p>Fases de ciclo de vida</p>
                 <ul>
-                   <li> <button (click)="selectEtapa('Producción',i)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a>Materiales</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['porcentaje']}}%
-                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}}
-                          {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>
-                      <button class='button-icon' (click)="eliminarEtapa('Producción',i)">
-                        <mat-icon class="uno">visibility_off</mat-icon>
-                      </button>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Materiales</a><a>18% / 1,000 co2</a></div>
+                     <mat-icon class="uno">visibility_off</mat-icon></button>
                    </li>
-                   <li> <button (click)="selectEtapa('Construccion',i)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a>Construcción</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}% 
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}} 
-                        {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button> 
-                      <button class='button-icon' (click)="eliminarEtapa('Construccion',i)">
-                        <mat-icon class="dos">visibility_off</mat-icon>
-                      </button>
-                    </li>
-                   <li> <button (click)="selectEtapa('Uso',i)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a>Uso</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}% 
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}} 
-                        {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>  
-                      <button class='button-icon' (click)="eliminarEtapa('Uso',i)">
-                        <mat-icon class="tres">visibility_off</mat-icon>
-                      </button>
-                    </li>
-                   <li> <button (click)="selectEtapa('FinDeVida',i)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a>Fin de vida</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}% 
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
-                        {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>
-                      <button class='button-icon' (click)="eliminarEtapa('FinDeVida',i)">
-                        <mat-icon class="cuatro">visibility_off</mat-icon>
-                      </button>
-                    </li>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Construcción</a><a>20% / 1,000 co2</a></div>
+                     <mat-icon class="dos">visibility_off</mat-icon></button> </li>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Uso</a><a>31% / 1,000 co2</a></div>
+                     <mat-icon class="tres">visibility_off</mat-icon></button> </li>
+                   <li> <button mat-stroked-button>
+                     <div class="some-text">
+                     <a>Fin de vida</a><a>16% / 1,000 co2</a></div>
+                     <mat-icon class="cuatro">visibility_off</mat-icon></button> </li>
                 </ul>
               </div>
-              <button mat-stroked-button class="Detalle ver"
+              <button mat-stroked-button class="Detalle"
               (click)="redirectResultados(project.id)"
               >Ver detalle</button>
             </div>
@@ -317,26 +290,16 @@
                    </mat-button-toggle-group>
                 <button>Exportar</button>
               </div>
-                <canvas #MyChart='base-chart' #canvas baseChart
-                            [datasets]="auxDataProjectList[i].dataGraficaPie"
-                            [chartType]="doughnutChartType"
-                            [options]="pieChartOptions"
-                            width="600px"></canvas>
+              <div>
+                <!--<canvas baseChart
+                  [data]="doughnutChartData"
+                  [labels]="doughnutChartLabels"
+                  [chartType]="doughnutChartType"></canvas>> -->
+              </div>
             </div>
             <div>
-              <button mat-stroked-button class="Detalle reporte">Generar reporte</button>
+              <button mat-stroked-button class="Detalle">Generar reporte</button>
               <p>Dispersión de impactos por subetapa</p>
-              <ul class="mostrar-subetapas">
-                <li *ngFor = "let subetapa of auxDataProjectList[i].subetasMostrada">
-                  <span class="dot" [ngStyle]="{'background-color': subetapa.color}"></span> 
-                  <div class="text-subetapas" *ngIf = "auxDataProjectList[i].banderaEtapa">
-                    <a>{{subetapa.abreviacion}} - {{subetapa.nombre_subeatapa}}</a>
-                    <a>{{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['porcentaje']}}% / 
-                      {{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['num']}}
-                      {{auxDataProjectList[i].unit_impacto}}</a>
-                  </div>
-                </li>
-              </ul>
             </div>
           </div>
         </mat-tab>
