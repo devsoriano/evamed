@@ -8,6 +8,7 @@ import { ProjectsService } from './../../../core/services/projects/projects.serv
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
+import { Calculos } from '../../../calculos/calculos'
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -44,11 +45,35 @@ export class HomeEvamedComponent implements OnInit {
   tagProject: string;
   sections: any;
   dataMaterial: any;
+  catologoImpactoAmbiental: any;
+  auxDataProjectList: any;
+
+  public doughnutChartType = 'doughnut';
+  public pieChartOptions={
+    responsive: false,
+    maintainAspectRatio: false,
+    layout:{
+      padding:0,
+    },
+    events: ['click'],
+    elements: { arc: { borderWidth: 0 } },
+    tooltips: { enabled: false },
+    hover: { mode: null },
+    plugins: {
+      datalabels: {
+        color:'#FFFFFF',
+        font: {
+          size: 8,
+        }
+      }
+    }
+  }
 
   constructor(
     private auth: AuthService,
     private router: Router,
     public dialog: MatDialog,
+    private calculos: Calculos,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
     private projects: ProjectsService,
@@ -81,6 +106,10 @@ export class HomeEvamedComponent implements OnInit {
       this.catalogoEsqHabitacional = data;
     });
 
+    this.catalogsService.getPotentialTypes().subscribe( data => {
+      this.catologoImpactoAmbiental = this.calculos.FiltradoDeImpactos(data);
+    });
+
     this.catalogsService.getSections().subscribe((sections) => {
       this.sections = sections;
     });
@@ -98,16 +127,32 @@ export class HomeEvamedComponent implements OnInit {
         this.sector = data[0].institution;
         localStorage.setItem('email-id', data[0].id);
         this.projectsList = [];
+        this.auxDataProjectList = [];
         this.projects.getProjects().subscribe((data) => {
           data.map((item) => {
             if (
               item.user_platform_id ===
               parseInt(localStorage.getItem('email-id'), 10)
             ) {
+              let auxDatos:Record<string,any>={
+                id:item.id,
+                datos:this.calculos.OperacionesDeFase(item.id),
+                porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
+                porcentajeSubepata:this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),
+                banderaEtapa:false,
+                etapaSeleccionada:"Ninguna",
+                subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
+                impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
+                unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
+                etapasIgnoradas:[],
+                dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
+              }
+              this.auxDataProjectList.push(auxDatos)
               this.projectsList.push(item);
             }
             this.countProjectList = this.projectsList.length;
           });
+          this.auxDataProjectList.reverse();
           this.projectsList.reverse();
           this.tempProjectsList = this.projectsList;
         });
@@ -211,16 +256,32 @@ export class HomeEvamedComponent implements OnInit {
         .subscribe((data) => {
           localStorage.setItem('email-id', data[0].id);
           this.projectsList = [];
+          this.auxDataProjectList = [];
           this.projects.getProjects().subscribe((data) => {
             data.map((item) => {
               if (
                 item.user_platform_id ===
                 parseInt(localStorage.getItem('email-id'), 10)
               ) {
+                let auxDatos:Record<string,any>={
+                  id:item.id,
+                  datos:this.calculos.OperacionesDeFase(item.id),
+                  porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
+                  porcentajeSubepata:this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),
+                  banderaEtapa:false,
+                  etapaSeleccionada:"Ninguna",
+                  subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
+                  impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
+                  unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
+                  etapasIgnoradas:[],
+                  dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
+                }
+                this.auxDataProjectList.push(auxDatos)
                 this.projectsList.push(item);
               }
               this.countProjectList = this.projectsList.length;
             });
+            this.auxDataProjectList.reverse();
             this.projectsList.reverse();
           });
         });
@@ -238,6 +299,74 @@ export class HomeEvamedComponent implements OnInit {
       console.log('result');
       console.log(result);
     });
+  }
+
+  selectImpactoAmbiental(impacto,indexRecivido){ 
+    this.auxDataProjectList[indexRecivido].impactoSelect = this.calculos.ajustarNombre(impacto)
+    this.auxDataProjectList[indexRecivido].etapasIgnoradas = []
+    this.catologoImpactoAmbiental.forEach(element => {
+      if(element.name_complete_potential_type === impacto){
+        this.auxDataProjectList[indexRecivido].unit_impacto = element.unit_potential_type;
+      }
+    })
+    this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].datos,this.auxDataProjectList[indexRecivido].impactoSelect,this.auxDataProjectList[indexRecivido].etapasIgnoradas)
+  }
+
+  selectEtapa(etapa,i){
+    let auxSubetapas = this.calculos.findSubetapas(etapa);
+    this.auxDataProjectList[i].subetasMostrada = auxSubetapas;
+    if(this.auxDataProjectList[i].etapaSeleccionada === etapa){
+      this.auxDataProjectList[i].banderaEtapa = false;
+      this.auxDataProjectList[i].etapaSeleccionada = "Ninguna";
+      this.auxDataProjectList[i].subetasMostrada = [{abreviacion:"nada",color:"#FFFFFF"}];
+    }else{
+      this.auxDataProjectList[i].banderaEtapa = true;
+      this.auxDataProjectList[i].etapaSeleccionada = etapa;
+    }
+  }
+
+  cargaDataPie(data,impactoU,etapasI){
+    let auxdata=[];
+    let auxColor=[];
+    let aux=[]
+    let banderaEtapa=true;
+    Object.keys(data).forEach(element => {
+      if(element === impactoU){
+        Object.keys(data[element]).forEach(ciclo => {
+          etapasI.forEach(ei => {
+            if(ei === ciclo){
+              banderaEtapa=false;
+            }
+          });
+          if(banderaEtapa){
+            Object.keys(data[element][ciclo]).forEach(subetapa => {
+              auxdata.push(data[element][ciclo][subetapa].toFixed(3))
+              auxColor.push(this.calculos.findColor(subetapa))
+            })
+          }
+          banderaEtapa=true;
+        });
+      }
+    });
+    aux=[{
+      data:auxdata,
+      backgroundColor:auxColor
+    }]
+    return aux;
+  }
+
+  eliminarEtapa(etapa,i){
+    if(this.auxDataProjectList[i].etapasIgnoradas.includes(etapa)){
+      this.auxDataProjectList[i].etapasIgnoradas.forEach((element,index) => {
+        if(element === etapa){
+          this.auxDataProjectList[i].etapasIgnoradas.splice(index,1)
+        }
+      });
+    }else{
+      this.auxDataProjectList[i].etapasIgnoradas.push(etapa)
+    }
+    this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(this.auxDataProjectList[i].datos,this.auxDataProjectList[i].impactoSelect,this.auxDataProjectList[i].etapasIgnoradas);
+    console.log(this.auxDataProjectList[i].dataGraficaPie);
   }
 
   openDialogANP() {
