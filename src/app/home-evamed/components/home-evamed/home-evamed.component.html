@@ -66,7 +66,7 @@
                     <button
                       mat-button
                       class="yellow-button-mini"
-                      (click)="updateConstruction(project.id)"
+                      (click)="updateMaterial(project.id)"
                     >
                       Editar
                     </button>
@@ -75,120 +75,32 @@
               </mat-tab>
               <mat-tab label="Construcción" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
+                  <mat-card class="card-item-custom" *ngFor="let section of serchConstructiveSection(project.id)">
+                    {{section.name_section}}
                     <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
+                      <li *ngFor="let sc of serchDetailConstruction(project.id, section.id)">
+                        {{sc.source_information}} <br />
+                        {{sc.quantity}} hrs
+                      </li>
                     </ul>
                     <button
                       mat-button
-                      class="yellow-button"
+                      class="yellow-button-mini"
                       (click)="updateConstruction(project.id)"
                     >
                       Editar
                     </button>
                   </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
                 </section>
               </mat-tab>
               <mat-tab label="Uso" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                    <button
-                      mat-button
-                      class="yellow-button"
-                      (click)="updateUso(project.id)"
-                    >
-                      Editar
-                    </button>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
+                  <h2>Consumo energético total requerido anualmente</h2>
+                  <div *ngFor="let data of serchUseData(project.id)">
+                    <div *ngIf="data.source === 'electric'">Mix eléctrico {{data.quantity}} Kwh</div>
+                    <div *ngIf="data.source === 'fuel'">Combustible: {{data.quantity}} Kwh</div>
+                    <div *ngIf="data.source === 'panels'">Combustible: {{data.quantity}} Kwh</div>
+                  </div>
                 </section>
               </mat-tab>
               <mat-tab label="Fin de vida" class="label-second-tab">
@@ -273,10 +185,10 @@
                    <li> <button (click)="selectEtapa('Construccion',i)" mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a>Construcción</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}% 
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}} 
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}%
+                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}}
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button> 
+                      </button>
                       <button class='button-icon' (click)="eliminarEtapa('Construccion',i)">
                         <mat-icon class="dos">visibility_off</mat-icon>
                       </button>
@@ -284,10 +196,10 @@
                    <li> <button (click)="selectEtapa('Uso',i)" mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a>Uso</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}% 
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}} 
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}%
+                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}}
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>  
+                      </button>
                       <button class='button-icon' (click)="eliminarEtapa('Uso',i)">
                         <mat-icon class="tres">visibility_off</mat-icon>
                       </button>
@@ -295,7 +207,7 @@
                    <li> <button (click)="selectEtapa('FinDeVida',i)" mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a>Fin de vida</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}% 
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}%
                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
@@ -328,10 +240,10 @@
               <p>Dispersión de impactos por subetapa</p>
               <ul class="mostrar-subetapas">
                 <li *ngFor = "let subetapa of auxDataProjectList[i].subetasMostrada">
-                  <span class="dot" [ngStyle]="{'background-color': subetapa.color}"></span> 
+                  <span class="dot" [ngStyle]="{'background-color': subetapa.color}"></span>
                   <div class="text-subetapas" *ngIf = "auxDataProjectList[i].banderaEtapa">
                     <a>{{subetapa.abreviacion}} - {{subetapa.nombre_subeatapa}}</a>
-                    <a>{{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['porcentaje']}}% / 
+                    <a>{{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['porcentaje']}}% /
                       {{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['num']}}
                       {{auxDataProjectList[i].unit_impacto}}</a>
                   </div>

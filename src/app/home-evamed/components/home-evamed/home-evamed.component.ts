@@ -8,7 +8,9 @@ import { ProjectsService } from './../../../core/services/projects/projects.serv
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
-import { Calculos } from '../../../calculos/calculos'
+import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
+import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
+import { Calculos } from '../../../calculos/calculos';
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -47,13 +49,17 @@ export class HomeEvamedComponent implements OnInit {
   dataMaterial: any;
   catologoImpactoAmbiental: any;
   auxDataProjectList: any;
+  ConstructiveSystemElements: any;
+  sourceInformation: any;
+  ACR: any;
+  ECD: any;
 
   public doughnutChartType = 'doughnut';
-  public pieChartOptions={
+  public pieChartOptions = {
     responsive: false,
     maintainAspectRatio: false,
-    layout:{
-      padding:0,
+    layout: {
+      padding: 0,
     },
     events: ['click'],
     elements: { arc: { borderWidth: 0 } },
@@ -61,13 +67,13 @@ export class HomeEvamedComponent implements OnInit {
     hover: { mode: null },
     plugins: {
       datalabels: {
-        color:'#FFFFFF',
+        color: '#FFFFFF',
         font: {
           size: 8,
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  };
 
   constructor(
     private auth: AuthService,
@@ -77,7 +83,9 @@ export class HomeEvamedComponent implements OnInit {
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
     private projects: ProjectsService,
-    private users: UserService
+    private constructionStageService: ConstructionStageService,
+    private users: UserService,
+    private electricitConsumptionService: ElectricitConsumptionService
   ) {
     this.catalogsService.usesCatalog().subscribe((data) => {
       this.catalogoUsos = data;
@@ -106,7 +114,7 @@ export class HomeEvamedComponent implements OnInit {
       this.catalogoEsqHabitacional = data;
     });
 
-    this.catalogsService.getPotentialTypes().subscribe( data => {
+    this.catalogsService.getPotentialTypes().subscribe((data) => {
       this.catologoImpactoAmbiental = this.calculos.FiltradoDeImpactos(data);
     });
 
@@ -134,20 +142,38 @@ export class HomeEvamedComponent implements OnInit {
               item.user_platform_id ===
               parseInt(localStorage.getItem('email-id'), 10)
             ) {
-              let auxDatos:Record<string,any>={
-                id:item.id,
-                datos:this.calculos.OperacionesDeFase(item.id),
-                porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
-                porcentajeSubepata:this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),
-                banderaEtapa:false,
-                etapaSeleccionada:"Ninguna",
-                subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
-                impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
-                unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
-                etapasIgnoradas:[],
-                dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
-              }
-              this.auxDataProjectList.push(auxDatos)
+              let auxDatos: Record<string, any> = {
+                id: item.id,
+                datos: this.calculos.OperacionesDeFase(item.id),
+                porcentaje: this.calculos.ValoresProcentaje(
+                  this.calculos.OperacionesDeFase(item.id)
+                ),
+                porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
+                  this.calculos.OperacionesDeFase(item.id)
+                ),
+                banderaEtapa: false,
+                etapaSeleccionada: 'Ninguna',
+                subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
+                impactoSelect: this.calculos.ajustarNombre(
+                  this.catologoImpactoAmbiental[0][
+                    'name_complete_potential_type'
+                  ]
+                ),
+                unit_impacto: this.catologoImpactoAmbiental[0][
+                  'unit_potential_type'
+                ],
+                etapasIgnoradas: [],
+                dataGraficaPie: this.cargaDataPie(
+                  this.calculos.OperacionesDeFase(item.id),
+                  this.calculos.ajustarNombre(
+                    this.catologoImpactoAmbiental[0][
+                      'name_complete_potential_type'
+                    ]
+                  ),
+                  []
+                ),
+              };
+              this.auxDataProjectList.push(auxDatos);
               this.projectsList.push(item);
             }
             this.countProjectList = this.projectsList.length;
@@ -161,7 +187,40 @@ export class HomeEvamedComponent implements OnInit {
     this.catalogsService.getStates().subscribe((data) => {
       this.catalogoEstados = data;
     });
+
+    this.constructionStageService
+      .getConstructiveSystemElement()
+      .subscribe((data) => {
+        const CSE = [];
+        data.map((item) => {
+          CSE.push(item);
+        });
+        this.ConstructiveSystemElements = CSE;
+      });
+
+    this.catalogsService
+      .getSourceInformation()
+      .subscribe((sourceInformation) => {
+        this.sourceInformation = sourceInformation;
+      });
+
+    this.electricitConsumptionService.getACR().subscribe((data) => {
+      const ACR = [];
+      data.map((item) => {
+        ACR.push(item);
+      });
+      this.ACR = ACR;
+    });
+
+    this.electricitConsumptionService.getECD().subscribe((data) => {
+      const ECD = [];
+      data.map((item) => {
+        ECD.push(item);
+      });
+      this.ECD = ECD;
+    });
   }
+
   ngOnInit(): void {}
 
   onlyUnique(value, index, self) {
@@ -217,6 +276,71 @@ export class HomeEvamedComponent implements OnInit {
     return listSC.filter(this.onlyUnique);
   }
 
+  serchConstructiveSection(projectId) {
+    let sectionsExist = [];
+    try {
+      this.sections.map((section) => {
+        this.ConstructiveSystemElements.map((cs) => {
+          if (cs.project_id === projectId && cs.section_id === section.id) {
+            sectionsExist.push(section);
+          }
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    return sectionsExist.filter(this.onlyUnique);
+  }
+
+  serchDetailConstruction(projectId, scId) {
+    let list = [];
+
+    try {
+      this.sections.map((section) => {
+        this.ConstructiveSystemElements.map((cs) => {
+          if (
+            cs.project_id === projectId &&
+            cs.section_id === section.id &&
+            section.id === scId
+          ) {
+            this.sourceInformation.map((si) => {
+              if (si.id === cs.source_information_id) {
+                list.push({
+                  quantity: cs.quantity,
+                  source_information: si.name_source_information,
+                });
+              }
+            });
+          }
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    return list.filter(this.onlyUnique);
+  }
+
+  serchUseData(projectId) {
+    let dataList = [];
+    try {
+      this.ACR.map((data) => {
+        if (projectId === data.project_id) {
+          this.ECD.map((data2) => {
+            if (data.id === data2.annual_consumption_required_id) {
+              dataList.push(data2);
+            }
+          });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    return dataList.filter(this.onlyUnique);
+  }
+
   selectUse(id) {
     this.projectsList = [];
     this.tempProjectsList.map((item) => {
@@ -263,20 +387,38 @@ export class HomeEvamedComponent implements OnInit {
                 item.user_platform_id ===
                 parseInt(localStorage.getItem('email-id'), 10)
               ) {
-                let auxDatos:Record<string,any>={
-                  id:item.id,
-                  datos:this.calculos.OperacionesDeFase(item.id),
-                  porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
-                  porcentajeSubepata:this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),
-                  banderaEtapa:false,
-                  etapaSeleccionada:"Ninguna",
-                  subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
-                  impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
-                  unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
-                  etapasIgnoradas:[],
-                  dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
-                }
-                this.auxDataProjectList.push(auxDatos)
+                let auxDatos: Record<string, any> = {
+                  id: item.id,
+                  datos: this.calculos.OperacionesDeFase(item.id),
+                  porcentaje: this.calculos.ValoresProcentaje(
+                    this.calculos.OperacionesDeFase(item.id)
+                  ),
+                  porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
+                    this.calculos.OperacionesDeFase(item.id)
+                  ),
+                  banderaEtapa: false,
+                  etapaSeleccionada: 'Ninguna',
+                  subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
+                  impactoSelect: this.calculos.ajustarNombre(
+                    this.catologoImpactoAmbiental[0][
+                      'name_complete_potential_type'
+                    ]
+                  ),
+                  unit_impacto: this.catologoImpactoAmbiental[0][
+                    'unit_potential_type'
+                  ],
+                  etapasIgnoradas: [],
+                  dataGraficaPie: this.cargaDataPie(
+                    this.calculos.OperacionesDeFase(item.id),
+                    this.calculos.ajustarNombre(
+                      this.catologoImpactoAmbiental[0][
+                        'name_complete_potential_type'
+                      ]
+                    ),
+                    []
+                  ),
+                };
+                this.auxDataProjectList.push(auxDatos);
                 this.projectsList.push(item);
               }
               this.countProjectList = this.projectsList.length;
@@ -301,72 +443,86 @@ export class HomeEvamedComponent implements OnInit {
     });
   }
 
-  selectImpactoAmbiental(impacto,indexRecivido){ 
-    this.auxDataProjectList[indexRecivido].impactoSelect = this.calculos.ajustarNombre(impacto)
-    this.auxDataProjectList[indexRecivido].etapasIgnoradas = []
-    this.catologoImpactoAmbiental.forEach(element => {
-      if(element.name_complete_potential_type === impacto){
-        this.auxDataProjectList[indexRecivido].unit_impacto = element.unit_potential_type;
+  selectImpactoAmbiental(impacto, indexRecivido) {
+    this.auxDataProjectList[
+      indexRecivido
+    ].impactoSelect = this.calculos.ajustarNombre(impacto);
+    this.auxDataProjectList[indexRecivido].etapasIgnoradas = [];
+    this.catologoImpactoAmbiental.forEach((element) => {
+      if (element.name_complete_potential_type === impacto) {
+        this.auxDataProjectList[indexRecivido].unit_impacto =
+          element.unit_potential_type;
       }
-    })
-    this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].datos,this.auxDataProjectList[indexRecivido].impactoSelect,this.auxDataProjectList[indexRecivido].etapasIgnoradas)
+    });
+    this.auxDataProjectList[indexRecivido].dataGraficaPie = this.cargaDataPie(
+      this.auxDataProjectList[indexRecivido].datos,
+      this.auxDataProjectList[indexRecivido].impactoSelect,
+      this.auxDataProjectList[indexRecivido].etapasIgnoradas
+    );
   }
 
-  selectEtapa(etapa,i){
+  selectEtapa(etapa, i) {
     let auxSubetapas = this.calculos.findSubetapas(etapa);
     this.auxDataProjectList[i].subetasMostrada = auxSubetapas;
-    if(this.auxDataProjectList[i].etapaSeleccionada === etapa){
+    if (this.auxDataProjectList[i].etapaSeleccionada === etapa) {
       this.auxDataProjectList[i].banderaEtapa = false;
-      this.auxDataProjectList[i].etapaSeleccionada = "Ninguna";
-      this.auxDataProjectList[i].subetasMostrada = [{abreviacion:"nada",color:"#FFFFFF"}];
-    }else{
+      this.auxDataProjectList[i].etapaSeleccionada = 'Ninguna';
+      this.auxDataProjectList[i].subetasMostrada = [
+        { abreviacion: 'nada', color: '#FFFFFF' },
+      ];
+    } else {
       this.auxDataProjectList[i].banderaEtapa = true;
       this.auxDataProjectList[i].etapaSeleccionada = etapa;
     }
   }
 
-  cargaDataPie(data,impactoU,etapasI){
-    let auxdata=[];
-    let auxColor=[];
-    let aux=[]
-    let banderaEtapa=true;
-    Object.keys(data).forEach(element => {
-      if(element === impactoU){
-        Object.keys(data[element]).forEach(ciclo => {
-          etapasI.forEach(ei => {
-            if(ei === ciclo){
-              banderaEtapa=false;
+  cargaDataPie(data, impactoU, etapasI) {
+    let auxdata = [];
+    let auxColor = [];
+    let aux = [];
+    let banderaEtapa = true;
+    Object.keys(data).forEach((element) => {
+      if (element === impactoU) {
+        Object.keys(data[element]).forEach((ciclo) => {
+          etapasI.forEach((ei) => {
+            if (ei === ciclo) {
+              banderaEtapa = false;
             }
           });
-          if(banderaEtapa){
-            Object.keys(data[element][ciclo]).forEach(subetapa => {
-              auxdata.push(data[element][ciclo][subetapa].toFixed(3))
-              auxColor.push(this.calculos.findColor(subetapa))
-            })
+          if (banderaEtapa) {
+            Object.keys(data[element][ciclo]).forEach((subetapa) => {
+              auxdata.push(data[element][ciclo][subetapa].toFixed(3));
+              auxColor.push(this.calculos.findColor(subetapa));
+            });
           }
-          banderaEtapa=true;
+          banderaEtapa = true;
         });
       }
     });
-    aux=[{
-      data:auxdata,
-      backgroundColor:auxColor
-    }]
+    aux = [
+      {
+        data: auxdata,
+        backgroundColor: auxColor,
+      },
+    ];
     return aux;
   }
 
-  eliminarEtapa(etapa,i){
-    if(this.auxDataProjectList[i].etapasIgnoradas.includes(etapa)){
-      this.auxDataProjectList[i].etapasIgnoradas.forEach((element,index) => {
-        if(element === etapa){
-          this.auxDataProjectList[i].etapasIgnoradas.splice(index,1)
+  eliminarEtapa(etapa, i) {
+    if (this.auxDataProjectList[i].etapasIgnoradas.includes(etapa)) {
+      this.auxDataProjectList[i].etapasIgnoradas.forEach((element, index) => {
+        if (element === etapa) {
+          this.auxDataProjectList[i].etapasIgnoradas.splice(index, 1);
         }
       });
-    }else{
-      this.auxDataProjectList[i].etapasIgnoradas.push(etapa)
+    } else {
+      this.auxDataProjectList[i].etapasIgnoradas.push(etapa);
     }
-    this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(this.auxDataProjectList[i].datos,this.auxDataProjectList[i].impactoSelect,this.auxDataProjectList[i].etapasIgnoradas);
-    console.log(this.auxDataProjectList[i].dataGraficaPie);
+    this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(
+      this.auxDataProjectList[i].datos,
+      this.auxDataProjectList[i].impactoSelect,
+      this.auxDataProjectList[i].etapasIgnoradas
+    );
   }
 
   openDialogANP() {
@@ -421,8 +577,7 @@ export class HomeEvamedComponent implements OnInit {
           })
           .subscribe((data) => {
             sessionStorage.setItem('primaryDataProject', JSON.stringify(data));
-            console.log('estado seleccionado');
-            console.log(result.estadoSeleccionado);
+
             sessionStorage.setItem(
               'estadoSeleccionado',
               result.estadoSeleccionado
