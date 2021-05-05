@@ -59,7 +59,7 @@
               <mat-tab label="Producción" class="label-second-tab">
                 <section class="grid-container"  >
                   <mat-card class="card-item-custom" *ngFor="let section of serchSections(project.id)">
-                    {{section.name_section}}
+                    <h2>{{section.name_section}}</h2>
                     <ul>
                       <li *ngFor="let sc of serchSC(project.id, section.id)">{{sc}}</li>
                     </ul>
@@ -76,7 +76,7 @@
               <mat-tab label="Construcción" class="label-second-tab">
                 <section class="grid-container">
                   <mat-card class="card-item-custom" *ngFor="let section of serchConstructiveSection(project.id)">
-                    {{section.name_section}}
+                    <h2>{{section.name_section}}</h2>
                     <ul>
                       <li *ngFor="let sc of serchDetailConstruction(project.id, section.id)">
                         {{sc.source_information}} <br />
@@ -101,57 +101,27 @@
                     <div *ngIf="data.source === 'fuel'">Combustible: {{data.quantity}} Kwh</div>
                     <div *ngIf="data.source === 'panels'">Combustible: {{data.quantity}} Kwh</div>
                   </div>
+                  <button
+                      mat-button
+                      class="yellow-button-mini"
+                      (click)="updateUso(project.id)"
+                    >
+                      Editar
+                    </button>
                 </section>
               </mat-tab>
               <mat-tab label="Fin de vida" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
+                  <mat-card class="card-item-custom" *ngFor="let section of serchEndLifeSection(project.id)">
+                    <h2>{{section.name_section}}</h2>
+
+                    <button
+                      mat-button
+                      class="yellow-button-mini"
+                      (click)="updateConstruction(project.id)"
+                    >
+                      Editar
+                    </button>
                   </mat-card>
                 </section>
               </mat-tab>

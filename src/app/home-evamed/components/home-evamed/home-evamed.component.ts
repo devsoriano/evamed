@@ -9,6 +9,7 @@ import { CatalogsService } from './../../../core/services/catalogs/catalogs.serv
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
+import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
 import { Calculos } from '../../../calculos/calculos';
 @Component({
@@ -53,6 +54,7 @@ export class HomeEvamedComponent implements OnInit {
   sourceInformation: any;
   ACR: any;
   ECD: any;
+  ECDP: any;
 
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
@@ -85,6 +87,7 @@ export class HomeEvamedComponent implements OnInit {
     private projects: ProjectsService,
     private constructionStageService: ConstructionStageService,
     private users: UserService,
+    private endLifeService: EndLifeService,
     private electricitConsumptionService: ElectricitConsumptionService
   ) {
     this.catalogsService.usesCatalog().subscribe((data) => {
@@ -219,6 +222,10 @@ export class HomeEvamedComponent implements OnInit {
       });
       this.ECD = ECD;
     });
+
+    this.endLifeService.getECDP().subscribe((data) => {
+      this.ECDP = data;
+    });
   }
 
   ngOnInit(): void {}
@@ -282,6 +289,23 @@ export class HomeEvamedComponent implements OnInit {
       this.sections.map((section) => {
         this.ConstructiveSystemElements.map((cs) => {
           if (cs.project_id === projectId && cs.section_id === section.id) {
+            sectionsExist.push(section);
+          }
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    return sectionsExist.filter(this.onlyUnique);
+  }
+
+  serchEndLifeSection(projectId) {
+    let sectionsExist = [];
+    try {
+      this.sections.map((section) => {
+        this.ECDP.map((ecpd) => {
+          if (ecpd.project_id === projectId && ecpd.section_id === section.id) {
             sectionsExist.push(section);
           }
         });
