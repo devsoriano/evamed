@@ -160,7 +160,6 @@ ul {
 }
 
 .seccionUno {
-
   li {
     display: flex;
     padding-bottom: 5px;
@@ -171,14 +170,14 @@ ul {
     width: 161px;
     height: 48px;
     background: #efefef;
-    border: 0px;;
+    border: 0px;
   }
 
   .button-info-select {
     border-radius: 10px 0px 0px 10px;
     width: 161px;
     height: 48px;
-    background: #FFFFFF;
+    background: #ffffff;
     //border: 1px solid;
   }
 
@@ -194,7 +193,7 @@ ul {
     margin-top: 0.1px;
   }
 
-  .button-icon{
+  .button-icon {
     width: 19px;
     height: 48px;
     background: #efefef;
@@ -296,7 +295,7 @@ ul {
   margin: 10px;
   margin-left: 30px;
   margin-right: 40px;
-  
+
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
     font-size: 20px;
     height: 38px;
@@ -311,4 +310,27 @@ ul {
     width: 54px;
     height: 40px;
   }
+}
+
+.updateButton {
+  display: none;
+  margin-top: -10px;
+  background-color: #edc903;
+  font-size: 14px;
+  color: #fff;
+  &:hover {
+    display: block;
+  }
+}
+
+.listItems {
+  &:hover + .updateButton {
+    display: block;
+  }
+}
+
+.mat-menu-item {
+  height: 26px;
+  border-bottom: 1px solid #ededed;
+  line-height: 1px;
 }

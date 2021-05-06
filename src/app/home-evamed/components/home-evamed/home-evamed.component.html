@@ -7,7 +7,7 @@
       <div class="filter-options">
         <mat-form-field appearance="outline" class="select-general">
           <mat-label>Seleccione una opción</mat-label>
-          <mat-select [(ngModel)]="filtroUsoSeleccionado" (selectionChange)="selectUse(filtroUsoSeleccionado)">
+          <mat-select  [(ngModel)]="filtroUsoSeleccionado" (selectionChange)="selectUse(filtroUsoSeleccionado)">
             <mat-option *ngFor="let uso of filtroCatalogoUsos" [value]="uso.id">
               {{uso.name_use}}
             </mat-option>
@@ -31,14 +31,14 @@
           >
             <mat-icon class="more-vert-custom">more_vert</mat-icon>
           </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="duplicateProject(project.id)">
+          <mat-menu #menu="matMenu" class="custom-menu">
+            <button mat-menu-item (click)="duplicateProject(project.id)" class="custom-item">
               <span>Duplicar</span>
             </button>
-            <button mat-menu-item (click)="renameProject(project.id)">
+            <button mat-menu-item (click)="renameProject(project.id)" class="custom-item">
               <span>Renombrar</span>
             </button>
-            <button mat-menu-item (click)="deleteProject(project.id)">
+            <button mat-menu-item (click)="deleteProject(project.id)" class="custom-item">
               <span>Eliminar</span>
             </button>
           </mat-menu>
@@ -60,12 +60,12 @@
                 <section class="grid-container"  >
                   <mat-card class="card-item-custom" *ngFor="let section of serchSections(project.id)">
                     <h2>{{section.name_section}}</h2>
-                    <ul>
+                    <ul class="listItems">
                       <li *ngFor="let sc of serchSC(project.id, section.id)">{{sc}}</li>
                     </ul>
                     <button
                       mat-button
-                      class="yellow-button-mini"
+                      class="yellow-button-mini updateButton"
                       (click)="updateMaterial(project.id)"
                     >
                       Editar
@@ -77,7 +77,7 @@
                 <section class="grid-container">
                   <mat-card class="card-item-custom" *ngFor="let section of serchConstructiveSection(project.id)">
                     <h2>{{section.name_section}}</h2>
-                    <ul>
+                    <ul class="listItems">
                       <li *ngFor="let sc of serchDetailConstruction(project.id, section.id)">
                         {{sc.source_information}} <br />
                         {{sc.quantity}} hrs
@@ -85,7 +85,7 @@
                     </ul>
                     <button
                       mat-button
-                      class="yellow-button-mini"
+                      class="yellow-button-mini updateButton"
                       (click)="updateConstruction(project.id)"
                     >
                       Editar

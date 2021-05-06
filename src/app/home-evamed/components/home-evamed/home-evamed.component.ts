@@ -12,6 +12,7 @@ import { ConstructionStageService } from 'src/app/core/services/construction-sta
 import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
 import { Calculos } from '../../../calculos/calculos';
+
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -97,7 +98,7 @@ export class HomeEvamedComponent implements OnInit {
     tooltips: { enabled: false },
     hover: { mode: null },
     plugins: {
-      datalabels:false
+      datalabels: false,
     },
   };
 
@@ -163,6 +164,7 @@ export class HomeEvamedComponent implements OnInit {
         localStorage.setItem('email-id', data[0].id);
         this.projectsList = [];
         this.auxDataProjectList = [];
+
         this.projects.getProjects().subscribe((data) => {
           data.map((item) => {
             if (
@@ -209,7 +211,7 @@ export class HomeEvamedComponent implements OnInit {
                   Uso: 'visibility_off',
                   FinDeVida: 'visibility_off',
                 },
-                dataGraficaPieUso:this.DataPieUso(this.serchUseData(item.id)),
+                dataGraficaPieUso: this.DataPieUso(this.serchUseData(item.id)),
                 dataGraficaBar: this.cargarDataBar(
                   this.calculos.ValoresProcentajeSubeapa(
                     this.calculos.OperacionesDeFase(item.id)
@@ -422,18 +424,18 @@ export class HomeEvamedComponent implements OnInit {
     return dataList.filter(this.onlyUnique);
   }
 
-  DataPieUso(data){
-    let aux=[]
-    let auxdata=[]
+  DataPieUso(data) {
+    let aux = [];
+    let auxdata = [];
 
-    data.forEach(element => {
-      aux.push(element['quantity'])
+    data.forEach((element) => {
+      aux.push(element['quantity']);
     });
-    
+
     auxdata = [
       {
         data: aux,
-        backgroundColor: ['#DFDFDF','#767676','#C3C3C3'],
+        backgroundColor: ['#DFDFDF', '#767676', '#C3C3C3'],
       },
     ];
 
@@ -479,84 +481,16 @@ export class HomeEvamedComponent implements OnInit {
         .subscribe((data) => {
           localStorage.setItem('email-id', data[0].id);
           this.projectsList = [];
-          this.auxDataProjectList = [];
           this.projects.getProjects().subscribe((data) => {
             data.map((item) => {
               if (
                 item.user_platform_id ===
                 parseInt(localStorage.getItem('email-id'), 10)
               ) {
-                let auxDatos: Record<string, any> = {
-                  id: item.id,
-                  datos: this.calculos.OperacionesDeFase(item.id),
-                  porcentaje: this.calculos.ValoresProcentaje(
-                    this.calculos.OperacionesDeFase(item.id)
-                  ),
-                  porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
-                    this.calculos.OperacionesDeFase(item.id)
-                  ),
-                  banderaEtapa: false,
-                  iconosCambio: {
-                    Producción: '',
-                    Construccion: 'visibility_off',
-                    Uso: 'visibility_off',
-                    FinDeVida: 'visibility_off',
-                  },
-                  etapaSeleccionada: 'Ninguna',
-                  subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
-                  impactoSelect: this.calculos.ajustarNombre(
-                    this.catologoImpactoAmbiental[0][
-                      'name_complete_potential_type'
-                    ]
-                  ),
-                  unit_impacto: this.catologoImpactoAmbiental[0][
-                    'unit_potential_type'
-                  ],
-                  etapasIgnoradas: [],
-                  TipoGraficaActiva: { Pie: true, Bar: false },
-                  idsTextBotones: {
-                    Producción: 'ProducciónTInfo'.concat(String(item.id)),
-                    Construccion: 'ConstruccionTInfo'.concat(String(item.id)),
-                    Uso: 'UsoTInfo'.concat(String(item.id)),
-                    FinDeVida: 'FinDeVidaTInfo'.concat(String(item.id)),
-                  },
-                  idsBotones: {
-                    Producción: 'ProducciónTextInfo'.concat(String(item.id)),
-                    Construccion: 'ConstruccionTextInfo'.concat(
-                      String(item.id)
-                    ),
-                    Uso: 'UsoTextInfo'.concat(String(item.id)),
-                    FinDeVida: 'FinDeVidaTextInfo'.concat(String(item.id)),
-                  },
-                  dataGraficaBar: this.cargarDataBar(
-                    this.calculos.ValoresProcentajeSubeapa(
-                      this.calculos.OperacionesDeFase(item.id)
-                    ),
-                    this.calculos.ajustarNombre(
-                      this.catologoImpactoAmbiental[0][
-                        'name_complete_potential_type'
-                      ]
-                    ),
-                    []
-                  ),
-                  dataGraficaPie: this.cargaDataPie(
-                    this.calculos.ValoresProcentajeSubeapa(
-                      this.calculos.OperacionesDeFase(item.id)
-                    ),
-                    this.calculos.ajustarNombre(
-                      this.catologoImpactoAmbiental[0][
-                        'name_complete_potential_type'
-                      ]
-                    ),
-                    []
-                  ),
-                };
-                this.auxDataProjectList.push(auxDatos);
                 this.projectsList.push(item);
               }
               this.countProjectList = this.projectsList.length;
             });
-            this.auxDataProjectList.reverse();
             this.projectsList.reverse();
           });
         });
@@ -571,14 +505,34 @@ export class HomeEvamedComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('result');
-      console.log(result);
+      this.projectsService.getProjectById(id).subscribe((data: any) => {
+        this.projectsService
+          .updateProduct(id, {
+            id,
+            name_project: result.nameProject,
+            builded_surface: data.builded_surface,
+            living_area: data.living_area,
+            tier: data.living_area,
+            distance: data.distance,
+            use_id: data.use_id,
+            type_id: data.type_id,
+            country_id: data.country_id,
+            useful_life_id: data.country_id,
+            housing_scheme_id: data.housing_scheme_id,
+            user_platform_id: data.user_platform_id,
+            city_id_origin: data.city_id_origin,
+          })
+          .subscribe((data2) => {
+            console.log(data2);
+            location.reload();
+          });
+      });
     });
   }
 
-  duplicateProject(id) {
+  duplicateProject(projectId) {
     this.projectsList.map((project) => {
-      if (project.id === id) {
+      if (project.id === projectId) {
         this.projectsService
           .addProject({
             name_project: `${project.name_project} - Copy`,
@@ -595,8 +549,9 @@ export class HomeEvamedComponent implements OnInit {
             distance: null,
           })
           .subscribe((data) => {
+            localStorage.setItem('projectUpdateId', data.id);
             this.dataMaterial.map((material) => {
-              if (material.project_id === id) {
+              if (material.project_id === projectId) {
                 this.projectsService
                   .addSchemeProject({
                     construction_system: material.construction_system,
@@ -616,15 +571,41 @@ export class HomeEvamedComponent implements OnInit {
                     transport_id_origin: material.transport_id_origin,
                     transport_id_end: material.transport_id_end,
                   })
-                  .subscribe((data) => {
-                    console.log('Success Modelo Revit o Usuario!');
-                    console.log(data);
+                  .subscribe((dataResulMaterial) => {
+                    console.log('resultado de materiales');
+                    console.log(dataResulMaterial);
+                    location.reload();
                   });
               }
             });
           });
       }
     });
+    // if (localStorage.getItem('projectUpdateId') !== undefined) {
+    try {
+      this.ConstructiveSystemElements.map((cs) => {
+        if (cs.project_id === projectId) {
+          this.constructionStageService
+            .addConstructiveSistemElement({
+              quantity: cs.quantity,
+              project_id: parseInt(localStorage.getItem('projectUpdateId')) + 1,
+              section_id: cs.section_id,
+              constructive_process_id: cs.constructive_process_id,
+              volume_unit_id: cs.volume_unit_id,
+              energy_unit_id: cs.energy_unit_id,
+              bulk_unit_id: cs.bulk_unit_id,
+              source_information_id: cs.source_information_id,
+            })
+            .subscribe((dataResultConstruction) => {
+              console.log('Result construction!!!!!');
+              console.log(dataResultConstruction);
+            });
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    // }
   }
 
   selectImpactoAmbiental(impacto, indexRecivido) {
