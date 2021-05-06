@@ -97,12 +97,7 @@ export class HomeEvamedComponent implements OnInit {
     tooltips: { enabled: false },
     hover: { mode: null },
     plugins: {
-      datalabels: {
-        color: '#FFFFFF',
-        font: {
-          size: 7,
-        },
-      },
+      datalabels:false
     },
   };
 
@@ -214,6 +209,7 @@ export class HomeEvamedComponent implements OnInit {
                   Uso: 'visibility_off',
                   FinDeVida: 'visibility_off',
                 },
+                dataGraficaPieUso:this.DataPieUso(this.serchUseData(item.id)),
                 dataGraficaBar: this.cargarDataBar(
                   this.calculos.ValoresProcentajeSubeapa(
                     this.calculos.OperacionesDeFase(item.id)
@@ -424,6 +420,24 @@ export class HomeEvamedComponent implements OnInit {
     }
 
     return dataList.filter(this.onlyUnique);
+  }
+
+  DataPieUso(data){
+    let aux=[]
+    let auxdata=[]
+
+    data.forEach(element => {
+      aux.push(element['quantity'])
+    });
+    
+    auxdata = [
+      {
+        data: aux,
+        backgroundColor: ['#DFDFDF','#767676','#C3C3C3'],
+      },
+    ];
+
+    return auxdata;
   }
 
   selectUse(id) {

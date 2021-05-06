@@ -96,17 +96,20 @@
               <mat-tab label="Uso" class="label-second-tab">
                 <section class="grid-container">
                   <h2>Consumo energético total requerido anualmente</h2>
-                  <div class="canvas-container">
+                  <div>
                     <canvas baseChart
-                            [data]="pieChartData"
+                            [datasets]="auxDataProjectList[i].dataGraficaPieUso"
                             [options]="pieChartOptions_elementos"
                             [chartType]="pieChartType">
                     </canvas>
                   </div>
                   <div *ngFor="let data of serchUseData(project.id)">
-                    <div *ngIf="data.source === 'electric'">Mix eléctrico {{data.quantity}} Kwh</div>
-                    <div *ngIf="data.source === 'fuel'">Combustible: {{data.quantity}} Kwh</div>
-                    <div *ngIf="data.source === 'panels'">Combustible: {{data.quantity}} Kwh</div>
+                    <div *ngIf="data.source === 'electric'">
+                      <span class="dot" [ngStyle]="{'background-color': '#767676'}"></span>Mix eléctrico {{data.quantity}} Kwh</div>
+                    <div *ngIf="data.source === 'fuel'">
+                      <span class="dot" [ngStyle]="{'background-color': '#DFDFDF'}"></span>Combustible: {{data.quantity}} Kwh</div>
+                    <div *ngIf="data.source === 'panels'">
+                      <span class="dot" [ngStyle]="{'background-color': '#C3C3C3'}"></span>Combustible: {{data.quantity}} Kwh</div>
                   </div>
                   <button
                       mat-button
