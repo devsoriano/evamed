@@ -32,7 +32,7 @@
             <mat-icon class="more-vert-custom">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="duplicateProject(project.id)">
               <span>Duplicar</span>
             </button>
             <button mat-menu-item (click)="renameProject(project.id)">
@@ -161,8 +161,8 @@
                    <li> <button id="{{auxDataProjectList[i].idsBotones['Construccion']}}" (click)="selectEtapa('Construccion',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a id="{{auxDataProjectList[i].idsTextBotones['Construccion']}}">Construcción</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}% 
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}} 
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}%
+                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}}
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
                       <button class='button-icon' (click)="eliminarEtapa('Construccion',i)">
@@ -172,8 +172,8 @@
                    <li> <button id="{{auxDataProjectList[i].idsBotones['Uso']}}" (click)="selectEtapa('Uso',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a id="{{auxDataProjectList[i].idsTextBotones['Uso']}}">Uso</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}% 
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}} 
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}%
+                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}}
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
                       <button class='button-icon' (click)="eliminarEtapa('Uso',i)">
@@ -183,7 +183,7 @@
                    <li> <button id="{{auxDataProjectList[i].idsBotones['FinDeVida']}}" (click)="selectEtapa('FinDeVida',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
                       <div class="some-text">
                       <a id="{{auxDataProjectList[i].idsTextBotones['FinDeVida']}}">Fin de vida</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}% 
+                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}%
                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
