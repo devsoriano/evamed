@@ -88,12 +88,23 @@ export class HomeEvamedComponent implements OnInit {
       }
     },
   };
-  public barChartLabels = ['A1', 'A2', 'A3', 'A4','A5','B4','B6','C1','C2','C3','C4'];
   public barChartType = 'bar';
   public barChartLegend = true;
-  public barChartData = [
-    {data: [1,2,3,4,5,6,7,8,9,10,11]},
-  ];
+  public pieChartData = [120, 150, 180, 90];
+  public pieChartType = 'pie';
+  public pieChartOptions_elementos={
+    elements: { arc: { borderWidth: 0 } },
+    tooltips: { enabled: false },
+    hover: { mode: null },
+    plugins: {
+      datalabels: {
+        color:'#FFFFFF',
+        font: {
+          size: 7,
+        }
+      }
+    }
+  }
 
   constructor(
     private auth: AuthService,
@@ -524,7 +535,6 @@ export class HomeEvamedComponent implements OnInit {
           });
           if(banderaEtapa){
             Object.keys(data[element][ciclo]).forEach(subetapa => {
-              console.log(data[element][ciclo][subetapa].porcentaje)
               auxl.push(subetapa)
               auxdata.push(data[element][ciclo][subetapa].porcentaje)
               auxColor.push(this.calculos.findColor(subetapa))

@@ -96,6 +96,13 @@
               <mat-tab label="Uso" class="label-second-tab">
                 <section class="grid-container">
                   <h2>Consumo energético total requerido anualmente</h2>
+                  <div class="canvas-container">
+                    <canvas baseChart
+                            [data]="pieChartData"
+                            [options]="pieChartOptions_elementos"
+                            [chartType]="pieChartType">
+                    </canvas>
+                  </div>
                   <div *ngFor="let data of serchUseData(project.id)">
                     <div *ngIf="data.source === 'electric'">Mix eléctrico {{data.quantity}} Kwh</div>
                     <div *ngIf="data.source === 'fuel'">Combustible: {{data.quantity}} Kwh</div>
