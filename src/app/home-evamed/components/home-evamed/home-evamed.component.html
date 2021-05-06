@@ -199,13 +199,15 @@
                 <button>Exportar</button>
               </div>
               <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Pie']">
-              <div class="canvas-container">
-                <canvas #MyChart='base-chart' #canvas baseChart
-                            [datasets]="auxDataProjectList[i].dataGraficaPie"
-                            [chartType]="doughnutChartType"
-                            [options]="pieChartOptions"
-                            width="300px" height="400px"></canvas>
-              </div>        
+                <div class="canvas-container">
+                  <canvas #MyChart='base-chart' #canvas baseChart
+                              [datasets]="auxDataProjectList[i].dataGraficaPie"
+                              [chartType]="doughnutChartType"
+                              [options]="pieChartOptions"
+                              width="217px" height="292px">
+                  </canvas>
+                </div>
+              </div>
               <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Bar']">
                 <canvas #MyChart='base-chart' #canvas baseChart
                     [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
