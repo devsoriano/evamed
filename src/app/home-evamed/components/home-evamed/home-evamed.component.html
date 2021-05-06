@@ -256,51 +256,50 @@
                     {{impacto.name_complete_potential_type}}
                   </mat-option>
                 </mat-select>
-                <p>{{auxDataProjectList[i].impactoSelect}}</p>
                 <p>Fases de ciclo de vida</p>
                 <ul>
-                   <li> <button (click)="selectEtapa('Producción',i)" mat-stroked-button class="button-info">
+                   <li> <button id="{{auxDataProjectList[i].idsBotones['Producción']}}" (click)="selectEtapa('Producción',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Materiales</a>
+                      <a id="{{auxDataProjectList[i].idsTextBotones['Producción']}}">Materiales</a>
                       <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['porcentaje']}}%
                          / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}}
                           {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
                       <button class='button-icon' (click)="eliminarEtapa('Producción',i)">
-                        <mat-icon class="uno">visibility_off</mat-icon>
+                        <mat-icon class="uno">{{auxDataProjectList[i].iconosCambio['Producción']}}</mat-icon>
                       </button>
                    </li>
-                   <li> <button (click)="selectEtapa('Construccion',i)" mat-stroked-button class="button-info">
+                   <li> <button id="{{auxDataProjectList[i].idsBotones['Construccion']}}" (click)="selectEtapa('Construccion',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Construcción</a>
+                      <a id="{{auxDataProjectList[i].idsTextBotones['Construccion']}}">Construcción</a>
                       <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}% 
                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}} 
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button> 
                       <button class='button-icon' (click)="eliminarEtapa('Construccion',i)">
-                        <mat-icon class="dos">visibility_off</mat-icon>
+                        <mat-icon class="dos">{{auxDataProjectList[i].iconosCambio['Construccion']}}</mat-icon>
                       </button>
                     </li>
-                   <li> <button (click)="selectEtapa('Uso',i)" mat-stroked-button class="button-info">
+                   <li> <button id="{{auxDataProjectList[i].idsBotones['Uso']}}" (click)="selectEtapa('Uso',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Uso</a>
+                      <a id="{{auxDataProjectList[i].idsTextBotones['Uso']}}">Uso</a>
                       <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}% 
                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}} 
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>  
                       <button class='button-icon' (click)="eliminarEtapa('Uso',i)">
-                        <mat-icon class="tres">visibility_off</mat-icon>
+                        <mat-icon class="tres">{{auxDataProjectList[i].iconosCambio['Uso']}}</mat-icon>
                       </button>
                     </li>
-                   <li> <button (click)="selectEtapa('FinDeVida',i)" mat-stroked-button class="button-info">
+                   <li> <button id="{{auxDataProjectList[i].idsBotones['FinDeVida']}}" (click)="selectEtapa('FinDeVida',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
                       <div class="some-text">
-                      <a>Fin de vida</a>
+                      <a id="{{auxDataProjectList[i].idsTextBotones['FinDeVida']}}">Fin de vida</a>
                       <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}% 
                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
                         {{auxDataProjectList[i].unit_impacto}}</a></div>
                       </button>
                       <button class='button-icon' (click)="eliminarEtapa('FinDeVida',i)">
-                        <mat-icon class="cuatro">visibility_off</mat-icon>
+                        <mat-icon class="cuatro">{{auxDataProjectList[i].iconosCambio['FinDeVida']}}</mat-icon>
                       </button>
                     </li>
                 </ul>
@@ -312,16 +311,27 @@
             <div>
               <div class="button-graph">
                 <mat-button-toggle-group>
-                     <mat-button-toggle><mat-icon>table_view</mat-icon></mat-button-toggle>
-                     <mat-button-toggle><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+                     <mat-button-toggle (click)="cambioGrafica(i,'Pie')"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
+                     <mat-button-toggle (click)="cambioGrafica(i,'Bar')"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
                    </mat-button-toggle-group>
                 <button>Exportar</button>
               </div>
+              <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Pie']">
                 <canvas #MyChart='base-chart' #canvas baseChart
                             [datasets]="auxDataProjectList[i].dataGraficaPie"
                             [chartType]="doughnutChartType"
                             [options]="pieChartOptions"
                             width="600px"></canvas>
+              </div>
+              <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Bar']">
+                <canvas #MyChart='base-chart' #canvas baseChart
+                    [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
+                    [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [chartType]="barChartType">
+                </canvas>
+              </div>
             </div>
             <div>
               <button mat-stroked-button class="Detalle reporte">Generar reporte</button>

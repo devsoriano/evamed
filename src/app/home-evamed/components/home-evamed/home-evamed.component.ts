@@ -68,6 +68,24 @@ export class HomeEvamedComponent implements OnInit {
       }
     }
   }
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+    //tooltips: { enabled: false },
+    hover: { mode: null },
+    legend: { display: false },
+    plugins: {
+      datalabels: {
+        display: false
+      }
+    },
+  };
+  public barChartLabels = ['A1', 'A2', 'A3', 'A4','A5','B4','B6','C1','C2','C3','C4'];
+  public barChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData = [
+    {data: [1,2,3,4,5,6,7,8,9,10,11]},
+  ];
 
   constructor(
     private auth: AuthService,
@@ -144,8 +162,13 @@ export class HomeEvamedComponent implements OnInit {
                 subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
                 impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
                 unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
+                TipoGraficaActiva:{'Pie':true,'Bar':false},
                 etapasIgnoradas:[],
-                dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
+                idsTextBotones:{'Producción':"ProducciónTInfo".concat(String(item.id)),'Construccion':"ConstruccionTInfo".concat(String(item.id)),'Uso':"UsoTInfo".concat(String(item.id)),'FinDeVida':"FinDeVidaTInfo".concat(String(item.id))},
+                idsBotones:{'Producción':"ProducciónTextInfo".concat(String(item.id)),'Construccion':"ConstruccionTextInfo".concat(String(item.id)),'Uso':"UsoTextInfo".concat(String(item.id)),'FinDeVida':"FinDeVidaTextInfo".concat(String(item.id))},
+                iconosCambio:{'Producción':'visibility_off','Construccion':'visibility_off','Uso':'visibility_off','FinDeVida':'visibility_off'},
+                dataGraficaBar:this.cargarDataBar(this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[]),
+                dataGraficaPie: this.cargaDataPie(this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
               }
               this.auxDataProjectList.push(auxDatos)
               this.projectsList.push(item);
@@ -269,12 +292,17 @@ export class HomeEvamedComponent implements OnInit {
                   porcentaje:this.calculos.ValoresProcentaje(this.calculos.OperacionesDeFase(item.id)),
                   porcentajeSubepata:this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),
                   banderaEtapa:false,
+                  iconosCambio:{'Producción':'','Construccion':'visibility_off','Uso':'visibility_off','FinDeVida':'visibility_off'},
                   etapaSeleccionada:"Ninguna",
                   subetasMostrada:[{abreviacion:"nada",color:"#FFFFFF"}],
                   impactoSelect:this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),
                   unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
                   etapasIgnoradas:[],
-                  dataGraficaPie: this.cargaDataPie(this.calculos.OperacionesDeFase(item.id),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
+                  TipoGraficaActiva:{'Pie':true,'Bar':false},
+                  idsTextBotones:{'Producción':"ProducciónTInfo".concat(String(item.id)),'Construccion':"ConstruccionTInfo".concat(String(item.id)),'Uso':"UsoTInfo".concat(String(item.id)),'FinDeVida':"FinDeVidaTInfo".concat(String(item.id))},
+                  idsBotones:{'Producción':"ProducciónTextInfo".concat(String(item.id)),'Construccion':"ConstruccionTextInfo".concat(String(item.id)),'Uso':"UsoTextInfo".concat(String(item.id)),'FinDeVida':"FinDeVidaTextInfo".concat(String(item.id))},
+                  dataGraficaBar:this.cargarDataBar(this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[]),
+                  dataGraficaPie: this.cargaDataPie(this.calculos.ValoresProcentajeSubeapa(this.calculos.OperacionesDeFase(item.id)),this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type']),[])
                 }
                 this.auxDataProjectList.push(auxDatos)
                 this.projectsList.push(item);
@@ -309,20 +337,75 @@ export class HomeEvamedComponent implements OnInit {
         this.auxDataProjectList[indexRecivido].unit_impacto = element.unit_potential_type;
       }
     })
-    this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].datos,this.auxDataProjectList[indexRecivido].impactoSelect,this.auxDataProjectList[indexRecivido].etapasIgnoradas)
+    this.auxDataProjectList[indexRecivido].dataGraficaPie=this.cargaDataPie(this.auxDataProjectList[indexRecivido].porcentajeSubepata,this.auxDataProjectList[indexRecivido].impactoSelect,this.auxDataProjectList[indexRecivido].etapasIgnoradas)
+    this.auxDataProjectList[indexRecivido].dataGraficaBar=this.cargarDataBar(this.auxDataProjectList[indexRecivido].porcentajeSubepata,this.auxDataProjectList[indexRecivido].impactoSelect,this.auxDataProjectList[indexRecivido].etapasIgnoradas)
   }
 
-  selectEtapa(etapa,i){
+  selectEtapa(etapa,i,id){
     let auxSubetapas = this.calculos.findSubetapas(etapa);
     this.auxDataProjectList[i].subetasMostrada = auxSubetapas;
     if(this.auxDataProjectList[i].etapaSeleccionada === etapa){
+      let auxid=etapa.concat("TextInfo".concat(String(id)))
+      let auxidText=etapa.concat("TInfo".concat(String(id)))
+      document.getElementById(auxid).className = 'button-info';
+      document.getElementById(auxidText).style.color = '#767676';
       this.auxDataProjectList[i].banderaEtapa = false;
       this.auxDataProjectList[i].etapaSeleccionada = "Ninguna";
       this.auxDataProjectList[i].subetasMostrada = [{abreviacion:"nada",color:"#FFFFFF"}];
     }else{
+      if(this.auxDataProjectList[i].etapaSeleccionada != "Ninguna"){
+        let auxid=this.auxDataProjectList[i].etapaSeleccionada.concat("TextInfo".concat(String(id)))
+        let auxidText=this.auxDataProjectList[i].etapaSeleccionada.concat("TInfo".concat(String(id)))
+        document.getElementById(auxid).className = 'button-info';
+        document.getElementById(auxidText).style.color = '#767676';
+      }
       this.auxDataProjectList[i].banderaEtapa = true;
       this.auxDataProjectList[i].etapaSeleccionada = etapa;
+      let auxid=this.auxDataProjectList[i].etapaSeleccionada.concat("TextInfo".concat(String(id)))
+      document.getElementById(auxid).className = 'button-info-select';
+      let color={'Producción':'#4DBE89','Construccion':'#0DADBA','Uso':'#8F5091','FinDeVida':'#DEA961'}
+      Object.keys(color).forEach(element => {
+        if(element===etapa){
+          let auxid=etapa.concat("TextInfo".concat(String(id)))
+          let auxidText=etapa.concat("TInfo".concat(String(id)))
+          document.getElementById(auxidText).style.color = color[element];
+          document.getElementById(auxid).style.borderColor = color[element];
+        }
+      });
     }
+  }
+
+  cargarDataBar(data,impactoU,etapasI){
+    let auxdata=[];
+    let auxColor=[];
+    let aux=[]
+    let auxl=[]
+    let banderaEtapa=true;
+    Object.keys(data).forEach(element => {
+      if(element === impactoU){
+        Object.keys(data[element]).forEach(ciclo => {
+          etapasI.forEach(ei => {
+            if(ei === ciclo){
+              banderaEtapa=false;
+            }
+          });
+          if(banderaEtapa){
+            Object.keys(data[element][ciclo]).forEach(subetapa => {
+              console.log(data[element][ciclo][subetapa].porcentaje)
+              auxl.push(subetapa)
+              auxdata.push(data[element][ciclo][subetapa].porcentaje)
+              auxColor.push(this.calculos.findColor(subetapa))
+            })
+          }
+          banderaEtapa=true;
+        });
+      }
+    });
+    aux=[{
+      data:auxdata,
+      backgroundColor:auxColor
+    }]
+    return {'datos':aux,'labels':auxl};
   }
 
   cargaDataPie(data,impactoU,etapasI){
@@ -340,7 +423,7 @@ export class HomeEvamedComponent implements OnInit {
           });
           if(banderaEtapa){
             Object.keys(data[element][ciclo]).forEach(subetapa => {
-              auxdata.push(data[element][ciclo][subetapa].toFixed(3))
+              auxdata.push(data[element][ciclo][subetapa].porcentaje)
               auxColor.push(this.calculos.findColor(subetapa))
             })
           }
@@ -359,14 +442,28 @@ export class HomeEvamedComponent implements OnInit {
     if(this.auxDataProjectList[i].etapasIgnoradas.includes(etapa)){
       this.auxDataProjectList[i].etapasIgnoradas.forEach((element,index) => {
         if(element === etapa){
+          this.auxDataProjectList[i].iconosCambio[etapa] = 'visibility_off'
           this.auxDataProjectList[i].etapasIgnoradas.splice(index,1)
         }
       });
     }else{
+      this.auxDataProjectList[i].iconosCambio[etapa] = 'visibility'
       this.auxDataProjectList[i].etapasIgnoradas.push(etapa)
     }
-    this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(this.auxDataProjectList[i].datos,this.auxDataProjectList[i].impactoSelect,this.auxDataProjectList[i].etapasIgnoradas);
-    console.log(this.auxDataProjectList[i].dataGraficaPie);
+    this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(this.auxDataProjectList[i].porcentajeSubepata,this.auxDataProjectList[i].impactoSelect,this.auxDataProjectList[i].etapasIgnoradas);
+    this.auxDataProjectList[i].dataGraficaBar = this.cargarDataBar(this.auxDataProjectList[i].porcentajeSubepata,this.auxDataProjectList[i].impactoSelect,this.auxDataProjectList[i].etapasIgnoradas);
+  }
+
+  cambioGrafica(i,grafica){
+    if(grafica==='Pie'){
+      this.auxDataProjectList[i].TipoGraficaActiva['Pie']=true
+      this.auxDataProjectList[i].TipoGraficaActiva['Bar']=false
+    }
+    if(grafica==='Bar'){
+      this.auxDataProjectList[i].TipoGraficaActiva['Pie']=false
+      this.auxDataProjectList[i].TipoGraficaActiva['Bar']=true
+    }
+    console.log(this.auxDataProjectList[i].dataGraficaBar)
   }
 
   openDialogANP() {

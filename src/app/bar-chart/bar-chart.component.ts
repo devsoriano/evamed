@@ -220,6 +220,7 @@ export class BarChartComponent implements OnInit {
       });
 
       Object.keys(auxDatos).forEach(etapa => {
+        console.log(auxDatos[etapa])
         datos = [...datos,
           {
             data: auxDatos[etapa],

@@ -246,7 +246,6 @@ export class Calculos {
           } catch {
             vidaUtil = 1;
           }
-          console.log(consumos)
           consumos.forEach(consumo => {
             let valor_impacto = this.TEDList.filter(sid => sid['type_energy_id'] == consumo['type'] && sid['potential_type_id'] == impacto['id'])
             if(valor_impacto.length > 0){

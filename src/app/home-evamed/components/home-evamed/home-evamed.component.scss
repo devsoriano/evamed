@@ -157,27 +157,26 @@ ul {
 }
 
 .seccionUno {
-  button {
-    background: #efefef;
-    padding-right: 0%;
-  }
 
   li {
     display: flex;
     padding-bottom: 5px;
   }
 
-  .button-icon {
-    width: 19px;
-    height: 48px;
-    border-radius: 0px 10px 10px 0px;
-  }
-
   .button-info {
     border-radius: 10px 0px 0px 10px;
     width: 161px;
     height: 48px;
-    align-items: stretch;
+    background: #efefef;
+    border: 0px;;
+  }
+
+  .button-info-select {
+    border-radius: 10px 0px 0px 10px;
+    width: 161px;
+    height: 48px;
+    background: #FFFFFF;
+    //border: 1px solid;
   }
 
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
@@ -185,6 +184,19 @@ ul {
     font-size: 14px;
     border-radius: 0px 10px 10px 0px;
     height: 48px;
+    margin-left: 0px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.1px;
+  }
+
+  .button-icon{
+    width: 19px;
+    height: 48px;
+    background: #efefef;
+    border-radius: 0px 10px 10px 0px;
+    border: 0px;
   }
 
   .some-text {
@@ -281,10 +293,14 @@ ul {
   margin: 10px;
   margin-left: 30px;
   margin-right: 40px;
-  mat-button-toggle {
-    width: 54px;
+  
+  mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+    font-size: 20px;
     height: 38px;
-    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
   }
 }
 .botones-de-cambio {
