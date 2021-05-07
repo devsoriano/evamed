@@ -2,15 +2,10 @@ import { ProjectsService } from '../core/services/projects/projects.service';
 import { MaterialsService } from '../core/services/materials/materials.service';
 import { AnalisisService } from '../core/services/analisis/analisis.service';
 import { forkJoin, Observable, Subject } from 'rxjs';
-import { ComponentFactoryResolver } from '@angular/core';
-import { Router } from '@angular/router';
 import conversion from 'src/app/calculos/Conversiones.json';
 import transporte from 'src/app/calculos/transportes.json';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import { Injectable } from '@angular/core';
-import { stringify } from '@angular/compiler/src/util';
-import { element } from 'protractor';
-import { chainedInstruction } from '@angular/compiler/src/render3/view/util';
 
 @Injectable({
   providedIn: 'root',
@@ -52,8 +47,6 @@ export class Calculos {
     private materials: MaterialsService,
     private projects: ProjectsService,
     private analisis: AnalisisService,
-    private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver
   ) {
     forkJoin([
       this.analisis.getTypeEnergy(),
@@ -94,7 +87,7 @@ export class Calculos {
         this.projectsList = projectsData;
         this.materialList = materialData;
         this.materialSchemeDataList = materialSchemeData;
-        this.materialSchemeProyectList = materialSchemeProyect;
+        this.materialSchemeProyectList = materialSchemeProyect; 
         this.potentialTypesList = potentialTypes;
         this.standarsList = standards;
         this.CSEList = CSE;
@@ -109,11 +102,12 @@ export class Calculos {
         this.sectionList = sectionsList;
       }
     );
+    console.log('termino list calculos')
   }
 
   OperacionesDeFase(idProyecto) {
-    console.log('seccion de operaciones de fase');
-    console.log(this.materialSchemeProyectList);
+    //console.log('seccion de operaciones de fase');
+    //console.log(this.materialSchemeProyectList);
     let Datos = {};
     let schemeProyect = null;
     try {
@@ -413,12 +407,24 @@ export class Calculos {
           auxsumetapa[element][etapa][subetapa]['porcentaje'] = (
             (auxsumetapa[element][etapa][subetapa]['num'] / auxsumimpacto) *
             100
-          ).toFixed(3);
+          ).toFixed(1);
         });
       });
     });
 
     return auxsumetapa;
+  }
+
+  Porcentaje(data){
+    let sum=0
+    let auxdata=[]
+    data.forEach(element => {
+      sum=sum+Number(element)
+    });
+    data.forEach(element => {
+      auxdata.push((Number(element)/sum).toFixed(1))
+    });
+    return auxdata
   }
 
   ImpactosSeleccionados() {

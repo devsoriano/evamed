@@ -171,6 +171,7 @@ export class HomeEvamedComponent implements OnInit {
               item.user_platform_id ===
               parseInt(localStorage.getItem('email-id'), 10)
             ) {
+              this.calculos
               let auxDatos: Record<string, any> = {
                 id: item.id,
                 datos: this.calculos.OperacionesDeFase(item.id),
@@ -183,6 +184,9 @@ export class HomeEvamedComponent implements OnInit {
                 banderaEtapa: false,
                 etapaSeleccionada: 'Ninguna',
                 subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
+                impactoCompleteSelect:this.catologoImpactoAmbiental[0][
+                  'name_complete_potential_type'
+                ],
                 impactoSelect: this.calculos.ajustarNombre(
                   this.catologoImpactoAmbiental[0][
                     'name_complete_potential_type'
@@ -612,6 +616,7 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList[
       indexRecivido
     ].impactoSelect = this.calculos.ajustarNombre(impacto);
+    this.auxDataProjectList[indexRecivido].impactoCompleteSelect=impacto;
     this.auxDataProjectList[indexRecivido].etapasIgnoradas = [];
     this.catologoImpactoAmbiental.forEach((element) => {
       if (element.name_complete_potential_type === impacto) {
@@ -679,11 +684,11 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   cargarDataBar(data, impactoU, etapasI) {
-    let auxdata = [];
     let auxColor = [];
     let aux = [];
     let auxl = [];
     let banderaEtapa = true;
+    let auxdata2=[]
     Object.keys(data).forEach((element) => {
       if (element === impactoU) {
         Object.keys(data[element]).forEach((ciclo) => {
@@ -695,7 +700,7 @@ export class HomeEvamedComponent implements OnInit {
           if (banderaEtapa) {
             Object.keys(data[element][ciclo]).forEach((subetapa) => {
               auxl.push(subetapa);
-              auxdata.push(data[element][ciclo][subetapa].porcentaje);
+              auxdata2.push(data[element][ciclo][subetapa].num)
               auxColor.push(this.calculos.findColor(subetapa));
             });
           }
@@ -703,9 +708,12 @@ export class HomeEvamedComponent implements OnInit {
         });
       }
     });
+
+    auxdata2=this.calculos.Porcentaje(auxdata2)
+
     aux = [
       {
-        data: auxdata,
+        data: auxdata2,
         backgroundColor: auxColor,
       },
     ];
@@ -713,10 +721,10 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   cargaDataPie(data, impactoU, etapasI) {
-    let auxdata = [];
     let auxColor = [];
     let aux = [];
     let banderaEtapa = true;
+    let auxdata2=[]
     Object.keys(data).forEach((element) => {
       if (element === impactoU) {
         Object.keys(data[element]).forEach((ciclo) => {
@@ -727,7 +735,7 @@ export class HomeEvamedComponent implements OnInit {
           });
           if (banderaEtapa) {
             Object.keys(data[element][ciclo]).forEach((subetapa) => {
-              auxdata.push(data[element][ciclo][subetapa].porcentaje);
+              auxdata2.push(data[element][ciclo][subetapa].num)
               auxColor.push(this.calculos.findColor(subetapa));
             });
           }
@@ -735,9 +743,12 @@ export class HomeEvamedComponent implements OnInit {
         });
       }
     });
+
+    auxdata2=this.calculos.Porcentaje(auxdata2)
+
     aux = [
       {
-        data: auxdata,
+        data: auxdata2,
         backgroundColor: auxColor,
       },
     ];
@@ -756,6 +767,7 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[i].iconosCambio[etapa] = 'visibility';
       this.auxDataProjectList[i].etapasIgnoradas.push(etapa);
     }
+
     this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(
       this.auxDataProjectList[i].porcentajeSubepata,
       this.auxDataProjectList[i].impactoSelect,

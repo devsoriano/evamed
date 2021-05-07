@@ -95,29 +95,33 @@
               </mat-tab>
               <mat-tab label="Uso" class="label-second-tab">
                 <section class="grid-container">
-                  <h2>Consumo energético total requerido anualmente</h2>
-                  <div>
-                    <canvas baseChart
-                            [datasets]="auxDataProjectList[i].dataGraficaPieUso"
-                            [options]="pieChartOptions_elementos"
-                            [chartType]="pieChartType">
+                  <div class="subseccion">
+                    <div>
+                      <canvas baseChart
+                      [datasets]="auxDataProjectList[i].dataGraficaPieUso"
+                      [options]="pieChartOptions_elementos"
+                      [chartType]="pieChartType">
                     </canvas>
                   </div>
-                  <div *ngFor="let data of serchUseData(project.id)">
-                    <div *ngIf="data.source === 'electric'">
-                      <span class="dot" [ngStyle]="{'background-color': '#767676'}"></span>Mix eléctrico {{data.quantity}} Kwh</div>
-                    <div *ngIf="data.source === 'fuel'">
-                      <span class="dot" [ngStyle]="{'background-color': '#DFDFDF'}"></span>Combustible: {{data.quantity}} Kwh</div>
-                    <div *ngIf="data.source === 'panels'">
-                      <span class="dot" [ngStyle]="{'background-color': '#C3C3C3'}"></span>Combustible: {{data.quantity}} Kwh</div>
+                  <div>
+                      <h2>Consumo energético total <br>requerido anualmente</h2>
+                      <div *ngFor="let data of serchUseData(project.id)">
+                        <div *ngIf="data.source === 'electric'">
+                          <span class="dot" [ngStyle]="{'background-color': '#767676'}"></span>Mix eléctrico {{data.quantity}} Kwh</div>
+                        <div *ngIf="data.source === 'fuel'">
+                          <span class="dot" [ngStyle]="{'background-color': '#DFDFDF'}"></span>Combustible: {{data.quantity}} Kwh</div>
+                        <div *ngIf="data.source === 'panels'">
+                          <span class="dot" [ngStyle]="{'background-color': '#C3C3C3'}"></span>Combustible: {{data.quantity}} Kwh</div>
+                      </div>
+                      <button
+                          mat-button
+                          class="yellow-button-mini"
+                          (click)="updateUso(project.id)"
+                        >
+                          Editar
+                        </button>
+                    </div>
                   </div>
-                  <button
-                      mat-button
-                      class="yellow-button-mini"
-                      (click)="updateUso(project.id)"
-                    >
-                      Editar
-                    </button>
                 </section>
               </mat-tab>
               <mat-tab label="Fin de vida" class="label-second-tab">
@@ -143,7 +147,7 @@
             <div>
               <div class="seccionUno">
                 <p>Selecciona impacto ambiental</p>
-                <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].impactoSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoSelect,i)" required>
+                <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].impactoCompleteSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoCompleteSelect,i)" required>
                   <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
                     {{impacto.name_complete_potential_type}}
                   </mat-option>
@@ -209,7 +213,7 @@
                 <button>Exportar</button>
               </div>
               <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Pie']">
-                <div class="canvas-container">
+                <div class="canvas-container seccionTres">
                   <canvas #MyChart='base-chart' #canvas baseChart
                               [datasets]="auxDataProjectList[i].dataGraficaPie"
                               [chartType]="doughnutChartType"
@@ -219,13 +223,16 @@
                 </div>
               </div>
               <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Bar']">
-                <canvas #MyChart='base-chart' #canvas baseChart
-                    [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
-                    [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
-                    [options]="barChartOptions"
-                    [legend]="barChartLegend"
-                    [chartType]="barChartType">
-                </canvas>
+                <div class="canvas-container seccionTres">
+                  <canvas #MyChart='base-chart' #canvas baseChart
+                      [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
+                      [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
+                      [options]="barChartOptions"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType"
+                       height="305px">
+                    </canvas>
+                </div>
               </div>
 
             </div>
