@@ -5,14 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddNewProjectComponent } from '../add-new-project/add-new-project.component';
 import { ChooseTypeOfProjectComponent } from '../choose-type-of-project/choose-type-of-project.component';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
+import { Calculos } from '../../../calculos/calculos';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ChangeNameProjectComponent } from '../change-name-project/change-name-project.component';
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
-import { Calculos } from '../../../calculos/calculos';
-
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -171,30 +170,35 @@ export class HomeEvamedComponent implements OnInit {
               item.user_platform_id ===
               parseInt(localStorage.getItem('email-id'), 10)
             ) {
-              this.calculos
+              let calculosOperacionesDeFase = null;
+
+              calculosOperacionesDeFase = this.calculos.OperacionesDeFase(
+                item.id
+              );
+
               let auxDatos: Record<string, any> = {
                 id: item.id,
                 datos: this.calculos.OperacionesDeFase(item.id),
                 porcentaje: this.calculos.ValoresProcentaje(
-                  this.calculos.OperacionesDeFase(item.id)
+                  calculosOperacionesDeFase
                 ),
                 porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
-                  this.calculos.OperacionesDeFase(item.id)
+                  calculosOperacionesDeFase
                 ),
                 banderaEtapa: false,
                 etapaSeleccionada: 'Ninguna',
                 subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
-                impactoCompleteSelect:this.catologoImpactoAmbiental[0][
-                  'name_complete_potential_type'
-                ],
+                impactoCompleteSelect:
+                  this.catologoImpactoAmbiental[0][
+                    'name_complete_potential_type'
+                  ],
                 impactoSelect: this.calculos.ajustarNombre(
                   this.catologoImpactoAmbiental[0][
                     'name_complete_potential_type'
                   ]
                 ),
-                unit_impacto: this.catologoImpactoAmbiental[0][
-                  'unit_potential_type'
-                ],
+                unit_impacto:
+                  this.catologoImpactoAmbiental[0]['unit_potential_type'],
                 TipoGraficaActiva: { Pie: true, Bar: false },
                 etapasIgnoradas: [],
                 idsTextBotones: {
@@ -239,6 +243,7 @@ export class HomeEvamedComponent implements OnInit {
                   []
                 ),
               };
+
               this.auxDataProjectList.push(auxDatos);
               this.projectsList.push(item);
             }
@@ -613,10 +618,9 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   selectImpactoAmbiental(impacto, indexRecivido) {
-    this.auxDataProjectList[
-      indexRecivido
-    ].impactoSelect = this.calculos.ajustarNombre(impacto);
-    this.auxDataProjectList[indexRecivido].impactoCompleteSelect=impacto;
+    this.auxDataProjectList[indexRecivido].impactoSelect =
+      this.calculos.ajustarNombre(impacto);
+    this.auxDataProjectList[indexRecivido].impactoCompleteSelect = impacto;
     this.auxDataProjectList[indexRecivido].etapasIgnoradas = [];
     this.catologoImpactoAmbiental.forEach((element) => {
       if (element.name_complete_potential_type === impacto) {
@@ -688,7 +692,7 @@ export class HomeEvamedComponent implements OnInit {
     let aux = [];
     let auxl = [];
     let banderaEtapa = true;
-    let auxdata2=[]
+    let auxdata2 = [];
     Object.keys(data).forEach((element) => {
       if (element === impactoU) {
         Object.keys(data[element]).forEach((ciclo) => {
@@ -700,7 +704,7 @@ export class HomeEvamedComponent implements OnInit {
           if (banderaEtapa) {
             Object.keys(data[element][ciclo]).forEach((subetapa) => {
               auxl.push(subetapa);
-              auxdata2.push(data[element][ciclo][subetapa].num)
+              auxdata2.push(data[element][ciclo][subetapa].num);
               auxColor.push(this.calculos.findColor(subetapa));
             });
           }
@@ -709,7 +713,7 @@ export class HomeEvamedComponent implements OnInit {
       }
     });
 
-    auxdata2=this.calculos.Porcentaje(auxdata2)
+    auxdata2 = this.calculos.Porcentaje(auxdata2);
 
     aux = [
       {
@@ -724,7 +728,7 @@ export class HomeEvamedComponent implements OnInit {
     let auxColor = [];
     let aux = [];
     let banderaEtapa = true;
-    let auxdata2=[]
+    let auxdata2 = [];
     Object.keys(data).forEach((element) => {
       if (element === impactoU) {
         Object.keys(data[element]).forEach((ciclo) => {
@@ -735,7 +739,7 @@ export class HomeEvamedComponent implements OnInit {
           });
           if (banderaEtapa) {
             Object.keys(data[element][ciclo]).forEach((subetapa) => {
-              auxdata2.push(data[element][ciclo][subetapa].num)
+              auxdata2.push(data[element][ciclo][subetapa].num);
               auxColor.push(this.calculos.findColor(subetapa));
             });
           }
@@ -744,7 +748,7 @@ export class HomeEvamedComponent implements OnInit {
       }
     });
 
-    auxdata2=this.calculos.Porcentaje(auxdata2)
+    auxdata2 = this.calculos.Porcentaje(auxdata2);
 
     aux = [
       {
