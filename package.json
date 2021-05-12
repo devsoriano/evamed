@@ -28,7 +28,7 @@
     "ngx-filesaver": "^10.0.0",
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.6.3",
-    "swiper": "^5.4.5",
+    "swiper": "^6.5.1",
     "tslib": "^1.10.0",
     "xlsx": "^0.16.7",
     "zone.js": "~0.10.2"
