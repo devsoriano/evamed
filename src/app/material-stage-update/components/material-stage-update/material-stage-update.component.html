@@ -261,10 +261,10 @@
                 {{ material.value.key }}.
               </div>
               <div class="col-material">
-                {{material.value.Material}}
+                {{material.value.name_material}}
               </div>
               <div class="col-cantidad">
-                {{material.value.Cantidad}}
+                {{material.value.quantity}}
               </div>
               <div class="col-unidad">
                 {{material.value.Unidad}}
@@ -278,6 +278,229 @@
           </mat-list-option>
         </mat-selection-list>
 
+        <!--Form material-->
+        <div class="container-details" *ngIf="selectedMaterial===true">
+          <!-- <a class="return" (click)="onReturnListMaterials()"> < </a> -->
+          <div class="header-form">
+            <span class="return" (click)="onReturnListMaterials()"> < </span>
+            <span class="title">Edición de material</span>
+          </div>
+          <div class="form-update-material">
+            <div class="Row">
+              <div class="Col">
+                <div class="label-general">
+                  Nombre comercial
+                </div>
+                <div>
+                  <mat-form-field>
+                    <textarea
+                      class="input-general-renuew"
+                      [(ngModel)]="dataMaterialSelected.name_material"
+                      matInput
+                      type="text"
+                    >
+                    </textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col select-middle">
+                <div class="label-general">
+                  Cantidad
+                </div>
+                <div>
+                  <mat-form-field>
+                    <input
+                      class="input-general-renuew width-90"
+                      [(ngModel)]="dataMaterialSelected.quantity"
+                      matInput
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">
+                  Unidad
+                </div>
+                <div>
+                  <mat-form-field>
+                    <input
+                      class="input-general-renuew width-90"
+                      [(ngModel)]="dataMaterialSelected.Unidad"
+                      matInput
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="label-general">
+                  Comentarios
+                </div>
+                <div>
+                  <mat-form-field>
+                    <textarea
+                      class="input-general-renuew"
+                      [(ngModel)]="dataMaterialSelected['Descripción de Material']"
+                      matInput
+                      type="text"
+                    >
+                    </textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="subtitle">Transporte de lugar de origen a sitio del proyecto</div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="label-general">
+                  Lugar de origen del material
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select
+                      [(ngModel)]="dataMaterialSelected.paisSeleccionado"
+                      (selectionChange)="selectCountry(dataMaterialSelected.paisSeleccionado)"
+                    >
+                      <mat-option *ngFor="let pais of catalogoPaises" [value]="pais.id">
+                        {{pais.name_country}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row" *ngIf="dataMaterialSelected.paisSeleccionado === 1">
+              <div class="Col select-middle">
+                <div class="label-general">
+                  Estado
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select
+                      [(ngModel)]="dataMaterialSelected.estadoSeleccionado"
+                      (selectionChange)="selectState(dataMaterialSelected.estadoSeleccionado)"
+                    >
+                      <mat-option *ngFor="let estado of catalogoEstados" [value]="estado.id">
+                        {{estado.name_state}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">
+                  Ciudad
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select [(ngModel)]="dataMaterialSelected.ciudadSeleccionada">
+                      <mat-option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.id">
+                        {{ciudad.name_city}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row" *ngIf="dataMaterialSelected.paisSeleccionado !== 1 && dataMaterialSelected.paisSeleccionado !== undefined">
+              <div class="Col">
+                <div class="label-general">
+                  Tipo de transporte desde el extranjero
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select [(ngModel)]="dataMaterialSelected.transporteExtrangero">
+                      <mat-option *ngFor="let transporte of catalogoTransportesExtrangero" [value]="transporte.id">
+                        {{transporte.name_transport}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="label-general">
+                  Tipo de transporte utilizado en el interior del país
+                </div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select [(ngModel)]="dataMaterialSelected.transporteLocal">
+                      <mat-option *ngFor="let transporte of catalogoTransportesLocal" [value]="transporte.id">
+                        {{transporte.name_transport}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="subtitle">Tiempo de vida del material</div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col select-middle">
+                <div class="label-general">
+                  Tiempo de vida
+                </div>
+                <div>
+                  <mat-form-field>
+                    <input
+                      class="input-general-renuew width-90"
+                      [(ngModel)]="dataMaterialSelected.vidaUtil"
+                      (ngModelChange)="changeReplaces(dataMaterialSelected.vidaUtil)"
+                      matInput
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">
+                  Reemplazos
+                </div>
+                <div>
+                  <mat-form-field>
+                    <input
+                      class="input-general-renuew width-90"
+                      [(ngModel)]="dataMaterialSelected.reemplazos"
+                      matInput
+                      (ngModelChange)="changeLifeTime(dataMaterialSelected.reemplazos)"
+                      type="text"
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="subtitle">Fuente de información de impacto ambiental</div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="button-read" >
+                  {{ this.dataMaterialSelected.materialSelectedDB }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
 

@@ -3,6 +3,7 @@ import { MatListOption } from '@angular/material/list';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { Router } from '@angular/router';
+import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 
 @Component({
   selector: 'app-material-stage-update',
@@ -36,10 +37,18 @@ export class MaterialStageUpdateComponent implements OnInit {
   selectedMaterial: boolean;
   dataMaterialSelected: any;
   showSearch: boolean;
+  catalogoTransportesExtrangero: any;
+  catalogoPaises: any;
+  catalogoCiudades: any;
+  catalogoEstados: any;
+  catalogoTransportesLocal: any;
+  vidaUtilSeleccionado: any;
+  dataProject: any;
 
   constructor(
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
+    private catalogsService: CatalogsService,
     private router: Router
   ) {
     this.projectsService.getMaterialSchemeProyect().subscribe((data) => {
@@ -54,12 +63,36 @@ export class MaterialStageUpdateComponent implements OnInit {
       });
       this.listData2 = listData2;
     });
+    this.catalogsService.countriesCatalog().subscribe((data) => {
+      this.catalogoPaises = data;
+    });
+    this.catalogsService.getStates().subscribe((data) => {
+      this.catalogoEstados = data;
+    });
+    this.catalogsService.getTransports().subscribe((data) => {
+      this.catalogoTransportesLocal = data;
+      this.catalogoTransportesExtrangero = data;
+    });
+
+    this.projectsService
+      .getProjectById(localStorage.getItem('idProyectoConstrucción'))
+      .subscribe((data: any) => {
+        this.nameProject = data.name_project;
+
+        this.catalogsService.usefulLifeCatalog().subscribe((distances) => {
+          distances.map((distance) => {
+            console.log(data.useful_life_id);
+            if (data.useful_life_id === distance.id) {
+              console.log('entra a la condicional');
+              this.vidaUtilSeleccionado = parseInt(distance.name_useful_life);
+            }
+          });
+        });
+      });
   }
 
   ngOnInit() {
     this.selectedMaterial = false;
-
-    this.nameProject = 'Genérico';
 
     this.sheetNames = [
       'Cimentación',
@@ -166,12 +199,16 @@ export class MaterialStageUpdateComponent implements OnInit {
                   item.material_id === materialData.id &&
                   item.section_id === this.indexSheet + 1
                 ) {
-                  console.log('Material Data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                  console.log(materialData);
-                  console.log('Item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                  console.log(item);
-                  prevData['Material'] = materialData.name_material;
-                  prevData['Cantidad'] = item.quantity;
+                  prevData['name_material'] = materialData.name_material;
+                  prevData['quantity'] = item.quantity;
+                  prevData['origin_id'] = item.origin_id;
+                  prevData['material_id'] = item.material_id;
+                  prevData['reemplazos'] = item.replaces;
+                  prevData['transport_id_end'] = item.transport_id_end;
+                  prevData['transport_id_origin'] = item.transport_id_origin;
+                  prevData['city_id_end'] = item.city_id_end;
+                  prevData['city_id_origin'] = item.city_id_origin;
+                  prevData['vidaUtil'] = this.vidaUtilSeleccionado;
                   prevData['key'] = counterRevit++;
                   listMateriales.push(prevData);
                 }
@@ -187,8 +224,16 @@ export class MaterialStageUpdateComponent implements OnInit {
             .subscribe((material) => {
               material.map((materialData) => {
                 if (item.material_id === materialData.id) {
-                  prevData['Material'] = materialData.name_material;
-                  prevData['Cantidad'] = item.quantity;
+                  prevData['name_material'] = materialData.name_material;
+                  prevData['quantity'] = item.quantity;
+                  prevData['origin_id'] = item.origin_id;
+                  prevData['material_id'] = item.material_id;
+                  prevData['reemplazos'] = item.replaces;
+                  prevData['transport_id_end'] = item.transport_id_end;
+                  prevData['transport_id_origin'] = item.transport_id_origin;
+                  prevData['city_id_end'] = item.city_id_end;
+                  prevData['city_id_origin'] = item.city_id_origin;
+                  prevData['vidaUtil'] = this.vidaUtilSeleccionado;
                   prevData['key'] = countDynamo++;
                   listMateriales.push(prevData);
                 }
@@ -218,11 +263,72 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onSelectedMaterial(event, value) {
     console.log('selección de materiales ***************************');
-    console.log(value.selected);
-    this.dataMaterialSelected = value.selected[0]?.value;
+    console.log(value.selected[0]?.value.value);
+    this.dataMaterialSelected = value.selected[0]?.value.value;
     this.selectedMaterial = true;
+  }
 
-    console.log(this.dataMaterialSelected);
+  selectCountry(id) {
+    this.catalogsService.getExternalDistances().subscribe((data) => {
+      data.map((item) => {
+        let typeTransport = 'mar';
+        if (id === item.id + 1) {
+          switch (item.region) {
+            case 'PACIFICO' || 'ATLANTICO':
+              typeTransport = 'mar';
+              break;
+            case 'NORTE' || 'SUR':
+              typeTransport = 'terreste';
+              break;
+            default:
+              break;
+          }
+
+          this.catalogoTransportesExtrangero = [];
+          if (typeTransport === 'terreste') {
+            this.catalogsService.getTransports().subscribe((data) => {
+              data.map((item) => {
+                if (item.id >= 3) {
+                  this.catalogoTransportesExtrangero.push(item);
+                }
+              });
+            });
+          } else {
+            this.catalogsService.getTransports().subscribe((data) => {
+              data.map((item) => {
+                if (item.id < 3) {
+                  this.catalogoTransportesExtrangero.push(item);
+                }
+              });
+            });
+          }
+        }
+      });
+    });
+  }
+
+  selectState(id) {
+    this.catalogoCiudades = [];
+    this.catalogsService.getCities().subscribe((data) => {
+      data.map((item) => {
+        if (item.state_id === id) {
+          this.catalogoCiudades.push(item);
+        }
+      });
+    });
+  }
+
+  changeReplaces(vidaUtil) {
+    let replaces = 0;
+    replaces = parseInt(this.vidaUtilSeleccionado, 10) / parseInt(vidaUtil, 10);
+    this.dataMaterialSelected.reemplazos = Math.ceil(replaces) - 1;
+  }
+
+  changeLifeTime(reemplazos) {
+    let lifeTime = this.vidaUtilSeleccionado;
+    lifeTime =
+      parseInt(this.vidaUtilSeleccionado, 10) / (parseInt(reemplazos, 10) + 1);
+    this.dataMaterialSelected.vidaUtil = lifeTime;
   }
 
   onReturnListMaterials() {
