@@ -105,11 +105,6 @@ export class Calculos {
   }
 
   OperacionesDeFase(idProyecto) {
-    console.log(
-      'seccion de operaciones de fase&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'
-    );
-    console.log(this.materialSchemeProyectList);
-
     if (this.materialSchemeProyectList === undefined) {
       location.reload();
     }

@@ -12,6 +12,8 @@ import { ChangeNameProjectComponent } from '../change-name-project/change-name-p
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
+import { map } from 'rxjs/operators';
+
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -540,81 +542,123 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   duplicateProject(projectId) {
-    this.projectsList.map((project) => {
-      if (project.id === projectId) {
+    this.projectsService
+      .getProjectById(projectId)
+      .subscribe((projectData: any) => {
         this.projectsService
           .addProject({
-            name_project: `${project.name_project} - Copy`,
-            builded_surface: project.builded_surface,
-            living_area: project.living_area,
-            tier: project.tier,
-            use_id: project.use_id,
-            type_id: project.type_id,
-            country_id: project.country_id,
-            useful_life_id: project.useful_life_id,
-            housing_scheme_id: project.housing_scheme_id,
-            user_platform_id: project.user_platform_id,
-            city_id_origin: project.city_id_origin,
+            name_project: `${projectData.name_project} - Copy`,
+            builded_surface: projectData.builded_surface,
+            living_area: projectData.living_area,
+            tier: projectData.tier,
+            use_id: projectData.use_id,
+            type_id: projectData.type_id,
+            country_id: projectData.country_id,
+            useful_life_id: projectData.useful_life_id,
+            housing_scheme_id: projectData.housing_scheme_id,
+            user_platform_id: projectData.user_platform_id,
+            city_id_origin: projectData.city_id_origin,
             distance: null,
           })
-          .subscribe((data) => {
-            localStorage.setItem('projectUpdateId', data.id);
-            this.dataMaterial.map((material) => {
-              if (material.project_id === projectId) {
-                this.projectsService
-                  .addSchemeProject({
-                    construction_system: material.construction_system,
-                    comercial_name: material.comercial_name,
-                    quantity: material.quantity,
-                    provider_distance: material.provider_distance,
-                    material_id: material.material_id,
-                    project_id: data.id,
-                    origin_id: material.origin_id,
-                    section_id: material.section_id,
-                    value: material.value,
-                    distance_init: material.distance_init,
-                    distance_end: material.distance_end,
-                    replaces: material.replaces,
-                    city_id_origin: material.city_id_origin,
-                    city_id_end: material.city_id_end,
-                    transport_id_origin: material.transport_id_origin,
-                    transport_id_end: material.transport_id_end,
+          .subscribe((newProjectData) => {
+            localStorage.setItem('newProjectDataId', newProjectData.id);
+            // Duplicar construcción
+            this.ConstructiveSystemElements.map((cs) => {
+              if (cs.project_id === projectId) {
+                this.constructionStageService
+                  .addConstructiveSistemElement({
+                    quantity: cs.quantity,
+                    project_id: newProjectData.id,
+                    section_id: cs.section_id,
+                    constructive_process_id: cs.constructive_process_id,
+                    volume_unit_id: cs.volume_unit_id,
+                    energy_unit_id: cs.energy_unit_id,
+                    bulk_unit_id: cs.bulk_unit_id,
+                    source_information_id: cs.source_information_id,
                   })
-                  .subscribe((dataResulMaterial) => {
-                    console.log('resultado de materiales');
-                    console.log(dataResulMaterial);
-                    location.reload();
+                  .subscribe((dataResultConstruction) => {
+                    console.log('resultado de construcción');
+                    console.log(dataResultConstruction);
+                    // Duplicar Producción
+                    this.dataMaterial.map((material) => {
+                      if (material.project_id === projectId) {
+                        this.projectsService
+                          .addSchemeProject({
+                            construction_system: material.construction_system,
+                            comercial_name: material.comercial_name,
+                            quantity: material.quantity,
+                            provider_distance: material.provider_distance,
+                            material_id: material.material_id,
+                            project_id: newProjectData.id,
+                            origin_id: material.origin_id,
+                            section_id: material.section_id,
+                            value: material.value,
+                            distance_init: material.distance_init,
+                            distance_end: material.distance_end,
+                            replaces: material.replaces,
+                            city_id_origin: material.city_id_origin,
+                            city_id_end: material.city_id_end,
+                            transport_id_origin: material.transport_id_origin,
+                            transport_id_end: material.transport_id_end,
+                          })
+                          .subscribe((dataResulMaterial) => {
+                            console.log('resultado de materiales');
+                            console.log(dataResulMaterial);
+                          });
+                      }
+                    });
                   });
               }
-            });
+            }).then(
+              this.electricitConsumptionService
+                .getACR()
+                .subscribe((dataAllACR) => {
+                  dataAllACR.map((acr) => {
+                    if (acr.project_id === projectId) {
+                      // Duplicar Uso
+                      this.electricitConsumptionService
+                        .addACR({
+                          project_id: parseInt(
+                            localStorage.getItem('newProjectDataId')
+                          ),
+                          quantity: acr.quantity,
+                          unit_id: acr.unit_id,
+                        })
+                        .subscribe((dataNewACR) => {
+                          console.log('Resultado de add NewACR');
+                          console.log(dataNewACR);
+                          this.electricitConsumptionService
+                            .getECD()
+                            .subscribe((dataAllECD) => {
+                              dataAllECD.map((ecd) => {
+                                if (
+                                  ecd.annual_consumption_required_id === acr.id
+                                ) {
+                                  this.electricitConsumptionService
+                                    .addECD({
+                                      quantity: ecd.quantity,
+                                      percentage: ecd.percentage,
+                                      source: ecd.source,
+                                      annual_consumption_required_id:
+                                        dataNewACR.id,
+                                      unit_id: ecd.unit_id,
+                                      type: ecd.type,
+                                    })
+                                    .subscribe((dataNewECD) => {
+                                      console.log('Resultado de add New ECD');
+                                      console.log(dataNewECD);
+                                      location.reload();
+                                    });
+                                }
+                              });
+                            });
+                        });
+                    }
+                  });
+                })
+            );
           });
-      }
-    });
-    // if (localStorage.getItem('projectUpdateId') !== undefined) {
-    try {
-      this.ConstructiveSystemElements.map((cs) => {
-        if (cs.project_id === projectId) {
-          this.constructionStageService
-            .addConstructiveSistemElement({
-              quantity: cs.quantity,
-              project_id: parseInt(localStorage.getItem('projectUpdateId')) + 1,
-              section_id: cs.section_id,
-              constructive_process_id: cs.constructive_process_id,
-              volume_unit_id: cs.volume_unit_id,
-              energy_unit_id: cs.energy_unit_id,
-              bulk_unit_id: cs.bulk_unit_id,
-              source_information_id: cs.source_information_id,
-            })
-            .subscribe((dataResultConstruction) => {
-              console.log('Result construction!!!!!');
-              console.log(dataResultConstruction);
-            });
-        }
       });
-    } catch (e) {
-      console.log(e);
-    }
-    // }
   }
 
   selectImpactoAmbiental(impacto, indexRecivido) {
