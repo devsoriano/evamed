@@ -7,10 +7,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-material-stage-update',
   templateUrl: './material-stage-update.component.html',
-  styleUrls: ['./material-stage-update.component.scss']
+  styleUrls: ['./material-stage-update.component.scss'],
 })
 export class MaterialStageUpdateComponent implements OnInit {
-
   selectedSheet: any;
   sheetNames: any;
   contentData: any;
@@ -43,15 +42,18 @@ export class MaterialStageUpdateComponent implements OnInit {
     private projectsService: ProjectsService,
     private router: Router
   ) {
-    this.projectsService.getMaterialSchemeProyect().subscribe(data => {
+    this.projectsService.getMaterialSchemeProyect().subscribe((data) => {
       const listData2 = [];
-      data.map( item => {
-        if (item.project_id === parseInt(localStorage.getItem('idProyectoConstrucción'), 10)) {
+      data.map((item) => {
+        if (
+          item.project_id ===
+          parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
+        ) {
           listData2.push(item);
         }
       });
       this.listData2 = listData2;
-    })
+    });
   }
 
   ngOnInit() {
@@ -77,7 +79,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   onGroupsChange(options: MatListOption[]) {
-    options.map(option => {
+    options.map((option) => {
       this.selectedSheet = option.value;
     });
 
@@ -85,12 +87,12 @@ export class MaterialStageUpdateComponent implements OnInit {
 
     let ListGetSCRevit = [];
     let ListGetSCDimano = [];
-    this.listData2.map( item => {
+    this.listData2.map((item) => {
       if (item.origin_id === 1 && this.indexSheet + 1 === item.section_id) {
-        ListGetSCRevit.push(item.construction_system)
+        ListGetSCRevit.push(item.construction_system);
       }
       if (item.origin_id === 2 && this.indexSheet + 1 === item.section_id) {
-        ListGetSCDimano.push(item.construction_system)
+        ListGetSCDimano.push(item.construction_system);
       }
     });
 
@@ -98,7 +100,7 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.ListSCDynamo = [...new Set(ListGetSCDimano)];
 
     let i;
-    for ( i = 0; i <= this.sheetNames.length; i++ ) {
+    for (i = 0; i <= this.sheetNames.length; i++) {
       if (this.indexSheet === i && this.SOR !== undefined) {
         this.selectedOptionsRevit = this.SOR[i];
       }
@@ -111,7 +113,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onNgModelChangeRevit(event) {
     let i;
-    for ( i = 0; i <= this.sheetNames.length; i++ ) {
+    for (i = 0; i <= this.sheetNames.length; i++) {
       if (this.indexSheet === i) {
         this.SOR[i] = this.selectedOptionsRevit;
       }
@@ -120,18 +122,18 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onNgModelChangeDynamo(event) {
     let i;
-    for ( i = 0; i <= this.sheetNames.length; i++ ) {
-      if ( this.indexSheet === i ) {
+    for (i = 0; i <= this.sheetNames.length; i++) {
+      if (this.indexSheet === i) {
         this.SOD[i] = this.selectedOptionsDynamo;
       }
     }
   }
 
   onNgModelChangeUser(event) {
-  //  let i;
-  //  for ( i = 0; i <= this.sheetNames.length; i++ ) {
-  //    this.indexSheet === i ? this.SOU[i] = this.selectedOptionsUsuario : this.SOU[i];
-  //  }
+    //  let i;
+    //  for ( i = 0; i <= this.sheetNames.length; i++ ) {
+    //    this.indexSheet === i ? this.SOU[i] = this.selectedOptionsUsuario : this.SOU[i];
+    //  }
   }
 
   onNgModelChangeMaterial(event) {
@@ -152,39 +154,46 @@ export class MaterialStageUpdateComponent implements OnInit {
     let counterRevit = 1;
     let countDynamo = 1;
 
-    this.listData2.map( item => {
+    this.listData2.map((item) => {
       const prevData = [];
       if (item.construction_system === sc && origin === 'revit-user') {
         if (item.origin_id === 1 || item.origin_id === 3) {
-          this.materialsService.searchMaterial(item.material_id).subscribe( material => {
-            material.map( materialData => {
-              if ( (item.material_id === materialData.id) && (item.section_id === this.indexSheet + 1) ) {
-                console.log('Material Data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                console.log(materialData);
-                console.log('Item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                console.log(item);
-                prevData['Material'] = materialData.name_material;
-                prevData['Cantidad'] = item.quantity;
-                prevData['key'] = counterRevit++;
-                listMateriales.push(prevData);
-              }
+          this.materialsService
+            .searchMaterial(item.material_id)
+            .subscribe((material) => {
+              material.map((materialData) => {
+                if (
+                  item.material_id === materialData.id &&
+                  item.section_id === this.indexSheet + 1
+                ) {
+                  console.log('Material Data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                  console.log(materialData);
+                  console.log('Item!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                  console.log(item);
+                  prevData['Material'] = materialData.name_material;
+                  prevData['Cantidad'] = item.quantity;
+                  prevData['key'] = counterRevit++;
+                  listMateriales.push(prevData);
+                }
+              });
             });
-          });
         }
       }
       if (item.construction_system === sc && origin === 'dynamo') {
         if (item.origin_id === 2) {
           console.log('entra a opciones dynamo');
-          this.materialsService.searchMaterial(item.material_id).subscribe( material => {
-            material.map( materialData => {
-              if ( item.material_id === materialData.id ) {
-                prevData['Material'] = materialData.name_material;
-                prevData['Cantidad'] = item.quantity;
-                prevData['key'] = countDynamo++;
-                listMateriales.push(prevData);
-              }
+          this.materialsService
+            .searchMaterial(item.material_id)
+            .subscribe((material) => {
+              material.map((materialData) => {
+                if (item.material_id === materialData.id) {
+                  prevData['Material'] = materialData.name_material;
+                  prevData['Cantidad'] = item.quantity;
+                  prevData['key'] = countDynamo++;
+                  listMateriales.push(prevData);
+                }
+              });
             });
-          });
         }
       }
     });
@@ -209,7 +218,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onSelectedMaterial(event, value) {
     console.log('selección de materiales ***************************');
-    console.log(value.selected)
+    console.log(value.selected);
     this.dataMaterialSelected = value.selected[0]?.value;
     this.selectedMaterial = true;
 
@@ -243,5 +252,4 @@ export class MaterialStageUpdateComponent implements OnInit {
   goToEndLife() {
     this.router.navigateByUrl('end-life-stage');
   }
-
 }
