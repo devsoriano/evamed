@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { ChartDataSets } from 'chart.js';
 import {BaseChartDirective } from 'ng2-charts';
 import { couldStartTrivia } from 'typescript';
+import subetapasInfo from 'src/app/calculos/Subetapas.json';
 
 @Component({
   selector: 'app-pie-chart',
@@ -20,6 +21,8 @@ export class PieChartComponent implements OnInit {
   @Input() showMe_elementos:boolean;
   @Input() bandera_click:number;
   @Output() ClickEvent = new EventEmitter<any>();
+
+  subetapas_list: any = subetapasInfo;
 
   private colores: any[] = [
     ['#2E9A67', '#4DBE89', '#60E3A6', '#1f8253'],
@@ -39,6 +42,8 @@ export class PieChartComponent implements OnInit {
   public pieChartType = 'doughnut';
   public pieChartOptions = {
     elements: { arc: { borderWidth: 0 } },
+    hover: { mode: null },
+    tooltips: { enabled: false },
     plugins: {
       datalabels: {
         color: '#FFFFFF',
@@ -101,6 +106,11 @@ export class PieChartComponent implements OnInit {
     }
   }
 
+  findSubetapa(etapa) {
+    let aux = this.subetapas_list.filter((s) => s['abreviacion'] == etapa);
+    return aux[0].nombre_subeatapa;
+  }
+
   cargarDatos(ID:string, indicador:string){
     let auxdata: ChartDataSets[];
     let color: any[]
@@ -110,7 +120,6 @@ export class PieChartComponent implements OnInit {
     let auxdatos = []
     let datos = []
     let aux=[];
-    let subprocesos = [['A1','A2','A3'],['A4','A5'],['B4','B6'],['C1','C2','C3','C4']];
     this.pieChartLabels=[]
     //carga datos para sección de resultados "Elementos constructivos por ciclo de vida"
     // console.log(this.Bandera_resultado,indicador)
@@ -140,9 +149,14 @@ export class PieChartComponent implements OnInit {
             if (auxlabel[element]===ID) {
               color = this.colores[element];
               auxdatos = aux[auxlabel[element]]
+              let auxSuma=0;
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
-                auxdataLabel = [...auxdataLabel, marcador];
-                datos = [...datos, (auxdatos[marcador]).toFixed(2)];
+                auxSuma =  auxSuma + auxdatos[marcador];
+              });
+              Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
+                let auxnamelabel = this.findSubetapa(marcador).concat(" : ")
+                auxdataLabel = [...auxdataLabel, auxnamelabel.concat((auxdatos[marcador]).toFixed(2).toString())];
+                datos = [...datos, ((auxdatos[marcador] / auxSuma)*100).toFixed(2).toString()];
               });
             }
           });

@@ -118,7 +118,7 @@ export class BarChartComponent implements OnInit {
           ticks: {
             beginAtZero: true,
             max: 100,
-            fontSize:7,
+            fontSize:11,
           }
         }],
         xAxes: [{
@@ -126,7 +126,7 @@ export class BarChartComponent implements OnInit {
           ticks: {
             beginAtZero: true,
             max: 100,
-            fontSize:7,
+            fontSize:11,
           }
         }]
       };
@@ -137,7 +137,7 @@ export class BarChartComponent implements OnInit {
           ticks: {
             beginAtZero: true,
             max: this.maxValue,
-            fontSize:10
+            fontSize:11
           }
         }],
         xAxes: [{
@@ -145,7 +145,7 @@ export class BarChartComponent implements OnInit {
           ticks: {
             beginAtZero: true,
             max: 100,
-            fontSize:10,
+            fontSize:11,
           }
         }]
       };
