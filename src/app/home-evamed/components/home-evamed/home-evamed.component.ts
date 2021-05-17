@@ -181,11 +181,12 @@ export class HomeEvamedComponent implements OnInit {
               let auxDatos: Record<string, any> = {
                 id: item.id,
                 datos: this.calculos.OperacionesDeFase(item.id),
+                etapasIgnoradas: [],
                 porcentaje: this.calculos.ValoresProcentaje(
-                  calculosOperacionesDeFase
+                  calculosOperacionesDeFase,[]
                 ),
                 porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
-                  calculosOperacionesDeFase
+                  calculosOperacionesDeFase,[]
                 ),
                 banderaEtapa: false,
                 etapaSeleccionada: 'Ninguna',
@@ -202,7 +203,6 @@ export class HomeEvamedComponent implements OnInit {
                 unit_impacto:
                   this.catologoImpactoAmbiental[0]['unit_potential_type'],
                 TipoGraficaActiva: { Pie: true, Bar: false },
-                etapasIgnoradas: [],
                 idsTextBotones: {
                   Producción: 'ProducciónTInfo'.concat(String(item.id)),
                   Construccion: 'ConstruccionTInfo'.concat(String(item.id)),
@@ -224,7 +224,7 @@ export class HomeEvamedComponent implements OnInit {
                 dataGraficaPieUso: this.DataPieUso(this.serchUseData(item.id)),
                 dataGraficaBar: this.cargarDataBar(
                   this.calculos.ValoresProcentajeSubeapa(
-                    this.calculos.OperacionesDeFase(item.id)
+                    this.calculos.OperacionesDeFase(item.id),[]
                   ),
                   this.calculos.ajustarNombre(
                     this.catologoImpactoAmbiental[0][
@@ -235,7 +235,7 @@ export class HomeEvamedComponent implements OnInit {
                 ),
                 dataGraficaPie: this.cargaDataPie(
                   this.calculos.ValoresProcentajeSubeapa(
-                    this.calculos.OperacionesDeFase(item.id)
+                    this.calculos.OperacionesDeFase(item.id),[]
                   ),
                   this.calculos.ajustarNombre(
                     this.catologoImpactoAmbiental[0][
@@ -816,13 +816,25 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[i].etapasIgnoradas.push(etapa);
     }
 
+    this.auxDataProjectList[i].porcentaje = this.calculos.ValoresProcentaje(
+      this.auxDataProjectList[i].datos,this.auxDataProjectList[i].etapasIgnoradas
+    );
+    
+    this.auxDataProjectList[i].porcentajeSubepata= this.calculos.ValoresProcentajeSubeapa(
+      this.auxDataProjectList[i].datos,this.auxDataProjectList[i].etapasIgnoradas
+    )
+
     this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(
-      this.auxDataProjectList[i].porcentajeSubepata,
+      this.calculos.ValoresProcentajeSubeapa(
+        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),[]
+      ),
       this.auxDataProjectList[i].impactoSelect,
       this.auxDataProjectList[i].etapasIgnoradas
     );
     this.auxDataProjectList[i].dataGraficaBar = this.cargarDataBar(
-      this.auxDataProjectList[i].porcentajeSubepata,
+      this.calculos.ValoresProcentajeSubeapa(
+        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),[]
+      ),
       this.auxDataProjectList[i].impactoSelect,
       this.auxDataProjectList[i].etapasIgnoradas
     );
