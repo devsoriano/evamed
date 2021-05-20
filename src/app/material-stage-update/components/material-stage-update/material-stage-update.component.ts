@@ -173,7 +173,9 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   updateStepOne() {
     //Lógica de editar
-    console.log('editar');
+    console.log('editar------------------');
+    console.log(this.listData2);
+    this.listData2.map((item) => console.log(item));
   }
 
   showMaterials(event, sc, origin) {
@@ -197,8 +199,6 @@ export class MaterialStageUpdateComponent implements OnInit {
                   item.material_id === materialData.id &&
                   item.section_id === this.indexSheet + 1
                 ) {
-                  console.log('item-------------------------------');
-                  console.log(item);
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = item.quantity;
                   prevData['origin_id'] = item.origin_id;
@@ -209,6 +209,9 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['city_id_end'] = item.city_id_end;
                   prevData['city_id_origin'] = item.city_id_origin;
                   prevData['vidaUtil'] = this.vidaUtilSeleccionado;
+                  prevData['unit_text'] = item.unit_text;
+                  prevData['unit_text'] = item.unit_text;
+                  prevData['description_material'] = item.description_material;
                   prevData['key'] = counterRevit++;
                   listMateriales.push(prevData);
                 }
@@ -218,7 +221,6 @@ export class MaterialStageUpdateComponent implements OnInit {
       }
       if (item.construction_system === sc && origin === 'dynamo') {
         if (item.origin_id === 2) {
-          console.log('entra a opciones dynamo');
           this.materialsService
             .searchMaterial(item.material_id)
             .subscribe((material) => {
@@ -234,6 +236,8 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['city_id_end'] = item.city_id_end;
                   prevData['city_id_origin'] = item.city_id_origin;
                   prevData['vidaUtil'] = this.vidaUtilSeleccionado;
+                  prevData['unit_text'] = item.unit_text;
+                  prevData['description_material'] = item.description_material;
                   prevData['key'] = countDynamo++;
                   listMateriales.push(prevData);
                 }

@@ -564,6 +564,7 @@ export class MaterialsStageComponent implements OnInit {
                         .subscribe((data) => {
                           console.log('Success Modelo Revit o Usuario!');
                           console.log(data);
+                          this.router.navigateByUrl('construction-stage');
                         });
                     }
                   });

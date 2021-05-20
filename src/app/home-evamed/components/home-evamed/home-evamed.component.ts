@@ -182,10 +182,12 @@ export class HomeEvamedComponent implements OnInit {
                 datos: this.calculos.OperacionesDeFase(item.id),
                 etapasIgnoradas: [],
                 porcentaje: this.calculos.ValoresProcentaje(
-                  calculosOperacionesDeFase,[]
+                  calculosOperacionesDeFase,
+                  []
                 ),
                 porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
-                  calculosOperacionesDeFase,[]
+                  calculosOperacionesDeFase,
+                  []
                 ),
                 banderaEtapa: false,
                 etapaSeleccionada: 'Ninguna',
@@ -223,7 +225,8 @@ export class HomeEvamedComponent implements OnInit {
                 dataGraficaPieUso: this.DataPieUso(this.serchUseData(item.id)),
                 dataGraficaBar: this.cargarDataBar(
                   this.calculos.ValoresProcentajeSubeapa(
-                    this.calculos.OperacionesDeFase(item.id),[]
+                    this.calculos.OperacionesDeFase(item.id),
+                    []
                   ),
                   this.calculos.ajustarNombre(
                     this.catologoImpactoAmbiental[0][
@@ -234,7 +237,8 @@ export class HomeEvamedComponent implements OnInit {
                 ),
                 dataGraficaPie: this.cargaDataPie(
                   this.calculos.ValoresProcentajeSubeapa(
-                    this.calculos.OperacionesDeFase(item.id),[]
+                    this.calculos.OperacionesDeFase(item.id),
+                    []
                   ),
                   this.calculos.ajustarNombre(
                     this.catologoImpactoAmbiental[0][
@@ -557,6 +561,8 @@ export class HomeEvamedComponent implements OnInit {
             housing_scheme_id: projectData.housing_scheme_id,
             user_platform_id: projectData.user_platform_id,
             city_id_origin: projectData.city_id_origin,
+            unit_text: projectData.unit_text,
+            description_material: projectData.description_material,
             distance: null,
           })
           .subscribe((newProjectData) => {
@@ -846,23 +852,28 @@ export class HomeEvamedComponent implements OnInit {
     }
 
     this.auxDataProjectList[i].porcentaje = this.calculos.ValoresProcentaje(
-      this.auxDataProjectList[i].datos,this.auxDataProjectList[i].etapasIgnoradas
+      this.auxDataProjectList[i].datos,
+      this.auxDataProjectList[i].etapasIgnoradas
     );
-    
-    this.auxDataProjectList[i].porcentajeSubepata= this.calculos.ValoresProcentajeSubeapa(
-      this.auxDataProjectList[i].datos,this.auxDataProjectList[i].etapasIgnoradas
-    )
+
+    this.auxDataProjectList[i].porcentajeSubepata =
+      this.calculos.ValoresProcentajeSubeapa(
+        this.auxDataProjectList[i].datos,
+        this.auxDataProjectList[i].etapasIgnoradas
+      );
 
     this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(
       this.calculos.ValoresProcentajeSubeapa(
-        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),[]
+        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),
+        []
       ),
       this.auxDataProjectList[i].impactoSelect,
       this.auxDataProjectList[i].etapasIgnoradas
     );
     this.auxDataProjectList[i].dataGraficaBar = this.cargarDataBar(
       this.calculos.ValoresProcentajeSubeapa(
-        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),[]
+        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),
+        []
       ),
       this.auxDataProjectList[i].impactoSelect,
       this.auxDataProjectList[i].etapasIgnoradas
