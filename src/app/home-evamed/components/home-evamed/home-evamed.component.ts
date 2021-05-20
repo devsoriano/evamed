@@ -12,7 +12,6 @@ import { ChangeNameProjectComponent } from '../change-name-project/change-name-p
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-evamed',
@@ -647,7 +646,37 @@ export class HomeEvamedComponent implements OnInit {
                                     .subscribe((dataNewECD) => {
                                       console.log('Resultado de add New ECD');
                                       console.log(dataNewECD);
-                                      location.reload();
+                                      this.users
+                                        .searchUser(
+                                          localStorage.getItem('email-login')
+                                        )
+                                        .subscribe((data) => {
+                                          localStorage.setItem(
+                                            'email-id',
+                                            data[0].id
+                                          );
+                                          this.projectsList = [];
+                                          this.projects
+                                            .getProjects()
+                                            .subscribe((data) => {
+                                              data.map((item) => {
+                                                if (
+                                                  item.user_platform_id ===
+                                                  parseInt(
+                                                    localStorage.getItem(
+                                                      'email-id'
+                                                    ),
+                                                    10
+                                                  )
+                                                ) {
+                                                  this.projectsList.push(item);
+                                                }
+                                                this.countProjectList =
+                                                  this.projectsList.length;
+                                              });
+                                              this.projectsList.reverse();
+                                            });
+                                        });
                                     });
                                 }
                               });

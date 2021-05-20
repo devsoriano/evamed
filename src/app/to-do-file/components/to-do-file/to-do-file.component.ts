@@ -19,7 +19,7 @@ export class ToDoFileComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private fileSaverService: FileSaverService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -28,6 +28,7 @@ export class ToDoFileComponent implements OnInit {
   }
 
   onFileChange(evt: any) {
+    console.log('acción de botón!!!!!');
     /* wire up file reader */
     const target: DataTransfer = evt.target;
 
@@ -44,18 +45,18 @@ export class ToDoFileComponent implements OnInit {
       const totalData = [];
       let i = 0;
       /* save data */
-      for ( i = 0; i < wb.SheetNames.length; i++) {
-        partialData = XLSX.utils.sheet_to_json(
-          wb.Sheets[wb.SheetNames[i]],
-          { raw: true, defval: null }
-        );
+      for (i = 0; i < wb.SheetNames.length; i++) {
+        partialData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[i]], {
+          raw: true,
+          defval: null,
+        });
         totalData.push(partialData);
       }
 
       let toRead = {};
       toRead = {
         sheetNames: wb.SheetNames,
-        data: totalData
+        data: totalData,
       };
       sessionStorage.setItem('dataProject', JSON.stringify(toRead));
       // this.router.navigateByUrl('materials-stage');
@@ -96,6 +97,4 @@ export class ToDoFileComponent implements OnInit {
   saveFile() {
     this.dialog.open(PrevStepsComponent);
   }
-
-  
 }

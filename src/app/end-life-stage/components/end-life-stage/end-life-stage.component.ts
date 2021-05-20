@@ -47,6 +47,14 @@ export class EndLifeStageComponent implements OnInit {
       this.catalogoFuentes = fuentes;
     });
     this.catalogsService.getEnergyUnits().subscribe((data) => {
+      // console.log('lógica de unidades!!!!');
+      // console.log(data);
+      let energia = [];
+      data.map((unidad) => {
+        if (unidad.name_energy_unit === 'Hrs') {
+          energia.push(data);
+        }
+      });
       this.catalogoUnidadEnergia = data;
     });
   }

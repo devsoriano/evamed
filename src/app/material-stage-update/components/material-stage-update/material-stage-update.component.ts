@@ -78,12 +78,10 @@ export class MaterialStageUpdateComponent implements OnInit {
       .getProjectById(localStorage.getItem('idProyectoConstrucción'))
       .subscribe((data: any) => {
         this.nameProject = data.name_project;
-
         this.catalogsService.usefulLifeCatalog().subscribe((distances) => {
           distances.map((distance) => {
             console.log(data.useful_life_id);
             if (data.useful_life_id === distance.id) {
-              console.log('entra a la condicional');
               this.vidaUtilSeleccionado = parseInt(distance.name_useful_life);
             }
           });
@@ -199,6 +197,8 @@ export class MaterialStageUpdateComponent implements OnInit {
                   item.material_id === materialData.id &&
                   item.section_id === this.indexSheet + 1
                 ) {
+                  console.log('item-------------------------------');
+                  console.log(item);
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = item.quantity;
                   prevData['origin_id'] = item.origin_id;

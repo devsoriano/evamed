@@ -220,7 +220,8 @@ export class MaterialsStageComponent implements OnInit {
     this.selectState(parseInt(sessionStorage.getItem('estadoSeleccionado')));
 
     this.dataMaterialSelected.ciudadSeleccionada === undefined
-      ? (this.dataMaterialSelected.ciudadSeleccionada = this.ciudadOrigenSeleccionada)
+      ? (this.dataMaterialSelected.ciudadSeleccionada =
+          this.ciudadOrigenSeleccionada)
       : this.dataMaterialSelected.ciudadSeleccionada;
 
     this.dataMaterialSelected.vidaUtil === undefined
@@ -265,11 +266,13 @@ export class MaterialsStageComponent implements OnInit {
 
     this.dataMaterialSelected.materialSelectedDB = 'Buscar material';
     if (this.dataMaterialSelected.name_material_db !== undefined) {
-      this.dataMaterialSelected.materialSelectedDB = this.dataMaterialSelected.name_material_db;
+      this.dataMaterialSelected.materialSelectedDB =
+        this.dataMaterialSelected.name_material_db;
     }
 
     if (this.dataMaterialSelected.materialDB !== undefined) {
-      this.dataMaterialSelected.materialSelectedDB = this.dataMaterialSelected.materialDB.name_material;
+      this.dataMaterialSelected.materialSelectedDB =
+        this.dataMaterialSelected.materialDB.name_material;
     }
 
     this.selectedMaterial = true;
@@ -421,6 +424,8 @@ export class MaterialsStageComponent implements OnInit {
                         }
                       }
 
+                      console.log('entra a datos a guardar**************');
+                      console.log(data);
                       this.projectsService
                         .addSchemeProject({
                           construction_system: data.Sistema_constructivo,
@@ -455,6 +460,8 @@ export class MaterialsStageComponent implements OnInit {
                             data.transporteExtrangero === undefined
                               ? 1
                               : data.transporteExtrangero,
+                          unit_text: data.Unidad,
+                          description_material: data['Descripción de Material'],
                         })
                         .subscribe((data) => {
                           console.log('Success Modelo Revit o Usuario!');
@@ -551,6 +558,8 @@ export class MaterialsStageComponent implements OnInit {
                             data.transporteExtrangero === undefined
                               ? 1
                               : data.transporteExtrangero,
+                          unit_text: data.Unidad,
+                          description_material: data['Descripción de Material'],
                         })
                         .subscribe((data) => {
                           console.log('Success Modelo Revit o Usuario!');
@@ -562,107 +571,6 @@ export class MaterialsStageComponent implements OnInit {
             }
           }
         });
-      });
-    });
-
-    let i;
-    let originalData = [];
-    for (i = 1; i <= this.sheetNames.length; i++) {
-      originalData.push(this.contentData[i]);
-    }
-
-    originalData.map((data, key) => {
-      data.map((dataSheet) => {
-        if (dataSheet.Material !== null) {
-          this.materialsService
-            .searchMaterial(dataSheet.Material)
-            .subscribe((material) => {
-              material.map((materialData) => {
-                if (materialData.name_material === dataSheet.Material) {
-                  if (
-                    dataSheet.paisSeleccionado !== '' ||
-                    dataSheet.paisSeleccionado !== undefined
-                  ) {
-                    if (dataSheet.paisSeleccionado === 1) {
-                      // México
-                      //lógica para distancia de ciudades
-                      this.catalogsService
-                        .getLocalDistances()
-                        .subscribe((localDistance) => {
-                          localDistance.map((item) => {
-                            if (
-                              item.city_id_end ===
-                                this.ciudadOrigenSeleccionada &&
-                              item.city_id_origin ===
-                                dataSheet.ciudadSeleccionada
-                            ) {
-                              this.distanciaInicial = parseInt(
-                                item.distance,
-                                10
-                              );
-                            }
-                            if (
-                              item.city_id_origin ===
-                                this.ciudadOrigenSeleccionada &&
-                              item.city_id_end === dataSheet.ciudadSeleccionada
-                            ) {
-                              this.distanciaInicial = parseInt(
-                                item.distance,
-                                10
-                              );
-                            }
-                          });
-                        });
-                    }
-                  }
-
-                  this.projectsService
-                    .addSchemeProjectOriginal({
-                      construction_system: dataSheet.Sistema_constructivo,
-                      comercial_name: dataSheet.Material,
-                      quantity: dataSheet.Cantidad,
-                      provider_distance: 0,
-                      material_id: materialData.id,
-                      project_id: projectId,
-                      origin_id:
-                        dataSheet.Origen === 'Calculado en Dynamo'
-                          ? 2
-                          : dataSheet.Origen === 'Modelo de Revit' ||
-                            dataSheet.Origen === 'Usuario'
-                          ? 1
-                          : 0,
-                      section_id: key + 1,
-                      value: null,
-                      distance_init: null,
-                      distance_end: null,
-                      replaces:
-                        dataSheet.reemplazos === '' ||
-                        dataSheet.reemplazos === undefined
-                          ? 0
-                          : dataSheet.reemplazos,
-                      city_id_origin: this.ciudadOrigenSeleccionada,
-                      city_id_end:
-                        dataSheet.ciudadSeleccionada === '' ||
-                        dataSheet.ciudadSeleccionada === undefined
-                          ? null
-                          : dataSheet.ciudadSeleccionada,
-                      transport_id_origin:
-                        dataSheet.transporteLocal === undefined
-                          ? null
-                          : dataSheet.transporteLocal,
-                      transport_id_end:
-                        dataSheet.transporteExtrangero === undefined
-                          ? null
-                          : dataSheet.transporteExtrangero,
-                    })
-                    .subscribe((data) => {
-                      console.log('Success save original schema!');
-                      this.router.navigateByUrl('construction-stage');
-                    });
-                }
-              });
-            });
-        }
       });
     });
   }
