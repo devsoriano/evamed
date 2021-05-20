@@ -411,6 +411,9 @@ export class CompararComponent implements OnInit {
     })
 
     if(this.resultdosGraficos){
+      this.containerGraficas.clear();
+      this.receiveSelector(null);
+      this.ID = ' ';
       this.iniciaBarras()
     }else{
       this.TablaResultados()
@@ -510,8 +513,9 @@ export class CompararComponent implements OnInit {
   //activar gráfica de porcentaje
   porcentaje(val:boolean,val2:number){
     if ( val == this.bandera_porcentaje ){ return; }
-
+    this.receiveSelector(null)
     this.bandera_porcentaje = val;
+    this.ID=' ';
     this.iniciaBarras();
     this.containerGraficas.clear();
     return;
@@ -545,8 +549,6 @@ export class CompararComponent implements OnInit {
     }
     this.iniciaRadiales();
     this.iniciaPie();
-
-    //this.porcentaje(this.bandera_porcentaje, 2);
   }
 
   //interacción con la gráfca de bar

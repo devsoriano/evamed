@@ -1,24 +1,24 @@
 [
     {
-        "nombre_subeatapa": "Extracción",
+        "nombre_subeatapa": "Extracción previa",
         "abreviacion": "A1",
         "color": "#4DBE89",
         "etapa":"Producción"
     },
     {
-        "nombre_subeatapa":"Transporte",
+        "nombre_subeatapa":"Transporte a planta",
         "abreviacion":"A2",
         "color":"#319F6B",
         "etapa":"Producción"
     },
     {
-        "nombre_subeatapa":"Manofactura",
+        "nombre_subeatapa":"Manufactura",
         "abreviacion":"A3",
         "color":"#368460",
         "etapa":"Producción"
     },
     {
-        "nombre_subeatapa":"Transporte",
+        "nombre_subeatapa":"Transporte a sitio",
         "abreviacion":"A4",
         "color":"#28A9B4",
         "etapa":"Construccion"
@@ -48,19 +48,19 @@
         "etapa":"FinDeVida"
     },
     {
-        "nombre_subeatapa":"Transporte",
+        "nombre_subeatapa":"Transporte final",
         "abreviacion":"C2",
         "color":"#D18F34",
         "etapa":"FinDeVida"
     },
     {
-        "nombre_subeatapa":"Tratamiento",
+        "nombre_subeatapa":"Tratamiento de desechos",
         "abreviacion":"C3",
         "color":"#B17626",
         "etapa":"FinDeVida"
     },
     {
-        "nombre_subeatapa":"Disposición",
+        "nombre_subeatapa":"Disposición desechos",
         "abreviacion":"C4",
         "color":"#A26513",
         "etapa":"FinDeVida"

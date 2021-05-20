@@ -349,23 +349,38 @@ export class Calculos {
     return Datos;
   }
 
-  ValoresProcentaje(data) {
+  ValoresProcentaje(data,ignorar) {
     let auxsumetapa = {};
     Object.keys(data).forEach((element) => {
       let auxsumimpacto = 0;
       auxsumetapa[element] = {};
+      let flag = true;
       Object.keys(data[element]).forEach((etapa) => {
-        Object.keys(data[element][etapa]).forEach((subetapa) => {
-          auxsumimpacto = auxsumimpacto + data[element][etapa][subetapa];
+        ignorar.forEach(element => {
+          if(element == etapa)
+            flag=false;
         });
+        Object.keys(data[element][etapa]).forEach((subetapa) => {
+          if(flag){
+            auxsumimpacto = auxsumimpacto + data[element][etapa][subetapa];
+          }
+        });
+        flag = true;
       });
       Object.keys(data[element]).forEach((etapa) => {
+        flag = true;
+        ignorar.forEach(element => {
+          if(element == etapa)
+            flag=false
+        });
         auxsumetapa[element][etapa] = {};
         auxsumetapa[element][etapa]['num'] = 0;
-        Object.keys(data[element][etapa]).forEach((subetapa) => {
-          auxsumetapa[element][etapa]['num'] =
-            auxsumetapa[element][etapa]['num'] + data[element][etapa][subetapa];
-        });
+        if(flag){
+          Object.keys(data[element][etapa]).forEach((subetapa) => {
+            auxsumetapa[element][etapa]['num'] =
+              auxsumetapa[element][etapa]['num'] + data[element][etapa][subetapa];
+          });
+        }
         auxsumetapa[element][etapa]['num'] =
           auxsumetapa[element][etapa]['num'].toFixed(3);
         auxsumetapa[element][etapa]['porcentaje'] = (
@@ -378,27 +393,44 @@ export class Calculos {
     return auxsumetapa;
   }
 
-  ValoresProcentajeSubeapa(data) {
+  ValoresProcentajeSubeapa(data,ignorar) {
     let auxsumetapa = {};
+    let flag = true;
     Object.keys(data).forEach((element) => {
       let auxsumimpacto = 0;
       auxsumetapa[element] = {};
       Object.keys(data[element]).forEach((etapa) => {
-        Object.keys(data[element][etapa]).forEach((subetapa) => {
-          auxsumimpacto = auxsumimpacto + data[element][etapa][subetapa];
+        ignorar.forEach(element => {
+          if(element == etapa)
+            flag=false;
         });
+        if(flag){
+          Object.keys(data[element][etapa]).forEach((subetapa) => {
+            auxsumimpacto = auxsumimpacto + data[element][etapa][subetapa];
+          });
+        }
+        flag=true;
       });
       Object.keys(data[element]).forEach((etapa) => {
+        ignorar.forEach(element => {
+          if(element == etapa)
+            flag=false;
+        });
         auxsumetapa[element][etapa] = {};
         Object.keys(data[element][etapa]).forEach((subetapa) => {
           auxsumetapa[element][etapa][subetapa] = {};
-          auxsumetapa[element][etapa][subetapa]['num'] =
-            data[element][etapa][subetapa].toFixed(3);
+          if(flag){
+            auxsumetapa[element][etapa][subetapa]['num'] =
+              data[element][etapa][subetapa].toFixed(3);
+          }else{
+            auxsumetapa[element][etapa][subetapa]['num'] = 0;
+          }
           auxsumetapa[element][etapa][subetapa]['porcentaje'] = (
             (auxsumetapa[element][etapa][subetapa]['num'] / auxsumimpacto) *
             100
           ).toFixed(1);
         });
+        flag=true
       });
     });
 
@@ -412,7 +444,7 @@ export class Calculos {
       sum = sum + Number(element);
     });
     data.forEach((element) => {
-      auxdata.push((Number(element) / sum).toFixed(1));
+      auxdata.push((Number(element) / sum * 100).toFixed(1));
     });
     return auxdata;
   }

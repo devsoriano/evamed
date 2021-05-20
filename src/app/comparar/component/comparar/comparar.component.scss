@@ -19,7 +19,7 @@
 .Tabla-Datos {
   border-collapse: collapse;
   text-align: center;
-  font-size: 9px;
+  font-size: 12px;
   width: 795px;
 
   th {
@@ -41,24 +41,23 @@
   padding: 0px;
   
   a.return-proyecto{
-    font-size: 9px;
+    font-size: 12px;
   }
 
   a.tittle-proyect {
-    font-size: 12px;
-    font-style: medium;
+    font-size: 20px;
     color: #343434;
     opacity: 1;
   }
 
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
     color: #92be00;
-    font-size: 9px;
+    font-size: 15px;
   }
 }
 
 ::ng-deep .mat-tab-label .mat-tab-label-content {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .div-proyectos-mostrados {
@@ -74,8 +73,8 @@
     letter-spacing: 0px;
     color: #767676;
     opacity: 1;
-    font-size: 9px;
-    width: 192px;
+    font-size: 12px;
+    width: 237px;
     height: 35px;
     text-align: left;
     mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
@@ -98,7 +97,7 @@
     padding-left: 11px;
     padding-right: 10px;
     padding-bottom: 5px;
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 0px;
     color: #343434;
     opacity: 1;
@@ -117,7 +116,7 @@ ng-template {
   letter-spacing: 0px;
   color: #343434;
   opacity: 1;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .div-impactos-ambientales {
@@ -126,22 +125,25 @@ ng-template {
     letter-spacing: 0px;
     color: #343434;
     opacity: 1;
-    font-size: 11px;
+    font-size: 12px;
   }
   .icons-options {
-    font-size: 11px;
+    font-size: 15px;
   }
   .sub-container {
-    font-size: 11px;
-    opacity: 1;
+    font-size: 12px;
     display: inline-grid;
     grid-template-columns: 122px 122px 122px;
-    column-gap: 16px;
     .button-impactos {
-      width: 37px;
+      width: 47px;
       height: 32px;
     }
   }
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    padding-top: 3px;
+    line-height: 34px;
+    padding: 0 12px;
+}
 }
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
@@ -152,7 +154,7 @@ ng-template {
   letter-spacing: 0px;
   color: #343434;
   opacity: 1;
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 52px;
 }
 
@@ -165,7 +167,7 @@ ng-template {
     letter-spacing: 0px;
     color: #343434;
     opacity: 1;
-    font-size: 7px;
+    font-size: 13px;
   }
 
   ul {
@@ -184,7 +186,7 @@ ng-template {
     border: none;
     width: 99px;
     height: 39px;
-    font-size: 9px;
+    font-size: 12px;
     color: #767676;
   }
 
@@ -205,7 +207,7 @@ ng-template {
 }
 
 p.text-duplicados {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 0px;
   padding-top: 21px;
   color: #767676;
