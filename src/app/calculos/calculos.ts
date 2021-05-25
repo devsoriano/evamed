@@ -453,6 +453,7 @@ export class Calculos {
     let impacto_ban = true;
     let auxNombre = [];
     let auxnombreSalto: string;
+    auxNombre.push("ciclo de vida")
     this.potentialTypesList.forEach((impacto, index) => {
       this.impactosIgnorar2.forEach((ignorar) => {
         if (impacto['name_potential_type'] === ignorar) {
@@ -461,13 +462,10 @@ export class Calculos {
       });
       if (impacto_ban) {
         auxnombreSalto = impacto['name_complete_potential_type'];
-        //auxNombre.push([auxnombreSalto.slice(0,15),'\n',auxnombreSalto.slice(15)].join(''))
         auxNombre.push(auxnombreSalto.split(' ').join('\n'));
       }
       impacto_ban = true;
     });
-
-    this.nombreImpactosCompleto = auxNombre;
     return auxNombre;
   }
 

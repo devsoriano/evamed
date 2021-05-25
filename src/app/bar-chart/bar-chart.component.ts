@@ -219,7 +219,6 @@ export class BarChartComponent implements OnInit {
         });
       });
     }
-    console.log(datos)
     this.barChartData = datos;
   }
 

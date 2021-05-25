@@ -109,7 +109,7 @@ export class CompararComponent implements OnInit {
   DatosTabla=[];
   classBotones ='boton-principal';
   fasesEliminadas = [];
-
+  proyectosMostrados =[];
 
   // vars analisis
   idProyectoActivo: number;
@@ -208,19 +208,22 @@ export class CompararComponent implements OnInit {
     let analisisRad = this.getAnalisisRadial(id);
     let analisisPie = this.getAnalisisPie(id);
 
+    let nump =1;
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
-        this.proyect[index].card = true;
-        this.proyect[index].num = this.proyect_active.length;
         this.proyect[index].num_epic=this.calculos.materiales_EPIC;
         this.proyect[index].num_epd = this.calculos.materiales_EPD;
+        this.proyectosMostrados=[...this.proyectosMostrados,{
+          num:this.proyect_active.length,
+          Nombre:this.proyect[index].Nombre,
+          id:this.proyect[index].id
+        }]
       }
     });
 
     this.outproyect_bar.push(analisis);
     this.outproyect_radar.push(analisisRad);
     this.outproyect_pie.push(analisisPie);
-    // this.childBar.forEach(c => c.agregarProyecto(this.outproyect_bar));
     if(this.resultdosTabla){
       this.TablaResultados();
     }else{
@@ -228,7 +231,6 @@ export class CompararComponent implements OnInit {
     }
     this.containerGraficas.clear();
     this.banderaGrapg == 0;
-    //this.iniciaBarrasSeccionDos();
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
       showpie: true,
@@ -321,7 +323,6 @@ export class CompararComponent implements OnInit {
         }
       })
     })
-    //console.log(analisisProyectos)
     return analisisProyectos;
   }
 
@@ -426,24 +427,44 @@ export class CompararComponent implements OnInit {
     this.botones_grafica_activos=true;
     this.container.clear();
     let auxL = ['Producción', 'Construccion', 'Uso', 'FinDeVida'];
-    let aux_color = ['#4DBE89', '#148A93', '#8F5091','#DEA961']
+    let aux_color = ['#4DBE89', '#148A93', '#8F5091','#DEA961',"#767676"];
     //se prepara la información por filas
-    let aux=[]
+    let aux=[];
+    let flagMasProyectos = false;
     auxL.forEach((ciclo,index) => {
-      let auxdata = {}
-      let auximpactos =[]
+      let auxdata = {};
+      let auximpactos =[];
+      auxdata["ciclo de vida"]=ciclo;
       this.outproyect_bar.forEach((element)=>{
         Object.keys(element.Datos).forEach(impacto => {
           if(!auximpactos.includes(impacto)){
-            auximpactos.push(impacto)
+            auximpactos.push(impacto);
             auxdata[impacto] = (element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }else{
+            flagMasProyectos = true;
             let last = auxdata[impacto].toString()
             auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
             auxdata[impacto] = auxdata[impacto].concat((element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
           }
         });
       })
+      auximpactos =[];
+       if(ciclo === "FinDeVida" && flagMasProyectos == true){
+         let numProyecto = 0;
+          this.outproyect_bar.forEach((element)=>{ 
+            numProyecto = numProyecto+1;
+            Object.keys(element.Datos).forEach(impacto => {
+              if(!auximpactos.includes(impacto)){
+                auximpactos.push(impacto);
+                auxdata[impacto] = ((numProyecto).toString());
+              }else{
+                let last = auxdata[impacto].toString()
+                auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0');
+                auxdata[impacto] = auxdata[impacto].concat((numProyecto).toString());
+              }
+            });
+          });
+       }
       aux=[...aux, {data:auxdata,
                     color: aux_color[index]}];
     })
@@ -500,8 +521,6 @@ export class CompararComponent implements OnInit {
         {
           Nombre: proyecto['name_project'],
           id: proyecto['id'],
-          card: false,
-          num:0,
           num_epic: 0,
           num_epd:0
         }];
@@ -523,17 +542,16 @@ export class CompararComponent implements OnInit {
 
   //quitar proyecto a las gráficas
   quitarProyecto(ID:number){
-    this.proyect.forEach((proyecto, index) => {
-      if (proyecto.id == ID) {
-        this.proyect[index].card = false;
-        this.proyect[index].num = 0;
-      }
-    });
+   
     this.proyect_active = this.proyect_active.filter(item => item != ID);
+    this.proyectosMostrados = this.proyectosMostrados.filter(({id}) => id != ID);
+    let nump=1;
     this.proyect_active.forEach((element,index) =>{
-      this.proyect.forEach(pr =>{
-        if(pr.id == element.id){
-          this.proyect[index].num = index+1;
+      this.proyectosMostrados.forEach((pr,numproy) =>{
+        if(pr.id == element){
+          nump=nump+1;
+          this.proyectosMostrados[numproy].num = nump;
+          console.log("cambio")
         }
       })
     })
