@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,11 @@ import { ChangeNameProjectComponent } from '../change-name-project/change-name-p
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label,BaseChartDirective } from 'ng2-charts';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels'
+import { element } from 'protractor';
+import { newArray } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-home-evamed',
@@ -77,21 +82,45 @@ export class HomeEvamedComponent implements OnInit {
       },
     },
   };
-  public barChartOptions = {
-    scaleShowVerticalLines: false,
+  public barChartPlugins = [pluginDataLabels]
+
+  @ViewChild('MyChart') chartDir: BaseChartDirective;
+  public barChartOptions: ChartOptions = {
     responsive: true,
-    //tooltips: { enabled: false },
-    hover: { mode: null },
+    title: { display: true },
     legend: { display: false },
+    tooltips: {enabled: false,
+      mode: 'label',
+    },
+    scales:{
+      yAxes: [{
+        display: true,
+        ticks: {
+          beginAtZero: true,
+          fontSize:11,
+        }
+      }],
+      xAxes: [{
+        display: true,
+        ticks: {
+          beginAtZero: true,
+          fontSize:11,
+        }
+      }]
+    },
     plugins: {
       datalabels: {
-        display: false,
-      },
-    },
+        color: 'white',
+        anchor: 'center',
+        align: 'center',
+        font: {
+          size: 7,
+        }
+      }
+    }
   };
-  public barChartType = 'bar';
+  public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  public pieChartData = [120, 150, 180, 90];
   public pieChartType = 'pie';
   public pieChartOptions_elementos = {
     elements: { arc: { borderWidth: 0 } },
@@ -176,6 +205,7 @@ export class HomeEvamedComponent implements OnInit {
               calculosOperacionesDeFase = this.calculos.OperacionesDeFase(
                 item.id
               );
+              
 
               let auxDatos: Record<string, any> = {
                 id: item.id,
@@ -217,10 +247,10 @@ export class HomeEvamedComponent implements OnInit {
                   FinDeVida: 'FinDeVidaTextInfo'.concat(String(item.id)),
                 },
                 iconosCambio: {
-                  Producción: 'visibility_off',
-                  Construccion: 'visibility_off',
-                  Uso: 'visibility_off',
-                  FinDeVida: 'visibility_off',
+                  Producción: 'visibility',
+                  Construccion: 'visibility',
+                  Uso: 'visibility',
+                  FinDeVida: 'visibility',
                 },
                 dataGraficaPieUso: this.DataPieUso(this.serchUseData(item.id)),
                 dataGraficaBar: this.cargarDataBar(
@@ -769,9 +799,13 @@ export class HomeEvamedComponent implements OnInit {
   cargarDataBar(data, impactoU, etapasI) {
     let auxColor = [];
     let aux = [];
-    let auxl = [];
+    let auxl: Label[] = [];
     let banderaEtapa = true;
     let auxdata2 = [];
+    const auxDatos = {sub1 : [], sub2:[],sub3:[],sub4:[]}
+    const auxColores = {sub1 : [], sub2:[],sub3:[],sub4:[]}
+    let maxsubetapas =0;
+
     Object.keys(data).forEach((element) => {
       if (element === impactoU) {
         Object.keys(data[element]).forEach((ciclo) => {
@@ -781,25 +815,72 @@ export class HomeEvamedComponent implements OnInit {
             }
           });
           if (banderaEtapa) {
+            if(this.calculos.findSubetapas(ciclo).length > maxsubetapas)
+              maxsubetapas = this.calculos.findSubetapas(ciclo).length;
+          }
+          banderaEtapa = true;
+        });
+      }
+      if (element === impactoU) {
+        Object.keys(data[element]).forEach((ciclo) => {
+          etapasI.forEach((ei) => {
+            if (ei === ciclo) {
+              banderaEtapa = false;
+            }
+          });
+          if (banderaEtapa) {
+            auxl.push(ciclo);
+            let auxsub=0;
             Object.keys(data[element][ciclo]).forEach((subetapa) => {
-              auxl.push(subetapa);
+              auxsub = auxsub + 1;
+              if(auxsub == 1){
+                auxDatos.sub1.push(data[element][ciclo][subetapa].porcentaje)
+                auxColores.sub1.push(this.calculos.findColor(subetapa))
+              }
+              if(auxsub == 2){
+                auxDatos.sub2.push(data[element][ciclo][subetapa].porcentaje)
+                auxColores.sub2.push(this.calculos.findColor(subetapa))
+              }
+              if(auxsub == 3){
+                auxDatos.sub3.push(data[element][ciclo][subetapa].porcentaje)
+                auxColores.sub3.push(this.calculos.findColor(subetapa))
+              }
+              if(auxsub == 4){
+                auxDatos.sub4.push(data[element][ciclo][subetapa].porcentaje)
+                auxColores.sub4.push(this.calculos.findColor(subetapa))
+              }
               auxdata2.push(data[element][ciclo][subetapa].num);
               auxColor.push(this.calculos.findColor(subetapa));
             });
+            if(auxsub < maxsubetapas){
+              for(var i = auxsub+1; i<=maxsubetapas;i++){
+                if(i == 3){
+                  auxDatos.sub3.push("0")
+                  auxColores.sub3.push("#FFFFFF")
+                }
+                if(i == 4){
+                  auxDatos.sub4.push("0")
+                  auxColores.sub4.push("#FFFFFF")
+                }
+              }
+            }
           }
           banderaEtapa = true;
         });
       }
     });
+    
+    Object.keys(auxDatos).forEach(element => {
+      aux = [...aux,
+        {
+          data: auxDatos[element],
+          label:element,
+          stack: "Proyecto",
+          backgroundColor: auxColores[element],
+        },
+      ];
+    });
 
-    auxdata2 = this.calculos.Porcentaje(auxdata2);
-
-    aux = [
-      {
-        data: auxdata2,
-        backgroundColor: auxColor,
-      },
-    ];
     return { datos: aux, labels: auxl };
   }
 
@@ -842,12 +923,12 @@ export class HomeEvamedComponent implements OnInit {
     if (this.auxDataProjectList[i].etapasIgnoradas.includes(etapa)) {
       this.auxDataProjectList[i].etapasIgnoradas.forEach((element, index) => {
         if (element === etapa) {
-          this.auxDataProjectList[i].iconosCambio[etapa] = 'visibility_off';
+          this.auxDataProjectList[i].iconosCambio[etapa] = 'visibility';
           this.auxDataProjectList[i].etapasIgnoradas.splice(index, 1);
         }
       });
     } else {
-      this.auxDataProjectList[i].iconosCambio[etapa] = 'visibility';
+      this.auxDataProjectList[i].iconosCambio[etapa] = 'visibility_off';
       this.auxDataProjectList[i].etapasIgnoradas.push(etapa);
     }
 
@@ -865,7 +946,7 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(
       this.calculos.ValoresProcentajeSubeapa(
         this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),
-        []
+        this.auxDataProjectList[i].etapasIgnoradas
       ),
       this.auxDataProjectList[i].impactoSelect,
       this.auxDataProjectList[i].etapasIgnoradas
@@ -873,7 +954,7 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList[i].dataGraficaBar = this.cargarDataBar(
       this.calculos.ValoresProcentajeSubeapa(
         this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),
-        []
+        this.auxDataProjectList[i].etapasIgnoradas
       ),
       this.auxDataProjectList[i].impactoSelect,
       this.auxDataProjectList[i].etapasIgnoradas
@@ -889,7 +970,6 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[i].TipoGraficaActiva['Pie'] = false;
       this.auxDataProjectList[i].TipoGraficaActiva['Bar'] = true;
     }
-    console.log(this.auxDataProjectList[i].dataGraficaBar);
   }
 
   openDialogANP() {

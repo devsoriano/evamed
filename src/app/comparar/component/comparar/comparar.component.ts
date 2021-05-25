@@ -265,12 +265,12 @@ export class CompararComponent implements OnInit {
   //elementos onstructivos
   iniciaBarrasSeccionDos(){
     this.containerBarGrafica.clear();
-    /*const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
     const grafica = this.containerBarGrafica.createComponent(componentFactory);
     grafica.instance.inputProyects = this.proyect_active;
     grafica.instance.showMe = false;
     grafica.instance.Bandera_bar = this.bandera_graph_bar;
-    grafica.instance.porcentaje=true;*/
+    grafica.instance.porcentaje=true;
   }
 
   iniciaRadiales(){
