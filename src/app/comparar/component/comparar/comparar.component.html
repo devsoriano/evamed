@@ -85,26 +85,26 @@
               <ul>
                 <li>
                   <button id="ProducciónOjo" (click)="ajusteDeGraficaFASE('Producción')" class="boton-icono">
-                    <mat-icon class="uno">visibility_off</mat-icon>
+                    <mat-icon class="uno">{{iconos['Producción']}}</mat-icon>
                   </button>
                   <button id="Producción" class="boton-principal" mat-stroked-button (click)="grafica('Producción')">
                   Producción</button>
                 </li>
                 <li>
                   <button id="ConstruccionOjo" (click)="ajusteDeGraficaFASE('Construccion')" class="boton-icono">
-                    <mat-icon class="dos">visibility_off</mat-icon>
+                    <mat-icon class="dos">{{iconos['Construccion']}}</mat-icon>
                   </button>
                   <button id="Construccion"class="boton-principal" mat-stroked-button (click)="grafica('Construccion')">
                   Construcción</button> </li>
                 <li>
                   <button id="UsoOjo" (click)="ajusteDeGraficaFASE('Uso')" class="boton-icono">
-                    <mat-icon class="boton-principal" class="tres">visibility_off</mat-icon>
+                    <mat-icon class="tres">{{iconos['Uso']}}</mat-icon>
                   </button>
                   <button id="Uso" class="boton-principal" mat-stroked-button (click)="grafica('Uso')">
                   Uso</button> </li>
                 <li>
                   <button id="FinDeVidaOjo" (click)="ajusteDeGraficaFASE('FinDeVida')" class="boton-icono">
-                    <mat-icon class="cuatro">visibility_off</mat-icon>
+                    <mat-icon class="cuatro">{{iconos['FinDeVida']}}</mat-icon>
                   </button>
                   <button id="FinDeVida" class="boton-principal" mat-stroked-button (click)="grafica('FinDeVida')">
                   Fin de vida</button> </li>

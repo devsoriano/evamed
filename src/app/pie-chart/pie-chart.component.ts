@@ -50,7 +50,10 @@ export class PieChartComponent implements OnInit {
         font: {
           size: 7,
         }
-      }
+      },
+      legend:{
+        position:'bottom',
+      },
     }
   };
   public pieChartOptions_elementos={

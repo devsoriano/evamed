@@ -110,6 +110,7 @@ export class CompararComponent implements OnInit {
   classBotones ='boton-principal';
   fasesEliminadas = [];
   proyectosMostrados =[];
+  iconos={'Producción': 'visibility', 'Construccion': 'visibility', 'Uso': 'visibility', 'FinDeVida': 'visibility'}
 
   // vars analisis
   idProyectoActivo: number;
@@ -167,9 +168,11 @@ export class CompararComponent implements OnInit {
           if(element == fase){
             this.fasesEliminadas.splice(index,1)
             document.getElementById(fase.concat("Ojo")).className = 'boton-icono';
+            this.iconos[fase] = 'visibility'
           }
         })
       }else{
+        this.iconos[fase] = 'visibility_off'
         document.getElementById(fase.concat("Ojo")).className = 'boton-ojito-select';
         this.fasesEliminadas.push(fase);
       }
