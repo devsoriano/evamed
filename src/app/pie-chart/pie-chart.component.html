@@ -6,13 +6,23 @@
         {{indicador}}
       </mat-card-header>
     </mat-card>
-    <div class="canvas-container">
+    <div>
       <canvas #MyChart='base-chart' #canvas baseChart
         [datasets]="pieChartData[i]"
         [options]="pieChartOptions"
-        [labels]="pieChartLabels[i]"
-        [chartType]="pieChartType"
-        width="50px" height="50px"></canvas>
+        [chartType]="pieChartType"></canvas>
+        <div>
+          <ul class="mostrar-subetapas">
+            <li *ngFor = "let subetapa of pieChartLabels[i]; let num = index">
+              <div class="text-subetapas">
+                <button (click)="DeleteSubetapa(subetapa,i)">
+                  <span class="dot" [ngStyle]="{'background-color': pieChartColor[num]}"></span>
+                  <a id="{{subetapa}}">{{subetapa}}</a>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
     </div>
   </div>
 </div>

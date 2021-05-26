@@ -211,11 +211,11 @@ export class CompararComponent implements OnInit {
     let analisisRad = this.getAnalisisRadial(id);
     let analisisPie = this.getAnalisisPie(id);
 
-    let nump =1;
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
         this.proyect[index].num_epic=this.calculos.materiales_EPIC;
         this.proyect[index].num_epd = this.calculos.materiales_EPD;
+        this.proyect[index].card = true;
         this.proyectosMostrados=[...this.proyectosMostrados,{
           num:this.proyect_active.length,
           Nombre:this.proyect[index].Nombre,
@@ -525,6 +525,7 @@ export class CompararComponent implements OnInit {
           Nombre: proyecto['name_project'],
           id: proyecto['id'],
           num_epic: 0,
+          card: false,
           num_epd:0
         }];
     })
@@ -545,7 +546,11 @@ export class CompararComponent implements OnInit {
 
   //quitar proyecto a las gráficas
   quitarProyecto(ID:number){
-   
+    this.proyect.forEach((proyecto, index) => {
+      if (proyecto.id == ID) {
+        this.proyect[index].card = false;
+      }
+    });   
     this.proyect_active = this.proyect_active.filter(item => item != ID);
     this.proyectosMostrados = this.proyectosMostrados.filter(({id}) => id != ID);
     let nump=1;
@@ -554,7 +559,6 @@ export class CompararComponent implements OnInit {
         if(pr.id == element){
           nump=nump+1;
           this.proyectosMostrados[numproy].num = nump;
-          console.log("cambio")
         }
       })
     })
