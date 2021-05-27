@@ -494,8 +494,8 @@
             </div>
             <div class="Row">
               <div class="Col">
-                <div class="button-read" >
-                  {{ this.dataMaterialSelected.materialSelectedDB }}
+                <div class="button-read" (click)="updateMaterialSelected( this.dataMaterialSelected )" >
+                  {{ this.dataMaterialSelected.name_material }}
                 </div>
               </div>
             </div>

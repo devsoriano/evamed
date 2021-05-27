@@ -521,7 +521,7 @@ export class HomeEvamedComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.projectsService.getProjectById(id).subscribe((data: any) => {
         this.projectsService
-          .updateProduct(id, {
+          .updateProyect(id, {
             id,
             name_project: result.nameProject,
             builded_surface: data.builded_surface,

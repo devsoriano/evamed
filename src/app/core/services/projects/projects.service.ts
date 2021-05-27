@@ -25,7 +25,7 @@ export class ProjectsService {
     );
   }
 
-  updateProduct(id: string, changes) {
+  updateProyect(id: string, changes) {
     return this.http.put(`${environment.api_projects}${id}/`, changes).pipe(
       tap((data) => {
         return data;
@@ -65,6 +65,16 @@ export class ProjectsService {
         return data;
       })
     );
+  }
+
+  updateMaterialSchemeProject(id: string, changes) {
+    return this.http
+      .put(`${environment.api_scheme_project}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
   }
 
   getMaterialSchemeProyectOrigin() {
