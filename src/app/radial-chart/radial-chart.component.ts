@@ -16,7 +16,7 @@ export class RadialChartComponent implements OnInit {
 
 
   private backcolores: any[] = [
-     'rgba(0,0,200,0.2)',
+     'rgba(77,190,137,0.2)',
      'rgba(20,136,147,0.2)',
      'rgba(143,80,145,0.2)',
      'rgba(222,169,97,0.2)'];

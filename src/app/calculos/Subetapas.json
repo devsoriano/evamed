@@ -1,12 +1,12 @@
 [
     {
-        "nombre_subeatapa": "Extracción previa",
+        "nombre_subeatapa": "Extracción",
         "abreviacion": "A1",
         "color": "#4DBE89",
         "etapa":"Producción"
     },
     {
-        "nombre_subeatapa":"Transporte a planta",
+        "nombre_subeatapa":"Transporte",
         "abreviacion":"A2",
         "color":"#319F6B",
         "etapa":"Producción"
@@ -18,7 +18,7 @@
         "etapa":"Producción"
     },
     {
-        "nombre_subeatapa":"Transporte a sitio",
+        "nombre_subeatapa":"Transporte",
         "abreviacion":"A4",
         "color":"#28A9B4",
         "etapa":"Construccion"
@@ -48,7 +48,7 @@
         "etapa":"FinDeVida"
     },
     {
-        "nombre_subeatapa":"Transporte final",
+        "nombre_subeatapa":"Transporte",
         "abreviacion":"C2",
         "color":"#D18F34",
         "etapa":"FinDeVida"

@@ -16,8 +16,6 @@ export class BarChartComponent implements OnInit {
   @ViewChild('MyChart') chartDir: BaseChartDirective;
   private canvas: any;
 
-  private hoverIniciado = false;
-
 
   @Input() inputProyects: any;
   @Input('porcentaje') porcentaje : any;
@@ -49,16 +47,6 @@ export class BarChartComponent implements OnInit {
     legend: { display: false },
     tooltips: {enabled: false,
       mode: 'label',
-      callbacks: {
-        label: function (tooltipItem, data) {
-          var indice = tooltipItem.index;
-          var value = data.datasets[0].data[indice];
-          var value2 = value.toString();
-          var value3 = value2.split(/(?=(?:...)*$)/);
-          var final = value3.join(',');
-          return final;
-        }
-      }
     },
     events: ['touchstart', 'mousemove', 'click'],
     plugins: {
@@ -220,7 +208,6 @@ export class BarChartComponent implements OnInit {
       });
 
       Object.keys(auxDatos).forEach(etapa => {
-        console.log(auxDatos[etapa])
         datos = [...datos,
           {
             data: auxDatos[etapa],
@@ -232,11 +219,7 @@ export class BarChartComponent implements OnInit {
         });
       });
     }
-    //console.log(datos)
     this.barChartData = datos;
-    if (this.banera_enfoqueSerie_externo) {
-      this.focusSeries(this.serie_input);
-    }
   }
 
   // configurcion de estilo (Titulos de proyectos)

@@ -4,6 +4,7 @@ import { ChartDataSets } from 'chart.js';
 import {BaseChartDirective } from 'ng2-charts';
 import { couldStartTrivia } from 'typescript';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-pie-chart',
@@ -50,7 +51,10 @@ export class PieChartComponent implements OnInit {
         font: {
           size: 7,
         }
-      }
+      },
+      legend:{
+        position:'bottom',
+      },
     }
   };
   public pieChartOptions_elementos={
@@ -69,11 +73,13 @@ export class PieChartComponent implements OnInit {
   }
   public pieChartData=[];
   public pieChartLabels = [];
+  public pieChartColor = [];
   public pieChartData_elemento;
   etapa: string = '';
   showngraph=false;
   elemento_seleccionado=' ';
   showlast=false;
+  subetapas=[];
 
   constructor() { }
 
@@ -82,6 +88,13 @@ export class PieChartComponent implements OnInit {
       this.cargarDatos(' ', this.id);
     }else{
       this.cargarDatos(this.id, this.indicador);
+      this.inputProyect.forEach(proyecto => {
+        this.subetapas = [... this.subetapas,{
+          idProyecto: proyecto.id,
+          eliminadas:[]
+        }]
+      });
+      console.log(this.subetapas)
     }
     console.log("Pie");
   }
@@ -143,7 +156,7 @@ export class PieChartComponent implements OnInit {
       if(indicador===' '){
 
       }else{
-        this.inputProyect.forEach(proyecto => {
+        this.inputProyect.forEach((proyecto,numProyect) => {
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
             if (auxlabel[element]===ID) {
@@ -154,7 +167,8 @@ export class PieChartComponent implements OnInit {
                 auxSuma =  auxSuma + auxdatos[marcador];
               });
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
-                let auxnamelabel = this.findSubetapa(marcador).concat(" : ")
+                let abreviacion = marcador.concat(" - ");
+                let auxnamelabel = abreviacion.concat(this.findSubetapa(marcador)).concat(" : ");
                 auxdataLabel = [...auxdataLabel, auxnamelabel.concat((auxdatos[marcador]).toFixed(2).toString())];
                 datos = [...datos, ((auxdatos[marcador] / auxSuma)*100).toFixed(2).toString()];
               });
@@ -164,6 +178,8 @@ export class PieChartComponent implements OnInit {
             data: datos,
             backgroundColor: color
           }]
+    
+          this.pieChartColor = color;
           this.pieChartData = [...this.pieChartData,auxdata];
           this.pieChartLabels=[...this.pieChartLabels,auxdataLabel];
           datos=[];
@@ -171,7 +187,7 @@ export class PieChartComponent implements OnInit {
         });
 
       }
-       //console.log(this.pieChartData)
+       //console.log(this.subetapas);
 
     }else{
       this.pieChartData =[];
@@ -217,6 +233,74 @@ export class PieChartComponent implements OnInit {
         });
       }
     }
+  }
+
+  DeleteSubetapa(subetapa,id){
+    let subselect=(subetapa[0].concat(subetapa[1]))
+    if(this.subetapas[id].eliminadas.includes(subselect)){
+      this.subetapas[id].eliminadas.forEach((datos,index) => {
+        if (datos === subselect){
+          document.getElementById(subetapa).className = 'quitartachado';
+          this.subetapas[id].eliminadas.splice(index, 1)
+        }
+      })
+    }else{
+      document.getElementById(subetapa).className = 'tachar';
+      this.subetapas[id].eliminadas.push(subselect)
+    }
+    this.RedistribucionGrafica(this.id, this.indicador);
+  }
+
+  RedistribucionGrafica(ID:string, indicador:string){
+    let auxdata: ChartDataSets[];
+    let color: any[];
+    let auxlabel = ['Producción','Construccion','Uso','FinDeVida'];
+    let auxdatos = [];
+    let datos = [];
+    let aux=[];
+    this.pieChartData = [];
+    this.inputProyect.forEach((proyecto,numProyect) => {
+      aux=proyecto.Datos[indicador];
+      Object.keys(auxlabel).forEach(element => {
+        if (auxlabel[element]===ID) {
+          color = this.colores[element];
+          auxdatos = aux[auxlabel[element]]
+          let auxSuma=0;
+          let flag = true;
+          Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
+            this.subetapas[numProyect].eliminadas.forEach(element => {
+              if (element==marcador){
+                flag=false;
+              }
+            });
+            if(flag){
+              auxSuma =  auxSuma + auxdatos[marcador];
+            }
+            flag=true;
+          });
+          Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
+            this.subetapas[numProyect].eliminadas.forEach(element => {
+              if (element==marcador){
+                flag=false;
+              }
+            });
+            if(flag){
+              datos = [...datos, ((auxdatos[marcador] / auxSuma)*100).toFixed(2).toString()];
+            }else{
+              datos = [...datos,0];
+            }
+            flag=true;
+          });
+        }
+      });
+      auxdata=[{
+        data: datos,
+        backgroundColor: color
+      }]
+
+      this.pieChartData = [...this.pieChartData,auxdata];
+      datos=[];
+    });
   }
 
   //Acomoda datos para mandar a llamar la siguiente gráfica

@@ -20,8 +20,8 @@
       </mat-menu>
     </div>
     <div>
-      <div *ngFor="let item of proyect;let i = index" class="button-graph">
-        <mat-card *ngIf="item.card" class="card">
+      <div *ngFor="let item of proyectosMostrados;let i = index" class="button-graph">
+        <mat-card class="card">
           {{item.num}}
           <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
           {{item.Nombre}}
@@ -59,22 +59,22 @@
             </div>
           </div>
           <div class="campo-grafica-bar" >
-            <div *ngIf="resultdosTabla">
-              <table class="Tabla-Datos" mat-table [dataSource]="DatosTabla" multiTemplateDataRows>
-                <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-                  <th mat-header-cell *matHeaderCellDef class="tittle-table">
-                    <span style="white-space: pre-line;">{{column}}</span>
-                  </th>
-                  <td mat-cell *matCellDef="let element" [style.color] = element.color>
-                    <p>{{element.data[column]}}</p></td>
-                </ng-container>
-                <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"></tr>
-                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-              </table>
-            </div>
             <ng-template #barContainer>
 
             </ng-template>
+          </div>
+          <div *ngIf="resultdosTabla" class="tabla">
+            <table class="Tabla-Datos" mat-table [dataSource]="DatosTabla" multiTemplateDataRows>
+              <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+                <th mat-header-cell *matHeaderCellDef class="tittle-table">
+                  <span style="white-space: pre-line;">{{column}}</span>
+                </th>
+                <td mat-cell *matCellDef="let element" [style.color] = element.color>
+                  <p>{{element.data[column]}}</p></td>
+              </ng-container>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"></tr>
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            </table>
           </div>
           <div>
             <p class="secondary-text">Dispersión de Impacto ambiental por fase de ciclo de vida</p>
@@ -85,26 +85,26 @@
               <ul>
                 <li>
                   <button id="ProducciónOjo" (click)="ajusteDeGraficaFASE('Producción')" class="boton-icono">
-                    <mat-icon class="uno">visibility_off</mat-icon>
+                    <mat-icon class="uno">{{iconos['Producción']}}</mat-icon>
                   </button>
                   <button id="Producción" class="boton-principal" mat-stroked-button (click)="grafica('Producción')">
                   Producción</button>
                 </li>
                 <li>
                   <button id="ConstruccionOjo" (click)="ajusteDeGraficaFASE('Construccion')" class="boton-icono">
-                    <mat-icon class="dos">visibility_off</mat-icon>
+                    <mat-icon class="dos">{{iconos['Construccion']}}</mat-icon>
                   </button>
                   <button id="Construccion"class="boton-principal" mat-stroked-button (click)="grafica('Construccion')">
                   Construcción</button> </li>
                 <li>
                   <button id="UsoOjo" (click)="ajusteDeGraficaFASE('Uso')" class="boton-icono">
-                    <mat-icon class="boton-principal" class="tres">visibility_off</mat-icon>
+                    <mat-icon class="tres">{{iconos['Uso']}}</mat-icon>
                   </button>
                   <button id="Uso" class="boton-principal" mat-stroked-button (click)="grafica('Uso')">
                   Uso</button> </li>
                 <li>
                   <button id="FinDeVidaOjo" (click)="ajusteDeGraficaFASE('FinDeVida')" class="boton-icono">
-                    <mat-icon class="cuatro">visibility_off</mat-icon>
+                    <mat-icon class="cuatro">{{iconos['FinDeVida']}}</mat-icon>
                   </button>
                   <button id="FinDeVida" class="boton-principal" mat-stroked-button (click)="grafica('FinDeVida')">
                   Fin de vida</button> </li>

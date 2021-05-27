@@ -126,11 +126,10 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
 
 .mat-tab-resultados {
   display: flex;
-  //align-items: flex-start;
 
   > div {
     &:nth-child(1) {
-      width: 221px;
+      width: 239px;
     }
     &:nth-child(2) {
       width: 293px;
@@ -142,7 +141,7 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
 }
 
 .seccionTres{
-  padding-left: 48px;
+  padding-left: 46px;
 }
 
 p {
@@ -189,14 +188,13 @@ ul {
     width: 201px;
     height: 48px;
     background: #ffffff;
-    //border: 1px solid;
   }
 
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
     color: #ffffff;
     font-size: 14px;
     border-radius: 0px 10px 10px 0px;
-    height: 48px;
+    height: 47px;
     margin-left: 0px;
     display: inline-flex;
     justify-content: center;
@@ -210,6 +208,7 @@ ul {
     background: #efefef;
     border-radius: 0px 10px 10px 0px;
     border: 0px;
+    padding: 1px;
   }
 
   .some-text {
