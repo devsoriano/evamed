@@ -212,8 +212,6 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['reemplazos'] = item.replaces;
                   prevData['transport_id_end'] = item.transport_id_end;
                   prevData['transport_id_origin'] = item.transport_id_origin;
-                  prevData['city_id_end'] = item.city_id_end;
-                  prevData['city_id_origin'] = item.city_id_origin;
                   prevData['vidaUtil'] = this.vidaUtilSeleccionado;
                   prevData['unit_text'] = item.unit_text;
                   prevData['description_material'] = item.description_material;
@@ -221,6 +219,10 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['construction_system'] = item.construction_system;
                   prevData['project_id'] = item.project_id;
                   prevData['section_id'] = item.section_id;
+                  prevData['city_id_origin'] = item.city_id_origin;
+                  prevData['city_id_end'] = item.city_id_end;
+                  prevData['state_id_origin'] = item.state_id_origin;
+                  prevData['transporteLocal'] = 4;
                   prevData['key'] = counterRevit++;
                   listMateriales.push(prevData);
                 }
@@ -242,8 +244,6 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['reemplazos'] = item.replaces;
                   prevData['transport_id_end'] = item.transport_id_end;
                   prevData['transport_id_origin'] = item.transport_id_origin;
-                  prevData['city_id_end'] = item.city_id_end;
-                  prevData['city_id_origin'] = item.city_id_origin;
                   prevData['vidaUtil'] = this.vidaUtilSeleccionado;
                   prevData['unit_text'] = item.unit_text;
                   prevData['description_material'] = item.description_material;
@@ -251,6 +251,10 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['construction_system'] = item.construction_system;
                   prevData['project_id'] = item.project_id;
                   prevData['section_id'] = item.section_id;
+                  prevData['city_id_end'] = item.city_id_end;
+                  prevData['city_id_origin'] = item.city_id_origin;
+                  prevData['state_id_origin'] = item.state_id_origin;
+                  prevData['transporteLocal'] = 4;
                   prevData['key'] = countDynamo++;
 
                   listMateriales.push(prevData);
@@ -283,6 +287,7 @@ export class MaterialStageUpdateComponent implements OnInit {
           project_id: dataMaterialSelected.project_id,
           origin_id: parseInt(this.vidaUtilSeleccionadoId),
           section_id: dataMaterialSelected.section_id,
+          state_id_origin: dataMaterialSelected.state_id_origin,
           city_id_origin: 2,
           city_id_end: 1,
           transport_id_origin: null,

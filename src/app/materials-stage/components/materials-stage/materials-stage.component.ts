@@ -448,6 +448,10 @@ export class MaterialsStageComponent implements OnInit {
                               ? 0
                               : data.reemplazos,
                           city_id_origin: this.ciudadOrigenSeleccionada,
+                          state_id_origin:
+                            data.estadoSeleccionado === undefined
+                              ? 1
+                              : data.estadoSeleccionado,
                           city_id_end:
                             data.ciudadSeleccionada === undefined
                               ? 1
@@ -546,6 +550,10 @@ export class MaterialsStageComponent implements OnInit {
                               ? 0
                               : data.reemplazos,
                           city_id_origin: this.ciudadOrigenSeleccionada,
+                          state_id_origin:
+                            data.estadoSeleccionado === undefined
+                              ? 1
+                              : data.estadoSeleccionado,
                           city_id_end:
                             data.ciudadSeleccionada === undefined
                               ? 1

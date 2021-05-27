@@ -368,8 +368,8 @@
                   <mat-form-field appearance="outline" class="select-general">
                     <mat-label>Seleccione una opción</mat-label>
                     <mat-select
-                      [(ngModel)]="dataMaterialSelected.paisSeleccionado"
-                      (selectionChange)="selectCountry(dataMaterialSelected.paisSeleccionado)"
+                      [(ngModel)]="dataMaterialSelected.origin_id"
+                      (selectionChange)="selectCountry(dataMaterialSelected.origin_id)"
                     >
                       <mat-option *ngFor="let pais of catalogoPaises" [value]="pais.id">
                         {{pais.name_country}}
@@ -379,7 +379,7 @@
                 </div>
               </div>
             </div>
-            <div class="Row" *ngIf="dataMaterialSelected.paisSeleccionado === 1">
+            <div class="Row" *ngIf="dataMaterialSelected.origin_id === 1">
               <div class="Col select-middle">
                 <div class="label-general">
                   Estado
@@ -388,8 +388,8 @@
                   <mat-form-field appearance="outline" class="select-general">
                     <mat-label>Seleccione una opción</mat-label>
                     <mat-select
-                      [(ngModel)]="dataMaterialSelected.estadoSeleccionado"
-                      (selectionChange)="selectState(dataMaterialSelected.estadoSeleccionado)"
+                      [(ngModel)]="dataMaterialSelected.state_id_origin"
+                      (selectionChange)="selectState(dataMaterialSelected.state_id_origin)"
                     >
                       <mat-option *ngFor="let estado of catalogoEstados" [value]="estado.id">
                         {{estado.name_state}}
@@ -405,7 +405,7 @@
                 <div>
                   <mat-form-field appearance="outline" class="select-general">
                     <mat-label>Seleccione una opción</mat-label>
-                    <mat-select [(ngModel)]="dataMaterialSelected.ciudadSeleccionada">
+                    <mat-select [(ngModel)]="dataMaterialSelected.city_id_end">
                       <mat-option *ngFor="let ciudad of catalogoCiudades" [value]="ciudad.id">
                         {{ciudad.name_city}}
                       </mat-option>
@@ -495,7 +495,7 @@
             <div class="Row">
               <div class="Col">
                 <div class="button-read" (click)="updateMaterialSelected( this.dataMaterialSelected )" >
-                  {{ this.dataMaterialSelected.name_material }}
+                  navegacion a etapa de materiales
                 </div>
               </div>
             </div>
