@@ -43,6 +43,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   catalogoEstados: any;
   catalogoTransportesLocal: any;
   vidaUtilSeleccionado: any;
+  vidaUtilSeleccionadoId: any;
   dataProject: any;
 
   constructor(
@@ -83,6 +84,7 @@ export class MaterialStageUpdateComponent implements OnInit {
             console.log(data.useful_life_id);
             if (data.useful_life_id === distance.id) {
               this.vidaUtilSeleccionado = parseInt(distance.name_useful_life);
+              this.vidaUtilSeleccionadoId = parseInt(distance.id);
             }
           });
         });
@@ -199,6 +201,10 @@ export class MaterialStageUpdateComponent implements OnInit {
                   item.material_id === materialData.id &&
                   item.section_id === this.indexSheet + 1
                 ) {
+                  console.log('-----------------------------este proceso');
+                  console.log(item);
+                  console.log('-----------este otro item');
+                  console.log(materialData);
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = item.quantity;
                   prevData['origin_id'] = item.origin_id;
@@ -206,12 +212,17 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['reemplazos'] = item.replaces;
                   prevData['transport_id_end'] = item.transport_id_end;
                   prevData['transport_id_origin'] = item.transport_id_origin;
-                  prevData['city_id_end'] = item.city_id_end;
-                  prevData['city_id_origin'] = item.city_id_origin;
                   prevData['vidaUtil'] = this.vidaUtilSeleccionado;
                   prevData['unit_text'] = item.unit_text;
-                  prevData['unit_text'] = item.unit_text;
                   prevData['description_material'] = item.description_material;
+                  prevData['material_scheme_project_id'] = item.id;
+                  prevData['construction_system'] = item.construction_system;
+                  prevData['project_id'] = item.project_id;
+                  prevData['section_id'] = item.section_id;
+                  prevData['city_id_origin'] = item.city_id_origin;
+                  prevData['city_id_end'] = item.city_id_end;
+                  prevData['state_id_origin'] = item.state_id_origin;
+                  prevData['transporteLocal'] = 4;
                   prevData['key'] = counterRevit++;
                   listMateriales.push(prevData);
                 }
@@ -233,12 +244,19 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['reemplazos'] = item.replaces;
                   prevData['transport_id_end'] = item.transport_id_end;
                   prevData['transport_id_origin'] = item.transport_id_origin;
-                  prevData['city_id_end'] = item.city_id_end;
-                  prevData['city_id_origin'] = item.city_id_origin;
                   prevData['vidaUtil'] = this.vidaUtilSeleccionado;
                   prevData['unit_text'] = item.unit_text;
                   prevData['description_material'] = item.description_material;
+                  prevData['material_scheme_project_id'] = item.id;
+                  prevData['construction_system'] = item.construction_system;
+                  prevData['project_id'] = item.project_id;
+                  prevData['section_id'] = item.section_id;
+                  prevData['city_id_end'] = item.city_id_end;
+                  prevData['city_id_origin'] = item.city_id_origin;
+                  prevData['state_id_origin'] = item.state_id_origin;
+                  prevData['transporteLocal'] = 4;
                   prevData['key'] = countDynamo++;
+
                   listMateriales.push(prevData);
                 }
               });
@@ -248,6 +266,40 @@ export class MaterialStageUpdateComponent implements OnInit {
     });
     // Asign list materials
     this.listMateriales = listMateriales;
+  }
+
+  updateMaterialSelected(dataMaterialSelected) {
+    this.projectsService
+      .updateMaterialSchemeProject(
+        dataMaterialSelected.material_scheme_project_id,
+        {
+          comercial_name: dataMaterialSelected.name_material,
+          construction_system: dataMaterialSelected.construction_system, // en duro
+          provider_distance: 0,
+          quantity: dataMaterialSelected.quantity,
+          value: null,
+          distance_init: 0,
+          distance_end: 0,
+          replaces: dataMaterialSelected.reemplazos,
+          unit_text: dataMaterialSelected.unit_text,
+          description_material: dataMaterialSelected.description_material,
+          material_id: dataMaterialSelected.material_id,
+          project_id: dataMaterialSelected.project_id,
+          origin_id: parseInt(this.vidaUtilSeleccionadoId),
+          section_id: dataMaterialSelected.section_id,
+          state_id_origin: dataMaterialSelected.state_id_origin,
+          city_id_origin: 2,
+          city_id_end: 1,
+          transport_id_origin: null,
+          transport_id_end: null,
+        }
+      )
+      .subscribe((data) => {
+        console.log(
+          'Update data-----------------------------------------------'
+        );
+        console.log(data);
+      });
   }
 
   removeMaterial(event, sc, origin) {
