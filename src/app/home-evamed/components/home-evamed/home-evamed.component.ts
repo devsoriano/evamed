@@ -65,6 +65,7 @@ export class HomeEvamedComponent implements OnInit {
   DatosCalculos:any;
   cargaDatosCalculo=false;
   //---
+  auxDatosGraficaUso=[];
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
     responsive: false,
@@ -204,11 +205,13 @@ export class HomeEvamedComponent implements OnInit {
               item.user_platform_id ===
               parseInt(localStorage.getItem('email-id'), 10)
             ) {
+              this.auxDatosGraficaUso.push(this.DataPieUso(this.serchUseData(item.id)))
               this.projectsList.push(item);
             }
             this.countProjectList = this.projectsList.length;
           });
           this.projectsList.reverse();
+          this.auxDatosGraficaUso.reverse();
           this.tempProjectsList = this.projectsList;
         });
       });
@@ -327,7 +330,6 @@ export class HomeEvamedComponent implements OnInit {
                   Uso: 'visibility',
                   FinDeVida: 'visibility',
                 },
-                dataGraficaPieUso: this.DataPieUso(this.serchUseData(element.id)),
                 dataGraficaBar: this.cargarDataBar(
                   this.calculos.ValoresProcentajeSubeapa(
                     calculosOperacionesDeFase,
@@ -602,6 +604,7 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   duplicateProject(projectId) {
+    this.cargaDatosCalculo=false;
     this.projectsService
       .getProjectById(projectId)
       .subscribe((projectData: any) => {
@@ -732,13 +735,16 @@ export class HomeEvamedComponent implements OnInit {
                                                     10
                                                   )
                                                 ) {
+                                                  this.auxDatosGraficaUso.push(this.DataPieUso(this.serchUseData(item.id)))
                                                   this.projectsList.push(item);
                                                 }
                                                 this.countProjectList =
                                                   this.projectsList.length;
                                               });
+                                              this.auxDatosGraficaUso.reverse();
                                               this.projectsList.reverse();
                                             });
+                                            this.ngOnInit();
                                         });
                                     });
                                 }

@@ -1,7 +1,3 @@
-import { ProjectsService } from '../core/services/projects/projects.service';
-import { MaterialsService } from '../core/services/materials/materials.service';
-import { AnalisisService } from '../core/services/analisis/analisis.service';
-import { forkJoin, Observable, Subject } from 'rxjs';
 import conversion from 'src/app/calculos/Conversiones.json';
 import transporte from 'src/app/calculos/transportes.json';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';

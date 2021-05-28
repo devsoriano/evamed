@@ -12,6 +12,7 @@ import { concat, forkJoin, observable } from 'rxjs';
 import { Router } from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Calculos } from '../../../calculos/calculos'
+import { UserService } from 'src/app/core/services/user/user.service';
 import { threadId } from 'node:worker_threads';
 
 interface impactos_menu{
@@ -84,7 +85,7 @@ export class CompararComponent implements OnInit {
   seleccion_columna:any;
   delete_fase:boolean=true;
   bandera_por_metro:boolean=false;
-  projectsList: [];
+  projectsList: any;
   materialList: [];
   materialSchemeDataList: [];
   materialSchemeProyectList: [];
@@ -138,12 +139,29 @@ export class CompararComponent implements OnInit {
     private projects: ProjectsService,
     private analisis: AnalisisService,
     private router: Router,
+    private users: UserService,
     private calculos:Calculos,
     private componentFactoryResolver: ComponentFactoryResolver
     ){
+      this.users
+      .searchUser(localStorage.getItem('email-login'))
+      .subscribe((data) => {
+        localStorage.setItem('email-id', data[0].id);
+        this.projectsList = [];
+        this.projects.getProjects().subscribe((data) => {
+          data.map((item) => {
+            if (
+              item.user_platform_id ===
+              parseInt(localStorage.getItem('email-id'), 10)
+            ) {
+              this.projectsList.push(item);
+            }
+          });
+        });
+      });
     forkJoin([
       this.analisis.getTypeEnergy(),
-      this.projects.getProjects(),
+      //this.projects.getProjects(),
       this.materials.getMaterials(),
       this.analisis.getMaterialSchemeData(),
       this.analisis.getMaterialSchemeProyect(),
@@ -161,38 +179,38 @@ export class CompararComponent implements OnInit {
     ])
     .subscribe(([
       TE,
-        projectsData,
-        materialData,
-        materialSchemeData,
-        materialSchemeProyect,
-        potentialTypes,
-        standards,
-        CSE,
-        SID,
-        SI,
-        ACR,
-        ECD,
-        TED,
-        UL,
-        ECDP,
-        sectionsList,
+      //projectsData,
+      materialData,
+      materialSchemeData,
+      materialSchemeProyect,
+      potentialTypes,
+      standards,
+      CSE,
+      SID,
+      SI,
+      ACR,
+      ECD,
+      TED,
+      UL,
+      ECDP,
+      sectionsList,
     ]) => {
-      this.projectsList = projectsData;
-        this.materialList = materialData;
-        this.materialSchemeDataList = materialSchemeData;
-        this.materialSchemeProyectList = materialSchemeProyect;
-        this.potentialTypesList = potentialTypes;
-        this.standarsList = standards;
-        this.CSEList = CSE;
-        this.SIDList = SID;
-        this.SIList = SI;
-        this.ACRList = ACR;
-        this.ECDList = ECD;
-        this.TEDList = TED;
-        this.TEList = TE;
-        this.ULList = UL;
-        this.ECDPList = ECDP;
-        this.sectionList = sectionsList;
+      //this.projectsList = projectsData;
+      this.materialList = materialData;
+      this.materialSchemeDataList = materialSchemeData;
+      this.materialSchemeProyectList = materialSchemeProyect;
+      this.potentialTypesList = potentialTypes;
+      this.standarsList = standards;
+      this.CSEList = CSE;
+      this.SIDList = SID;
+      this.SIList = SI;
+      this.ACRList = ACR;
+      this.ECDList = ECD;
+      this.TEDList = TED;
+      this.TEList = TE;
+      this.ULList = UL;
+      this.ECDPList = ECDP;
+      this.sectionList = sectionsList;
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
       this.columnsToDisplay = this.calculos.ImpactosSeleccionados(this.potentialTypesList);
       this.menu_inicio();
@@ -616,6 +634,7 @@ export class CompararComponent implements OnInit {
 
   //Se cargan los proyetcos existentes y se configura el menu
   menu_inicio(){
+    
     this.projectsList.forEach(proyecto => {
       if (proyecto['id'] == this.idProyectoActivo){
         this.proyecto.nombre = proyecto['name_project']

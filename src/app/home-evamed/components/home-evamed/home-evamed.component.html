@@ -96,9 +96,9 @@
               <mat-tab label="Uso" class="label-second-tab">
                 <section class="grid-container">
                   <div class="subseccion">
-                    <div *ngIf="cargaDatosCalculo">
+                    <div>
                       <canvas baseChart
-                      [datasets]="auxDataProjectList[i].dataGraficaPieUso"
+                      [datasets]="auxDatosGraficaUso[i]"
                       [options]="pieChartOptions_elementos"
                       [chartType]="pieChartType">
                     </canvas>
