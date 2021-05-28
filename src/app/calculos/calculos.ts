@@ -6,6 +6,7 @@ import conversion from 'src/app/calculos/Conversiones.json';
 import transporte from 'src/app/calculos/transportes.json';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import { Injectable } from '@angular/core';
+import { element } from 'protractor';
 
 @Injectable({
   providedIn: 'root',
@@ -44,70 +45,27 @@ export class Calculos {
   nombreImpactosCompleto = [];
 
   constructor(
-    private materials: MaterialsService,
-    private projects: ProjectsService,
-    private analisis: AnalisisService
-  ) {
-    forkJoin([
-      this.analisis.getTypeEnergy(),
-      this.projects.getProjects(),
-      this.materials.getMaterials(),
-      this.analisis.getMaterialSchemeData(),
-      this.analisis.getMaterialSchemeProyect(),
-      this.analisis.getPotentialTypes(),
-      this.analisis.getStandars(),
-      this.analisis.getConstructiveSystemElement(),
-      this.analisis.getSourceInformationData(),
-      this.analisis.getSourceInformation(),
-      this.analisis.getAnnualConsumptionRequired(),
-      this.analisis.getElectricityConsumptionData(),
-      this.analisis.getTypeEnergyData(),
-      this.analisis.getUsefulLife(),
-      this.analisis.getECDP(),
-      this.analisis.getSectionsList(),
-    ]).subscribe(
-      ([
-        TE,
-        projectsData,
-        materialData,
-        materialSchemeData,
-        materialSchemeProyect,
-        potentialTypes,
-        standards,
-        CSE,
-        SID,
-        SI,
-        ACR,
-        ECD,
-        TED,
-        UL,
-        ECDP,
-        sectionsList,
-      ]) => {
-        this.projectsList = projectsData;
-        this.materialList = materialData;
-        this.materialSchemeDataList = materialSchemeData;
-        this.materialSchemeProyectList = materialSchemeProyect;
-        this.potentialTypesList = potentialTypes;
-        this.standarsList = standards;
-        this.CSEList = CSE;
-        this.SIDList = SID;
-        this.SIList = SI;
-        this.ACRList = ACR;
-        this.ECDList = ECD;
-        this.TEDList = TED;
-        this.TEList = TE;
-        this.ULList = UL;
-        this.ECDPList = ECDP;
-        this.sectionList = sectionsList;
-      }
-    );
-  }
+  ) {}
 
-  OperacionesDeFase(idProyecto) {
-    if (this.materialSchemeProyectList === undefined) {
-      location.reload();
-    }
+  OperacionesDeFase(idProyecto,info) {
+    
+    this.projectsList = info.projectsList;
+    this.materialList = info.materialList;
+    this.materialSchemeDataList = info.materialSchemeDataList;
+    this.materialSchemeProyectList = info.materialSchemeProyectList;
+    this.potentialTypesList = info.potentialTypesList;
+    this.standarsList = info.standarsList;
+    this.CSEList = info.CSEList;
+    this.SIDList = info.SIDList;
+    this.SIList = info.SIList;
+    this.ACRList = info.ACRList;
+    this.ECDList = info.ECDList;
+    this.TEDList = info.TEDList;
+    this.TEList = info.TEList;
+    this.ULList = info.ULList;
+    this.ECDPList = info.ECDPList;
+    this.sectionList = info.sectionsList;
+    
     let Datos = {};
     let schemeProyect = null;
 
@@ -449,12 +407,12 @@ export class Calculos {
     return auxdata;
   }
 
-  ImpactosSeleccionados() {
+  ImpactosSeleccionados(potList) {
     let impacto_ban = true;
     let auxNombre = [];
     let auxnombreSalto: string;
     auxNombre.push("ciclo de vida")
-    this.potentialTypesList.forEach((impacto, index) => {
+    potList.forEach((impacto, index) => {
       this.impactosIgnorar2.forEach((ignorar) => {
         if (impacto['name_potential_type'] === ignorar) {
           impacto_ban = false;

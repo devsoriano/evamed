@@ -96,7 +96,7 @@
               <mat-tab label="Uso" class="label-second-tab">
                 <section class="grid-container">
                   <div class="subseccion">
-                    <div>
+                    <div *ngIf="cargaDatosCalculo">
                       <canvas baseChart
                       [datasets]="auxDataProjectList[i].dataGraficaPieUso"
                       [options]="pieChartOptions_elementos"
@@ -143,7 +143,7 @@
           </div>
         </mat-tab>
         <mat-tab label="Resultados" class="label-principal-tab">
-          <div class="mat-tab-resultados">
+          <div class="mat-tab-resultados" *ngIf="cargaDatosCalculo">
             <div>
               <div class="seccionUno">
                 <p>Selecciona impacto ambiental</p>

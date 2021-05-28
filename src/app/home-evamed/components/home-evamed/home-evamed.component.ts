@@ -15,8 +15,8 @@ import { ElectricitConsumptionService } from './../../../core/services/electrici
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label,BaseChartDirective } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels'
-import { element } from 'protractor';
-import { newArray } from '@angular/compiler/src/util';
+import { MaterialsService } from '../../../core/services/materials/materials.service';
+import { AnalisisService } from '../../../core/services/analisis/analisis.service';
 
 @Component({
   selector: 'app-home-evamed',
@@ -61,7 +61,10 @@ export class HomeEvamedComponent implements OnInit {
   ACR: any;
   ECD: any;
   ECDP: any;
-
+  //para calculos
+  DatosCalculos:any;
+  cargaDatosCalculo=false;
+  //---
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
     responsive: false,
@@ -135,6 +138,8 @@ export class HomeEvamedComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     public dialog: MatDialog,
+    private analisis: AnalisisService,
+    private materials:MaterialsService,
     private calculos: Calculos,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
@@ -192,99 +197,17 @@ export class HomeEvamedComponent implements OnInit {
         this.sector = data[0].institution;
         localStorage.setItem('email-id', data[0].id);
         this.projectsList = [];
-        this.auxDataProjectList = [];
-
+        this.cargaDatosCalculo=false;
         this.projects.getProjects().subscribe((data) => {
           data.map((item) => {
             if (
               item.user_platform_id ===
               parseInt(localStorage.getItem('email-id'), 10)
             ) {
-              let calculosOperacionesDeFase = null;
-
-              calculosOperacionesDeFase = this.calculos.OperacionesDeFase(
-                item.id
-              );
-              
-
-              let auxDatos: Record<string, any> = {
-                id: item.id,
-                datos: this.calculos.OperacionesDeFase(item.id),
-                etapasIgnoradas: [],
-                porcentaje: this.calculos.ValoresProcentaje(
-                  calculosOperacionesDeFase,
-                  []
-                ),
-                porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
-                  calculosOperacionesDeFase,
-                  []
-                ),
-                banderaEtapa: false,
-                etapaSeleccionada: 'Ninguna',
-                subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
-                impactoCompleteSelect:
-                  this.catologoImpactoAmbiental[0][
-                    'name_complete_potential_type'
-                  ],
-                impactoSelect: this.calculos.ajustarNombre(
-                  this.catologoImpactoAmbiental[0][
-                    'name_complete_potential_type'
-                  ]
-                ),
-                unit_impacto:
-                  this.catologoImpactoAmbiental[0]['unit_potential_type'],
-                TipoGraficaActiva: { Pie: true, Bar: false },
-                idsTextBotones: {
-                  Producción: 'ProducciónTInfo'.concat(String(item.id)),
-                  Construccion: 'ConstruccionTInfo'.concat(String(item.id)),
-                  Uso: 'UsoTInfo'.concat(String(item.id)),
-                  FinDeVida: 'FinDeVidaTInfo'.concat(String(item.id)),
-                },
-                idsBotones: {
-                  Producción: 'ProducciónTextInfo'.concat(String(item.id)),
-                  Construccion: 'ConstruccionTextInfo'.concat(String(item.id)),
-                  Uso: 'UsoTextInfo'.concat(String(item.id)),
-                  FinDeVida: 'FinDeVidaTextInfo'.concat(String(item.id)),
-                },
-                iconosCambio: {
-                  Producción: 'visibility',
-                  Construccion: 'visibility',
-                  Uso: 'visibility',
-                  FinDeVida: 'visibility',
-                },
-                dataGraficaPieUso: this.DataPieUso(this.serchUseData(item.id)),
-                dataGraficaBar: this.cargarDataBar(
-                  this.calculos.ValoresProcentajeSubeapa(
-                    this.calculos.OperacionesDeFase(item.id),
-                    []
-                  ),
-                  this.calculos.ajustarNombre(
-                    this.catologoImpactoAmbiental[0][
-                      'name_complete_potential_type'
-                    ]
-                  ),
-                  []
-                ),
-                dataGraficaPie: this.cargaDataPie(
-                  this.calculos.ValoresProcentajeSubeapa(
-                    this.calculos.OperacionesDeFase(item.id),
-                    []
-                  ),
-                  this.calculos.ajustarNombre(
-                    this.catologoImpactoAmbiental[0][
-                      'name_complete_potential_type'
-                    ]
-                  ),
-                  []
-                ),
-              };
-
-              this.auxDataProjectList.push(auxDatos);
               this.projectsList.push(item);
             }
             this.countProjectList = this.projectsList.length;
           });
-          this.auxDataProjectList.reverse();
           this.projectsList.reverse();
           this.tempProjectsList = this.projectsList;
         });
@@ -331,7 +254,111 @@ export class HomeEvamedComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  async ngOnInit()  {
+    //this.DatosCalculos=[]
+    this.DatosCalculos={
+      'TEList': await this.analisis.getTypeEnergy().toPromise(),
+      'projectsList': await this.projectsService.getProjects().toPromise(),
+      'materialList': await this.materials.getMaterials().toPromise(),
+      'materialSchemeDataList': await this.analisis.getMaterialSchemeData().toPromise(),
+      'materialSchemeProyectList': await this.analisis.getMaterialSchemeProyect().toPromise(),
+      'potentialTypesList': await this.analisis.getPotentialTypes().toPromise(),
+      'standarsList': await this.analisis.getStandars().toPromise(),
+      'CSEList': await this.analisis.getConstructiveSystemElement().toPromise(),
+      'SIDList': await this.analisis.getSourceInformationData().toPromise(),
+      'SIList': await this.analisis.getSourceInformation().toPromise(),
+      'ACRList': await this.analisis.getAnnualConsumptionRequired().toPromise(),
+      'ECDList': await this.analisis.getElectricityConsumptionData().toPromise(),
+      'TEDList': await this.analisis.getTypeEnergyData().toPromise(),
+      'ULList': await this.analisis.getUsefulLife().toPromise(),
+      'ECDPList': await this.analisis.getECDP().toPromise(),
+      'sectionList': await this.analisis.getSectionsList().toPromise()
+    }
+    this.auxDataProjectList=[]
+    this.projectsList.forEach(element => {
+      let calculosOperacionesDeFase = null;
+
+              calculosOperacionesDeFase = this.calculos.OperacionesDeFase(
+                element.id,this.DatosCalculos
+                );
+              
+              let auxDatos: Record<string, any> = {
+                id: element.id,
+                datos: calculosOperacionesDeFase,
+                etapasIgnoradas: [],
+                porcentaje: this.calculos.ValoresProcentaje(
+                  calculosOperacionesDeFase,
+                  []
+                ),
+                porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
+                  calculosOperacionesDeFase,
+                  []
+                ),
+                banderaEtapa: false,
+                etapaSeleccionada: 'Ninguna',
+                subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
+                impactoCompleteSelect:
+                  this.catologoImpactoAmbiental[0][
+                    'name_complete_potential_type'
+                  ],
+                impactoSelect: this.calculos.ajustarNombre(
+                  this.catologoImpactoAmbiental[0][
+                    'name_complete_potential_type'
+                  ]
+                ),
+                unit_impacto:
+                  this.catologoImpactoAmbiental[0]['unit_potential_type'],
+                TipoGraficaActiva: { Pie: true, Bar: false },
+                idsTextBotones: {
+                  Producción: 'ProducciónTInfo'.concat(String(element.id)),
+                  Construccion: 'ConstruccionTInfo'.concat(String(element.id)),
+                  Uso: 'UsoTInfo'.concat(String(element.id)),
+                  FinDeVida: 'FinDeVidaTInfo'.concat(String(element.id)),
+                },
+                idsBotones: {
+                  Producción: 'ProducciónTextInfo'.concat(String(element.id)),
+                  Construccion: 'ConstruccionTextInfo'.concat(String(element.id)),
+                  Uso: 'UsoTextInfo'.concat(String(element.id)),
+                  FinDeVida: 'FinDeVidaTextInfo'.concat(String(element.id)),
+                },
+                iconosCambio: {
+                  Producción: 'visibility',
+                  Construccion: 'visibility',
+                  Uso: 'visibility',
+                  FinDeVida: 'visibility',
+                },
+                dataGraficaPieUso: this.DataPieUso(this.serchUseData(element.id)),
+                dataGraficaBar: this.cargarDataBar(
+                  this.calculos.ValoresProcentajeSubeapa(
+                    calculosOperacionesDeFase,
+                    []
+                  ),
+                  this.calculos.ajustarNombre(
+                    this.catologoImpactoAmbiental[0][
+                      'name_complete_potential_type'
+                    ]
+                  ),
+                  []
+                ),
+                dataGraficaPie: this.cargaDataPie(
+                  this.calculos.ValoresProcentajeSubeapa(
+                    calculosOperacionesDeFase,
+                    []
+                  ),
+                  this.calculos.ajustarNombre(
+                    this.catologoImpactoAmbiental[0][
+                      'name_complete_potential_type'
+                    ]
+                  ),
+                  []
+                ),
+              };
+
+              this.auxDataProjectList.push(auxDatos);
+    });
+    this.cargaDatosCalculo=true;
+    
+  }
 
   onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
@@ -945,7 +972,7 @@ export class HomeEvamedComponent implements OnInit {
 
     this.auxDataProjectList[i].dataGraficaPie = this.cargaDataPie(
       this.calculos.ValoresProcentajeSubeapa(
-        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),
+        this.auxDataProjectList[i].datos,
         this.auxDataProjectList[i].etapasIgnoradas
       ),
       this.auxDataProjectList[i].impactoSelect,
@@ -953,7 +980,7 @@ export class HomeEvamedComponent implements OnInit {
     );
     this.auxDataProjectList[i].dataGraficaBar = this.cargarDataBar(
       this.calculos.ValoresProcentajeSubeapa(
-        this.calculos.OperacionesDeFase(this.auxDataProjectList[i].id),
+        this.auxDataProjectList[i].datos,
         this.auxDataProjectList[i].etapasIgnoradas
       ),
       this.auxDataProjectList[i].impactoSelect,

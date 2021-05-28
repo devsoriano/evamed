@@ -84,6 +84,22 @@ export class CompararComponent implements OnInit {
   seleccion_columna:any;
   delete_fase:boolean=true;
   bandera_por_metro:boolean=false;
+  projectsList: [];
+  materialList: [];
+  materialSchemeDataList: [];
+  materialSchemeProyectList: [];
+  potentialTypesList: [];
+  standarsList: [];
+  CSEList: [];
+  SIDList: [];
+  SIList: [];
+  ACRList: [];
+  ECDList: [];
+  TEDList: [];
+  TEList: [];
+  ULList: [];
+  ECDPList: [];
+  sectionList: [];
   click_anterior:'Ninguno';
   labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
   proyectosMostrados_elementos=[{
@@ -144,9 +160,41 @@ export class CompararComponent implements OnInit {
       this.analisis.getSectionsList()
     ])
     .subscribe(([
+      TE,
+        projectsData,
+        materialData,
+        materialSchemeData,
+        materialSchemeProyect,
+        potentialTypes,
+        standards,
+        CSE,
+        SID,
+        SI,
+        ACR,
+        ECD,
+        TED,
+        UL,
+        ECDP,
+        sectionsList,
     ]) => {
+      this.projectsList = projectsData;
+        this.materialList = materialData;
+        this.materialSchemeDataList = materialSchemeData;
+        this.materialSchemeProyectList = materialSchemeProyect;
+        this.potentialTypesList = potentialTypes;
+        this.standarsList = standards;
+        this.CSEList = CSE;
+        this.SIDList = SID;
+        this.SIList = SI;
+        this.ACRList = ACR;
+        this.ECDList = ECD;
+        this.TEDList = TED;
+        this.TEList = TE;
+        this.ULList = UL;
+        this.ECDPList = ECDP;
+        this.sectionList = sectionsList;
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
-      this.columnsToDisplay = this.calculos.ImpactosSeleccionados();
+      this.columnsToDisplay = this.calculos.ImpactosSeleccionados(this.potentialTypesList);
       this.menu_inicio();
     });
 
@@ -301,13 +349,31 @@ export class CompararComponent implements OnInit {
 
     //Creación de espacio para guardar los datos del proyecto
     let analisisProyectos : Record<string,any> = {
-      Nombre: this.calculos.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
+      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
       id: idProyecto,
       Datos: {}
     };
 
+    let DatosCalculos = { 'TEList':this.TEList,
+      'projectsList':this.projectsList,
+      'materialList':this.materialList,
+      'materialSchemeDataList':this.materialSchemeDataList,
+      'materialSchemeProyectList':this.materialSchemeProyectList,
+      'potentialTypesList':this.potentialTypesList,
+      'standarsList':this.standarsList,
+      'CSEList':this.CSEList,
+      'SIDList':this.SIDList,
+      'SIList':this.SIList,
+      'ACRList':this.ACRList,
+      'ECDList':this.ECDList,
+      'TEDList':this.TEDList,
+      'ULList':this.ULList,
+      'ECDPList':this.ECDPList,
+      'sectionList':this.sectionList
+    };
+
     //Datos[impacto][fase]
-    let auxDatos = this.calculos.OperacionesDeFase(idProyecto)
+    let auxDatos = this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
     Object.keys(auxDatos).forEach(impacto => {
       analisisProyectos.Datos[impacto] = {}
       Object.keys(auxDatos[impacto]).forEach(fase => {
@@ -336,8 +402,27 @@ export class CompararComponent implements OnInit {
       Datos: {}
     };
 
+    let DatosCalculos = { 
+      'TEList':this.TEList,
+      'projectsList':this.projectsList,
+      'materialList':this.materialList,
+      'materialSchemeDataList':this.materialSchemeDataList,
+      'materialSchemeProyectList':this.materialSchemeProyectList,
+      'potentialTypesList':this.potentialTypesList,
+      'standarsList':this.standarsList,
+      'CSEList':this.CSEList,
+      'SIDList':this.SIDList,
+      'SIList':this.SIList,
+      'ACRList':this.ACRList,
+      'ECDList':this.ECDList,
+      'TEDList':this.TEDList,
+      'ULList':this.ULList,
+      'ECDPList':this.ECDPList,
+      'sectionList':this.sectionList
+    };
+
     //Datos[Fase][impacto]
-    let auxDatos = this.calculos.OperacionesDeFase(idProyecto)
+    let auxDatos = this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
     let auxFases=[]
     Object.keys(auxDatos).forEach(impacto =>{
       Object.keys(auxDatos[impacto]).forEach(fase =>{
@@ -369,8 +454,26 @@ export class CompararComponent implements OnInit {
       id: idProyecto,
       Datos: {}
     };
+
+    let DatosCalculos = { 'TEList':this.TEList,
+      'projectsList':this.projectsList,
+      'materialList':this.materialList,
+      'materialSchemeDataList':this.materialSchemeDataList,
+      'materialSchemeProyectList':this.materialSchemeProyectList,
+      'potentialTypesList':this.potentialTypesList,
+      'standarsList':this.standarsList,
+      'CSEList':this.CSEList,
+      'SIDList':this.SIDList,
+      'SIList':this.SIList,
+      'ACRList':this.ACRList,
+      'ECDList':this.ECDList,
+      'TEDList':this.TEDList,
+      'ULList':this.ULList,
+      'ECDPList':this.ECDPList,
+      'sectionList':this.sectionList
+    };
     //Datos[impacto][fase][subetapa]
-    let auxDatos = this.calculos.OperacionesDeFase(idProyecto)
+    let auxDatos = this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
     Object.keys(auxDatos).forEach(impacto => {
       let impacto_ambiental = impacto.replace(/\n/g, " ");
       analisisProyectos.Datos[impacto_ambiental] = {}
@@ -513,7 +616,7 @@ export class CompararComponent implements OnInit {
 
   //Se cargan los proyetcos existentes y se configura el menu
   menu_inicio(){
-    this.calculos.projectsList.forEach(proyecto => {
+    this.projectsList.forEach(proyecto => {
       if (proyecto['id'] == this.idProyectoActivo){
         this.proyecto.nombre = proyecto['name_project']
         this.proyecto.num_epic= this.calculos.materiales_EPIC
