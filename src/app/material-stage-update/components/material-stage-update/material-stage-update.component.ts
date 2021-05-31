@@ -4,6 +4,15 @@ import { MaterialsService } from './../../../core/services/materials/materials.s
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { Router } from '@angular/router';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
+export interface Material {
+  id: number;
+  name_material: string;
+  unit_id: number;
+}
 
 @Component({
   selector: 'app-material-stage-update',
@@ -45,6 +54,11 @@ export class MaterialStageUpdateComponent implements OnInit {
   vidaUtilSeleccionado: any;
   vidaUtilSeleccionadoId: any;
   dataProject: any;
+  materialsList: any;
+
+  myControl = new FormControl();
+  options: Material[];
+  filteredOptions: Observable<Material[]>;
 
   constructor(
     private materialsService: MaterialsService,
@@ -52,6 +66,10 @@ export class MaterialStageUpdateComponent implements OnInit {
     private catalogsService: CatalogsService,
     private router: Router
   ) {
+    this.materialsService.getMaterials().subscribe((data) => {
+      this.materialsList = data;
+      this.options = this.materialsList;
+    });
     this.projectsService.getMaterialSchemeProyect().subscribe((data) => {
       const listData2 = [];
       data.map((item) => {
@@ -92,6 +110,13 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
+    // fragmento para autocompletado
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => (typeof value === 'string' ? value : value.name)),
+      map((name) => (name ? this._filter(name) : this.options.slice()))
+    );
+
     this.selectedMaterial = false;
 
     this.sheetNames = [
@@ -109,6 +134,19 @@ export class MaterialStageUpdateComponent implements OnInit {
     ];
 
     this.showSearch = false;
+  }
+
+  // Lógica para autocompletado
+  displayFn(material: Material): string {
+    return material && material.name_material ? material.name_material : '';
+  }
+
+  private _filter(name: string): Material[] {
+    const filterValue = name.toLowerCase();
+
+    return this.options.filter(
+      (option) => option.name_material.toLowerCase().indexOf(filterValue) === 0
+    );
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -183,6 +221,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   showMaterials(event, sc, origin) {
     event.stopPropagation();
     this.selectedMaterial = false;
+    this.showSearch = false;
     // let originId = 1;
     // origin === 'revit-user' ? originId = 1 : originId = 2;
     const listMateriales = [];
@@ -320,6 +359,8 @@ export class MaterialStageUpdateComponent implements OnInit {
   onSelectedMaterial(event, value) {
     console.log('selección de materiales ***************************');
     console.log(value.selected[0]?.value.value);
+
+    this.selectState(value.selected[0]?.value.value.state_id_origin);
     this.dataMaterialSelected = value.selected[0]?.value.value;
     this.selectedMaterial = true;
   }
@@ -389,6 +430,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onReturnListMaterials() {
     this.selectedMaterial = false;
+    this.showSearch = false;
   }
 
   addElement() {
@@ -413,5 +455,10 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   goToEndLife() {
     this.router.navigateByUrl('end-life-stage');
+  }
+
+  goToSearchInfo() {
+    this.showSearch = true;
+    this.selectedMaterial = false;
   }
 }

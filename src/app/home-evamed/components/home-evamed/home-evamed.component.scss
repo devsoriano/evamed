@@ -67,7 +67,7 @@
   margin: auto;
   height: 300px;
 
-  .subseccion{
+  .subseccion {
     display: flex;
     align-items: center;
     padding-top: 60px;
@@ -78,11 +78,16 @@
     padding-left: 10px;
     width: 25%;
     margin: 15px;
-    height: 160px;
+    height: 145px;
     overflow: auto;
     box-shadow: 0px 3px 6px #00000029;
     border: 1px solid #cbcbcb;
     border-radius: 17px;
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid #7fa20b;
+    }
 
     h2 {
       font-size: 12px;
@@ -140,7 +145,7 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
   }
 }
 
-.seccionTres{
+.seccionTres {
   padding-left: 46px;
 }
 

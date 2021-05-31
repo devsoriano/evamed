@@ -494,9 +494,64 @@
             </div>
             <div class="Row">
               <div class="Col">
-                <div class="button-read" (click)="updateMaterialSelected( this.dataMaterialSelected )" >
-                  navegacion a etapa de materiales
+                <div class="button-read" (click)="goToSearchInfo()" >
+                  {{dataMaterialSelected.name_material}}
                 </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <button
+                  mat-button
+                  class="yellow-button custom-continue custom-update"
+                  (click)="updateMaterialSelected( this.dataMaterialSelected )"
+                >
+                  Actualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <!--Form search -->
+         <div class="container-details" *ngIf="showSearch===true">
+          <div class="form-search">
+            <div class="Row">
+              <div class="Col">
+                <h3>Realiza tu búsqueda</h3>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <form class="example-form">
+                  <mat-form-field class="example-full-width">
+                    <input
+                      class="input-general-renuew"
+                      type="text"
+                      matInput
+                      [formControl]="myControl"
+                      [matAutocomplete]="auto"
+                      [(ngModel)]="dataMaterialSelected.materialDB"
+                    >
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option.name_material}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </form>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <mat-tab-group mat-align-tabs="start">
+                  <mat-tab label="EPD's">EPD's</mat-tab>
+                  <mat-tab label="Base de datos">
+                    <div *ngFor="let item of materialsList">
+                      {{item.name_material}}
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
               </div>
             </div>
           </div>

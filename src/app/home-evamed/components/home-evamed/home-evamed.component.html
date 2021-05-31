@@ -58,18 +58,15 @@
             <mat-tab-group class="container-second-tab">
               <mat-tab label="Producción" class="label-second-tab">
                 <section class="grid-container"  >
-                  <mat-card class="card-item-custom" *ngFor="let section of serchSections(project.id)">
+                  <mat-card
+                    class="card-item-custom"
+                    *ngFor="let section of serchSections(project.id)"
+                    (click)="updateMaterial(project.id)"
+                    >
                     <h2>{{section.name_section}}</h2>
                     <ul class="listItems">
                       <li *ngFor="let sc of serchSC(project.id, section.id)">{{sc}}</li>
                     </ul>
-                    <button
-                      mat-button
-                      class="yellow-button-mini updateButton"
-                      (click)="updateMaterial(project.id)"
-                    >
-                      Editar
-                    </button>
                   </mat-card>
                 </section>
               </mat-tab>
