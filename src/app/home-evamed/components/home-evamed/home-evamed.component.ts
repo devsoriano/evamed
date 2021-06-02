@@ -13,8 +13,8 @@ import { ConstructionStageService } from 'src/app/core/services/construction-sta
 import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label,BaseChartDirective } from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels'
+import { Label, BaseChartDirective } from 'ng2-charts';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { MaterialsService } from '../../../core/services/materials/materials.service';
 import { AnalisisService } from '../../../core/services/analisis/analisis.service';
 
@@ -62,10 +62,10 @@ export class HomeEvamedComponent implements OnInit {
   ECD: any;
   ECDP: any;
   //para calculos
-  DatosCalculos:any;
-  cargaDatosCalculo=false;
+  DatosCalculos: any;
+  cargaDatosCalculo = false;
   //---
-  auxDatosGraficaUso=[];
+  auxDatosGraficaUso = [];
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
     responsive: false,
@@ -86,31 +86,33 @@ export class HomeEvamedComponent implements OnInit {
       },
     },
   };
-  public barChartPlugins = [pluginDataLabels]
+  public barChartPlugins = [pluginDataLabels];
 
   @ViewChild('MyChart') chartDir: BaseChartDirective;
   public barChartOptions: ChartOptions = {
     responsive: true,
     title: { display: true },
     legend: { display: false },
-    tooltips: {enabled: false,
-      mode: 'label',
-    },
-    scales:{
-      yAxes: [{
-        display: true,
-        ticks: {
-          beginAtZero: true,
-          fontSize:11,
-        }
-      }],
-      xAxes: [{
-        display: true,
-        ticks: {
-          beginAtZero: true,
-          fontSize:11,
-        }
-      }]
+    tooltips: { enabled: false, mode: 'label' },
+    scales: {
+      yAxes: [
+        {
+          display: true,
+          ticks: {
+            beginAtZero: true,
+            fontSize: 11,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          display: true,
+          ticks: {
+            beginAtZero: true,
+            fontSize: 11,
+          },
+        },
+      ],
     },
     plugins: {
       datalabels: {
@@ -119,9 +121,9 @@ export class HomeEvamedComponent implements OnInit {
         align: 'center',
         font: {
           size: 7,
-        }
-      }
-    }
+        },
+      },
+    },
   };
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
@@ -140,7 +142,7 @@ export class HomeEvamedComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private analisis: AnalisisService,
-    private materials:MaterialsService,
+    private materials: MaterialsService,
     private calculos: Calculos,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
@@ -198,14 +200,16 @@ export class HomeEvamedComponent implements OnInit {
         this.sector = data[0].institution;
         localStorage.setItem('email-id', data[0].id);
         this.projectsList = [];
-        this.cargaDatosCalculo=false;
+        this.cargaDatosCalculo = false;
         this.projects.getProjects().subscribe((data) => {
           data.map((item) => {
             if (
               item.user_platform_id ===
               parseInt(localStorage.getItem('email-id'), 10)
             ) {
-              this.auxDatosGraficaUso.push(this.DataPieUso(this.serchUseData(item.id)))
+              this.auxDatosGraficaUso.push(
+                this.DataPieUso(this.serchUseData(item.id))
+              );
               this.projectsList.push(item);
             }
             this.countProjectList = this.projectsList.length;
@@ -257,109 +261,98 @@ export class HomeEvamedComponent implements OnInit {
     });
   }
 
-  async ngOnInit()  {
+  async ngOnInit() {
     //this.DatosCalculos=[]
-    this.DatosCalculos={
-      'TEList': await this.analisis.getTypeEnergy().toPromise(),
-      'projectsList': await this.projectsService.getProjects().toPromise(),
-      'materialList': await this.materials.getMaterials().toPromise(),
-      'materialSchemeDataList': await this.analisis.getMaterialSchemeData().toPromise(),
-      'materialSchemeProyectList': await this.analisis.getMaterialSchemeProyect().toPromise(),
-      'potentialTypesList': await this.analisis.getPotentialTypes().toPromise(),
-      'standarsList': await this.analisis.getStandars().toPromise(),
-      'CSEList': await this.analisis.getConstructiveSystemElement().toPromise(),
-      'SIDList': await this.analisis.getSourceInformationData().toPromise(),
-      'SIList': await this.analisis.getSourceInformation().toPromise(),
-      'ACRList': await this.analisis.getAnnualConsumptionRequired().toPromise(),
-      'ECDList': await this.analisis.getElectricityConsumptionData().toPromise(),
-      'TEDList': await this.analisis.getTypeEnergyData().toPromise(),
-      'ULList': await this.analisis.getUsefulLife().toPromise(),
-      'ECDPList': await this.analisis.getECDP().toPromise(),
-      'sectionList': await this.analisis.getSectionsList().toPromise()
-    }
-    this.auxDataProjectList=[]
-    this.projectsList.forEach(element => {
+    this.DatosCalculos = {
+      TEList: await this.analisis.getTypeEnergy().toPromise(),
+      projectsList: await this.projectsService.getProjects().toPromise(),
+      materialList: await this.materials.getMaterials().toPromise(),
+      materialSchemeDataList: await this.analisis
+        .getMaterialSchemeData()
+        .toPromise(),
+      materialSchemeProyectList: await this.analisis
+        .getMaterialSchemeProyect()
+        .toPromise(),
+      potentialTypesList: await this.analisis.getPotentialTypes().toPromise(),
+      standarsList: await this.analisis.getStandars().toPromise(),
+      CSEList: await this.analisis.getConstructiveSystemElement().toPromise(),
+      SIDList: await this.analisis.getSourceInformationData().toPromise(),
+      SIList: await this.analisis.getSourceInformation().toPromise(),
+      ACRList: await this.analisis.getAnnualConsumptionRequired().toPromise(),
+      ECDList: await this.analisis.getElectricityConsumptionData().toPromise(),
+      TEDList: await this.analisis.getTypeEnergyData().toPromise(),
+      ULList: await this.analisis.getUsefulLife().toPromise(),
+      ECDPList: await this.analisis.getECDP().toPromise(),
+      sectionList: await this.analisis.getSectionsList().toPromise(),
+    };
+    this.auxDataProjectList = [];
+    this.projectsList.forEach((element) => {
       let calculosOperacionesDeFase = null;
 
-              calculosOperacionesDeFase = this.calculos.OperacionesDeFase(
-                element.id,this.DatosCalculos
-                );
-              
-              let auxDatos: Record<string, any> = {
-                id: element.id,
-                datos: calculosOperacionesDeFase,
-                etapasIgnoradas: [],
-                porcentaje: this.calculos.ValoresProcentaje(
-                  calculosOperacionesDeFase,
-                  []
-                ),
-                porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
-                  calculosOperacionesDeFase,
-                  []
-                ),
-                banderaEtapa: false,
-                etapaSeleccionada: 'Ninguna',
-                subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
-                impactoCompleteSelect:
-                  this.catologoImpactoAmbiental[0][
-                    'name_complete_potential_type'
-                  ],
-                impactoSelect: this.calculos.ajustarNombre(
-                  this.catologoImpactoAmbiental[0][
-                    'name_complete_potential_type'
-                  ]
-                ),
-                unit_impacto:
-                  this.catologoImpactoAmbiental[0]['unit_potential_type'],
-                TipoGraficaActiva: { Pie: true, Bar: false },
-                idsTextBotones: {
-                  Producción: 'ProducciónTInfo'.concat(String(element.id)),
-                  Construccion: 'ConstruccionTInfo'.concat(String(element.id)),
-                  Uso: 'UsoTInfo'.concat(String(element.id)),
-                  FinDeVida: 'FinDeVidaTInfo'.concat(String(element.id)),
-                },
-                idsBotones: {
-                  Producción: 'ProducciónTextInfo'.concat(String(element.id)),
-                  Construccion: 'ConstruccionTextInfo'.concat(String(element.id)),
-                  Uso: 'UsoTextInfo'.concat(String(element.id)),
-                  FinDeVida: 'FinDeVidaTextInfo'.concat(String(element.id)),
-                },
-                iconosCambio: {
-                  Producción: 'visibility',
-                  Construccion: 'visibility',
-                  Uso: 'visibility',
-                  FinDeVida: 'visibility',
-                },
-                dataGraficaBar: this.cargarDataBar(
-                  this.calculos.ValoresProcentajeSubeapa(
-                    calculosOperacionesDeFase,
-                    []
-                  ),
-                  this.calculos.ajustarNombre(
-                    this.catologoImpactoAmbiental[0][
-                      'name_complete_potential_type'
-                    ]
-                  ),
-                  []
-                ),
-                dataGraficaPie: this.cargaDataPie(
-                  this.calculos.ValoresProcentajeSubeapa(
-                    calculosOperacionesDeFase,
-                    []
-                  ),
-                  this.calculos.ajustarNombre(
-                    this.catologoImpactoAmbiental[0][
-                      'name_complete_potential_type'
-                    ]
-                  ),
-                  []
-                ),
-              };
+      calculosOperacionesDeFase = this.calculos.OperacionesDeFase(
+        element.id,
+        this.DatosCalculos
+      );
 
-              this.auxDataProjectList.push(auxDatos);
+      let auxDatos: Record<string, any> = {
+        id: element.id,
+        datos: calculosOperacionesDeFase,
+        etapasIgnoradas: [],
+        porcentaje: this.calculos.ValoresProcentaje(
+          calculosOperacionesDeFase,
+          []
+        ),
+        porcentajeSubepata: this.calculos.ValoresProcentajeSubeapa(
+          calculosOperacionesDeFase,
+          []
+        ),
+        banderaEtapa: false,
+        etapaSeleccionada: 'Ninguna',
+        subetasMostrada: [{ abreviacion: 'nada', color: '#FFFFFF' }],
+        impactoCompleteSelect:
+          this.catologoImpactoAmbiental[0]['name_complete_potential_type'],
+        impactoSelect: this.calculos.ajustarNombre(
+          this.catologoImpactoAmbiental[0]['name_complete_potential_type']
+        ),
+        unit_impacto: this.catologoImpactoAmbiental[0]['unit_potential_type'],
+        TipoGraficaActiva: { Pie: true, Bar: false },
+        idsTextBotones: {
+          Producción: 'ProducciónTInfo'.concat(String(element.id)),
+          Construccion: 'ConstruccionTInfo'.concat(String(element.id)),
+          Uso: 'UsoTInfo'.concat(String(element.id)),
+          FinDeVida: 'FinDeVidaTInfo'.concat(String(element.id)),
+        },
+        idsBotones: {
+          Producción: 'ProducciónTextInfo'.concat(String(element.id)),
+          Construccion: 'ConstruccionTextInfo'.concat(String(element.id)),
+          Uso: 'UsoTextInfo'.concat(String(element.id)),
+          FinDeVida: 'FinDeVidaTextInfo'.concat(String(element.id)),
+        },
+        iconosCambio: {
+          Producción: 'visibility',
+          Construccion: 'visibility',
+          Uso: 'visibility',
+          FinDeVida: 'visibility',
+        },
+        dataGraficaBar: this.cargarDataBar(
+          this.calculos.ValoresProcentajeSubeapa(calculosOperacionesDeFase, []),
+          this.calculos.ajustarNombre(
+            this.catologoImpactoAmbiental[0]['name_complete_potential_type']
+          ),
+          []
+        ),
+        dataGraficaPie: this.cargaDataPie(
+          this.calculos.ValoresProcentajeSubeapa(calculosOperacionesDeFase, []),
+          this.calculos.ajustarNombre(
+            this.catologoImpactoAmbiental[0]['name_complete_potential_type']
+          ),
+          []
+        ),
+      };
+
+      this.auxDataProjectList.push(auxDatos);
     });
-    this.cargaDatosCalculo=true;
-    
+    this.cargaDatosCalculo = true;
   }
 
   onlyUnique(value, index, self) {
@@ -604,7 +597,7 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   duplicateProject(projectId) {
-    this.cargaDatosCalculo=false;
+    this.cargaDatosCalculo = false;
     this.projectsService
       .getProjectById(projectId)
       .subscribe((projectData: any) => {
@@ -621,8 +614,6 @@ export class HomeEvamedComponent implements OnInit {
             housing_scheme_id: projectData.housing_scheme_id,
             user_platform_id: projectData.user_platform_id,
             city_id_origin: projectData.city_id_origin,
-            unit_text: projectData.unit_text,
-            description_material: projectData.description_material,
             distance: null,
           })
           .subscribe((newProjectData) => {
@@ -644,116 +635,102 @@ export class HomeEvamedComponent implements OnInit {
                   .subscribe((dataResultConstruction) => {
                     console.log('resultado de construcción');
                     console.log(dataResultConstruction);
-                    // Duplicar Producción
-                    this.dataMaterial.map((material) => {
-                      if (material.project_id === projectId) {
-                        this.projectsService
-                          .addSchemeProject({
-                            construction_system: material.construction_system,
-                            comercial_name: material.comercial_name,
-                            quantity: material.quantity,
-                            provider_distance: material.provider_distance,
-                            material_id: material.material_id,
-                            project_id: newProjectData.id,
-                            origin_id: material.origin_id,
-                            section_id: material.section_id,
-                            value: material.value,
-                            distance_init: material.distance_init,
-                            distance_end: material.distance_end,
-                            replaces: material.replaces,
-                            city_id_origin: material.city_id_origin,
-                            city_id_end: material.city_id_end,
-                            transport_id_origin: material.transport_id_origin,
-                            transport_id_end: material.transport_id_end,
-                          })
-                          .subscribe((dataResulMaterial) => {
-                            console.log('resultado de materiales');
-                            console.log(dataResulMaterial);
-                          });
-                      }
-                    });
                   });
               }
             }).then(
-              this.electricitConsumptionService
-                .getACR()
-                .subscribe((dataAllACR) => {
-                  dataAllACR.map((acr) => {
-                    if (acr.project_id === projectId) {
-                      // Duplicar Uso
-                      this.electricitConsumptionService
-                        .addACR({
-                          project_id: parseInt(
-                            localStorage.getItem('newProjectDataId')
-                          ),
-                          quantity: acr.quantity,
-                          unit_id: acr.unit_id,
-                        })
-                        .subscribe((dataNewACR) => {
-                          console.log('Resultado de add NewACR');
-                          console.log(dataNewACR);
-                          this.electricitConsumptionService
-                            .getECD()
-                            .subscribe((dataAllECD) => {
-                              dataAllECD.map((ecd) => {
-                                if (
-                                  ecd.annual_consumption_required_id === acr.id
-                                ) {
-                                  this.electricitConsumptionService
-                                    .addECD({
-                                      quantity: ecd.quantity,
-                                      percentage: ecd.percentage,
-                                      source: ecd.source,
-                                      annual_consumption_required_id:
-                                        dataNewACR.id,
-                                      unit_id: ecd.unit_id,
-                                      type: ecd.type,
-                                    })
-                                    .subscribe((dataNewECD) => {
-                                      console.log('Resultado de add New ECD');
-                                      console.log(dataNewECD);
-                                      this.users
-                                        .searchUser(
-                                          localStorage.getItem('email-login')
-                                        )
-                                        .subscribe((data) => {
-                                          localStorage.setItem(
-                                            'email-id',
-                                            data[0].id
-                                          );
-                                          this.projectsList = [];
-                                          this.projects
-                                            .getProjects()
-                                            .subscribe((data) => {
-                                              data.map((item) => {
-                                                if (
-                                                  item.user_platform_id ===
-                                                  parseInt(
-                                                    localStorage.getItem(
-                                                      'email-id'
-                                                    ),
-                                                    10
-                                                  )
-                                                ) {
-                                                  this.auxDatosGraficaUso.push(this.DataPieUso(this.serchUseData(item.id)))
-                                                  this.projectsList.push(item);
-                                                }
-                                                this.countProjectList =
-                                                  this.projectsList.length;
-                                              });
-                                              this.auxDatosGraficaUso.reverse();
-                                              this.projectsList.reverse();
-                                            });
-                                            this.ngOnInit();
-                                        });
-                                    });
-                                }
-                              });
-                            });
-                        });
-                    }
-                  });
+              // Duplicar Producción
+              this.dataMaterial
+                .map((material) => {
+                  if (material.project_id === projectId) {
+                    this.projectsService
+                      .addSchemeProject({
+                        construction_system: material.construction_system,
+                        comercial_name: material.comercial_name,
+                        quantity: material.quantity,
+                        provider_distance: material.provider_distance,
+                        material_id: material.material_id,
+                        project_id: parseInt(
+                          localStorage.getItem('newProjectDataId')
+                        ),
+                        origin_id: material.origin_id,
+                        section_id: material.section_id,
+                        value: material.value,
+                        distance_init: material.distance_init,
+                        distance_end: material.distance_end,
+                        replaces: material.replaces,
+                        city_id_origin: material.city_id_origin,
+                        city_id_end: material.city_id_end,
+                        transport_id_origin: material.transport_id_origin,
+                        transport_id_end: material.transport_id_end,
+                        state_id_origin: material.state_id_origin,
+                        unit_text: material.unit_text,
+                        description_material: material.description_material,
+                      })
+                      .subscribe((dataResulMaterial) => {
+                        console.log('resultado de materiales');
+                        console.log(dataResulMaterial);
+                      });
+                  }
                 })
+                .then(
+                  this.electricitConsumptionService
+                    .getACR()
+                    .subscribe((dataAllACR) => {
+                      dataAllACR.map((acr) => {
+                        if (acr.project_id === projectId) {
+                          // Duplicar Uso
+                          this.electricitConsumptionService
+                            .addACR({
+                              project_id: parseInt(
+                                localStorage.getItem('newProjectDataId')
+                              ),
+                              quantity: acr.quantity,
+                              unit_id: acr.unit_id,
+                            })
+                            .subscribe((dataNewACR) => {
+                              console.log('Resultado de add NewACR');
+                              console.log(dataNewACR);
+                              this.electricitConsumptionService
+                                .getECD()
+                                .subscribe((dataAllECD) => {
+                                  dataAllECD.map((ecd) => {
+                                    if (
+                                      ecd.annual_consumption_required_id ===
+                                      acr.id
+                                    ) {
+                                      this.electricitConsumptionService
+                                        .addECD({
+                                          quantity: ecd.quantity,
+                                          percentage: ecd.percentage,
+                                          source: ecd.source,
+                                          annual_consumption_required_id:
+                                            dataNewACR.id,
+                                          unit_id: ecd.unit_id,
+                                          type: ecd.type,
+                                        })
+                                        .subscribe((dataNewECD) => {
+                                          console.log(
+                                            'Resultado de add New ECD'
+                                          );
+                                          console.log(dataNewECD);
+                                          this.users
+                                            .searchUser(
+                                              localStorage.getItem(
+                                                'email-login'
+                                              )
+                                            )
+                                            .subscribe((data) => {
+                                              location.reload();
+                                            });
+                                        });
+                                    }
+                                  });
+                                });
+                            });
+                        }
+                      });
+                    })
+                )
             );
           });
       });
@@ -835,9 +812,9 @@ export class HomeEvamedComponent implements OnInit {
     let auxl: Label[] = [];
     let banderaEtapa = true;
     let auxdata2 = [];
-    const auxDatos = {sub1 : [], sub2:[],sub3:[],sub4:[]}
-    const auxColores = {sub1 : [], sub2:[],sub3:[],sub4:[]}
-    let maxsubetapas =0;
+    const auxDatos = { sub1: [], sub2: [], sub3: [], sub4: [] };
+    const auxColores = { sub1: [], sub2: [], sub3: [], sub4: [] };
+    let maxsubetapas = 0;
 
     Object.keys(data).forEach((element) => {
       if (element === impactoU) {
@@ -848,7 +825,7 @@ export class HomeEvamedComponent implements OnInit {
             }
           });
           if (banderaEtapa) {
-            if(this.calculos.findSubetapas(ciclo).length > maxsubetapas)
+            if (this.calculos.findSubetapas(ciclo).length > maxsubetapas)
               maxsubetapas = this.calculos.findSubetapas(ciclo).length;
           }
           banderaEtapa = true;
@@ -863,37 +840,37 @@ export class HomeEvamedComponent implements OnInit {
           });
           if (banderaEtapa) {
             auxl.push(ciclo);
-            let auxsub=0;
+            let auxsub = 0;
             Object.keys(data[element][ciclo]).forEach((subetapa) => {
               auxsub = auxsub + 1;
-              if(auxsub == 1){
-                auxDatos.sub1.push(data[element][ciclo][subetapa].porcentaje)
-                auxColores.sub1.push(this.calculos.findColor(subetapa))
+              if (auxsub == 1) {
+                auxDatos.sub1.push(data[element][ciclo][subetapa].porcentaje);
+                auxColores.sub1.push(this.calculos.findColor(subetapa));
               }
-              if(auxsub == 2){
-                auxDatos.sub2.push(data[element][ciclo][subetapa].porcentaje)
-                auxColores.sub2.push(this.calculos.findColor(subetapa))
+              if (auxsub == 2) {
+                auxDatos.sub2.push(data[element][ciclo][subetapa].porcentaje);
+                auxColores.sub2.push(this.calculos.findColor(subetapa));
               }
-              if(auxsub == 3){
-                auxDatos.sub3.push(data[element][ciclo][subetapa].porcentaje)
-                auxColores.sub3.push(this.calculos.findColor(subetapa))
+              if (auxsub == 3) {
+                auxDatos.sub3.push(data[element][ciclo][subetapa].porcentaje);
+                auxColores.sub3.push(this.calculos.findColor(subetapa));
               }
-              if(auxsub == 4){
-                auxDatos.sub4.push(data[element][ciclo][subetapa].porcentaje)
-                auxColores.sub4.push(this.calculos.findColor(subetapa))
+              if (auxsub == 4) {
+                auxDatos.sub4.push(data[element][ciclo][subetapa].porcentaje);
+                auxColores.sub4.push(this.calculos.findColor(subetapa));
               }
               auxdata2.push(data[element][ciclo][subetapa].num);
               auxColor.push(this.calculos.findColor(subetapa));
             });
-            if(auxsub < maxsubetapas){
-              for(var i = auxsub+1; i<=maxsubetapas;i++){
-                if(i == 3){
-                  auxDatos.sub3.push("0")
-                  auxColores.sub3.push("#FFFFFF")
+            if (auxsub < maxsubetapas) {
+              for (var i = auxsub + 1; i <= maxsubetapas; i++) {
+                if (i == 3) {
+                  auxDatos.sub3.push('0');
+                  auxColores.sub3.push('#FFFFFF');
                 }
-                if(i == 4){
-                  auxDatos.sub4.push("0")
-                  auxColores.sub4.push("#FFFFFF")
+                if (i == 4) {
+                  auxDatos.sub4.push('0');
+                  auxColores.sub4.push('#FFFFFF');
                 }
               }
             }
@@ -902,13 +879,14 @@ export class HomeEvamedComponent implements OnInit {
         });
       }
     });
-    
-    Object.keys(auxDatos).forEach(element => {
-      aux = [...aux,
+
+    Object.keys(auxDatos).forEach((element) => {
+      aux = [
+        ...aux,
         {
           data: auxDatos[element],
-          label:element,
-          stack: "Proyecto",
+          label: element,
+          stack: 'Proyecto',
           backgroundColor: auxColores[element],
         },
       ];
