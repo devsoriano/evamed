@@ -94,7 +94,6 @@ export class PieChartComponent implements OnInit {
           eliminadas:[]
         }]
       });
-      console.log(this.subetapas)
     }
     console.log("Pie");
   }

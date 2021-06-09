@@ -12,7 +12,7 @@
 }
 .campo-grafica-bar {
   margin: auto;
-  width: 795px;
+  width: 810px;
   height: auto;
 }
 
@@ -25,6 +25,7 @@
   text-align: center;
   font-size: 12px;
   width: 795px;
+  overflow: auto;
 
   th {
     padding-left: 15px;
@@ -36,6 +37,8 @@
     & td {
       padding-left: 16px;
       font-size: 1.2em;
+      padding-top: 15px;
+      padding-right: 16px;
     }
   }
 }
@@ -66,7 +69,7 @@
 
 .div-proyectos-mostrados {
   display: inline-grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 250px auto;
   margin-bottom: 15px;
   .menu-proyectos {
     background-color: #ffffff;
@@ -133,25 +136,28 @@ ng-template {
   }
   .icons-options {
     font-size: 15px;
+    padding-top: 9px;
   }
+
   .sub-container {
-    font-size: 12px;
+    font-size: 15px;
     display: inline-grid;
     grid-template-columns: 122px 122px 122px;
     .button-impactos {
-      width: 47px;
-      height: 32px;
+      width: 47px !important;
+      height: 32px !important;
     }
+    
   }
-  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-    padding-top: 3px;
-    line-height: 34px;
-    padding: 0 12px;
-}
-}
-
-.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-  padding: 0px;
+  
+  mat-button-toggle {
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+  }
+  
 }
 
 .secondary-text {

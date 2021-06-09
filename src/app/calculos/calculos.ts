@@ -82,7 +82,8 @@ export class Calculos {
       });
       if (impacto_ban) {
         nameImpacto = impacto['name_complete_potential_type'];
-        nameImpacto = nameImpacto.split(' ').join('\n');
+        nameImpacto = this.ajustarNombre(nameImpacto);
+        //nameImpacto = nameImpacto.split(' ').join('\n');
         Datos[nameImpacto] = {};
         let resultado_impacto = 0;
         //Cálculos de la sección de producción
@@ -416,7 +417,8 @@ export class Calculos {
       });
       if (impacto_ban) {
         auxnombreSalto = impacto['name_complete_potential_type'];
-        auxNombre.push(auxnombreSalto.split(' ').join('\n'));
+        auxNombre.push(auxnombreSalto);
+        //auxNombre.push(this.ajustarNombre(auxnombreSalto));
       }
       impacto_ban = true;
     });
@@ -441,7 +443,31 @@ export class Calculos {
   }
 
   ajustarNombre(name: string) {
-    return name.split(' ').join('\n');
+    let help = name;
+    let spacios=0;
+    let numC=0;
+    let maxlinea=0;
+    for (let i of help){
+      if(i===' '){
+        spacios=spacios+1;
+        if(spacios==1 && maxlinea >= 9){
+          help = [help.slice(0, numC), '\n', help.slice(numC)].join('');
+          spacios=0;
+          maxlinea = 0;
+          numC=numC+1;
+        }
+        if(spacios==2){
+          help = [help.slice(0, numC), '\n', help.slice(numC)].join('');
+          spacios=0;
+          numC=numC+1;
+        }
+      }
+      maxlinea=maxlinea+1;
+      numC=numC+1;
+    }
+    
+    //console.log(help);
+    return help
   }
 
   findColor(subetapa) {

@@ -4,6 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatSelectModule } from '@angular/material/select';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 import { CompararRoutingModule } from './comparar-routing.module';
 import { CompararComponent } from './component/comparar/comparar.component';
@@ -38,7 +39,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatMenuModule,
     MatButtonToggleModule,
     MatSelectModule,
-    // MatRadioButton,
+    ScrollingModule,
     MatCheckboxModule
   ],
   exports: [

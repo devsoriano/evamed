@@ -146,13 +146,10 @@ export class BarChartComponent implements OnInit {
     if(this.Bandera_bar){
       this.barChartLabels = ['Imapacto', 'Imapacto 1', 'Imapacto 2', 'Imapacto 3', 'Imapacto 4', 'Imapacto 5', 'Imapacto 6', 'Imapacto 7'];
     }else{
-      //console.log(proyecto)
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
           if (!this.barChartLabels.includes(indicador)){
-
             this.barChartLabels = [...this.barChartLabels, indicador];
-            //console.log(this.barChartLabels);
           }
           proyecto.Datos[indicador].total = 0;
           proyecto.Datos[indicador].total = Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);

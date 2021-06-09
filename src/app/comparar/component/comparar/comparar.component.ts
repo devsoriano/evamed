@@ -413,6 +413,7 @@ export class CompararComponent implements OnInit {
     return analisisProyectos;
   }
 
+
   getAnalisisRadial(idProyecto){
     let analisisProyectos : Record<string,any> = {
       Nombre: this.calculos.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
@@ -561,36 +562,41 @@ export class CompararComponent implements OnInit {
       auxdata["ciclo de vida"]=ciclo;
       this.outproyect_bar.forEach((element)=>{
         Object.keys(element.Datos).forEach(impacto => {
-          if(!auximpactos.includes(impacto)){
-            auximpactos.push(impacto);
-            auxdata[impacto] = (element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          let auxNombreImpacto = impacto.replace(/\n/g,'');
+          if(!auximpactos.includes(auxNombreImpacto)){
+            auximpactos.push(auxNombreImpacto);
+            auxdata[auxNombreImpacto] = (element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }else{
             flagMasProyectos = true;
-            let last = auxdata[impacto].toString()
-            auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
-            auxdata[impacto] = auxdata[impacto].concat((element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            let last = auxdata[auxNombreImpacto].toString()
+            auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
+            auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat((element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
           }
         });
       })
       auximpactos =[];
-       if(ciclo === "FinDeVida" && flagMasProyectos == true){
-         let numProyecto = 0;
-          this.outproyect_bar.forEach((element)=>{ 
-            numProyecto = numProyecto+1;
-            Object.keys(element.Datos).forEach(impacto => {
-              if(!auximpactos.includes(impacto)){
-                auximpactos.push(impacto);
-                auxdata[impacto] = ((numProyecto).toString());
-              }else{
-                let last = auxdata[impacto].toString()
-                auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0');
-                auxdata[impacto] = auxdata[impacto].concat((numProyecto).toString());
-              }
-            });
-          });
-       }
       aux=[...aux, {data:auxdata,
-                    color: aux_color[index]}];
+        color: aux_color[index]}];
+      if(ciclo === "FinDeVida" && flagMasProyectos == true){
+        auxdata = {};
+        let numProyecto = 0;
+        this.outproyect_bar.forEach((element)=>{ 
+          numProyecto = numProyecto+1;
+          Object.keys(element.Datos).forEach(impacto => {
+          let auxNombreImpacto = impacto.replace(/\n/g,'');
+            if(!auximpactos.includes(auxNombreImpacto)){
+              auximpactos.push(auxNombreImpacto);
+              auxdata[auxNombreImpacto] = ((numProyecto).toString());
+            }else{
+              let last = auxdata[auxNombreImpacto].toString()
+              auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0');
+              auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat((numProyecto).toString());
+            }
+          });
+        });
+        aux=[...aux, {data:auxdata,
+                      color: aux_color[index+1]}];
+      }
     })
     this.DatosTabla = aux;
     this.resultdosTabla=true;
