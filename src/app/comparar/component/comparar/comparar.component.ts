@@ -69,6 +69,7 @@ export class CompararComponent implements OnInit {
   outproyect_bar = [];
   outproyect_radar=[];
   outproyect_pie = [];
+  outproyect_bar_elementos = [];
   indicador_impacto:string;
   hover:boolean=true;
   bandera_porcentaje: boolean = true;
@@ -276,6 +277,7 @@ export class CompararComponent implements OnInit {
     let analisis = this.getAnalisisBarras(id);
     let analisisRad = this.getAnalisisRadial(id);
     let analisisPie = this.getAnalisisPie(id);
+    let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -298,7 +300,11 @@ export class CompararComponent implements OnInit {
     }else{
       this.iniciaBarras();
     }
+    if(this.Impactos_Elementos){
+      this.iniciaBarrasSeccionDos();
+    }
     this.containerGraficas.clear();
+    this.receiveSelector(null);
     this.banderaGrapg == 0;
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
@@ -634,8 +640,11 @@ export class CompararComponent implements OnInit {
     this.ResetTabs($event);
   }
 
-  analisisSeccionDos(){
+  getAnalisisBarrasElementosConstructivos(idProyecto){
     //Calculos y obtención de datos para crear correctamente las gráficas de barras
+    console.log('IN BARRAS 2');
+
+    return 0;
   }
 
   //Se cargan los proyetcos existentes y se configura el menu
@@ -700,8 +709,16 @@ export class CompararComponent implements OnInit {
     } else {
       this.iniciaBarras();
     }
-    this.iniciaRadiales();
-    this.iniciaPie();
+    if(this.Impactos_ambientales){
+      this.containerGraficas.clear();
+      this.receiveSelector(null);
+      if (this.ID != ' ') {
+        document.getElementById(this.ID).className = 'boton-principal';
+      }
+    }
+    if(this.Impactos_Elementos){
+      this.iniciaBarrasSeccionDos();
+    }
   }
 
   //interacción con la gráfca de bar
