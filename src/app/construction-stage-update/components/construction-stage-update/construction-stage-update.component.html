@@ -1,26 +1,27 @@
 <nav class="nav-redirect">
   <h2 class="proyecto-title">{{nameProject}}</h2>
-  <a href="/" class="a-redirect"> < Regresar a proyectos </a>
+  <a href="/" class="a-redirect">
+    < Regresar a proyectos </a>
 </nav>
 <!--Principal container-->
 <div class="principal-container container-total">
-   <!--Navigation steps-->
+  <!--Navigation steps-->
   <nav class="nav-steps">
     <div class="mdl-stepper-horizontal-alternative">
       <div class="mdl-stepper-step step-one-selected">
-        <div class="mdl-stepper-circle" ></div>
+        <div class="mdl-stepper-circle"></div>
         <div class="mdl-stepper-tag"> Producción </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-two">
-        <div class="mdl-stepper-circle" ></div>
+        <div class="mdl-stepper-circle"></div>
         <div class="mdl-stepper-tag aux-yellow"> Construcción </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-three">
-        <div class="mdl-stepper-circle" ></div>
+        <div class="mdl-stepper-circle"></div>
         <div class="mdl-stepper-tag"> Uso </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
@@ -52,16 +53,9 @@
         <img *ngSwitchDefault src="../../../../assets/map/12.jpg" class="image-element" alt="" />
       </div>
       <div class="list-elements">
-        <mat-selection-list
-          #sheets
-          [multiple]="false"
-          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)"
-        >
-          <mat-list-option
-            *ngFor="let sheet of sheetNames"
-            [value]="sheet"
-            class="item-yellow-extend"
-          >
+        <mat-selection-list #sheets [multiple]="false"
+          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)">
+          <mat-list-option *ngFor="let sheet of sheetNames" [value]="sheet" class="item-yellow-extend">
             {{sheet}}
           </mat-list-option>
         </mat-selection-list>
@@ -88,7 +82,7 @@
                 </label>
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                  <mat-select [(ngModel)]="data.fuente" name="fuente{{i}}">
                     <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
                       {{fuente.name_source_information}}
                     </mat-option>
@@ -100,13 +94,7 @@
                   Cantidad
                 </label>
                 <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.cantidad"
-                    name="cantidad_{{i}}"
-                    matInput
-                    type="number"
-                  >
+                  <input class="input-general" [(ngModel)]="data.cantidad" name="cantidad_{{i}}" matInput type="number">
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
@@ -115,7 +103,7 @@
                 </label>
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.energy_unit_id" name="fuente{{i}}">
+                  <mat-select [(ngModel)]="data.energy_unit_id" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
                       {{unidad.name_energy_unit}}
                     </mat-option>
@@ -124,11 +112,7 @@
               </div>
               <div class="Col col-small-space">
                 <div *ngIf="i!=0">
-                  <button
-                    mat-button
-                    class="button-remove"
-                    (click)="removeFormEC(i)"
-                  >
+                  <button mat-button class="button-remove" (click)="removeFormEC(i)">
                     <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>
@@ -136,17 +120,11 @@
             </div>
           </div>
           <!--Actions-->
-          <button
-            mat-button
-            (click)="addFormEC()"
-          >
+          <button mat-button (click)="addFormEC()">
             <mat-icon>add_circle</mat-icon>
           </button>
 
-          <button
-            mat-button
-            (click)="onSaveEC()"
-          >
+          <button mat-button (click)="onSaveEC()">
             <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
@@ -168,7 +146,7 @@
                 </label>
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                  <mat-select [(ngModel)]="data.fuente" name="fuente{{i}}">
                     <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
                       {{fuente.name_source_information}}
                     </mat-option>
@@ -180,13 +158,7 @@
                   Cantidad
                 </label>
                 <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.cantidad"
-                    name="cantidad{{i}}"
-                    matInput
-                    type="number"
-                  >
+                  <input class="input-general" [(ngModel)]="data.cantidad" name="cantidad{{i}}" matInput type="number">
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
@@ -195,7 +167,7 @@
                 </label>
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                  <mat-select [(ngModel)]="data.unidad" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadVolumen" [value]="unidad.id">
                       {{unidad.name_volume_unit}}
                     </mat-option>
@@ -204,11 +176,7 @@
               </div>
               <div class="Col col-small-space">
                 <div *ngIf="i!=0">
-                  <button
-                    mat-button
-                    class="button-remove"
-                    (click)="removeFormAC(i)"
-                  >
+                  <button mat-button class="button-remove" (click)="removeFormAC(i)">
                     <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>
@@ -216,17 +184,11 @@
             </div>
           </div>
           <!--Actions-->
-          <button
-            mat-button
-            (click)="addFormAC()"
-          >
+          <button mat-button (click)="addFormAC()">
             <mat-icon>add_circle</mat-icon>
           </button>
 
-          <button
-            mat-button
-            (click)="onSaveAC()"
-          >
+          <button mat-button (click)="onSaveAC()">
             <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
@@ -234,7 +196,7 @@
         <!--Expansion panel 3. -->
         <mat-expansion-panel *ngIf="indexSheet!==undefined">
           <!--Expansion panel header-->
-          <mat-expansion-panel-header  class="custom-expansion-panel-header">
+          <mat-expansion-panel-header class="custom-expansion-panel-header">
             <mat-panel-title class="custom-mat-panel-title">
               3. Desechos generados durante el proceso constructivo
             </mat-panel-title>
@@ -248,7 +210,7 @@
                 </label>
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                  <mat-select [(ngModel)]="data.fuente" name="fuente{{i}}">
                     <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
                       {{fuente.name_source_information}}
                     </mat-option>
@@ -260,13 +222,7 @@
                   Cantidad
                 </label>
                 <mat-form-field>
-                  <input
-                    class="input-general"
-                    [(ngModel)]="data.cantidad"
-                    name="cantidad{{i}}"
-                    matInput
-                    type="number"
-                  >
+                  <input class="input-general" [(ngModel)]="data.cantidad" name="cantidad{{i}}" matInput type="number">
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
@@ -275,7 +231,7 @@
                 </label>
                 <mat-form-field appearance="outline">
                   <mat-label>Seleccione una opción</mat-label>
-                  <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                  <mat-select [(ngModel)]="data.unidad" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadVolumen" [value]="unidad.id">
                       {{unidad.name_volume_unit}}
                     </mat-option>
@@ -284,11 +240,7 @@
               </div>
               <div class="Col col-small-space">
                 <div *ngIf="i!=0">
-                  <button
-                    mat-button
-                    class="button-remove"
-                    (click)="removeFormDG(i)"
-                  >
+                  <button mat-button class="button-remove" (click)="removeFormDG(i)">
                     <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>
@@ -296,17 +248,11 @@
             </div>
           </div>
           <!--Actions-->
-          <button
-            mat-button
-            (click)="addFormDG()"
-          >
+          <button mat-button (click)="addFormDG()">
             <mat-icon>add_circle</mat-icon>
           </button>
 
-          <button
-            mat-button
-            (click)="onSaveDG()"
-          >
+          <button mat-button (click)="onSaveDG()">
             <mat-icon>save</mat-icon>
           </button>
         </mat-expansion-panel>
@@ -323,11 +269,7 @@
 
 <!--Section continue-->
 <div class="section-continue">
-  <button
-    mat-button
-    class="yellow-button"
-    (click)="saveStepTwo()"
-  >
-    Editar
+  <button mat-button class="yellow-button" (click)="saveStepTwo()">
+    Guardar datos
   </button>
 </div>

@@ -108,7 +108,11 @@ export class ConstructionStageUpdateComponent implements OnInit {
     let getDataEC = [];
     let getDataAC = [];
     let getDataDG = [];
+    //console.log('valor de CSE--------');
+    //console.log(this.CSE);
     this.CSE.map((item, key) => {
+      // console.log('entra a CSE**********');
+      // console.log(item);
       const prevData = [];
       if (item.section_id === this.indexSheet + 1) {
         switch (item.constructive_process_id) {
@@ -136,22 +140,48 @@ export class ConstructionStageUpdateComponent implements OnInit {
       }
     });
 
-    // take memory of saved data
+    console.log(
+      'DATOS DE INICIO EN LA MATRIZ-------------------------------------------'
+    );
+    console.log(getDataEC);
+    console.log(this.dataArrayEC);
+    console.log(this.EC);
     let i;
     for (i = 0; i <= this.sheetNames.length; i++) {
       // Initial data exist
       if (this.indexSheet === i) {
         this.dataArrayEC = getDataEC;
-        this.dataArrayAC = getDataAC;
-        this.dataArrayDG = getDataDG;
       }
+      /* console.log('BUCLE**************');
+      console.log(i);
+      console.log(getDataEC);
+      console.log(this.dataArrayEC);
+      console.log('FIN DEL BUCLE*****************************'); */
       // Flujo normal
       if (this.indexSheet === i && this.EC !== undefined) {
         this.dataArrayEC = this.EC[i];
       }
     }
 
+    console.log(
+      'DATOS FINALES EN LA MATRIZ-------------------------------------------'
+    );
+    console.log(getDataEC);
+    console.log(this.dataArrayEC);
+    console.log(this.EC);
+
+    //Excepciones de insert
     this.selectedSheet = selectedSheet;
+    if (this.dataArrayEC !== undefined) {
+      if (this.dataArrayEC.length === 0) {
+        this.addFormEC();
+      }
+    } else {
+      this.addFormEC();
+    }
+
+    //Load Save
+    this.onSaveEC();
   }
 
   addFormEC() {
