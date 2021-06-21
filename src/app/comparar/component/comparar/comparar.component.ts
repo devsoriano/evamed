@@ -69,6 +69,7 @@ export class CompararComponent implements OnInit {
   outproyect_bar = [];
   outproyect_radar=[];
   outproyect_pie = [];
+  outproyect_bar_elementos = [];
   indicador_impacto:string;
   hover:boolean=true;
   bandera_porcentaje: boolean = true;
@@ -276,6 +277,7 @@ export class CompararComponent implements OnInit {
     let analisis = this.getAnalisisBarras(id);
     let analisisRad = this.getAnalisisRadial(id);
     let analisisPie = this.getAnalisisPie(id);
+    let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -298,7 +300,11 @@ export class CompararComponent implements OnInit {
     }else{
       this.iniciaBarras();
     }
+    if(this.Impactos_Elementos){
+      this.iniciaBarrasSeccionDos();
+    }
     this.containerGraficas.clear();
+    this.receiveSelector(null);
     this.banderaGrapg == 0;
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
@@ -412,6 +418,7 @@ export class CompararComponent implements OnInit {
     })
     return analisisProyectos;
   }
+
 
   getAnalisisRadial(idProyecto){
     let analisisProyectos : Record<string,any> = {
@@ -561,36 +568,41 @@ export class CompararComponent implements OnInit {
       auxdata["ciclo de vida"]=ciclo;
       this.outproyect_bar.forEach((element)=>{
         Object.keys(element.Datos).forEach(impacto => {
-          if(!auximpactos.includes(impacto)){
-            auximpactos.push(impacto);
-            auxdata[impacto] = (element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          let auxNombreImpacto = impacto.replace(/\n/g,'');
+          if(!auximpactos.includes(auxNombreImpacto)){
+            auximpactos.push(auxNombreImpacto);
+            auxdata[auxNombreImpacto] = (element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }else{
             flagMasProyectos = true;
-            let last = auxdata[impacto].toString()
-            auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
-            auxdata[impacto] = auxdata[impacto].concat((element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            let last = auxdata[auxNombreImpacto].toString()
+            auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
+            auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat((element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
           }
         });
       })
       auximpactos =[];
-       if(ciclo === "FinDeVida" && flagMasProyectos == true){
-         let numProyecto = 0;
-          this.outproyect_bar.forEach((element)=>{ 
-            numProyecto = numProyecto+1;
-            Object.keys(element.Datos).forEach(impacto => {
-              if(!auximpactos.includes(impacto)){
-                auximpactos.push(impacto);
-                auxdata[impacto] = ((numProyecto).toString());
-              }else{
-                let last = auxdata[impacto].toString()
-                auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0');
-                auxdata[impacto] = auxdata[impacto].concat((numProyecto).toString());
-              }
-            });
-          });
-       }
       aux=[...aux, {data:auxdata,
-                    color: aux_color[index]}];
+        color: aux_color[index]}];
+      if(ciclo === "FinDeVida" && flagMasProyectos == true){
+        auxdata = {};
+        let numProyecto = 0;
+        this.outproyect_bar.forEach((element)=>{ 
+          numProyecto = numProyecto+1;
+          Object.keys(element.Datos).forEach(impacto => {
+          let auxNombreImpacto = impacto.replace(/\n/g,'');
+            if(!auximpactos.includes(auxNombreImpacto)){
+              auximpactos.push(auxNombreImpacto);
+              auxdata[auxNombreImpacto] = ((numProyecto).toString());
+            }else{
+              let last = auxdata[auxNombreImpacto].toString()
+              auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0');
+              auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat((numProyecto).toString());
+            }
+          });
+        });
+        aux=[...aux, {data:auxdata,
+                      color: aux_color[index+1]}];
+      }
     })
     this.DatosTabla = aux;
     this.resultdosTabla=true;
@@ -628,8 +640,11 @@ export class CompararComponent implements OnInit {
     this.ResetTabs($event);
   }
 
-  analisisSeccionDos(){
+  getAnalisisBarrasElementosConstructivos(idProyecto){
     //Calculos y obtención de datos para crear correctamente las gráficas de barras
+    console.log('IN BARRAS 2');
+
+    return 0;
   }
 
   //Se cargan los proyetcos existentes y se configura el menu
@@ -694,8 +709,16 @@ export class CompararComponent implements OnInit {
     } else {
       this.iniciaBarras();
     }
-    this.iniciaRadiales();
-    this.iniciaPie();
+    if(this.Impactos_ambientales){
+      this.containerGraficas.clear();
+      this.receiveSelector(null);
+      if (this.ID != ' ') {
+        document.getElementById(this.ID).className = 'boton-principal';
+      }
+    }
+    if(this.Impactos_Elementos){
+      this.iniciaBarrasSeccionDos();
+    }
   }
 
   //interacción con la gráfca de bar
