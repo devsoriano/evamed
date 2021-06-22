@@ -12,6 +12,7 @@ import { concat, forkJoin, observable } from 'rxjs';
 import { Router } from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Calculos } from '../../../calculos/calculos'
+import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { threadId } from 'node:worker_threads';
 
@@ -142,6 +143,7 @@ export class CompararComponent implements OnInit {
     private router: Router,
     private users: UserService,
     private calculos:Calculos,
+    private calculosSegunaSeccion:CalculosSegundaSeccion,
     private componentFactoryResolver: ComponentFactoryResolver
     ){
       this.users
@@ -295,6 +297,7 @@ export class CompararComponent implements OnInit {
     this.outproyect_bar.push(analisis);
     this.outproyect_radar.push(analisisRad);
     this.outproyect_pie.push(analisisPie);
+    this.outproyect_bar_elementos.push(analisisBarDos);
     if(this.resultdosTabla){
       this.TablaResultados();
     }else{
@@ -344,7 +347,7 @@ export class CompararComponent implements OnInit {
     this.containerBarGrafica.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartComponent);
     const grafica = this.containerBarGrafica.createComponent(componentFactory);
-    grafica.instance.inputProyects = this.proyect_active;
+    grafica.instance.inputProyects = this.outproyect_bar_elementos;
     grafica.instance.showMe = false;
     grafica.instance.Bandera_bar = this.bandera_graph_bar;
     grafica.instance.porcentaje=true;
@@ -367,6 +370,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.indicador = this.selector;
     grafica.instance.id = this.ID;
     grafica.instance.Bandera_resultado=2;
+    grafica.instance.unidades = this.potentialTypesList;
   }
 
   getAnalisisBarras(idProyecto){
@@ -600,8 +604,8 @@ export class CompararComponent implements OnInit {
             }
           });
         });
-        aux=[...aux, {data:auxdata,
-                      color: aux_color[index+1]}];
+        aux=[{data:auxdata,
+                      color: aux_color[index+1]},...aux];
       }
     })
     this.DatosTabla = aux;
@@ -642,9 +646,34 @@ export class CompararComponent implements OnInit {
 
   getAnalisisBarrasElementosConstructivos(idProyecto){
     //Calculos y obtención de datos para crear correctamente las gráficas de barras
-    console.log('IN BARRAS 2');
+    let analisisProyectos : Record<string,any> = {
+      Nombre: this.calculos.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
 
-    return 0;
+    let DatosCalculos = { 
+      'TEList':this.TEList,
+      'projectsList':this.projectsList,
+      'materialList':this.materialList,
+      'materialSchemeDataList':this.materialSchemeDataList,
+      'materialSchemeProyectList':this.materialSchemeProyectList,
+      'potentialTypesList':this.potentialTypesList,
+      'standarsList':this.standarsList,
+      'CSEList':this.CSEList,
+      'SIDList':this.SIDList,
+      'SIList':this.SIList,
+      'ACRList':this.ACRList,
+      'ECDList':this.ECDList,
+      'TEDList':this.TEDList,
+      'ULList':this.ULList,
+      'ECDPList':this.ECDPList,
+      'sectionList':this.sectionList
+    };
+
+    let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivo(idProyecto,DatosCalculos);
+    analisisProyectos['Datos']= auxDatos;
+    return analisisProyectos;
   }
 
   //Se cargan los proyetcos existentes y se configura el menu
@@ -703,6 +732,7 @@ export class CompararComponent implements OnInit {
     this.outproyect_bar = this.outproyect_bar.filter(({id}) => id != ID);
     this.outproyect_radar = this.outproyect_radar.filter(({ id }) => id != ID);
     this.outproyect_pie = this.outproyect_pie.filter(({ id }) => id != ID);
+    this.outproyect_bar_elementos = this.outproyect_bar_elementos.filter(({ id }) => id != ID);
 
     if (this.resultdosTabla) {
       this.TablaResultados();

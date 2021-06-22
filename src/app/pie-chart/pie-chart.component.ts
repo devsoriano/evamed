@@ -21,6 +21,7 @@ export class PieChartComponent implements OnInit {
   @Input() proyecto:number;
   @Input() showMe_elementos:boolean;
   @Input() bandera_click:number;
+  @Input() unidades:any;
   @Output() ClickEvent = new EventEmitter<any>();
 
   subetapas_list: any = subetapasInfo;
@@ -123,6 +124,19 @@ export class PieChartComponent implements OnInit {
     return aux[0].nombre_subeatapa;
   }
 
+  findUnidad(){
+    let final_unit;
+    let impacto = this.indicador.replace(/\n/g,'');
+    impacto = impacto.replace(/\s/g, '')
+    this.unidades.forEach(element => {
+      let aux_element = element['name_complete_potential_type'].replace(/\s/g, '')
+      if(impacto === aux_element){
+        final_unit=element['unit_potential_type'];
+      }
+    });
+    return final_unit
+  }
+
   cargarDatos(ID:string, indicador:string){
     let auxdata: ChartDataSets[];
     let color: any[]
@@ -168,7 +182,8 @@ export class PieChartComponent implements OnInit {
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
                 let abreviacion = marcador.concat(" - ");
                 let auxnamelabel = abreviacion.concat(this.findSubetapa(marcador)).concat(" : ");
-                auxdataLabel = [...auxdataLabel, auxnamelabel.concat((auxdatos[marcador]).toFixed(2).toString())];
+                auxnamelabel = auxnamelabel.concat((auxdatos[marcador]).toFixed(2).toString());
+                auxdataLabel = [...auxdataLabel, auxnamelabel.concat(this.findUnidad())];
                 datos = [...datos, ((auxdatos[marcador] / auxSuma)*100).toFixed(2).toString()];
               });
             }

@@ -144,7 +144,13 @@ export class BarChartComponent implements OnInit {
     // se obtienen todos los indicadores en los proyectos
     this.barChartLabels = [];
     if(this.Bandera_bar){
-      this.barChartLabels = ['Imapacto', 'Imapacto 1', 'Imapacto 2', 'Imapacto 3', 'Imapacto 4', 'Imapacto 5', 'Imapacto 6', 'Imapacto 7'];
+      this.inputProyects.forEach(proyecto => {
+        Object.keys(proyecto.Datos).forEach(indicador => {
+          if (!this.barChartLabels.includes(indicador)){
+            this.barChartLabels = [...this.barChartLabels, indicador];
+          }
+        });
+      });
     }else{
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
@@ -165,17 +171,36 @@ export class BarChartComponent implements OnInit {
     this.barChartData=[];
     if(this.Bandera_bar){
       this.inputProyects.forEach(proyecto => {
-        const auxData = { n1: 8.33, n2: 8.33, n3: 8.33, n4: 8.33, n5: 8.33, n6: 8.33, n7: 8.33, n8: 8.33, n9: 8.33, n10: 8.33, n11: 8.33, n12: 8.37 };
-        const auxDatos = { n1: [], n2: [], n3: [], n4: [], n5: [], n6: [], n7: [], n8: [], n9: [], n10: [], n11: [], n12: [] };
+        const auxData = {};
+        const auxDatos = {};
 
         this.barChartLabels.forEach(indicador => {
+          let suma = 0;
+          //creaición de los espacios para guardar los valores por niveles
+          Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
+            let helpn='n'.concat(index.toString());
+            auxDatos[helpn] = []
+            suma = suma + proyecto.Datos[indicador.toString()][element]
+          });
+          //acomodar conforme porcentajes y en orden para niveles
+          Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
+            let helpn='n'.concat(index.toString());
+            auxData[helpn] = (proyecto.Datos[indicador.toString()][element] * 100 / suma).toFixed(2);
+          });
+          
           Object.keys(auxDatos).forEach(etapa => {
-              auxDatos[etapa] = [...auxDatos[etapa],
-                auxData[etapa].toFixed(2)
-              ];
+            //Aquí se iran llenado los niveles dependiendo de los valores asignados para que esten colocados correctamente
+            //dependiendo de su color
+            Object.keys(auxData).forEach(element => {
+              if(element === etapa){
+                console.log(element, etapa);
+              }
+              auxDatos[etapa] = [...auxDatos[etapa],auxData[etapa]]
+            });
           });
         });
         Object.keys(auxDatos).forEach(etapa => {
+          console.log(auxDatos[etapa]);
           datos = [...datos,
           {
             data: auxDatos[etapa],

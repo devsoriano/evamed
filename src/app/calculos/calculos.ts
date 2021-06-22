@@ -83,7 +83,6 @@ export class Calculos {
       if (impacto_ban) {
         nameImpacto = impacto['name_complete_potential_type'];
         nameImpacto = this.ajustarNombre(nameImpacto);
-        //nameImpacto = nameImpacto.split(' ').join('\n');
         Datos[nameImpacto] = {};
         let resultado_impacto = 0;
         //Cálculos de la sección de producción
@@ -105,6 +104,7 @@ export class Calculos {
               if (materiales_subetapa.length > 0) {
                 banderaMaterialEP = false;
                 materiales_subetapa.forEach((material, index) => {
+                  //Aquí en teoría si es para los cálculos de la segunda sección si se hiran sumando en donde se guarden y no en la variable
                   resultado_impacto =
                     resultado_impacto +
                     materiales_subetapa[index]['value'] * ps['quantity'];
