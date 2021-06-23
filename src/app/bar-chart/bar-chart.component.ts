@@ -6,6 +6,7 @@ import { Label, BaseChartDirective } from 'ng2-charts';
 
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { runInThisContext } from 'vm';
+import { element } from 'protractor';
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
@@ -173,32 +174,49 @@ export class BarChartComponent implements OnInit {
       this.inputProyects.forEach(proyecto => {
         const auxData = {};
         const auxDatos = {};
+        this.barChartLabels.forEach(indicador => {
+          Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
+            let helpn='n'.concat(index.toString());
+            auxDatos[helpn] = []
+          });
+        });
 
         this.barChartLabels.forEach(indicador => {
           let suma = 0;
           //creaición de los espacios para guardar los valores por niveles
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
-            let helpn='n'.concat(index.toString());
-            auxDatos[helpn] = []
             suma = suma + proyecto.Datos[indicador.toString()][element]
           });
           //acomodar conforme porcentajes y en orden para niveles
+          let auxdatos =[]
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
-            let helpn='n'.concat(index.toString());
-            auxData[helpn] = (proyecto.Datos[indicador.toString()][element] * 100 / suma).toFixed(2);
-          });
-          
-          Object.keys(auxDatos).forEach(etapa => {
-            //Aquí se iran llenado los niveles dependiendo de los valores asignados para que esten colocados correctamente
-            //dependiendo de su color
-            Object.keys(auxData).forEach(element => {
-              if(element === etapa){
-                console.log(element, etapa);
+            let resultado_actual = (proyecto.Datos[indicador.toString()][element] * 100 / suma).toFixed(2);
+            let posicion = 0
+            auxdatos.forEach(nivel =>{
+              if(resultado_actual>nivel){
+                posicion = posicion+1;
               }
-              auxDatos[etapa] = [...auxDatos[etapa],auxData[etapa]]
-            });
+            })
+            if(posicion == 0){
+              auxdatos = [resultado_actual,...auxdatos];
+            }else{
+              auxdatos = [auxdatos.slice(0,posicion),resultado_actual,auxdatos.slice(posicion)];
+            }
+          });
+          auxdatos.forEach((element,index) => {
+            let helpn='n'.concat(index.toString());
+            auxData[helpn] = element;
+          })
+
+          Object.keys(auxDatos).forEach(element => {
+            Object.keys(auxData).forEach(valor =>{
+              if(element === valor){
+                auxDatos[element].push(auxData[valor])
+              }
+            })
           });
         });
+        console.log(auxDatos);
         Object.keys(auxDatos).forEach(etapa => {
           console.log(auxDatos[etapa]);
           datos = [...datos,
