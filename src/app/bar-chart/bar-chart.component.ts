@@ -7,6 +7,8 @@ import { Label, BaseChartDirective } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { runInThisContext } from 'vm';
 import { element } from 'protractor';
+import { convertToObject } from 'typescript';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
@@ -28,9 +30,11 @@ export class BarChartComponent implements OnInit {
   @Input() bandera_enfoqueColumna:boolean;
 
   private colores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89'};
-  private coloresBWGraph2 = { n1: 'rgb(90, 16, 2,0.5)', n2: 'rgb(144, 37, 17,0.5)', n3: 'rgb(190, 50, 24,0.5)', n4: 'rgb(235, 63, 32,0.5)', n5: 'rgb(235, 87, 32,0.5)', n6: 'rgb(235, 118, 32,0.5)', n7: 'rgb(235, 149, 32,0.5)', n8: 'rgb(235, 173, 32,0.5)', n9: 'rgb(235, 196, 32,0.5)', n10: 'rgb(235, 219, 32,0.5)', n11: 'rgb(204, 235, 32,0.5)', n12: 'rgb(118, 235, 32,0.5)' }
-  private coloresGraph2 = { n1: '#5A1002', n2: '#902511', n3: '#BE3218', n4: '#EB3F20', n5: '#EB5720', n6: '#EB7620', n7: '#EB9520', n8: '#EBAD20', n9: '#EBC420', n10: '#EBDB20', n11: '#CCEB20', n12: '#76EB20'}
+  private coloresBWGraph2Nuevo = ['rgb(90, 16, 2,0.5)','rgb(144, 37, 17,0.5)', 'rgb(190, 50, 24,0.5)', 'rgb(235, 63, 32,0.5)','rgb(235, 87, 32,0.5)','rgb(235, 118, 32,0.5)','rgb(235, 173, 32,0.5)','rgb(235, 196, 32,0.5)','rgb(235, 219, 32,0.5)','rgb(204, 235, 32,0.5)','rgb(118, 235, 32,0.5)']
+  private coloresGraph2Nuevo = ['#5A1002','#902511','#BE3218','#EB3F20','#EB5720','#EB7620', '#EB9520','#EBC420', '#EBDB20', '#CCEB20', '#76EB20'];
   private coloresBW = {Producción : '#B1B1B1', Construccion : '#6A6A6A', Uso : '#686868', FinDeVida : '#969696'};
+  private auxColor = [];
+  private auxColorBW = [];
 
   private lastClick='Ninguno';
   private hovered = null;
@@ -171,13 +175,19 @@ export class BarChartComponent implements OnInit {
     let datos = []
     this.barChartData=[];
     if(this.Bandera_bar){
+      let numElementos = 0;
       this.inputProyects.forEach(proyecto => {
         const auxData = {};
         const auxDatos = {};
+        let niveles_existentes =[]
         this.barChartLabels.forEach(indicador => {
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
             let helpn='n'.concat(index.toString());
             auxDatos[helpn] = []
+            if(!niveles_existentes.includes(helpn)){
+              numElementos = numElementos + 1;
+              niveles_existentes.push(helpn);
+            }
           });
         });
 
@@ -193,14 +203,14 @@ export class BarChartComponent implements OnInit {
             let resultado_actual = (proyecto.Datos[indicador.toString()][element] * 100 / suma).toFixed(2);
             let posicion = 0
             auxdatos.forEach(nivel =>{
-              if(resultado_actual>nivel){
+              if(resultado_actual<nivel){
                 posicion = posicion+1;
               }
             })
             if(posicion == 0){
               auxdatos = [resultado_actual,...auxdatos];
             }else{
-              auxdatos = [auxdatos.slice(0,posicion),resultado_actual,auxdatos.slice(posicion)];
+              auxdatos.splice(posicion,0,resultado_actual)
             }
           });
           auxdatos.forEach((element,index) => {
@@ -216,16 +226,48 @@ export class BarChartComponent implements OnInit {
             })
           });
         });
-        console.log(auxDatos);
-        Object.keys(auxDatos).forEach(etapa => {
-          console.log(auxDatos[etapa]);
+
+        if((numElementos % 2) == 1){
+          if(numElementos ==1){
+            this.auxColor.push(this.coloresGraph2Nuevo[10]);
+            this.auxColorBW.push(this.coloresBWGraph2Nuevo[10]);
+          }else{
+            let numerocolores=((numElementos-1)/2);
+            for(let i=0;i<(numerocolores);i++){
+              this.auxColor.push(this.coloresGraph2Nuevo[i]);
+              this.auxColorBW.push(this.coloresBWGraph2Nuevo[i]);
+            }
+            this.auxColor.push(this.coloresGraph2Nuevo[5]);
+            this.auxColorBW.push(this.coloresBWGraph2Nuevo[5]);
+            let auxreverse = this.coloresGraph2Nuevo.reverse();
+            let auxreverseBW = this.coloresBWGraph2Nuevo.reverse();
+            for(let i=0;i<(numerocolores);i++){
+              this.auxColor.push(auxreverse[i]);
+              this.auxColorBW.push(auxreverseBW[i]);
+            }
+          }
+        }else{
+          let numerocolores=((numElementos)/2);
+          for(let i=0;i<(numerocolores);i++){
+            this.auxColor.push(this.coloresGraph2Nuevo[i]);
+            this.auxColorBW.push(this.coloresBWGraph2Nuevo[i]);
+          }
+          let auxreverse = this.coloresGraph2Nuevo.reverse();
+          let auxreverseBW = this.coloresBWGraph2Nuevo.reverse();
+          for(let i=0;i<(numerocolores);i++){
+            this.auxColor.push(auxreverse[i]);
+            this.auxColorBW.push(auxreverseBW[i]);
+          }
+        }
+
+        Object.keys(auxDatos).forEach((etapa,index) => {
           datos = [...datos,
           {
             data: auxDatos[etapa],
             label: etapa,
             stack: proyecto,
-            backgroundColor: this.coloresGraph2[etapa],
-            hoverBackgroundColor: this.coloresGraph2[etapa]
+            backgroundColor: this.auxColor[index],
+            hoverBackgroundColor: this.auxColor[index]
           }];
         });
       });
@@ -367,8 +409,8 @@ export class BarChartComponent implements OnInit {
         this.barChartData.forEach((datos, index) => {
           let color = new Array(datos.data.length);
 
-          color.fill(this.coloresBWGraph2[datos.label]);
-          color[seleccion.index] = this.coloresGraph2[datos.label];
+          color.fill(this.auxColorBW[index]);
+          color[seleccion.index] = this.auxColor[index];
 
           this.barChartData[index].backgroundColor = color;
           this.barChartData[index].hoverBackgroundColor = color;
@@ -388,7 +430,11 @@ export class BarChartComponent implements OnInit {
       this.lastClick = seleccion.label;
       this.showMe=false;
     } else {
-      this.showMe=true;
+      if(this.Bandera_bar){
+
+      }else{
+        this.showMe=true;
+      }
       this.resetColores();
       this.lastClick = null;
     }
@@ -438,7 +484,7 @@ export class BarChartComponent implements OnInit {
     // Pone todas las series en color normal
     if(this.Bandera_bar){
       this.barChartData.forEach((data, index) => {
-        const color = this.coloresGraph2[data.label];
+        const color = this.auxColor[index];
         this.barChartData[index].backgroundColor = color;
         this.barChartData[index].hoverBackgroundColor = color;
       });
@@ -460,9 +506,9 @@ export class BarChartComponent implements OnInit {
 
       if(this.Bandera_bar){
         if (datos.label !== serie) {
-          color = this.coloresBWGraph2[datos.label];
+          color = this.auxColorBW[index];
         } else {
-          color = this.coloresGraph2[datos.label];
+          color = this.coloresGraph2Nuevo[datos.label];
         }
       }else{
         //console.log(this.banera_enfoqueSerie_externo,serie);
