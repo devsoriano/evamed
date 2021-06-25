@@ -290,23 +290,46 @@ p.text-duplicados {
 
   .botones-elementos-contructivos {
     display: inline-block;
-    button {
+    .espacio-sin-selecciomar{
       padding-top: 4px;
       width: 144px;
       height: 34px;
-      background: #efefef;
-      text-align: left;
+      background: #EFEFEF;
       border-radius: 4px;
       font-size: 15px;
-      letter-spacing: 0px;
-      color: #767676;
+      display: flex;
+      align-items: center;
       margin: 5px;
       border: 0;
+    }
+    .button-elemento-seleccionado {
+      padding-top: 4px;
+      width: 130px;
+      height: 34px;
+      color: #767676;
+      background: none;
+      text-align: left;
+      font-size: 13px;
+      margin: 5px;
+      border: 0;
+    }
+    .button-icono{
+      width: 34px;
+      height: 34px;
+      background: none;
+      text-align: left;
+      border-radius: 50%;
+      padding: 0px;
+      border: none;
     }
     mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
       color: #aca8a8;
       padding: 0px;
-      font-size: 15px;
+      border-radius: 50%;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

@@ -142,8 +142,13 @@
               Elementos constructivos
             </p>
             <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
-              <button (click)="graficabar(item.Nombre,item.nivel)">
-                <mat-icon>visibility_off</mat-icon>{{item.Nombre}}</button>
+              <div class="espacio-sin-selecciomar">
+                <button class="button-icono" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="AjusteGraficaElementosContructivos(item.id)">
+                  <mat-icon>{{iconosElementosConstrucivos[item.id]['icono']}}</mat-icon>
+                </button>
+                <button class="button-elemento-seleccionado" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="graficabar(item.id)"> 
+                  {{item.name_section}}</button>
+              </div>
             </div>
           </div>
           <div class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
