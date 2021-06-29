@@ -48,6 +48,7 @@ export class MaterialsStageComponent implements OnInit {
   sectionDynamo: boolean;
   selectedMaterial: boolean;
   showSearch: boolean;
+  showMaterial: boolean;
   dataMaterialSelected: any;
   materialsList: any;
   catalogoPaises: any;
@@ -62,6 +63,7 @@ export class MaterialsStageComponent implements OnInit {
   newConstructiveElement: string;
   newConstructiveSystem: string;
   SCseleccionado: string = '';
+  materialData: any;
 
   myControl = new FormControl();
   options: Material[];
@@ -102,6 +104,7 @@ export class MaterialsStageComponent implements OnInit {
 
     this.selectedMaterial = false;
     this.showSearch = false;
+    this.showMaterial = false;
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
     this.ciudadOrigenSeleccionada = PDP.city_id_origin;
@@ -589,6 +592,7 @@ export class MaterialsStageComponent implements OnInit {
     event.stopPropagation();
     this.selectedMaterial = false;
     this.showSearch = false;
+    this.showMaterial = false;
     const materiales = [];
     let counterRevit = 1;
     let countDynamo = 1;
@@ -643,6 +647,18 @@ export class MaterialsStageComponent implements OnInit {
     this.listMateriales = materiales;
   }
 
+  showDetailMaterial(event, material) {
+    event.stopPropagation();
+    console.log(material);
+    this.showMaterial = true;
+    this.dataMaterialSelected.name = material.name_material;
+    this.dataMaterialSelected.description =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.dataMaterialSelected.registrationNumber = 'S-P-01927';
+    this.dataMaterialSelected.publicationDate = '202-04-01';
+    this.dataMaterialSelected.utilLife = '2025-04-01';
+  }
+
   removeMaterial(event, sc, origin) {
     event.stopPropagation();
     console.log('entra a remove materials');
@@ -660,6 +676,7 @@ export class MaterialsStageComponent implements OnInit {
   onReturnListMaterials() {
     this.selectedMaterial = false;
     this.showSearch = false;
+    this.showMaterial = false;
   }
 
   goToMaterialStage() {
@@ -681,6 +698,7 @@ export class MaterialsStageComponent implements OnInit {
   goToSearchInfo() {
     this.showSearch = true;
     this.selectedMaterial = false;
+    this.showMaterial = false;
   }
 
   addConstructiveElementsDialog() {

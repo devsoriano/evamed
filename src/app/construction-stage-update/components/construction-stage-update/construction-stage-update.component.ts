@@ -4,6 +4,7 @@ import { MatListOption } from '@angular/material/list';
 import { MatAccordion } from '@angular/material/expansion';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
+import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 
 @Component({
   selector: 'app-construction-stage-update',
@@ -34,6 +35,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
 
   constructor(
     private catalogsService: CatalogsService,
+    private projectsService: ProjectsService,
     private constructionStageService: ConstructionStageService,
     private router: Router
   ) {
@@ -75,11 +77,14 @@ export class ConstructionStageUpdateComponent implements OnInit {
         });
         this.CSE = CSE;
       });
+    this.projectsService
+      .getProjectById(localStorage.getItem('idProyectoConstrucción'))
+      .subscribe((data: any) => {
+        this.nameProject = data.name_project;
+      });
   }
 
   ngOnInit() {
-    this.nameProject = 'Genérico';
-
     this.sheetNames = [
       'Cimentación',
       'Muros interiores',
@@ -106,13 +111,8 @@ export class ConstructionStageUpdateComponent implements OnInit {
 
     // map data exist to edit
     let getDataEC = [];
-    let getDataAC = [];
-    let getDataDG = [];
-    //console.log('valor de CSE--------');
-    //console.log(this.CSE);
+
     this.CSE.map((item, key) => {
-      // console.log('entra a CSE**********');
-      // console.log(item);
       const prevData = [];
       if (item.section_id === this.indexSheet + 1) {
         switch (item.constructive_process_id) {
@@ -122,53 +122,26 @@ export class ConstructionStageUpdateComponent implements OnInit {
             prevData['energy_unit_id'] = item.energy_unit_id;
             getDataEC.push(prevData);
             break;
-          case 2:
-            prevData['cantidad'] = item.quantity;
-            prevData['fuente'] = item.source_information_id;
-            prevData['energy_unit_id'] = item.energy_unit_id;
-            getDataAC.push(prevData);
-            break;
-          case 3:
-            prevData['cantidad'] = item.quantity;
-            prevData['fuente'] = item.source_information_id;
-            prevData['energy_unit_id'] = item.energy_unit_id;
-            getDataDG.push(prevData);
-            break;
           default:
             break;
         }
       }
     });
 
-    console.log(
-      'DATOS DE INICIO EN LA MATRIZ-------------------------------------------'
-    );
-    console.log(getDataEC);
-    console.log(this.dataArrayEC);
-    console.log(this.EC);
     let i;
     for (i = 0; i <= this.sheetNames.length; i++) {
-      // Initial data exist
       if (this.indexSheet === i) {
         this.dataArrayEC = getDataEC;
-      }
-      /* console.log('BUCLE**************');
-      console.log(i);
-      console.log(getDataEC);
-      console.log(this.dataArrayEC);
-      console.log('FIN DEL BUCLE*****************************'); */
-      // Flujo normal
-      if (this.indexSheet === i && this.EC !== undefined) {
-        this.dataArrayEC = this.EC[i];
+
+        if (this.EC !== undefined) {
+          this.dataArrayEC = this.EC[i];
+        }
+
+        if (this.dataArrayEC === undefined) {
+          this.dataArrayEC = getDataEC;
+        }
       }
     }
-
-    console.log(
-      'DATOS FINALES EN LA MATRIZ-------------------------------------------'
-    );
-    console.log(getDataEC);
-    console.log(this.dataArrayEC);
-    console.log(this.EC);
 
     //Excepciones de insert
     this.selectedSheet = selectedSheet;
@@ -257,33 +230,53 @@ export class ConstructionStageUpdateComponent implements OnInit {
 
   saveStepTwo() {
     console.log('update steep two');
-
-    try {
-      Object.entries(this.EC).forEach(([key, ec]) => {
-        let ecAny: any;
-        ecAny = ec;
-        ecAny.map((data) => {
-          this.constructionStageService
-            .addConstructiveSistemElement({
-              quantity: data.cantidad,
-              project_id: localStorage.getItem('idProyectoConstrucción'),
-              section_id: parseInt(key, 10) + 1,
-              constructive_process_id: 1,
-              volume_unit_id: null,
-              energy_unit_id: data.energy_unit_id,
-              bulk_unit_id: null,
-              source_information_id: data.fuente,
-            })
-            .subscribe((data) => {
-              console.log('Success EC!!!!!!!');
+    this.constructionStageService
+      .getConstructiveSystemElement()
+      .subscribe((CSE) => {
+        CSE.map((item) => {
+          if (
+            item.project_id ===
+            parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
+          ) {
+            this.constructionStageService
+              .deleteConstructiveSystemElement(item.id)
+              .subscribe(() => {
+                console.log('Eliminar CSE pasados!!!!!!');
+              });
+          }
+        }).then(
+          Object.entries(this.EC).forEach(([key, ec]) => {
+            let ecAny: any;
+            ecAny = ec;
+            ecAny.map((data) => {
+              console.log(key);
               console.log(data);
+              console.log(
+                parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
+              );
+              this.constructionStageService
+                .addConstructiveSistemElement({
+                  quantity: data.cantidad,
+                  project_id: parseInt(
+                    localStorage.getItem('idProyectoConstrucción'),
+                    10
+                  ),
+                  section_id: parseInt(key, 10) + 1,
+                  constructive_process_id: 1,
+                  volume_unit_id: null,
+                  energy_unit_id: data.energy_unit_id,
+                  bulk_unit_id: null,
+                  source_information_id: data.fuente,
+                })
+                .subscribe((data) => {
+                  console.log('Success EC!!!!!!!');
+                  console.log(data);
+                });
             });
-        });
+          })
+          // this.router.navigateByUrl('usage-stage');
+        );
       });
-    } catch (error) {
-      console.log(error);
-    }
-    // this.router.navigateByUrl('usage-stage');
   }
 
   goToMaterialStage() {

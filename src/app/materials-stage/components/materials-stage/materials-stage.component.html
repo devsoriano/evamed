@@ -527,8 +527,21 @@
                 <mat-tab-group mat-align-tabs="start">
                   <mat-tab label="EPD's">EPD's</mat-tab>
                   <mat-tab label="Base de datos">
-                    <div *ngFor="let item of materialsList">
-                      {{item.name_material}}
+                    <div *ngIf="showMaterial===false">
+                      <div *ngFor="let item of materialsList" >
+                        <div (click)="showDetailMaterial($event, item)" class="item-material">
+                          {{item.name_material}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="material-target">
+                      <h2 class="title">{{dataMaterialSelected.name}}</h2>
+                      <p class="description">
+                        {{dataMaterialSelected.description}}
+                      </p>
+                      <div class="item">{{dataMaterialSelected.registrationNumber}}</div>
+                      <div class="item">{{dataMaterialSelected.publicationDate}}</div>
+                      <div class="item">{{dataMaterialSelected.utilLife}}</div>
                     </div>
                   </mat-tab>
                 </mat-tab-group>
