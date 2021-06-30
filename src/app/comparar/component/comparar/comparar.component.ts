@@ -780,6 +780,7 @@ export class CompararComponent implements OnInit {
   //interacción con la gráfca de bar
   receiveSelector($event) {
     //cordinate with bar graph
+    let aux
     if (Array.isArray($event)){
       let sl
       $event.forEach((element,index) => {
@@ -789,22 +790,24 @@ export class CompararComponent implements OnInit {
           sl = sl.concat(' ',element)
         }
       });
-      this.selector = sl;
+      aux = sl;
     }else{
-      this.selector = $event;
+      aux = $event;
     }
 
     if(this.bandera_graph_bar){
-      console.log($event)
+      this.graficabar(aux);
     }else{
       this.showVar_1 = false;
       this.showVar = false;
+      this.selector = aux
   
       if ($event==null){
         this.bandera = 0;
         this.hover = true;
         if (this.ID != ' ') {
           document.getElementById(this.ID).className = 'boton-principal';
+          this.ID = ' ';
         }
       }else{
         this.bandera=1;
@@ -955,7 +958,32 @@ export class CompararComponent implements OnInit {
   }
 
   graficabar(item){
-    console.log(this.impacto_seleccionado);
+    if(Number.isInteger(item)){
+      console.log("Elemento seleccionado");
+    }else{
+      if(this.impactoSeleccionadoElementoConstructivo === ' '){
+        this.impactoSeleccionadoElementoConstructivo = item;
+        if(this.elementoContructivoSelecionado === ' '){
+          //Primer opción sin seleccionar ungun elemento constructivo se seleccionan todos los elementos;
+          Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+            if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+              document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-seleccionado';
+            }
+          })
+        }
+      }else{
+        if(item === null){
+          this.impactoSeleccionadoElementoConstructivo = ' ';
+          Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+            if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+              document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+            }
+          })
+        }else{
+          this.impactoSeleccionadoElementoConstructivo = item;
+        }
+      }
+    }
   }
 
   AjusteGraficaElementosContructivos(item){
