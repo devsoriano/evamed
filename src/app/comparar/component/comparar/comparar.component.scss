@@ -301,12 +301,33 @@ p.text-duplicados {
       align-items: center;
       margin: 5px;
       border: 0;
+      .color-texto{
+        color: #767676;
+      }
     }
+
+    .espacio-seleccionado{
+      padding-top: 4px;
+      width: 144px;
+      height: 34px;
+      background: #FFFFFF;
+      border-radius: 4px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      margin: 5px;
+      border: 1px solid #EDC903;
+      box-shadow: 0px 3px 6px #00000029;
+      .color-texto{
+        color: #343434;
+      }
+    }
+
     .button-elemento-seleccionado {
       padding-top: 4px;
       width: 130px;
       height: 34px;
-      color: #767676;
+      //color: #767676;
       background: none;
       text-align: left;
       font-size: 13px;
@@ -321,15 +342,33 @@ p.text-duplicados {
       border-radius: 50%;
       padding: 0px;
       border: none;
+      mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+        color: #aca8a8;
+        padding: 0px;
+        border-radius: 50%;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
-    mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
-      color: #aca8a8;
-      padding: 0px;
+    .button-icono-seleccionado{
+      width: 34px;
+      height: 34px;
+      background: none;
+      text-align: left;
       border-radius: 50%;
-      font-size: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 0px;
+      border: none;
+      mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+        color: #aca8a8;
+        padding: 0px;
+        border-radius: 50%;
+        font-size: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 }

@@ -128,6 +128,8 @@ export class CompararComponent implements OnInit {
   elementoContructivoSelecionado = ' ';
   iconosElementosConstrucivos = {};
   proyectosMostrados =[];
+  idsIconosElementos = {};
+  impactoSeleccionadoElementoConstructivo = ' ';
   iconos={'Producción': 'visibility', 'Construccion': 'visibility', 'Uso': 'visibility', 'FinDeVida': 'visibility'}
 
   // vars analisis
@@ -214,6 +216,7 @@ export class CompararComponent implements OnInit {
       this.ECDPList = ECDP;
       this.sectionList = sectionsList;
       this.botones_elementos_constructivos = sectionsList;
+      this.llenarIdsBotones(sectionsList);
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
       this.columnsToDisplay = this.calculos.ImpactosSeleccionados(this.potentialTypesList);
       this.menu_inicio();
@@ -351,6 +354,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.showMe = false;
     grafica.instance.Bandera_bar = this.bandera_graph_bar;
     grafica.instance.porcentaje=true;
+    grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
   }
 
   iniciaRadiales(){
@@ -672,7 +676,6 @@ export class CompararComponent implements OnInit {
     };
 
     let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivo(idProyecto,DatosCalculos);
-    console.log(Object.keys(this.iconosElementosConstrucivos).length)
     if(Object.keys(this.iconosElementosConstrucivos).length == 0){
       this.sectionList.forEach(element =>{
         //Aqui falta de que en caso de que se otro proyecto y tenga más o menos elementos que no cause problemas y se activen o desactiven bien los botones
@@ -777,8 +780,6 @@ export class CompararComponent implements OnInit {
   //interacción con la gráfca de bar
   receiveSelector($event) {
     //cordinate with bar graph
-    this.showVar_1 = false;
-    this.showVar = false;
     if (Array.isArray($event)){
       let sl
       $event.forEach((element,index) => {
@@ -793,21 +794,28 @@ export class CompararComponent implements OnInit {
       this.selector = $event;
     }
 
-    if ($event==null){
-      this.bandera = 0;
-      this.hover = true;
-      if (this.ID != ' ') {
-        document.getElementById(this.ID).className = 'boton-principal';
-      }
+    if(this.bandera_graph_bar){
+      console.log($event)
     }else{
-      this.bandera=1;
-      this.hover = false;
-      if (this.ID != ' ') {
-        document.getElementById(this.ID).className = 'boton-principal';
+      this.showVar_1 = false;
+      this.showVar = false;
+  
+      if ($event==null){
+        this.bandera = 0;
+        this.hover = true;
+        if (this.ID != ' ') {
+          document.getElementById(this.ID).className = 'boton-principal';
+        }
+      }else{
+        this.bandera=1;
+        this.hover = false;
+        if (this.ID != ' ') {
+          document.getElementById(this.ID).className = 'boton-principal';
+        }
+        this.ID = ' ';
       }
-      this.ID = ' ';
+      this.containerGraficas.clear();
     }
-    this.containerGraficas.clear();
   }
 
   receiveSelect($event){
@@ -947,7 +955,7 @@ export class CompararComponent implements OnInit {
   }
 
   graficabar(item){
-    console.log("se selecciono un elemento con letra ");
+    console.log(this.impacto_seleccionado);
   }
 
   AjusteGraficaElementosContructivos(item){
@@ -955,13 +963,13 @@ export class CompararComponent implements OnInit {
       this.elementosContructivosEliminados.forEach((element,index) => {
         if(element == item.toString()){
           this.elementosContructivosEliminados.splice(index,1)
-          //document.getElementById(fase.concat("Ojo")).className = 'boton-icono';
+          document.getElementById("ojo".concat(item.toString())).className = 'button-icono';
           this.iconosElementosConstrucivos[item.toString()]['icono'] = 'visibility';
         }
       })
     }else{
       this.iconosElementosConstrucivos[item.toString()]['icono'] = 'visibility_off';
-      //document.getElementById(fase.concat("Ojo")).className = 'boton-ojito-select';
+      document.getElementById("ojo".concat(item.toString())).className = 'button-icono-seleccionado';
       this.elementosContructivosEliminados.push(item.toString());
     }
 
@@ -979,6 +987,14 @@ export class CompararComponent implements OnInit {
       })
     })
     this.iniciaBarrasSeccionDos();
+  }
+
+  llenarIdsBotones(elementos){
+    elementos.forEach(element => {
+      this.idsIconosElementos[element.id.toString()] = {};
+      this.idsIconosElementos[element.id.toString()]['idOJO']='ojo'.concat(element.id.toString());
+      this.idsIconosElementos[element.id.toString()]['idTEXTO']='texto'.concat(element.id.toString());
+    });
   }
 
 }
