@@ -959,17 +959,47 @@ export class CompararComponent implements OnInit {
 
   graficabar(item){
     if(Number.isInteger(item)){
-      console.log("Elemento seleccionado");
+      if(this.elementoContructivoSelecionado === ' '){
+        this.elementoContructivoSelecionado = item.toString();
+        if(this.impactoSeleccionadoElementoConstructivo === ' '){
+          //Opción sin seleccionar ningún impacto ambiental se selecciona un elemento;
+          document.getElementById("texto".concat(item.toString())).className = 'espacio-seleccionado';
+          //falta iluminar el elemento en todos los impactos ambientales
+        }else{
+          Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+            if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+              if(element === item.toString()){
+                document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-seleccionado';
+              }else{
+                document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+              }
+            }
+          })
+          //Actualizar grafa para que se ilumen el elemento solo del impacto seleccionado
+        }
+      }else{
+        if(item != this.elementoContructivoSelecionado){
+          document.getElementById("texto".concat(this.elementoContructivoSelecionado)).className = 'espacio-sin-selecciomar';
+          document.getElementById("texto".concat(item.toString())).className = 'espacio-seleccionado';
+          this.elementoContructivoSelecionado = item.toString();
+        }else{
+          document.getElementById("texto".concat(item.toString())).className = 'espacio-sin-selecciomar';
+          this.elementoContructivoSelecionado = ' ';
+        }
+      }
     }else{
       if(this.impactoSeleccionadoElementoConstructivo === ' '){
         this.impactoSeleccionadoElementoConstructivo = item;
         if(this.elementoContructivoSelecionado === ' '){
-          //Primer opción sin seleccionar ungun elemento constructivo se seleccionan todos los elementos;
+          //Opción sin seleccionar ningún elemento constructivo se seleccionan todos los elementos;
           Object.keys(this.iconosElementosConstrucivos).forEach(element => {
             if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
               document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-seleccionado';
             }
           })
+        }else{
+          //Opción elemento constructivo seleccionado;
+          //Actualizar grafa para que se ilumen el elemento solo del impacto seleccionado
         }
       }else{
         if(item === null){
@@ -979,6 +1009,7 @@ export class CompararComponent implements OnInit {
               document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
             }
           })
+          this.elementoContructivoSelecionado = ' ';
         }else{
           this.impactoSeleccionadoElementoConstructivo = item;
         }
