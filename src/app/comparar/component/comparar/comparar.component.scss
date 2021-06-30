@@ -375,19 +375,47 @@ p.text-duplicados {
 
 .img-edificio {
   display: inline-block;
-  margin-top: 93px;
+  margin-top: 40px;
   margin-left: 52px;
-  margin-bottom: 130px;
+  margin-bottom: 50px;
+  position: relative;
   img {
     margin: 0px;
     padding: 0px;
-    background: #ffffff;
-    //box-shadow: 0px 3px 6px #00000029;
-    border: 1px solid;
+    border: 0;
+    border-radius: 11px;
+    opacity: 0.5;
+    width: 295px;
+    height: 232px;
+  }
+  .cuadro-color{
+    margin: 0px;
+    padding: 0px;
+    background-color: black;
+    border: 0;
     border-radius: 11px;
     opacity: 1;
+    position:absolute;
   }
 }
+
+.img-edificio-seleccionado {
+  display: inline-block;
+  margin-top: 50px;
+  margin-left: 52px;
+  margin-bottom: 40px;
+  img {
+    margin: 0px;
+    padding: 0px;
+    border: 1px solid #EDC903;
+    border-radius: 11px;
+    opacity: 1;
+    box-shadow: 0px 3px 6px #00000029;
+    width: 295px;
+    height: 232px;
+  }
+}
+
 
 .last-div-section-two {
   display: inline-block;

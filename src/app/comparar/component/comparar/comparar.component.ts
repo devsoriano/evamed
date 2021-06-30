@@ -129,8 +129,10 @@ export class CompararComponent implements OnInit {
   iconosElementosConstrucivos = {};
   proyectosMostrados =[];
   idsIconosElementos = {};
+  imgSeleccionadaElemento = ' ';
   impactoSeleccionadoElementoConstructivo = ' ';
   iconos={'Producción': 'visibility', 'Construccion': 'visibility', 'Uso': 'visibility', 'FinDeVida': 'visibility'}
+  idsImgEdificios = []
 
   // vars analisis
   idProyectoActivo: number;
@@ -274,6 +276,7 @@ export class CompararComponent implements OnInit {
       return;
     }
     this.proyect_active.push(id);
+    this.idsImgEdificios.push(id.toString().concat('imagen'));
 
     if (this.ID != ' ') {
       document.getElementById(this.ID).className = 'boton-principal';
@@ -744,6 +747,7 @@ export class CompararComponent implements OnInit {
       }
     });   
     this.proyect_active = this.proyect_active.filter(item => item != ID);
+    this.idsImgEdificios = this.idsImgEdificios.filter(item => item.toString().concat('imagen') != ID);
     this.proyectosMostrados = this.proyectosMostrados.filter(({id}) => id != ID);
     let nump=1;
     this.proyect_active.forEach((element,index) =>{
@@ -939,8 +943,24 @@ export class CompararComponent implements OnInit {
     });
   }
 
-  DispercionAP(){
-    this.show_Dispercion=true;
+  DispercionAP(item){
+    if(this.impactoSeleccionadoElementoConstructivo != ' ' && this.elementoContructivoSelecionado != ' '){
+      if(this.imgSeleccionadaElemento === ' '){
+        this.show_Dispercion=true;
+        this.imgSeleccionadaElemento = item;
+        document.getElementById(item).className = 'img-edificio-seleccionado';
+      }else{
+        if(item != this.imgSeleccionadaElemento){
+          document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
+          document.getElementById(item).className = 'img-edificio-seleccionado';
+          this.imgSeleccionadaElemento = item.toString();
+        }else{
+          this.show_Dispercion=false;
+          document.getElementById(item).className = 'img-edificio';
+          this.imgSeleccionadaElemento = ' ';
+        }
+      }
+    }
   }
 
   //configuración de la sección dispersión del impacto en cimentación
@@ -985,31 +1005,42 @@ export class CompararComponent implements OnInit {
         }else{
           document.getElementById("texto".concat(item.toString())).className = 'espacio-sin-selecciomar';
           this.elementoContructivoSelecionado = ' ';
+          if(this.imgSeleccionadaElemento != ' '){
+            document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
+            this.imgSeleccionadaElemento = ' ';
+            this.show_Dispercion=false;
+          }
         }
       }
     }else{
-      if(this.impactoSeleccionadoElementoConstructivo === ' '){
-        this.impactoSeleccionadoElementoConstructivo = item;
-        if(this.elementoContructivoSelecionado === ' '){
-          //Opción sin seleccionar ningún elemento constructivo se seleccionan todos los elementos;
-          Object.keys(this.iconosElementosConstrucivos).forEach(element => {
-            if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
-              document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-seleccionado';
-            }
-          })
-        }else{
-          //Opción elemento constructivo seleccionado;
-          //Actualizar grafa para que se ilumen el elemento solo del impacto seleccionado
+      if(item === null){
+        this.impactoSeleccionadoElementoConstructivo = ' ';
+        Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+          if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+            document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+          }
+        })
+        this.elementoContructivoSelecionado = ' ';
+        if(this.imgSeleccionadaElemento != ' '){
+          document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
+          this.imgSeleccionadaElemento = ' ';
+          this.show_Dispercion=false;
         }
       }else{
-        if(item === null){
-          this.impactoSeleccionadoElementoConstructivo = ' ';
-          Object.keys(this.iconosElementosConstrucivos).forEach(element => {
-            if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
-              document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
-            }
-          })
-          this.elementoContructivoSelecionado = ' ';
+        //this.impactoSeleccionadoElementoConstructivo = item;
+        if(this.impactoSeleccionadoElementoConstructivo === ' '){
+          this.impactoSeleccionadoElementoConstructivo = item;
+          if(this.elementoContructivoSelecionado === ' '){
+            //Opción sin seleccionar ningún elemento constructivo se seleccionan todos los elementos;
+            Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+              if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+                document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-seleccionado';
+              }
+            })
+          }else{
+            //Opción elemento constructivo seleccionado;
+            //Actualizar grafa para que se ilumen el elemento solo del impacto seleccionado
+          }
         }else{
           this.impactoSeleccionadoElementoConstructivo = item;
         }

@@ -151,8 +151,8 @@
               </div>
             </div>
           </div>
-          <div class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
-            <a (click)="DispercionAP()">
+          <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
+            <a (click)="DispercionAP(idsImgEdificios[i])">
               <p>{{item.Nombre}}</p>
               <p>Visuaización de GWP por sistema constructivo</p>
               <img src="../../../../assets/images/8.png">
