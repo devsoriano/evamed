@@ -152,7 +152,7 @@
             </div>
           </div>
           <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
-            <a (click)="DispercionAP(idsImgEdificios[i])">
+            <a (click)="DispercionAP(idsImgEdificios[i],item.id)">
               <p>{{item.Nombre}}</p>
               <p>Visuaización de GWP por sistema constructivo</p>
               <img src="../../../../assets/images/8.png">
@@ -163,8 +163,45 @@
               <div>
                 <p>Disperción AP por materiales de Cimentación </p>
               </div>
-              <div>
-                <p>Materiales</p>
+              <div class="seccion">
+                <div>
+                  <div class="button-graph">
+                    <mat-button-toggle-group>
+                         <mat-button-toggle (click)="cambioDeTipoGraficaDispercion(true)"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
+                         <mat-button-toggle (click)="cambioDeTipoGraficaDispercion(false)"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+                       </mat-button-toggle-group>
+                    <button>Exportar</button>
+                  </div>
+                  <ng-template #GraficasEspecificasDos>
+                  </ng-template>
+                </div>
+                <div>
+                  <p>Materiales</p>
+                  <table mat-table [dataSource]="infoTablaDispercion">
+                    <ng-container matColumnDef="no">
+                      <th mat-header-cell *matHeaderCellDef> No. </th>
+                      <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="material">
+                      <th mat-header-cell *matHeaderCellDef> Material </th>
+                      <td mat-cell *matCellDef="let element"> {{element.material}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="porcentaje">
+                      <th mat-header-cell *matHeaderCellDef> % </th>
+                      <td mat-cell *matCellDef="let element"> {{element.porcentaje}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="numero">
+                      <th mat-header-cell *matHeaderCellDef> # </th>
+                      <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsDispercion"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsDispercion;"></tr>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

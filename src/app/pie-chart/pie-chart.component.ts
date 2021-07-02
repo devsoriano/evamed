@@ -68,7 +68,7 @@ export class PieChartComponent implements OnInit {
         color:'#FFFFFF',
         font: {
           size: 7,
-        }
+        },
       }
     }
   }
@@ -151,19 +151,38 @@ export class PieChartComponent implements OnInit {
     // console.log(this.Bandera_resultado,indicador)
     if (this.Bandera_resultado == 1){
       this.pieChartData =[];
-      this.inputProyect.forEach(element => {
-        if(element.id==this.proyecto){
-          auxlabel.forEach(label=>{
-            auxdatos = [...auxdatos, (element.Datos[indicador][label])]
-          });
-          color=this.colores[4];
-          auxdata = [{
-            data: auxdatos,
-            backgroundColor: color
-          }];
-          this.pieChartData = [...this.pieChartData, auxdata];
+      let auxColor=['#EB3F20','#F45538','#F7755D','#F88A76'];
+      let suma=0;
+      Object.keys(this.inputProyect).forEach((element,index) => {
+        let resultado_actual = this.inputProyect[element];
+        suma=suma+resultado_actual;
+        let posicion = 0
+        auxdatos.forEach(nivel =>{
+          if(resultado_actual<nivel){
+            posicion = posicion+1;
+          }
+        })
+        if(posicion == 0){
+          auxdatos = [resultado_actual,...auxdatos];
+        }else{
+          auxdatos.splice(posicion,0,resultado_actual)
         }
       });
+      let sumaOtros = 0;
+      auxdatos.forEach((element, index) =>{
+        if(index <= 2){
+          aux.push(((element/suma)*100).toFixed(2))
+        }else{
+          sumaOtros = sumaOtros+element;
+        }
+      })
+      aux.push(((sumaOtros/suma)*100).toFixed(2));
+      auxdata = [{
+        data: aux,
+        backgroundColor: auxColor
+      }];
+      this.pieChartData = [...this.pieChartData, auxdata];
+      this.showMe_elementos = true;
     }else if(this.Bandera_resultado == 2){
       this.pieChartData = [];
       if(indicador===' '){

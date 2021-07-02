@@ -17,6 +17,8 @@ export class BarChartSimpleComponent implements OnInit {
   @Input() showlastGr:boolean;
   @Input() ciclo:string;
   @Input() elemento:string;
+  @Input() info:any;
+  @Input() banderaDispercion:boolean;
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -36,6 +38,7 @@ export class BarChartSimpleComponent implements OnInit {
   barChartLegend = true;
   barChartPlugins = [];
   showngraph = false;
+  ColorMomento = ['#EB3F20','#F45538','#F7755D','#F88A76'];
 
   etapa:string='';
 
@@ -56,7 +59,11 @@ export class BarChartSimpleComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.showlastGr){
-      this.CargarDatos(this.elemento,this.ciclo)
+      if(this.banderaDispercion){
+        this.CargarDatosDispercion();
+      }else{
+        this.CargarDatos(this.elemento,this.ciclo);
+      }
     }
   }
 
@@ -76,6 +83,46 @@ export class BarChartSimpleComponent implements OnInit {
       data: auxdatos,
       backgroundColor: color
     }]
+    this.barChartDataSecond = [...this.barChartDataSecond, auxdata];
+  }
+
+  CargarDatosDispercion(){
+    let suma=0;
+    let auxdatos = [];
+    let aux = [];
+    let auxdata = [];
+    this.barChartDataSecond = [];
+    this.barChartLabelsSecond = [];
+    Object.keys(this.info).forEach((element,index) => {
+      let resultado_actual = this.info[element];
+      suma=suma+resultado_actual;
+      let posicion = 0
+      auxdatos.forEach(nivel =>{
+        if(resultado_actual<nivel){
+          posicion = posicion+1;
+        }
+      })
+      if(posicion == 0){
+        auxdatos = [resultado_actual,...auxdatos];
+      }else{
+        auxdatos.splice(posicion,0,resultado_actual);
+      }
+    });
+    let sumaOtros = 0;
+    auxdatos.forEach((element, index) =>{
+      if(index <= 2){
+        aux.push(((element/suma)*100).toFixed(2))
+        this.barChartLabelsSecond=[...this.barChartLabelsSecond, (index+1).toString()];
+      }else{
+        sumaOtros = sumaOtros+element;
+      }
+    })
+    this.barChartLabelsSecond=[...this.barChartLabelsSecond, 'otros'];
+    aux.push(((sumaOtros/suma)*100).toFixed(2));
+    auxdata = [{
+      data: aux,
+      backgroundColor: this.ColorMomento
+    }];
     this.barChartDataSecond = [...this.barChartDataSecond, auxdata];
   }
 

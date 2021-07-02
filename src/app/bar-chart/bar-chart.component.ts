@@ -438,7 +438,12 @@ export class BarChartComponent implements OnInit {
       this.resetColores();
       this.lastClick = null;
     }
-    this.lastClickEvent.emit(this.lastClick);
+    if(this.Bandera_bar){
+      //aqui faltara uno que mande el color de los elementos constructivos
+      this.lastClickEvent.emit(this.lastClick);
+    }else{
+      this.lastClickEvent.emit(this.lastClick);
+    }
   }
 
   private getEtiquetaCercana(e: any) {

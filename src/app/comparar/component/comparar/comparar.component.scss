@@ -419,12 +419,72 @@ p.text-duplicados {
 
 .last-div-section-two {
   display: inline-block;
+  .button-graph{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    margin-left: 56px;
+    margin-right: 56px;
+
+    mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+      font-size: 20px;
+      height: 38px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2px;
+    }
+  }
+  .seccion{
+    display: flex;
+    > div {
+      &:nth-child(1) {
+        width: 450px;
+      }
+      &:nth-child(2) {
+        width: 478px;
+      }
+    }
+  }
+
+  .graficas-dispercion{
+    width: 300px;
+  }
+
   p {
     font-size: 15px;
     letter-spacing: 0px;
     color: #343434;
     opacity: 1;
   }
+
+  .mat-column-no {
+    width: 32px;
+    padding-right: 24px;
+    text-align: center;
+    color: #ACA8A8;
+  }
+
+  .mat-column-porcentaje {
+    width: 32px;
+    padding-right: 12px;
+    padding-left: 12px;
+    text-align: center;
+    color: #ACA8A8;
+  }
+
+  .mat-column-numero {
+    width: 36px;
+    padding-right: 6px;
+    padding-left: 6px;
+    text-align: center;
+    color: #ACA8A8;
+  }
+
+  .mat-column-material{
+    color: #ACA8A8;
+  }
+  
 }
 
 seccion-ciclo {

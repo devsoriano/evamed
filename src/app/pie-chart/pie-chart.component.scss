@@ -1,13 +1,8 @@
 .graficas-especificas {
   display: grid;
   font-size: 12px;
-  grid-template-columns: repeat(2, 386px);
-  column-gap: 20px;
-  row-gap: 10px;
+  grid-template-columns: repeat(1, 450px);
   height: auto;
-  mat-card{
-    display:block;
-  }
 }
 
 .mostrar-subetapas {

@@ -15,6 +15,7 @@ import { Calculos } from '../../../calculos/calculos'
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { threadId } from 'node:worker_threads';
+import { identifierModuleUrl } from '@angular/compiler';
 
 interface impactos_menu{
   value: string;
@@ -38,17 +39,20 @@ interface impactos_menu{
   entryComponents: [
     BarChartComponent,
     RadialChartComponent,
-    PieChartComponent
+    PieChartComponent,
+    BarChartSimpleComponent
   ]
 })
 export class CompararComponent implements OnInit {
   barChartComponent = BarChartComponent;
   radialChart = RadialChartComponent;
   pieChart = PieChartComponent;
+  barChartSimpleComponent = BarChartSimpleComponent;
 
   @ViewChild('barContainer', { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild('barGraphDos', { read: ViewContainerRef }) containerBarGrafica: ViewContainerRef;
   @ViewChild('GraficasEspecificas', {read: ViewContainerRef}) containerGraficas: ViewContainerRef;
+  @ViewChild('GraficasEspecificasDos', {read: ViewContainerRef}) containerGraficasDos: ViewContainerRef;
   @ViewChildren(BarChartComponent)
   childBar: QueryList<BarChartComponent>;
   @ViewChildren(PieChartComponent)
@@ -71,6 +75,7 @@ export class CompararComponent implements OnInit {
   outproyect_radar=[];
   outproyect_pie = [];
   outproyect_bar_elementos = [];
+  outproyect_pie_bar_elementos = [];
   indicador_impacto:string;
   hover:boolean=true;
   bandera_porcentaje: boolean = true;
@@ -132,7 +137,11 @@ export class CompararComponent implements OnInit {
   imgSeleccionadaElemento = ' ';
   impactoSeleccionadoElementoConstructivo = ' ';
   iconos={'Producción': 'visibility', 'Construccion': 'visibility', 'Uso': 'visibility', 'FinDeVida': 'visibility'}
-  idsImgEdificios = []
+  idsImgEdificios = [];
+  idProyectoSeleccionadoImagen = ' ';
+  banderaTipoGraficaDispercion = true;
+  infoTablaDispercion=[];
+  displayedColumnsDispercion: string[] = ['no', 'material', 'porcentaje', 'numero'];
 
   // vars analisis
   idProyectoActivo: number;
@@ -286,6 +295,7 @@ export class CompararComponent implements OnInit {
     let analisisRad = this.getAnalisisRadial(id);
     let analisisPie = this.getAnalisisPie(id);
     let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
+    let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -304,6 +314,7 @@ export class CompararComponent implements OnInit {
     this.outproyect_radar.push(analisisRad);
     this.outproyect_pie.push(analisisPie);
     this.outproyect_bar_elementos.push(analisisBarDos);
+    this.outproyect_pie_bar_elementos.push(analisisPieBarDos);
     if(this.resultdosTabla){
       this.TablaResultados();
     }else{
@@ -529,6 +540,21 @@ export class CompararComponent implements OnInit {
       })
     })
 
+    return analisisProyectos;
+  }
+
+  getAnalisisPieBarSegunaSeccion(idProyecto){
+    //Calculos y obtención de datos para crear correctamente las gráficas de barras
+    let analisisProyectos : Record<string,any> = {
+      Nombre: this.calculos.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
+    let auxDatos = this.materialSchemeProyectList.filter(
+      (msp) => msp['project_id'] == idProyecto
+    );
+    //aqui falta poner un filtro para poner solo los materiles que se estan usando 
+    analisisProyectos['Datos']= auxDatos;
     return analisisProyectos;
   }
 
@@ -778,6 +804,9 @@ export class CompararComponent implements OnInit {
     }
     if(this.Impactos_Elementos){
       this.iniciaBarrasSeccionDos();
+      if(this.imgSeleccionadaElemento!=' '){
+        this.DispercionAP(this.imgSeleccionadaElemento,' ');
+      }
     }
   }
 
@@ -943,24 +972,129 @@ export class CompararComponent implements OnInit {
     });
   }
 
-  DispercionAP(item){
-    if(this.impactoSeleccionadoElementoConstructivo != ' ' && this.elementoContructivoSelecionado != ' '){
-      if(this.imgSeleccionadaElemento === ' '){
-        this.show_Dispercion=true;
-        this.imgSeleccionadaElemento = item;
-        document.getElementById(item).className = 'img-edificio-seleccionado';
-      }else{
-        if(item != this.imgSeleccionadaElemento){
-          document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
+  DispercionAP(item,proyectoID){
+    let flagMostrarInfo = false;
+    if(item != null){
+      if(this.impactoSeleccionadoElementoConstructivo != ' ' && this.elementoContructivoSelecionado != ' '){
+        if(this.imgSeleccionadaElemento === ' '){
+          this.show_Dispercion=true;
+          this.imgSeleccionadaElemento = item;
+          this.idProyectoSeleccionadoImagen=proyectoID;
           document.getElementById(item).className = 'img-edificio-seleccionado';
-          this.imgSeleccionadaElemento = item.toString();
+          flagMostrarInfo = true;
         }else{
-          this.show_Dispercion=false;
-          document.getElementById(item).className = 'img-edificio';
-          this.imgSeleccionadaElemento = ' ';
+          if(item != this.imgSeleccionadaElemento){
+            document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
+            document.getElementById(item).className = 'img-edificio-seleccionado';
+            this.imgSeleccionadaElemento = item.toString();
+            this.idProyectoSeleccionadoImagen=proyectoID;
+            flagMostrarInfo = true;
+          }else{
+            this.show_Dispercion=false;
+            document.getElementById(item).className = 'img-edificio';
+            this.imgSeleccionadaElemento = ' ';
+            this.idProyectoSeleccionadoImagen=' ';
+            this.banderaTipoGraficaDispercion=true;
+          }
         }
       }
+    }else{
+      flagMostrarInfo = true;
     }
+    if(flagMostrarInfo){
+      this.iniciarTabaDispercion();
+      if(this.containerGraficasDos != undefined){
+        this.iniciarGraficaEspecificaDispercion();
+      }
+    }
+  }
+
+  iniciarTabaDispercion(){
+    this.infoTablaDispercion = [];
+    //'no', 'material', 'porcentaje', 'numero'
+    this.outproyect_pie_bar_elementos.forEach(element => {
+      if(element['id'] == this.idProyectoSeleccionadoImagen){
+        let suma = 0;
+        let auxdatos = [];
+        let auxlabel=[];
+        element['Datos'].forEach((material,index) => {
+          if(material['section_id'] == this.elementoContructivoSelecionado){
+            let resultado_actual = material['quantity'];
+            suma = suma + material['quantity'];
+            let posicion = 0;
+            auxdatos.forEach(nivel =>{
+              if(resultado_actual<nivel){
+                posicion = posicion+1;
+              }
+            })
+            if(posicion == 0){
+              auxlabel = [index,...auxlabel];
+              auxdatos = [resultado_actual,...auxdatos];
+            }else{
+              auxdatos.splice(posicion,0,resultado_actual);
+              auxlabel.splice(posicion,0,index);
+            }
+          }
+        });
+        let num=0;
+        let auxdata = [];
+        auxlabel.forEach((lugar,ii) => {
+          element['Datos'].forEach((material,index) => {
+            let aux = {};
+            if(material['section_id'] == this.elementoContructivoSelecionado){
+              if(lugar==index){
+                num=num+1;
+                aux['no'] = num;
+                aux['material'] = material['comercial_name'];
+                aux['porcentaje'] = ((material ['quantity'] / suma) * 100).toFixed(2);
+                aux['numero'] = material['quantity'];
+                this.infoTablaDispercion.push(aux);
+              }
+            }
+          });
+        });
+      }
+    })
+  }
+
+  iniciarGraficaEspecificaDispercion(){
+    //true = pie ; false = barras
+    let auxDatos
+    let aux={}
+    this.outproyect_pie_bar_elementos.forEach(element =>{
+      if(element['id'] == this.idProyectoSeleccionadoImagen){
+        auxDatos=element['Datos'];
+        auxDatos.forEach(material=>{
+          if(material['section_id'] == this.elementoContructivoSelecionado){
+            aux[material['comercial_name']]= material['quantity'];
+          }
+        })
+      }
+    })
+    if(this.banderaTipoGraficaDispercion){
+      this.containerGraficasDos.clear();
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.pieChart);
+      const grafica = this.containerGraficasDos.createComponent(componentFactory);
+      grafica.instance.inputProyect = aux;
+      grafica.instance.showMePartially = this.showVar;
+      grafica.instance.indicador = this.selector;
+      grafica.instance.id = this.ID;
+      grafica.instance.Bandera_resultado=1;
+      grafica.instance.unidades = this.potentialTypesList;
+    }else{
+      this.containerGraficasDos.clear();
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartSimpleComponent);
+      const grafica = this.containerGraficasDos.createComponent(componentFactory);
+      grafica.instance.banderaDispercion=true;
+      grafica.instance.info=aux;
+      grafica.instance.showGr = false;
+      grafica.instance.showlastGr = true;
+    }
+  }
+
+  cambioDeTipoGraficaDispercion(bandera){
+    this.banderaTipoGraficaDispercion = bandera;
+    this.DispercionAP(null,this.idProyectoSeleccionadoImagen);
   }
 
   //configuración de la sección dispersión del impacto en cimentación
@@ -1045,6 +1179,9 @@ export class CompararComponent implements OnInit {
           this.impactoSeleccionadoElementoConstructivo = item;
         }
       }
+    }
+    if(this.show_Dispercion){
+      this.DispercionAP(null,this.idProyectoSeleccionadoImagen);
     }
   }
 
