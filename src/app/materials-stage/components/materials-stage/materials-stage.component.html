@@ -525,7 +525,47 @@
             <div class="Row">
               <div class="Col">
                 <mat-tab-group mat-align-tabs="start">
-                  <mat-tab label="EPD's">EPD's</mat-tab>
+                  <mat-tab label="EPD's">
+                    <div *ngIf="showEPD===false">
+                      <div *ngFor="let item of EPDS" >
+                        <div (click)="showDetailEPD($event, item)" class="item-material">
+                          {{item.name_material}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="material-target" *ngIf="showEPD">
+                      <h2 class="title">{{dataMaterialSelected.name}}</h2>
+                      <p>
+                        <button
+                          mat-button
+                          class="yellow-button custom-continue"
+                          (click)="onSelectMaterial($event, dataMaterialSelected.name)"
+                        >
+                          Seleccionar
+                        </button>
+                      </p>
+
+                      <p class="description">
+                        {{dataMaterialSelected.description}}
+                      </p>
+                      <div *ngFor="let item of this.dataMaterialSelected.msd">
+                        <div>
+                          <span>
+                            {{item.potential_type_id}}
+                          </span>
+                          <span>
+                            {{item.standard_id}}
+                          </span>
+                          <span>
+                            {{item.value}}
+                          </span>
+                          <span>
+                            {{item.unit_id}}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
                   <mat-tab label="Base de datos">
                     <div *ngIf="showMaterial===false">
                       <div *ngFor="let item of materialsList" >
@@ -534,7 +574,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="material-target">
+                    <div class="material-target" *ngIf="showMaterial">
                       <h2 class="title">{{dataMaterialSelected.name}}</h2>
                       <p class="description">
                         {{dataMaterialSelected.description}}
