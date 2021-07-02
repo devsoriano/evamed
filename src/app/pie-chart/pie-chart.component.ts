@@ -22,6 +22,7 @@ export class PieChartComponent implements OnInit {
   @Input() showMe_elementos:boolean;
   @Input() bandera_click:number;
   @Input() unidades:any;
+  @Input() colorDispercion:string;
   @Output() ClickEvent = new EventEmitter<any>();
 
   subetapas_list: any = subetapasInfo;
@@ -151,7 +152,7 @@ export class PieChartComponent implements OnInit {
     // console.log(this.Bandera_resultado,indicador)
     if (this.Bandera_resultado == 1){
       this.pieChartData =[];
-      let auxColor=['#EB3F20','#F45538','#F7755D','#F88A76'];
+      let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
       let suma=0;
       Object.keys(this.inputProyect).forEach((element,index) => {
         let resultado_actual = this.inputProyect[element];
@@ -169,17 +170,28 @@ export class PieChartComponent implements OnInit {
         }
       });
       let sumaOtros = 0;
+      let ColorDesplegado = [];
+      let help = auxColor[this.colorDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+      let cambioR= help[1];
       auxdatos.forEach((element, index) =>{
         if(index <= 2){
-          aux.push(((element/suma)*100).toFixed(2))
+          aux.push(((element/suma)*100).toFixed(2));
+          let auxrgbcolor='rgb(';
+          auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+          cambioR = (Number(cambioR) + 50).toString();
+          ColorDesplegado.push(auxrgbcolor);
         }else{
           sumaOtros = sumaOtros+element;
         }
       })
       aux.push(((sumaOtros/suma)*100).toFixed(2));
+      let auxrgbcolor='rgb(';
+      auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+      cambioR = (Number(cambioR) + 50).toString();
+      ColorDesplegado.push(auxrgbcolor);
       auxdata = [{
         data: aux,
-        backgroundColor: auxColor
+        backgroundColor: ColorDesplegado
       }];
       this.pieChartData = [...this.pieChartData, auxdata];
       this.showMe_elementos = true;

@@ -19,6 +19,7 @@ export class BarChartSimpleComponent implements OnInit {
   @Input() elemento:string;
   @Input() info:any;
   @Input() banderaDispercion:boolean;
+  @Input() colorDispercion:string;
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -38,7 +39,6 @@ export class BarChartSimpleComponent implements OnInit {
   barChartLegend = true;
   barChartPlugins = [];
   showngraph = false;
-  ColorMomento = ['#EB3F20','#F45538','#F7755D','#F88A76'];
 
   etapa:string='';
 
@@ -93,6 +93,7 @@ export class BarChartSimpleComponent implements OnInit {
     let auxdata = [];
     this.barChartDataSecond = [];
     this.barChartLabelsSecond = [];
+    let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
     Object.keys(this.info).forEach((element,index) => {
       let resultado_actual = this.info[element];
       suma=suma+resultado_actual;
@@ -109,19 +110,30 @@ export class BarChartSimpleComponent implements OnInit {
       }
     });
     let sumaOtros = 0;
+    let ColorDesplegado = [];
+      let help = auxColor[this.colorDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+      let cambioR= help[1];
     auxdatos.forEach((element, index) =>{
       if(index <= 2){
         aux.push(((element/suma)*100).toFixed(2))
         this.barChartLabelsSecond=[...this.barChartLabelsSecond, (index+1).toString()];
+        let auxrgbcolor='rgb(';
+        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+        cambioR = (Number(cambioR) + 50).toString();
+        ColorDesplegado.push(auxrgbcolor);
       }else{
         sumaOtros = sumaOtros+element;
       }
     })
     this.barChartLabelsSecond=[...this.barChartLabelsSecond, 'otros'];
     aux.push(((sumaOtros/suma)*100).toFixed(2));
+    let auxrgbcolor='rgb(';
+    auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+      cambioR = (Number(cambioR) + 50).toString();
+      ColorDesplegado.push(auxrgbcolor);
     auxdata = [{
       data: aux,
-      backgroundColor: this.ColorMomento
+      backgroundColor: ColorDesplegado
     }];
     this.barChartDataSecond = [...this.barChartDataSecond, auxdata];
   }

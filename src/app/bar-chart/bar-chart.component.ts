@@ -41,7 +41,9 @@ export class BarChartComponent implements OnInit {
   private centrosX = {};
   private proyectos = [];
   private inicializado = false;
+  private auxElementos = {};
   @Output() lastClickEvent = new EventEmitter<string>();
+  @Output() ClickEvent = new EventEmitter<any>();
   private maxValue = 0;
 
   
@@ -192,6 +194,7 @@ export class BarChartComponent implements OnInit {
         });
 
         this.barChartLabels.forEach(indicador => {
+          this.auxElementos[indicador.toString()]=[];
           let suma = 0;
           //creaición de los espacios para guardar los valores por niveles
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
@@ -199,6 +202,7 @@ export class BarChartComponent implements OnInit {
           });
           //acomodar conforme porcentajes y en orden para niveles
           let auxdatos =[]
+          let elementos = [];
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
             let resultado_actual = (proyecto.Datos[indicador.toString()][element] * 100 / suma).toFixed(2);
             let posicion = 0
@@ -209,10 +213,19 @@ export class BarChartComponent implements OnInit {
             })
             if(posicion == 0){
               auxdatos = [resultado_actual,...auxdatos];
+              elementos = [index, ...elementos];
             }else{
-              auxdatos.splice(posicion,0,resultado_actual)
+              auxdatos.splice(posicion,0,resultado_actual);
+              elementos.splice(posicion,0,index);
             }
           });
+          elementos.forEach(lugar => {
+            Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
+              if(lugar==index){
+                this.auxElementos[indicador.toString()].push(element)
+              }
+            });
+          })
           auxdatos.forEach((element,index) => {
             let helpn='n'.concat(index.toString());
             auxData[helpn] = element;
@@ -440,7 +453,8 @@ export class BarChartComponent implements OnInit {
     }
     if(this.Bandera_bar){
       //aqui faltara uno que mande el color de los elementos constructivos
-      this.lastClickEvent.emit(this.lastClick);
+      let aux = {'niveles':this.auxElementos,'seleccion':this.lastClick,'color':this.auxColor}
+      this.ClickEvent.emit(aux);
     }else{
       this.lastClickEvent.emit(this.lastClick);
     }

@@ -142,6 +142,9 @@ export class CompararComponent implements OnInit {
   banderaTipoGraficaDispercion = true;
   infoTablaDispercion=[];
   displayedColumnsDispercion: string[] = ['no', 'material', 'porcentaje', 'numero'];
+  colorGraficaDispercion=' ';
+  nivelesExistententesElementosConstructivos = [];
+  coloresExistententesElementosConstructivos = [];
 
   // vars analisis
   idProyectoActivo: number;
@@ -368,7 +371,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.showMe = false;
     grafica.instance.Bandera_bar = this.bandera_graph_bar;
     grafica.instance.porcentaje=true;
-    grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
+    grafica.instance.ClickEvent.subscribe(e => this.receiveSelectorDos(e));
   }
 
   iniciaRadiales(){
@@ -807,6 +810,10 @@ export class CompararComponent implements OnInit {
       if(this.imgSeleccionadaElemento!=' '){
         this.DispercionAP(this.imgSeleccionadaElemento,' ');
       }
+      if(this.elementoContructivoSelecionado != ' '){
+        document.getElementById("texto".concat(this.elementoContructivoSelecionado)).className = 'espacio-sin-selecciomar';
+        this.elementoContructivoSelecionado=' ';
+      }
     }
   }
 
@@ -828,30 +835,26 @@ export class CompararComponent implements OnInit {
       aux = $event;
     }
 
-    if(this.bandera_graph_bar){
-      this.graficabar(aux);
-    }else{
-      this.showVar_1 = false;
-      this.showVar = false;
-      this.selector = aux
-  
-      if ($event==null){
-        this.bandera = 0;
-        this.hover = true;
-        if (this.ID != ' ') {
-          document.getElementById(this.ID).className = 'boton-principal';
-          this.ID = ' ';
-        }
-      }else{
-        this.bandera=1;
-        this.hover = false;
-        if (this.ID != ' ') {
-          document.getElementById(this.ID).className = 'boton-principal';
-        }
+    this.showVar_1 = false;
+    this.showVar = false;
+    this.selector = aux
+
+    if ($event==null){
+      this.bandera = 0;
+      this.hover = true;
+      if (this.ID != ' ') {
+        document.getElementById(this.ID).className = 'boton-principal';
         this.ID = ' ';
       }
-      this.containerGraficas.clear();
+    }else{
+      this.bandera=1;
+      this.hover = false;
+      if (this.ID != ' ') {
+        document.getElementById(this.ID).className = 'boton-principal';
+      }
+      this.ID = ' ';
     }
+    this.containerGraficas.clear();
   }
 
   receiveSelect($event){
@@ -1071,6 +1074,7 @@ export class CompararComponent implements OnInit {
         })
       }
     })
+    this.asignarColorGraficaDispercion();
     if(this.banderaTipoGraficaDispercion){
       this.containerGraficasDos.clear();
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.pieChart);
@@ -1081,6 +1085,7 @@ export class CompararComponent implements OnInit {
       grafica.instance.id = this.ID;
       grafica.instance.Bandera_resultado=1;
       grafica.instance.unidades = this.potentialTypesList;
+      grafica.instance.colorDispercion = this.colorGraficaDispercion;
     }else{
       this.containerGraficasDos.clear();
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.barChartSimpleComponent);
@@ -1089,6 +1094,7 @@ export class CompararComponent implements OnInit {
       grafica.instance.info=aux;
       grafica.instance.showGr = false;
       grafica.instance.showlastGr = true;
+      grafica.instance.colorDispercion = this.colorGraficaDispercion;
     }
   }
 
@@ -1109,6 +1115,44 @@ export class CompararComponent implements OnInit {
         }
       }
     });
+  }
+
+  receiveSelectorDos($event) {
+    //cordinate with bar graph
+    let aux = ' ';
+    if($event['seleccion'] != null){
+      if (Array.isArray($event['seleccion'])){
+        let sl
+        $event['seleccion'].forEach((element,index) => {
+          if(index == 0){
+            sl=element
+          }else{
+            sl = sl.concat('',element)
+          }
+        });
+        aux = sl;
+      }else{
+        aux = $event['seleccion'];
+      }
+      let auxnombre=this.calculos.ajustarNombre(aux);
+      this.nivelesExistententesElementosConstructivos=$event['niveles'][auxnombre];
+      this.coloresExistententesElementosConstructivos=$event['color'];
+    }
+
+    this.graficabar(aux);
+    this.asignarColorGraficaDispercion();
+  }
+
+  asignarColorGraficaDispercion(){
+    if(this.impactoSeleccionadoElementoConstructivo!=' '){
+      if(this.elementoContructivoSelecionado!=' '){
+        this.nivelesExistententesElementosConstructivos.forEach((element,index) => {
+          if(element==Number(this.elementoContructivoSelecionado)){
+            this.colorGraficaDispercion = this.coloresExistententesElementosConstructivos[index];
+          }
+        });
+      }
+    }
   }
 
   graficabar(item){
