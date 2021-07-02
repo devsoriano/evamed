@@ -10,6 +10,7 @@ import { map, startWith } from 'rxjs/operators';
 import { AddConstructiveElementComponent } from '../add-constructive-element/add-constructive-element.component';
 import { AddConstructiveSystemComponent } from '../add-constructive-system/add-constructive-system.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AnalisisService } from 'src/app/core/services/analisis/analisis.service';
 
 export interface Material {
   id: number;
@@ -49,6 +50,7 @@ export class MaterialsStageComponent implements OnInit {
   selectedMaterial: boolean;
   showSearch: boolean;
   showMaterial: boolean;
+  showEPD: boolean;
   dataMaterialSelected: any;
   materialsList: any;
   catalogoPaises: any;
@@ -64,6 +66,7 @@ export class MaterialsStageComponent implements OnInit {
   newConstructiveSystem: string;
   SCseleccionado: string = '';
   materialData: any;
+  EPDS: any;
 
   myControl = new FormControl();
   options: Material[];
@@ -74,11 +77,13 @@ export class MaterialsStageComponent implements OnInit {
     private projectsService: ProjectsService,
     private router: Router,
     private catalogsService: CatalogsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private analisis: AnalisisService
   ) {
     this.materialsService.getMaterials().subscribe((data) => {
       this.materialsList = data;
       this.options = this.materialsList;
+      this.EPDS = data.filter((res) => res.database_from === 'EPDs');
     });
     this.catalogsService.countriesCatalog().subscribe((data) => {
       this.catalogoPaises = data;
@@ -90,8 +95,6 @@ export class MaterialsStageComponent implements OnInit {
       this.catalogoTransportesLocal = data;
       this.catalogoTransportesExtrangero = data;
     });
-
-    console.log(this.materialsList);
   }
 
   ngOnInit() {
@@ -105,6 +108,8 @@ export class MaterialsStageComponent implements OnInit {
     this.selectedMaterial = false;
     this.showSearch = false;
     this.showMaterial = false;
+    this.showEPD = false;
+
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
     this.ciudadOrigenSeleccionada = PDP.city_id_origin;
@@ -649,7 +654,6 @@ export class MaterialsStageComponent implements OnInit {
 
   showDetailMaterial(event, material) {
     event.stopPropagation();
-    console.log(material);
     this.showMaterial = true;
     this.dataMaterialSelected.name = material.name_material;
     this.dataMaterialSelected.description =
@@ -657,6 +661,26 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.registrationNumber = 'S-P-01927';
     this.dataMaterialSelected.publicationDate = '202-04-01';
     this.dataMaterialSelected.utilLife = '2025-04-01';
+  }
+
+  showDetailEPD(event, material) {
+    event.stopPropagation();
+    this.showEPD = true;
+    this.dataMaterialSelected.name = material.name_material;
+    this.dataMaterialSelected.id = material.id;
+    this.dataMaterialSelected.description =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.analisis.getMaterialSchemeData().subscribe((msds) => {
+      const msd = msds.filter((msd) => msd.material_id === material.id);
+      console.log(msd);
+      this.dataMaterialSelected.msd = msd;
+    });
+  }
+
+  onSelectMaterial(event, material) {
+    event.stopPropagation();
+    this.dataMaterialSelected.materialSelectedDB =
+      this.dataMaterialSelected.name;
   }
 
   removeMaterial(event, sc, origin) {
@@ -699,6 +723,7 @@ export class MaterialsStageComponent implements OnInit {
     this.showSearch = true;
     this.selectedMaterial = false;
     this.showMaterial = false;
+    this.showEPD = false;
   }
 
   addConstructiveElementsDialog() {
