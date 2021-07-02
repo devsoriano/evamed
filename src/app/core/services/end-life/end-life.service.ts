@@ -41,4 +41,16 @@ export class EndLifeService {
         })
       );
   }
+
+  deleteECDP(id: number) {
+    return this.http
+      .delete(
+        `${environment.api_electricity_consumption_deconstructive_process}${id}/`
+      )
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
 }

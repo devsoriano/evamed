@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { Router } from '@angular/router';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
+import { EndLifeService } from 'src/app/core/services/end-life/end-life.service';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 
 @Component({
@@ -20,10 +21,13 @@ export class EndLifeUpdateComponent implements OnInit {
   TD: any;
   catalogoFuentes: any;
   catalogoUnidadEnergia: [];
+  ECDP: [];
+  projectId: any;
 
   constructor(
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
+    private endLifeService: EndLifeService,
     private router: Router
   ) {
     this.catalogsService.getSourceInformation().subscribe((data) => {
@@ -39,6 +43,7 @@ export class EndLifeUpdateComponent implements OnInit {
       .getProjectById(localStorage.getItem('idProyectoConstrucción'))
       .subscribe((data: any) => {
         this.nameProject = data.name_project;
+        this.projectId = data.id;
       });
     this.catalogsService.getEnergyUnits().subscribe((data) => {
       let energia = [];
@@ -48,6 +53,9 @@ export class EndLifeUpdateComponent implements OnInit {
         }
       });
       this.catalogoUnidadEnergia = data;
+    });
+    this.endLifeService.getECDP().subscribe((data) => {
+      this.ECDP = data;
     });
   }
 
@@ -91,11 +99,33 @@ export class EndLifeUpdateComponent implements OnInit {
     });
     // take index of selection
     this.indexSheet = this.sheetNames.indexOf(selectedSheet);
+
+    // map data exist to edit
+    let getDataECPD = [];
+
+    this.ECDP.map((item: any) => {
+      const prevData = [];
+      if (item.section_id === this.indexSheet + 1) {
+        prevData['cantidad'] = item.quantity;
+        prevData['fuente'] = item.source_information_id;
+        prevData['energy_unit_id'] = item.energy_unit_id;
+        getDataECPD.push(prevData);
+      }
+    });
+
+    console.log(getDataECPD);
     let i;
     for (i = 0; i <= this.sheetNames.length; i++) {
-      if (this.indexSheet === i && this.EC !== undefined) {
-        this.dataArrayEC = this.EC[i];
-        this.dataArrayTD = this.TD[i];
+      if (this.indexSheet === i) {
+        this.dataArrayEC = getDataECPD;
+
+        if (this.EC !== undefined) {
+          this.dataArrayEC = this.EC[i];
+        }
+
+        if (this.dataArrayEC === undefined) {
+          this.dataArrayEC = getDataECPD;
+        }
       }
     }
 
@@ -111,6 +141,8 @@ export class EndLifeUpdateComponent implements OnInit {
     if (this.dataArrayTD.length === 0) {
       this.dataArrayTD.push([]);
     }
+
+    this.onSaveEC();
   }
 
   removeFormEC(i) {
@@ -138,6 +170,42 @@ export class EndLifeUpdateComponent implements OnInit {
         this.TD[i] = this.dataArrayTD;
       }
     }
+  }
+
+  saveStepFour() {
+    this.endLifeService.getECDP().subscribe((ECDP) => {
+      ECDP.map((item) => {
+        if (
+          item.project_id ===
+          parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
+        ) {
+          this.endLifeService.deleteECDP(item.id).subscribe(() => {
+            console.log('Eliminar CSE pasados!!!!!!');
+          });
+        }
+      });
+    });
+
+    Object.entries(this.EC).forEach(([key, ec]) => {
+      let ecAny: any;
+      ecAny = ec;
+      ecAny.map((data) => {
+        console.log('Fin de vida!!!');
+        console.log(data);
+        this.endLifeService
+          .addECDP({
+            quantity: data.cantidad,
+            unit_id: data.unidad,
+            source_information_id: data.fuente,
+            section_id: parseInt(key, 10) + 1,
+            project_id: this.projectId,
+          })
+          .subscribe((data) => {
+            console.log(data);
+          });
+      });
+    });
+    // this.router.navigateByUrl('/');
   }
 
   goToMaterialStage() {
