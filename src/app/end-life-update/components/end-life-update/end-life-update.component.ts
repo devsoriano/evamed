@@ -1,41 +1,30 @@
-import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
-import { EndLifeService } from './../../../core/services/end-life/end-life.service';
 import { Component, OnInit } from '@angular/core';
-
-import { Router } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
-import 'rxjs/add/operator/filter';
+import { Router } from '@angular/router';
+import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
+import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 
 @Component({
-  selector: 'app-end-life-stage',
-  templateUrl: './end-life-stage.component.html',
-  styleUrls: ['./end-life-stage.component.scss'],
+  selector: 'app-end-life-update',
+  templateUrl: './end-life-update.component.html',
+  styleUrls: ['./end-life-update.component.scss'],
 })
-export class EndLifeStageComponent implements OnInit {
-  sheetNames: any;
-  contentData: any;
-  listData: any;
-  indexSheet: any;
+export class EndLifeUpdateComponent implements OnInit {
   nameProject: string;
-  projectId: number;
-  SistemasConstructivos: any;
-  listMateriales: any;
-  selectedOptions: string[] = [];
-  panelOpenFirst = false;
-  panelOpenSecond = false;
-  panelOpenThird = false;
+  selectedSheet: any;
+  sheetNames: any;
+  indexSheet: any;
   dataArrayEC = [];
   dataArrayTD = [];
   EC: any;
   TD: any;
   catalogoFuentes: any;
   catalogoUnidadEnergia: [];
-  selectedSheet: any;
 
   constructor(
-    private router: Router,
-    private endLifeService: EndLifeService,
-    private catalogsService: CatalogsService
+    private projectsService: ProjectsService,
+    private catalogsService: CatalogsService,
+    private router: Router
   ) {
     this.catalogsService.getSourceInformation().subscribe((data) => {
       const fuentes = [];
@@ -46,9 +35,12 @@ export class EndLifeStageComponent implements OnInit {
       });
       this.catalogoFuentes = fuentes;
     });
+    this.projectsService
+      .getProjectById(localStorage.getItem('idProyectoConstrucción'))
+      .subscribe((data: any) => {
+        this.nameProject = data.name_project;
+      });
     this.catalogsService.getEnergyUnits().subscribe((data) => {
-      // console.log('lógica de unidades!!!!');
-      // console.log(data);
       let energia = [];
       data.map((unidad) => {
         if (unidad.name_energy_unit === 'Hrs') {
@@ -59,27 +51,20 @@ export class EndLifeStageComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    const data = JSON.parse(sessionStorage.getItem('dataProject'));
-    const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
-
-    this.sheetNames = [];
-    this.nameProject = PDP.name_project;
-    this.projectId = PDP.id;
-    data.sheetNames.map((sheetname) => {
-      if (
-        sheetname !== 'Muros InterioresBis' &&
-        sheetname !== 'Inicio' &&
-        sheetname !== 'Registro' &&
-        sheetname !== 'ListaElementos' &&
-        sheetname !== 'BD' &&
-        sheetname !== 'Parametros'
-      ) {
-        this.sheetNames.push(sheetname);
-      }
-    });
-
-    this.contentData = data.data;
+  ngOnInit(): void {
+    this.sheetNames = [
+      'Cimentación',
+      'Muros interiores',
+      'Muros exteriores',
+      'Pisos',
+      'Techos',
+      'Entrepiso',
+      'Estructura',
+      'Puertas',
+      'Ventanas',
+      'Inst. especiales',
+      'Otros',
+    ];
 
     this.initialChange();
     this.indexSheet = undefined;
@@ -128,18 +113,8 @@ export class EndLifeStageComponent implements OnInit {
     }
   }
 
-  onNgModelChange(event) {
-    // console.log('on ng model change', event);
-  }
-
-  showMaterials(event, sc) {
-    const materiales = [];
-    this.listData.map((data) => {
-      if (data.Sistema_constructivo === sc) {
-        materiales.push(data.Material);
-      }
-    });
-    this.listMateriales = materiales;
+  removeFormEC(i) {
+    this.dataArrayEC.splice(i);
   }
 
   addFormEC() {
@@ -147,10 +122,6 @@ export class EndLifeStageComponent implements OnInit {
       this.dataArrayEC = [];
     }
     this.dataArrayEC.push([]);
-  }
-
-  removeFormEC(i) {
-    this.dataArrayEC.splice(i);
   }
 
   onSaveEC() {
@@ -167,34 +138,6 @@ export class EndLifeStageComponent implements OnInit {
         this.TD[i] = this.dataArrayTD;
       }
     }
-  }
-
-  saveStepFour() {
-    console.log('confirm step 4');
-    try {
-      Object.entries(this.EC).forEach(([key, ec]) => {
-        let ecAny: any;
-        ecAny = ec;
-        ecAny.map((data) => {
-          console.log('Fin de vida!!!');
-          console.log(data);
-          this.endLifeService
-            .addECDP({
-              quantity: data.cantidad,
-              unit_id: data.unidad,
-              source_information_id: data.fuente,
-              section_id: parseInt(key, 10) + 1,
-              project_id: this.projectId,
-            })
-            .subscribe((data) => {
-              console.log(data);
-            });
-        });
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    // this.router.navigateByUrl('/');
   }
 
   goToMaterialStage() {
