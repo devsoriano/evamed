@@ -145,6 +145,7 @@ export class CompararComponent implements OnInit {
   colorGraficaDispercion=' ';
   nivelesExistententesElementosConstructivos = [];
   coloresExistententesElementosConstructivos = [];
+  impactoSeleccionadoElementoConstructivoGrafica = null;
 
   // vars analisis
   idProyectoActivo: number;
@@ -371,6 +372,8 @@ export class CompararComponent implements OnInit {
     grafica.instance.showMe = false;
     grafica.instance.Bandera_bar = this.bandera_graph_bar;
     grafica.instance.porcentaje=true;
+    grafica.instance.elementoConstructivo=this.elementoContructivoSelecionado;
+    grafica.instance.impactoAmbiental = this.impactoSeleccionadoElementoConstructivoGrafica;
     grafica.instance.ClickEvent.subscribe(e => this.receiveSelectorDos(e));
   }
 
@@ -1120,6 +1123,7 @@ export class CompararComponent implements OnInit {
   receiveSelectorDos($event) {
     //cordinate with bar graph
     let aux = ' ';
+    this.impactoSeleccionadoElementoConstructivoGrafica = $event['selec'];
     if($event['seleccion'] != null){
       if (Array.isArray($event['seleccion'])){
         let sl
@@ -1137,10 +1141,12 @@ export class CompararComponent implements OnInit {
       let auxnombre=this.calculos.ajustarNombre(aux);
       this.nivelesExistententesElementosConstructivos=$event['niveles'][auxnombre];
       this.coloresExistententesElementosConstructivos=$event['color'];
+      this.graficabar(aux);
+      this.asignarColorGraficaDispercion();
+    }else{
+      this.graficabar(null);
     }
 
-    this.graficabar(aux);
-    this.asignarColorGraficaDispercion();
   }
 
   asignarColorGraficaDispercion(){
@@ -1162,7 +1168,7 @@ export class CompararComponent implements OnInit {
         if(this.impactoSeleccionadoElementoConstructivo === ' '){
           //Opción sin seleccionar ningún impacto ambiental se selecciona un elemento;
           document.getElementById("texto".concat(item.toString())).className = 'espacio-seleccionado';
-          //falta iluminar el elemento en todos los impactos ambientales
+          this.iniciaBarrasSeccionDos();
         }else{
           Object.keys(this.iconosElementosConstrucivos).forEach(element => {
             if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
@@ -1174,15 +1180,18 @@ export class CompararComponent implements OnInit {
             }
           })
           //Actualizar grafa para que se ilumen el elemento solo del impacto seleccionado
+          this.iniciaBarrasSeccionDos();
         }
       }else{
         if(item != this.elementoContructivoSelecionado){
           document.getElementById("texto".concat(this.elementoContructivoSelecionado)).className = 'espacio-sin-selecciomar';
           document.getElementById("texto".concat(item.toString())).className = 'espacio-seleccionado';
           this.elementoContructivoSelecionado = item.toString();
+          this.iniciaBarrasSeccionDos();
         }else{
           document.getElementById("texto".concat(item.toString())).className = 'espacio-sin-selecciomar';
           this.elementoContructivoSelecionado = ' ';
+          this.iniciaBarrasSeccionDos();
           if(this.imgSeleccionadaElemento != ' '){
             document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
             this.imgSeleccionadaElemento = ' ';
@@ -1205,7 +1214,6 @@ export class CompararComponent implements OnInit {
           this.show_Dispercion=false;
         }
       }else{
-        //this.impactoSeleccionadoElementoConstructivo = item;
         if(this.impactoSeleccionadoElementoConstructivo === ' '){
           this.impactoSeleccionadoElementoConstructivo = item;
           if(this.elementoContructivoSelecionado === ' '){

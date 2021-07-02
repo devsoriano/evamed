@@ -28,6 +28,8 @@ export class BarChartComponent implements OnInit {
   @Input() banera_enfoqueSerie_externo:boolean;
   @Input() serie_input:string;
   @Input() bandera_enfoqueColumna:boolean;
+  @Input() elementoConstructivo:String;
+  @Input() impactoAmbiental:any;
 
   private colores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89'};
   private coloresBWGraph2Nuevo = ['rgb(90, 16, 2,0.5)','rgb(144, 37, 17,0.5)', 'rgb(190, 50, 24,0.5)', 'rgb(235, 63, 32,0.5)','rgb(235, 87, 32,0.5)','rgb(235, 118, 32,0.5)','rgb(235, 173, 32,0.5)','rgb(235, 196, 32,0.5)','rgb(235, 219, 32,0.5)','rgb(204, 235, 32,0.5)','rgb(118, 235, 32,0.5)']
@@ -35,12 +37,13 @@ export class BarChartComponent implements OnInit {
   private coloresBW = {Producción : '#B1B1B1', Construccion : '#6A6A6A', Uso : '#686868', FinDeVida : '#969696'};
   private auxColor = [];
   private auxColorBW = [];
+  private ElementosEnNiveles = [];
+  private banderaImpacto=false;
 
   private lastClick='Ninguno';
   private hovered = null;
   private centrosX = {};
   private proyectos = [];
-  private inicializado = false;
   private auxElementos = {};
   @Output() lastClickEvent = new EventEmitter<string>();
   @Output() ClickEvent = new EventEmitter<any>();
@@ -176,16 +179,20 @@ export class BarChartComponent implements OnInit {
     // le da el formato necesario a los datos para que se puedan graficar
     let datos = []
     this.barChartData=[];
+    this.ElementosEnNiveles=[];
     if(this.Bandera_bar){
       let numElementos = 0;
       this.inputProyects.forEach(proyecto => {
         const auxData = {};
         const auxDatos = {};
-        let niveles_existentes =[]
+        const auxDataElementos = {};
+        const auxDatosElementos = {};
+        let niveles_existentes =[];
         this.barChartLabels.forEach(indicador => {
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
             let helpn='n'.concat(index.toString());
-            auxDatos[helpn] = []
+            auxDatos[helpn] = [];
+            auxDatosElementos[helpn] = [];
             if(!niveles_existentes.includes(helpn)){
               numElementos = numElementos + 1;
               niveles_existentes.push(helpn);
@@ -204,6 +211,7 @@ export class BarChartComponent implements OnInit {
           let auxdatos =[]
           let elementos = [];
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
+            //se acomodan de mayor a menor
             let resultado_actual = (proyecto.Datos[indicador.toString()][element] * 100 / suma).toFixed(2);
             let posicion = 0
             auxdatos.forEach(nivel =>{
@@ -219,6 +227,7 @@ export class BarChartComponent implements OnInit {
               elementos.splice(posicion,0,index);
             }
           });
+          //se guarda el nivel de cada elemento constructivo dependiendo del impacto ambiental
           elementos.forEach(lugar => {
             Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
               if(lugar==index){
@@ -226,20 +235,30 @@ export class BarChartComponent implements OnInit {
               }
             });
           })
+          //se guardan por niveles dependiendo del impacto ambiental
           auxdatos.forEach((element,index) => {
             let helpn='n'.concat(index.toString());
             auxData[helpn] = element;
+            auxDataElementos[helpn] = this.auxElementos[indicador.toString()][index];
           })
 
+          //se llenan los niveles en orden
           Object.keys(auxDatos).forEach(element => {
             Object.keys(auxData).forEach(valor =>{
               if(element === valor){
-                auxDatos[element].push(auxData[valor])
+                auxDatos[element].push(auxData[valor]);
+              }
+            })
+          });
+          Object.keys(auxDatosElementos).forEach(element => {
+            Object.keys(auxDataElementos).forEach(valor =>{
+              if(element === valor){
+                auxDatosElementos[element].push(auxDataElementos[valor]);
               }
             })
           });
         });
-
+        //algoritmo para llenar adecuadamente los colores
         if((numElementos % 2) == 1){
           if(numElementos ==1){
             this.auxColor.push(this.coloresGraph2Nuevo[10]);
@@ -273,6 +292,9 @@ export class BarChartComponent implements OnInit {
           }
         }
 
+        Object.keys(auxDatosElementos).forEach(etapa => {
+          this.ElementosEnNiveles.push(auxDatosElementos[etapa])
+        });
         Object.keys(auxDatos).forEach((etapa,index) => {
           datos = [...datos,
           {
@@ -315,6 +337,19 @@ export class BarChartComponent implements OnInit {
       });
     }
     this.barChartData = datos;
+    if(this.Bandera_bar){
+      if(this.impactoAmbiental != null){
+        if(this.elementoConstructivo != ' '){
+          this.banderaImpacto=true;
+          this.focusColumnas(this.impactoAmbiental);
+          this.banderaImpacto=false;
+        }
+      }else{
+        if(this.elementoConstructivo != ' '){
+          this.focusSeries(this.elementoConstructivo)
+        }
+      }
+    }
   }
 
   // configurcion de estilo (Titulos de proyectos)
@@ -417,17 +452,57 @@ export class BarChartComponent implements OnInit {
   }
 
   public focusColumnas(seleccion: any){
+    let selec = seleccion;
     if (this.lastClick !== seleccion.label){
       if(this.Bandera_bar){
-        this.barChartData.forEach((datos, index) => {
-          let color = new Array(datos.data.length);
+        if(this.banderaImpacto){
+          this.barChartData.forEach((datos, index) => {
+            let color = new Array(datos.data.length);
+            let coloraux = [];
+            this.ElementosEnNiveles[index].forEach((element,ii) => {
+              if(ii == seleccion.index){
+                if(element === this.elementoConstructivo){
+                  coloraux.push(this.auxColor[index])
+                }else{
+                  coloraux.push(this.auxColorBW[index])
+                }
+              }else{
+                coloraux.push(this.auxColorBW[index])
+              }
+            });
+            color = coloraux;
+  
+            this.barChartData[index].backgroundColor = color;
+            this.barChartData[index].hoverBackgroundColor = color;
+          });
+        }else{
+          this.barChartData.forEach((datos, index) => {
+            let color = new Array(datos.data.length);
 
-          color.fill(this.auxColorBW[index]);
-          color[seleccion.index] = this.auxColor[index];
-
-          this.barChartData[index].backgroundColor = color;
-          this.barChartData[index].hoverBackgroundColor = color;
-        });
+            if(this.elementoConstructivo != ' '){
+              let coloraux = [];
+            this.ElementosEnNiveles[index].forEach((element,ii) => {
+              if(ii == seleccion.index){
+                if(element === this.elementoConstructivo){
+                  coloraux.push(this.auxColor[index])
+                }else{
+                  coloraux.push(this.auxColorBW[index])
+                }
+              }else{
+                coloraux.push(this.auxColorBW[index])
+              }
+            });
+            color = coloraux;
+            }else{
+              color.fill(this.auxColorBW[index]);
+              color[seleccion.index] = this.auxColor[index];
+            }
+  
+            this.barChartData[index].backgroundColor = color;
+            this.barChartData[index].hoverBackgroundColor = color;
+          });
+          this.chartDir.update();
+        }
       }else{
         this.barChartData.forEach( (datos , index) => {
           let color = new Array(datos.data.length);
@@ -438,8 +513,8 @@ export class BarChartComponent implements OnInit {
           this.barChartData[index].backgroundColor = color;
           this.barChartData[index].hoverBackgroundColor = color;
         });
+        this.chartDir.update();
       }
-      this.chartDir.update();
       this.lastClick = seleccion.label;
       this.showMe=false;
     } else {
@@ -453,7 +528,7 @@ export class BarChartComponent implements OnInit {
     }
     if(this.Bandera_bar){
       //aqui faltara uno que mande el color de los elementos constructivos
-      let aux = {'niveles':this.auxElementos,'seleccion':this.lastClick,'color':this.auxColor}
+      let aux = {'niveles':this.auxElementos,'seleccion':this.lastClick,'color':this.auxColor,'selec':selec}
       this.ClickEvent.emit(aux);
     }else{
       this.lastClickEvent.emit(this.lastClick);
@@ -522,13 +597,17 @@ export class BarChartComponent implements OnInit {
     // Pone la serie seleccionada de color normal, el resto se pone en blanco y negro
     this.barChartData.forEach((datos, index) => {
       let color: any;
-
+      
       if(this.Bandera_bar){
-        if (datos.label !== serie) {
-          color = this.auxColorBW[index];
-        } else {
-          color = this.coloresGraph2Nuevo[datos.label];
-        }
+        let coloraux = [];
+        this.ElementosEnNiveles[index].forEach(element => {
+          if(element === serie){
+            coloraux.push(this.auxColor[index])
+          }else{
+            coloraux.push(this.auxColorBW[index])
+          }
+        });
+        color = coloraux;
       }else{
         //console.log(this.banera_enfoqueSerie_externo,serie);
         if (datos.label !== serie){
@@ -542,8 +621,10 @@ export class BarChartComponent implements OnInit {
       this.barChartData[index].backgroundColor = color;
       this.barChartData[index].hoverBackgroundColor = color;
     });
-
-    this.chartDir.update();
+    if(this.Bandera_bar){
+    }else{
+      this.chartDir.update();
+    }
 
   }
 
