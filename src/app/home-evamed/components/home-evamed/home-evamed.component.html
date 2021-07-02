@@ -72,7 +72,11 @@
               </mat-tab>
               <mat-tab label="Construcción" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom" *ngFor="let section of serchConstructiveSection(project.id)">
+                  <mat-card
+                    class="card-item-custom"
+                    *ngFor="let section of serchConstructiveSection(project.id)"
+                    (click)="updateConstruction(project.id)"
+                  >
                     <h2>{{section.name_section}}</h2>
                     <ul class="listItems">
                       <li *ngFor="let sc of serchDetailConstruction(project.id, section.id)">
@@ -80,13 +84,6 @@
                         {{sc.quantity}} hrs
                       </li>
                     </ul>
-                    <button
-                      mat-button
-                      class="yellow-button-mini updateButton"
-                      (click)="updateConstruction(project.id)"
-                    >
-                      Editar
-                    </button>
                   </mat-card>
                 </section>
               </mat-tab>
@@ -123,16 +120,12 @@
               </mat-tab>
               <mat-tab label="Fin de vida" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom" *ngFor="let section of serchEndLifeSection(project.id)">
+                  <mat-card
+                    class="card-item-custom"
+                    *ngFor="let section of serchEndLifeSection(project.id)"
+                    (click)="updateEndLife(project.id)"
+                  >
                     <h2>{{section.name_section}}</h2>
-
-                    <button
-                      mat-button
-                      class="yellow-button-mini"
-                      (click)="updateConstruction(project.id)"
-                    >
-                      Editar
-                    </button>
                   </mat-card>
                 </section>
               </mat-tab>
