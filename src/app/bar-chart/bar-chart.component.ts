@@ -497,7 +497,7 @@ export class BarChartComponent implements OnInit {
               color.fill(this.auxColorBW[index]);
               color[seleccion.index] = this.auxColor[index];
             }
-  
+
             this.barChartData[index].backgroundColor = color;
             this.barChartData[index].hoverBackgroundColor = color;
           });
@@ -620,6 +620,7 @@ export class BarChartComponent implements OnInit {
 
       this.barChartData[index].backgroundColor = color;
       this.barChartData[index].hoverBackgroundColor = color;
+
     });
     if(this.Bandera_bar){
     }else{

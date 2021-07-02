@@ -146,6 +146,7 @@ export class CompararComponent implements OnInit {
   nivelesExistententesElementosConstructivos = [];
   coloresExistententesElementosConstructivos = [];
   impactoSeleccionadoElementoConstructivoGrafica = null;
+  banderaAjusteElememtos=false;
 
   // vars analisis
   idProyectoActivo: number;
@@ -264,8 +265,8 @@ export class CompararComponent implements OnInit {
         this.fasesEliminadas.push(fase);
       }
 
+      this.outproyect_bar=[];
       this.proyect_active.forEach(element => {
-        this.outproyect_bar=[];
         let analisis = this.getAnalisisBarras(element);
         this.outproyect_bar.push(analisis);
       })
@@ -295,6 +296,9 @@ export class CompararComponent implements OnInit {
       document.getElementById(this.ID).className = 'boton-principal';
     }
 
+    if(this.proyect_active.length >1){
+      this.banderaAjusteElememtos = true;
+    }
     let analisis = this.getAnalisisBarras(id);
     let analisisRad = this.getAnalisisRadial(id);
     let analisisPie = this.getAnalisisPie(id);
@@ -314,6 +318,7 @@ export class CompararComponent implements OnInit {
       }
     });
 
+    this.banderaAjusteElememtos = false;
     this.outproyect_bar.push(analisis);
     this.outproyect_radar.push(analisisRad);
     this.outproyect_pie.push(analisisPie);
@@ -711,6 +716,18 @@ export class CompararComponent implements OnInit {
     };
 
     let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivo(idProyecto,DatosCalculos);
+    this.AjustarElementosMostrados(auxDatos);
+    analisisProyectos['Datos']= auxDatos;
+    return analisisProyectos;
+  }
+
+  AjustarElementosMostrados(auxDatos){
+    if(this.elementoContructivoSelecionado != ' '){
+      document.getElementById("texto".concat(this.elementoContructivoSelecionado)).className = 'espacio-sin-selecciomar';
+    }
+    this.impactoSeleccionadoElementoConstructivo=' ';
+    this.impactoSeleccionadoElementoConstructivoGrafica = null;
+    this.elementoContructivoSelecionado = ' ';
     if(Object.keys(this.iconosElementosConstrucivos).length == 0){
       this.sectionList.forEach(element =>{
         //Aqui falta de que en caso de que se otro proyecto y tenga más o menos elementos que no cause problemas y se activen o desactiven bien los botones
@@ -733,10 +750,25 @@ export class CompararComponent implements OnInit {
         }
       })
     }
-    analisisProyectos['Datos']= auxDatos;
-    return analisisProyectos;
+    if(this.banderaAjusteElememtos){
+      this.sectionList.forEach(element =>{
+        //Aqui falta de que en caso de que se otro proyecto y tenga más o menos elementos que no cause problemas y se activen o desactiven bien los botones
+        let flag = false
+        let auxidelemento : String = element['id'];
+        let auximpacto = this.calculosSegunaSeccion.ajustarNombre(this.potentialTypesList[0]['name_complete_potential_type'])
+        Object.keys(auxDatos[auximpacto]).forEach(idelemento => {
+          if(idelemento==auxidelemento.toString()){
+            flag = true
+          }
+        })
+        if(flag){
+          this.iconosElementosConstrucivos[auxidelemento.toString()] = {};
+          this.iconosElementosConstrucivos[auxidelemento.toString()]['icono'] = 'visibility';
+          this.iconosElementosConstrucivos[auxidelemento.toString()]['habilitado'] = false;
+        }
+      })
+    }
   }
-
   //Se cargan los proyetcos existentes y se configura el menu
   menu_inicio(){
     
@@ -795,6 +827,16 @@ export class CompararComponent implements OnInit {
     this.outproyect_radar = this.outproyect_radar.filter(({ id }) => id != ID);
     this.outproyect_pie = this.outproyect_pie.filter(({ id }) => id != ID);
     this.outproyect_bar_elementos = this.outproyect_bar_elementos.filter(({ id }) => id != ID);
+    this.iconosElementosConstrucivos={}
+    this.outproyect_bar_elementos.forEach((element,index)=>{
+      if(index < 1){
+        this.banderaAjusteElememtos=false;
+      }else{
+        this.banderaAjusteElememtos=true;
+      }
+      this.AjustarElementosMostrados(element.Datos)
+    })
+    this.banderaAjusteElememtos=false;
 
     if (this.resultdosTabla) {
       this.TablaResultados();
@@ -1252,8 +1294,8 @@ export class CompararComponent implements OnInit {
       this.elementosContructivosEliminados.push(item.toString());
     }
 
+    this.outproyect_bar_elementos=[];
     this.proyect_active.forEach(element => {
-      this.outproyect_bar_elementos=[];
       let analisis = this.getAnalisisBarrasElementosConstructivos(element);
       this.outproyect_bar_elementos.push(analisis);
     })
