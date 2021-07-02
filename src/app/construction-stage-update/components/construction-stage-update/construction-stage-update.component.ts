@@ -112,7 +112,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
     // map data exist to edit
     let getDataEC = [];
 
-    this.CSE.map((item, key) => {
+    this.CSE.map((item) => {
       const prevData = [];
       if (item.section_id === this.indexSheet + 1) {
         switch (item.constructive_process_id) {
