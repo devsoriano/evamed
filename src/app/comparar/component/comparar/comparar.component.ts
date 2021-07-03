@@ -1050,7 +1050,7 @@ export class CompararComponent implements OnInit {
     console.log(etapa)
   }
 
-  eliminarEtapa(etapa, i) {
+  eliminarEtapa(etapa) {
     if (this.ciclosDeVidaIgnoradasElementos.includes(etapa)) {
       this.ciclosDeVidaIgnoradasElementos.forEach((element, index) => {
         if (element === etapa) {
@@ -1445,7 +1445,7 @@ export class CompararComponent implements OnInit {
 
   iniciarGraficaCicloElementos(){
     this.containerElementosCiclo.clear();
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.pieChart);
+    /*const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.pieChart);
     const grafica = this.containerGraficasDos.createComponent(componentFactory);
     //grafica.instance.inputProyect = aux;
     grafica.instance.showMePartially = this.showVar;
@@ -1453,7 +1453,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.id = this.ID;
     grafica.instance.Bandera_resultado=1;
     grafica.instance.unidades = this.potentialTypesList;
-    grafica.instance.colorDispercion = this.colorGraficaDispercion;
+    grafica.instance.colorDispercion = this.colorGraficaDispercion;*/
   }
 
 }
