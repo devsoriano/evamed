@@ -235,6 +235,7 @@ export class PieChartComponent implements OnInit {
        //console.log(this.subetapas);
 
     }else{
+      console.log(this.inputProyect);
       this.pieChartData =[];
       Object.keys(auxlabel_dos).forEach(element => {
         if(auxlabel_dos[element]===ID){

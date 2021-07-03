@@ -210,39 +210,95 @@
           <ng-template mat-tab-label>
             Elementos constructivos<br>por etapas del ciclo de vida
           </ng-template>
-          <!--<div *ngIf="Elementos_constructivos">
-
-
-
-              <div class="div-elementos-constructivos">
-                <div>
-                  <p>Selecciona impacto ambiental</p>
-                    <mat-select  (ngModelChange)="grafica_pie_elementos($event)" [(ngModel)]="selectedValue" name="food" class="example-margin">
-                      <mat-option *ngFor="let food of Impactos_menu" [value]="food.value">
-                        {{food.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                </div>
-                <div>
-                  <p>Elementos constructivos</p>
-                  <section class="example-section">
-                    <mat-checkbox class="example-margin">Cimentación</mat-checkbox>
-                    <mat-checkbox class="example-margin">Muros ext.</mat-checkbox>
-                    <mat-checkbox class="example-margin">Estructura</mat-checkbox>
-                    <mat-checkbox class="example-margin">Ins. especiales</mat-checkbox>
-                    <mat-checkbox class="example-margin">Pisos</mat-checkbox>
-                    <mat-checkbox class="example-margin">Techo cubierta</mat-checkbox>
-                    <mat-checkbox class="example-margin">Puertas</mat-checkbox>
-                    <mat-checkbox class="example-margin">Otros</mat-checkbox>
-                    <mat-checkbox class="example-margin">Muros interiores</mat-checkbox>
-                    <mat-checkbox class="example-margin">Entrepisos</mat-checkbox>
-                    <mat-checkbox class="example-margin">Ventanas </mat-checkbox>
+          <div *ngIf="Elementos_constructivos">
+            <div class="div-elementos-constructivos">
+              <div>
+                <p>Selecciona impacto ambiental</p>
+                <mat-select class="select-impacto-ambiental" [(ngModel)]="selectedValue" (selectionChange)="selectImpactoAmbiental()" required>
+                  <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
+                    {{impacto.name_complete_potential_type}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div>
+                <p>Elementos constructivos</p>
+                <section class="example-section">
+                  <section *ngFor="let item of botones_elementos_constructivos">
+                    <mat-checkbox class="example-margin" (change)="elementoSeleccionadoElementos(item.id)" [disabled]="elementosConstructivosMostradosElementos[item.id]['habilitado']">{{elementosConstructivosMostradosElementos[item.id]['nombre']}}</mat-checkbox>
                   </section>
+                </section>
+              </div>
+              <div>
+                <p>Fases del ciclo de vida</p>
+                <ul>
+                  <li> <button id="ProducciónTextoElemento" (click)="selectEtapa('Producción')" mat-stroked-button class="button-info">
+                     <div class="some-text">
+                     <a>Producción</a>
+                     <a> A1 - A3</a></div>
+                     </button>
+                     <button class='button-icon' (click)="eliminarEtapa('Producción')">
+                       <mat-icon class="uno">{{iconosCambioElementos['Producción']}}</mat-icon>
+                     </button>
+                  </li>
+                  <li> <button id="ConstruccionTextoElemento" (click)="selectEtapa('Construccion')" mat-stroked-button class="button-info">
+                     <div class="some-text">
+                     <a>Construcción</a>
+                     <a> A1 - A3</a></div>
+                     </button>
+                     <button class='button-icon' (click)="eliminarEtapa('Construccion')">
+                       <mat-icon class="dos">{{iconosCambioElementos['Construccion']}}</mat-icon>
+                     </button>
+                   </li>
+                </ul>
+                <ul>
+                 <li> <button id="UsoTextoElemento" (click)="selectEtapa('Uso')" mat-stroked-button class="button-info">
+                    <div class="some-text">
+                    <a>Uso</a>
+                    <a> B4 - B5</a></div>
+                    </button>
+                    <button class='button-icon' (click)="eliminarEtapa('Uso')">
+                      <mat-icon class="tres">{{iconosCambioElementos['Uso']}}</mat-icon>
+                    </button>
+                  </li>
+                 <li> <button id="FinDeVidaTextoElemento" (click)="selectEtapa('FinDeVida')" mat-stroked-button class="button-info">
+                    <div class="some-text">
+                    <a>Fin de vida</a>
+                    <a>C1 - C4</a></div>
+                    </button>
+                    <button class='button-icon' (click)="eliminarEtapa('FinDeVida')">
+                      <mat-icon class="cuatro">{{iconosCambioElementos['FinDeVida']}}</mat-icon>
+                    </button>
+                  </li>
+               </ul>
+              </div>
+            </div>
+            <mat-card *ngFor="let item of outproyect_bar; let i = index" class="card-indicador">
+              <div class="elementos-seccionUno">
+                <div class="Botones">
+                  <div>
+                    <a>{{item.Nombre}}</a>
+                    <p>Dispersión del impacto ambiental <br> por fases del ciclo de vida</p>
+                  </div>
+                  <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
                 </div>
                 <div>
-                  <p>Fases del ciclo de vida</p>
+                  <ng-template #elementosCicloConteiner>
+                  </ng-template>
                 </div>
               </div>
+              <div class="elementos-seccionDos">
+                <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
+                <ng-template #dispercionImpactoConteiner>
+                </ng-template>
+              </div>
+              <div>
+                <p>Dispersión del impacto en</p>
+                <ng-template #dispercionElementoConteiner>
+                </ng-template>
+              </div>
+            </mat-card>
+          </div>
+          <!--<div *ngIf="Elementos_constructivos">
               <div *ngIf="indicador_elegido">
                 <mat-card *ngFor="let item of outproyect_bar; let i = index" class="card-indicador">
                   <div class="elementos-seccionUno">

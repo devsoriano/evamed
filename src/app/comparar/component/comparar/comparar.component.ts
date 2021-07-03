@@ -53,6 +53,11 @@ export class CompararComponent implements OnInit {
   @ViewChild('barGraphDos', { read: ViewContainerRef }) containerBarGrafica: ViewContainerRef;
   @ViewChild('GraficasEspecificas', {read: ViewContainerRef}) containerGraficas: ViewContainerRef;
   @ViewChild('GraficasEspecificasDos', {read: ViewContainerRef}) containerGraficasDos: ViewContainerRef;
+  @ViewChild('elementosCicloConteiner', {read: ViewContainerRef}) containerElementosCiclo: ViewContainerRef;
+  @ViewChild('dispercionImpactoConteiner', {read: ViewContainerRef}) containerDispercionImpacto: ViewContainerRef;
+  @ViewChild('dispercionElementoConteiner', {read: ViewContainerRef}) containerDispercionelemento: ViewContainerRef;
+
+
   @ViewChildren(BarChartComponent)
   childBar: QueryList<BarChartComponent>;
   @ViewChildren(PieChartComponent)
@@ -110,15 +115,7 @@ export class CompararComponent implements OnInit {
   sectionList: [];
   click_anterior:'Ninguno';
   labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
-  proyectosMostrados_elementos=[{
-    idproyecto:0,
-    showpie:true,
-    showbar:false,
-    showciclo:false,
-    ciclo:' ',
-    showcimenta:false,
-    elemento:' '
-  }];
+  proyectosMostrados_elementos=[];
   bandera_graph_bar=false;
   botones_elementos_constructivos=[];
   impacto_seleccionado=' ';
@@ -130,6 +127,7 @@ export class CompararComponent implements OnInit {
   classBotones ='boton-principal';
   fasesEliminadas = [];
   elementosContructivosEliminados = [];
+  elementosContructivosEliminadosElementos = [];
   elementoContructivoSelecionado = ' ';
   iconosElementosConstrucivos = {};
   proyectosMostrados =[];
@@ -137,6 +135,13 @@ export class CompararComponent implements OnInit {
   imgSeleccionadaElemento = ' ';
   impactoSeleccionadoElementoConstructivo = ' ';
   iconos={'Producción': 'visibility', 'Construccion': 'visibility', 'Uso': 'visibility', 'FinDeVida': 'visibility'}
+  iconosCambioElementos = {
+    Producción: 'visibility',
+    Construccion: 'visibility',
+    Uso: 'visibility',
+    FinDeVida: 'visibility',
+  }
+  ciclosDeVidaIgnoradasElementos=[];
   idsImgEdificios = [];
   idProyectoSeleccionadoImagen = ' ';
   banderaTipoGraficaDispercion = true;
@@ -147,6 +152,9 @@ export class CompararComponent implements OnInit {
   coloresExistententesElementosConstructivos = [];
   impactoSeleccionadoElementoConstructivoGrafica = null;
   banderaAjusteElememtos=false;
+  catologoImpactoAmbiental = [];
+  elementosConstructivosMostradosElementos = {};
+  cicloVidaSeleccionadoElemento = ' ';
 
   // vars analisis
   idProyectoActivo: number;
@@ -220,6 +228,8 @@ export class CompararComponent implements OnInit {
       this.materialSchemeDataList = materialSchemeData;
       this.materialSchemeProyectList = materialSchemeProyect;
       this.potentialTypesList = potentialTypes;
+      this.catologoImpactoAmbiental = this.calculos.FiltradoDeImpactos(potentialTypes);
+      this.selectedValue = this.catologoImpactoAmbiental[0]['name_complete_potential_type'];
       this.standarsList = standards;
       this.CSEList = CSE;
       this.SIDList = SID;
@@ -337,12 +347,9 @@ export class CompararComponent implements OnInit {
     this.banderaGrapg == 0;
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
-      showpie: true,
-      showbar: false,
-      showciclo: false,
-      ciclo: ' ',
-      showcimenta: false,
-      elemento: ' '
+      dataCiclo:analisis,
+      datoDispercion:analisisBarDos,
+      dataElementos:analisisPieBarDos
     }];
     this.showVar = false;
     this.showVar_1 = false;
@@ -717,6 +724,7 @@ export class CompararComponent implements OnInit {
 
     let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivo(idProyecto,DatosCalculos);
     this.AjustarElementosMostrados(auxDatos);
+    this.AjustarElementosMostradosElemntos(auxDatos);
     analisisProyectos['Datos']= auxDatos;
     return analisisProyectos;
   }
@@ -769,6 +777,50 @@ export class CompararComponent implements OnInit {
       })
     }
   }
+
+  AjustarElementosMostradosElemntos(auxDatos){
+    
+    if(Object.keys(this.elementosConstructivosMostradosElementos).length == 0){
+      this.sectionList.forEach(element =>{
+        //Aqui falta de que en caso de que se otro proyecto y tenga más o menos elementos que no cause problemas y se activen o desactiven bien los botones
+        let flag = false
+        let auxidelemento : String = element['id'];
+        let auximpacto = this.calculosSegunaSeccion.ajustarNombre(this.potentialTypesList[0]['name_complete_potential_type'])
+        Object.keys(auxDatos[auximpacto]).forEach(idelemento => {
+          if(idelemento==auxidelemento.toString()){
+            flag = true
+          }
+        })
+        if(flag){
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()] = {};
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['nombre'] = element['name_section'];
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['habilitado'] = false;
+        }else{
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()] = {};
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['nombre'] = element['name_section'];
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['habilitado'] = true;
+        }
+      })
+    }
+    if(this.banderaAjusteElememtos){
+      this.sectionList.forEach(element =>{
+        let flag = false
+        let auxidelemento : String = element['id'];
+        let auximpacto = this.calculosSegunaSeccion.ajustarNombre(this.potentialTypesList[0]['name_complete_potential_type'])
+        Object.keys(auxDatos[auximpacto]).forEach(idelemento => {
+          if(idelemento==auxidelemento.toString()){
+            flag = true
+          }
+        })
+        if(flag){
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()] = {};
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['nombre'] = element['name_section'];
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['habilitado'] = false;
+        }
+      })
+    }
+  }
+
   //Se cargan los proyetcos existentes y se configura el menu
   menu_inicio(){
     
@@ -828,13 +880,15 @@ export class CompararComponent implements OnInit {
     this.outproyect_pie = this.outproyect_pie.filter(({ id }) => id != ID);
     this.outproyect_bar_elementos = this.outproyect_bar_elementos.filter(({ id }) => id != ID);
     this.iconosElementosConstrucivos={}
+    this.elementosConstructivosMostradosElementos={}
     this.outproyect_bar_elementos.forEach((element,index)=>{
       if(index < 1){
         this.banderaAjusteElememtos=false;
       }else{
         this.banderaAjusteElememtos=true;
       }
-      this.AjustarElementosMostrados(element.Datos)
+      this.AjustarElementosMostrados(element.Datos);
+      this.AjustarElementosMostradosElemntos(element.Datos);
     })
     this.banderaAjusteElememtos=false;
 
@@ -955,23 +1009,94 @@ export class CompararComponent implements OnInit {
   }
 
   //despliegue gráfica de pie para sección de resultados
-  grafica_pie_elementos(indicador:string){
-    this.bandera_resultado = 1;
+  selectImpactoAmbiental(){
+    console.log(this.selectedValue);
+    /*this.bandera_resultado = 1;
     this.indicador_elegido = true;
     this.indicador_impacto=indicador;
-    this.childPie.forEach(c => c.cambioIndicadorElementos(' ',indicador, this.bandera_resultado));
+    this.childPie.forEach(c => c.cambioIndicadorElementos(' ',indicador, this.bandera_resultado));*/
+  }
+
+  selectEtapa(etapa) {
+    let color = {
+      Producción: '#4DBE89',
+      Construccion: '#0DADBA',
+      Uso: '#8F5091',
+      FinDeVida: '#DEA961',
+    };
+    if(this.cicloVidaSeleccionadoElemento === ' '){
+      this.cicloVidaSeleccionadoElemento = etapa;
+      document.getElementById(etapa.concat('TextoElemento')).className = 'button-info-select';
+      Object.keys(color).forEach((element) => {
+        if (element === etapa) {
+          document.getElementById(etapa.concat('TextoElemento')).style.borderColor = color[element];
+        }
+      });
+    }else{
+      if(this.cicloVidaSeleccionadoElemento != etapa){
+        document.getElementById(etapa.concat('TextoElemento')).className = 'button-info-select';
+        Object.keys(color).forEach((element) => {
+          if (element === etapa) {
+            document.getElementById(etapa.concat('TextoElemento')).style.borderColor = color[element];
+          }
+        });
+        document.getElementById(this.cicloVidaSeleccionadoElemento.concat('TextoElemento')).className = 'button-info';
+        this.cicloVidaSeleccionadoElemento = etapa;
+      }else{
+        document.getElementById(this.cicloVidaSeleccionadoElemento.concat('TextoElemento')).className = 'button-info';
+        this.cicloVidaSeleccionadoElemento = ' ';
+      }
+    }
+    console.log(etapa)
+  }
+
+  eliminarEtapa(etapa, i) {
+    if (this.ciclosDeVidaIgnoradasElementos.includes(etapa)) {
+      this.ciclosDeVidaIgnoradasElementos.forEach((element, index) => {
+        if (element === etapa) {
+          this.iconosCambioElementos[etapa] = 'visibility';
+          this.ciclosDeVidaIgnoradasElementos.splice(index, 1);
+        }
+      });
+    } else {
+      this.iconosCambioElementos[etapa] = 'visibility_off';
+      this.ciclosDeVidaIgnoradasElementos.push(etapa);
+    }
+    console.log(etapa)
+  }
+
+  elementoSeleccionadoElementos(recive){
+    if(this.elementosContructivosEliminadosElementos.includes(recive.toString())){
+      this.elementosContructivosEliminadosElementos.forEach((element,index) => {
+        if(element == recive.toString()){
+          this.elementosContructivosEliminadosElementos.splice(index,1)
+        }
+      })
+    }else{
+      this.elementosContructivosEliminadosElementos.push(recive.toString());
+    }
   }
 
   //resetear secciones
   ResetTabs(value:number){
     if(value==2){
-      this.bandera_resultado=1;
+      console.log('Tercer Seccion')
+      this.outproyect_bar_elementos.forEach((element,index)=>{
+        if(index < 1){
+          this.banderaAjusteElememtos=false;
+        }else{
+          this.banderaAjusteElememtos=true;
+        }
+        this.AjustarElementosMostradosElemntos(element.Datos)
+      })
+      this.banderaAjusteElememtos=false;
+      /*this.bandera_resultado=1;
       this.showVar=false;
       this.show_elementos=false;
       this.ID ='Producción';
-      this.receiveSelector(null);
+      this.receiveSelector(null);*/
     }else if(value==0){
-      this.indicador_elegido =false;
+      /*this.indicador_elegido =false;
       this.show_elementos = true;
       this.proyectosMostrados_elementos.forEach(element=>{
         element.showpie= true;
@@ -980,7 +1105,7 @@ export class CompararComponent implements OnInit {
         element.ciclo= ' ';
         element.showcimenta= false;
         element.elemento= ' ';
-      });
+      });*/
     }
   }
 
@@ -1316,6 +1441,19 @@ export class CompararComponent implements OnInit {
       this.idsIconosElementos[element.id.toString()]['idOJO']='ojo'.concat(element.id.toString());
       this.idsIconosElementos[element.id.toString()]['idTEXTO']='texto'.concat(element.id.toString());
     });
+  }
+
+  iniciarGraficaCicloElementos(){
+    this.containerElementosCiclo.clear();
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.pieChart);
+    const grafica = this.containerGraficasDos.createComponent(componentFactory);
+    //grafica.instance.inputProyect = aux;
+    grafica.instance.showMePartially = this.showVar;
+    grafica.instance.indicador = this.selector;
+    grafica.instance.id = this.ID;
+    grafica.instance.Bandera_resultado=1;
+    grafica.instance.unidades = this.potentialTypesList;
+    grafica.instance.colorDispercion = this.colorGraficaDispercion;
   }
 
 }
