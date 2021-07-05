@@ -5,6 +5,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { threadId } from 'node:worker_threads';
 import { chown } from 'node:fs';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-graficas-tercer-seccion',
@@ -20,9 +21,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
   @Input() FasesEliminadas:any;
   @Input() FaseSeleccionada:String;
 
-  private InfoMostrada=[];
+  public InfoMostrada=[];
   private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89'};
   private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)', FinDeVida : 'rgba(222,169,97,0.2)'};
+  private CicloColoresRGB = { FinDeVida: 'rgb(222, 169, 97)', Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)'};
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
     responsive: false,
@@ -36,6 +38,28 @@ export class GraficasTercerSeccionComponent implements OnInit {
     hover: { mode: null },
     plugins: {
       datalabels: {
+        color: '#FFFFFF',
+        font: {
+          size: 8,
+        },
+      },
+    },
+  };
+  public pieChartOptionsDos = {
+    responsive: false,
+    maintainAspectRatio: false,
+    layout: {
+      padding: 0,
+    },
+    events: ['click'],
+    elements: { arc: { borderWidth: 0 } },
+    tooltips: { enabled: false },
+    hover: { mode: null },
+    plugins: {
+      datalabels: {
+        formatter: (val, ctx) => {
+          return ctx.chart.data.labels[ctx.dataIndex];
+        },
         color: '#FFFFFF',
         font: {
           size: 8,
@@ -100,15 +124,14 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux['DispercionElementoGrafica']=false;
       if(this.FaseSeleccionada!=' '){
         aux['CicloSeleccionado'] = this.FaseSeleccionada
+        aux['DatosElementosConstructivos']=this.GraficaElementosContructivos(proyecto.datoDispercion,this.FaseSeleccionada);
+        aux['ElementosConstructivosGrafica']=true;
       }else{
+        aux['DatosElementosConstructivos']=[];
         aux['CicloSeleccionado'] = ' '
       }
 
-      Object.keys(proyecto.datoDispercion).forEach(impacto => {
-        if(impacto === this.impactoAmbientalMostrado){
-          aux['DispercionElementos'] = proyecto.datoDispercion[impacto];
-        }
-      });
+      aux['DispercionElementos'] = proyecto.datoDispercion;
       Object.keys(proyecto.dataCiclo).forEach(impacto => {
         if(impacto === this.impactoAmbientalMostrado){
           aux['CicloVida'] = proyecto.dataCiclo[impacto];
@@ -135,6 +158,50 @@ export class GraficasTercerSeccionComponent implements OnInit {
         }
       }
     })
+    return aux;
+  }
+
+  GraficaElementosContructivos(data,ciclo){
+    let aux = [];
+    let auxdata = [];
+    let auxcolor = [];
+    let help = this.CicloColoresRGB[ciclo].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+    let cambioR= help[1];
+    
+    Object.keys(data).forEach(fase =>{
+      if(ciclo===fase){
+        Object.keys(data[fase]).forEach(impactos =>{
+          if(impactos === this.impactoAmbientalMostrado){
+            let suma =0;
+            Object.keys(data[fase][impactos]).forEach(elemento=>{
+              suma=suma+data[fase][impactos][elemento];
+            })
+            Object.keys(data[fase][impactos]).forEach(elemento=>{
+              let bandera = true;
+              this.ElementosContructivosEliminados.forEach(elementignorado => {
+                console.log(elemento,elementignorado)
+                if(elementignorado === elemento){
+                  bandera = false;
+                }
+              });
+              if(bandera){
+                let auxrgbcolor='rgb(';
+                auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+                cambioR = (Number(cambioR) + 50).toString();
+                auxcolor.push(auxrgbcolor)
+                auxdata.push(((data[fase][impactos][elemento]/suma)*100).toFixed(2));
+              }
+            })
+          }
+        })
+      }
+    })
+    aux = [
+      {
+        data: auxdata,
+        backgroundColor: auxcolor,
+      },
+    ];
     return aux;
   }
 
@@ -261,15 +328,21 @@ export class GraficasTercerSeccionComponent implements OnInit {
               if(proyecto['CicloSeleccionado']=== auxfase){
                 this.InfoMostrada[index]['CicloSeleccionado']=' ';
                 this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado']);
+                this.InfoMostrada[index]['ElementosConstructivosGrafica'] = false;
               }else{
                 this.InfoMostrada[index]['CicloSeleccionado']=auxfase;
+                this.InfoMostrada[index]['DatosElementosConstructivos']=this.GraficaElementosContructivos(this.InfoMostrada[index]['DispercionElementos'],this.InfoMostrada[index]['CicloSeleccionado']);
                 this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado']);
+                this.InfoMostrada[index]['ElementosConstructivosGrafica'] = true;
               }
             }
           })
         }
       });
     }
+  }
+
+  public onChartClickElemento(e: any,idP): void {
   }
 }
 

@@ -318,6 +318,7 @@ export class CompararComponent implements OnInit {
     let analisisPie = this.getAnalisisPie(id);
     let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
     let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
+    let analisisPieTres = this.getAnalisisElementos(id);
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -353,9 +354,12 @@ export class CompararComponent implements OnInit {
       idproyecto: id,
       nombre:analisis.Nombre,
       dataCiclo:analisis.Datos,
-      datoDispercion:analisisBarDos.Datos,
+      datoDispercion:analisisPieTres,
       dataElementos:analisisPieBarDos.Datos
     }];
+    if(this.Elementos_constructivos){
+      this.iniciarSeccionTres();
+    }
     this.showVar = false;
     this.showVar_1 = false;
     this.banderaGrapg = 0;
@@ -422,6 +426,32 @@ export class CompararComponent implements OnInit {
     grafica.instance.id = this.ID;
     grafica.instance.Bandera_resultado=2;
     grafica.instance.unidades = this.potentialTypesList;
+  }
+
+  getAnalisisElementos(idProyecto){
+
+    let DatosCalculos = { 
+      'TEList':this.TEList,
+      'projectsList':this.projectsList,
+      'materialList':this.materialList,
+      'materialSchemeDataList':this.materialSchemeDataList,
+      'materialSchemeProyectList':this.materialSchemeProyectList,
+      'potentialTypesList':this.potentialTypesList,
+      'standarsList':this.standarsList,
+      'CSEList':this.CSEList,
+      'SIDList':this.SIDList,
+      'SIList':this.SIList,
+      'ACRList':this.ACRList,
+      'ECDList':this.ECDList,
+      'TEDList':this.TEDList,
+      'ULList':this.ULList,
+      'ECDPList':this.ECDPList,
+      'sectionList':this.sectionList
+    };
+
+    let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
+
+    return auxDatos;
   }
 
   getAnalisisBarras(idProyecto){
@@ -1092,6 +1122,7 @@ export class CompararComponent implements OnInit {
     }else{
       this.elementosContructivosEliminadosElementos.push(recive.toString());
     }
+    this.iniciarSeccionTres();
   }
 
   //resetear secciones

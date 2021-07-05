@@ -43,7 +43,17 @@
         <div>
           <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
         </div>
-
+        <div *ngIf="item.ElementosConstructivosGrafica">
+            <div class="canvas-container seccionTresPie">
+              <canvas #MyChart='base-chart' #canvas baseChart
+                          [datasets]="item.DatosElementosConstructivos"
+                          [chartType]="doughnutChartType"
+                          [options]="pieChartOptionsDos"
+                          (chartClick)='onChartClickElemento($event,item.id)'
+                          width="217px" height="292px">
+              </canvas>
+            </div>
+        </div>
     </div>
     <div>
         <div>
