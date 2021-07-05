@@ -1,0 +1,53 @@
+<mat-card *ngFor="let item of InfoMostrada; let i = index" class="card-indicador">
+    <div>
+        <div class="subtitulo-proyecto">
+            <div>
+                <a>{{item.nombre}}</a>
+                <p>Dispersión del impacto ambiental <br> por fases del ciclo de vida</p>
+            </div>
+          <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
+        </div>
+        <div *ngIf="item.CicloGraficaPie">
+            <div class="canvas-container seccionTresPie">
+              <canvas #MyChart='base-chart' #canvas baseChart
+                          [datasets]="item.DatosCicloVida"
+                          [chartType]="doughnutChartType"
+                          [options]="pieChartOptions"
+                          (chartClick)='onChartClick($event,item.id,1)'
+                          width="217px" height="292px">
+              </canvas>
+            </div>
+        </div>
+        <div *ngIf="item.CicloGraficaBar">
+            <div class="canvas-container seccionTresBar">
+              <canvas #MyChart='base-chart' #canvas baseChart
+                  [datasets]="item.DatosCicloVida"
+                  [labels]="item.LabelsCicloVida"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  [plugins]="barChartPlugins"
+                  [chartType]="barChartType"
+                  (chartClick)='onChartClick($event,item.id,2)'
+                   height="305px">
+                </canvas>
+            </div>
+        </div>
+        <div class="button-graph">
+            <mat-button-toggle-group>
+                <mat-button-toggle (click)="cambioGrafica(1,item.id)"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
+                <mat-button-toggle (click)="cambioGrafica(2,item.id)"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+    </div>
+    <div>
+        <div>
+          <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
+        </div>
+
+    </div>
+    <div>
+        <div>
+          <p>Dispersión del impacto en</p>
+        </div>
+    </div>
+</mat-card>

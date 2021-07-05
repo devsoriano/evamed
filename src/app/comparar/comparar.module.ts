@@ -18,6 +18,7 @@ import { BarChartComponent } from '../bar-chart/bar-chart.component';
 import { BarChartSimpleComponent } from '../bar-chart-simple/bar-chart-simple.component';
 // import { MatRadioButton } from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { GraficasTercerSeccionComponent } from './component/graficas-tercer-seccion/graficas-tercer-seccion.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     RadialChartComponent,
     BarChartComponent,
     BarChartSimpleComponent,
+    GraficasTercerSeccionComponent,
   ],
   imports: [
     CommonModule,

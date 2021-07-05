@@ -5,6 +5,7 @@ import { BarChartSimpleComponent } from 'src/app/bar-chart-simple/bar-chart-simp
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
 import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.component';
+import { GraficasTercerSeccionComponent } from '../../component/graficas-tercer-seccion/graficas-tercer-seccion.component';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { AnalisisService } from './../../../core/services/analisis/analisis.service';
@@ -14,8 +15,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Calculos } from '../../../calculos/calculos'
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { threadId } from 'node:worker_threads';
-import { identifierModuleUrl } from '@angular/compiler';
+
 
 interface impactos_menu{
   value: string;
@@ -40,7 +40,8 @@ interface impactos_menu{
     BarChartComponent,
     RadialChartComponent,
     PieChartComponent,
-    BarChartSimpleComponent
+    BarChartSimpleComponent,
+    GraficasTercerSeccionComponent
   ]
 })
 export class CompararComponent implements OnInit {
@@ -48,14 +49,15 @@ export class CompararComponent implements OnInit {
   radialChart = RadialChartComponent;
   pieChart = PieChartComponent;
   barChartSimpleComponent = BarChartSimpleComponent;
+  graficasTercerSeccionComponent = GraficasTercerSeccionComponent;
 
   @ViewChild('barContainer', { read: ViewContainerRef }) container: ViewContainerRef;
   @ViewChild('barGraphDos', { read: ViewContainerRef }) containerBarGrafica: ViewContainerRef;
+  @ViewChild('barGraphTres', {read: ViewContainerRef}) containerGraficaT: ViewContainerRef;
   @ViewChild('GraficasEspecificas', {read: ViewContainerRef}) containerGraficas: ViewContainerRef;
   @ViewChild('GraficasEspecificasDos', {read: ViewContainerRef}) containerGraficasDos: ViewContainerRef;
   @ViewChild('elementosCicloConteiner', {read: ViewContainerRef}) containerElementosCiclo: ViewContainerRef;
   @ViewChild('dispercionImpactoConteiner', {read: ViewContainerRef}) containerDispercionImpacto: ViewContainerRef;
-  @ViewChild('dispercionElementoConteiner', {read: ViewContainerRef}) containerDispercionelemento: ViewContainerRef;
 
 
   @ViewChildren(BarChartComponent)
@@ -160,6 +162,7 @@ export class CompararComponent implements OnInit {
   idProyectoActivo: number;
   botones_grafica_activos: boolean =false;
   columnsToDisplay = []
+  impactoAmbientalSeleccionado: string;
 
   constructor(
     private materials: MaterialsService,
@@ -230,6 +233,7 @@ export class CompararComponent implements OnInit {
       this.potentialTypesList = potentialTypes;
       this.catologoImpactoAmbiental = this.calculos.FiltradoDeImpactos(potentialTypes);
       this.selectedValue = this.catologoImpactoAmbiental[0]['name_complete_potential_type'];
+      this.impactoAmbientalSeleccionado=this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type'])
       this.standarsList = standards;
       this.CSEList = CSE;
       this.SIDList = SID;
@@ -347,9 +351,10 @@ export class CompararComponent implements OnInit {
     this.banderaGrapg == 0;
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
-      dataCiclo:analisis,
-      datoDispercion:analisisBarDos,
-      dataElementos:analisisPieBarDos
+      nombre:analisis.Nombre,
+      dataCiclo:analisis.Datos,
+      datoDispercion:analisisBarDos.Datos,
+      dataElementos:analisisPieBarDos.Datos
     }];
     this.showVar = false;
     this.showVar_1 = false;
@@ -387,6 +392,16 @@ export class CompararComponent implements OnInit {
     grafica.instance.elementoConstructivo=this.elementoContructivoSelecionado;
     grafica.instance.impactoAmbiental = this.impactoSeleccionadoElementoConstructivoGrafica;
     grafica.instance.ClickEvent.subscribe(e => this.receiveSelectorDos(e));
+  }
+  iniciarSeccionTres(){
+    this.containerGraficaT.clear();
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.graficasTercerSeccionComponent);
+    const grafica = this.containerGraficaT.createComponent(componentFactory);
+    grafica.instance.impactoAmbientalMostrado=this.impactoAmbientalSeleccionado;
+    grafica.instance.ElementosContructivosEliminados = this.elementosContructivosEliminadosElementos;
+    grafica.instance.FaseSeleccionada=this.cicloVidaSeleccionadoElemento;
+    grafica.instance.FasesEliminadas = this.ciclosDeVidaIgnoradasElementos;
+    grafica.instance.inputProyect = this.proyectosMostrados_elementos;
   }
 
   iniciaRadiales(){
@@ -691,6 +706,7 @@ export class CompararComponent implements OnInit {
       this.Impactos_Elementos = false;
       this.Elementos_constructivos = true;
       this.impacto_seleccionado = ' ';
+      this.iniciarSeccionTres();
     }
     this.ResetTabs($event);
   }
@@ -1010,7 +1026,8 @@ export class CompararComponent implements OnInit {
 
   //despliegue gráfica de pie para sección de resultados
   selectImpactoAmbiental(){
-    console.log(this.selectedValue);
+    this.impactoAmbientalSeleccionado=this.calculos.ajustarNombre(this.selectedValue);
+    this.iniciarSeccionTres();
     /*this.bandera_resultado = 1;
     this.indicador_elegido = true;
     this.indicador_impacto=indicador;
@@ -1047,7 +1064,7 @@ export class CompararComponent implements OnInit {
         this.cicloVidaSeleccionadoElemento = ' ';
       }
     }
-    console.log(etapa)
+    this.iniciarSeccionTres();
   }
 
   eliminarEtapa(etapa) {
@@ -1062,7 +1079,7 @@ export class CompararComponent implements OnInit {
       this.iconosCambioElementos[etapa] = 'visibility_off';
       this.ciclosDeVidaIgnoradasElementos.push(etapa);
     }
-    console.log(etapa)
+    this.iniciarSeccionTres();
   }
 
   elementoSeleccionadoElementos(recive){
@@ -1441,19 +1458,6 @@ export class CompararComponent implements OnInit {
       this.idsIconosElementos[element.id.toString()]['idOJO']='ojo'.concat(element.id.toString());
       this.idsIconosElementos[element.id.toString()]['idTEXTO']='texto'.concat(element.id.toString());
     });
-  }
-
-  iniciarGraficaCicloElementos(){
-    this.containerElementosCiclo.clear();
-    /*const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.pieChart);
-    const grafica = this.containerGraficasDos.createComponent(componentFactory);
-    //grafica.instance.inputProyect = aux;
-    grafica.instance.showMePartially = this.showVar;
-    grafica.instance.indicador = this.selector;
-    grafica.instance.id = this.ID;
-    grafica.instance.Bandera_resultado=1;
-    grafica.instance.unidades = this.potentialTypesList;
-    grafica.instance.colorDispercion = this.colorGraficaDispercion;*/
   }
 
 }

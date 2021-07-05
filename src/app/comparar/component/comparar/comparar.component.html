@@ -210,7 +210,7 @@
           <ng-template mat-tab-label>
             Elementos constructivos<br>por etapas del ciclo de vida
           </ng-template>
-          <div *ngIf="Elementos_constructivos">
+          <div>
             <div class="div-elementos-constructivos">
               <div>
                 <p>Selecciona impacto ambiental</p>
@@ -272,75 +272,9 @@
                </ul>
               </div>
             </div>
-            <mat-card *ngFor="let item of outproyect_bar; let i = index" class="card-indicador">
-              <div class="elementos-seccionUno">
-                <div class="Botones">
-                  <div>
-                    <a>{{item.Nombre}}</a>
-                    <p>Dispersión del impacto ambiental <br> por fases del ciclo de vida</p>
-                  </div>
-                  <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
-                </div>
-                <div>
-                  <ng-template #elementosCicloConteiner>
-                  </ng-template>
-                </div>
-              </div>
-              <div class="elementos-seccionDos">
-                <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
-                <ng-template #dispercionImpactoConteiner>
-                </ng-template>
-              </div>
-              <div>
-                <p>Dispersión del impacto en</p>
-                <ng-template #dispercionElementoConteiner>
-                </ng-template>
-              </div>
-            </mat-card>
+            <ng-template #barGraphTres>
+            </ng-template>
           </div>
-          <!--<div *ngIf="Elementos_constructivos">
-              <div *ngIf="indicador_elegido">
-                <mat-card *ngFor="let item of outproyect_bar; let i = index" class="card-indicador">
-                  <div class="elementos-seccionUno">
-                    <div class="Botones">
-                      <div>
-                        <a>{{item.Nombre}}</a>
-                        <p>Dispersión del impacto ambiental <br> por fases del ciclo de vida</p>
-                      </div>
-                      <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
-                    </div>
-                    <div>
-                      <app-pie-chart [id]="indicador_impacto" [showMe_elementos]="proyectosMostrados_elementos[i].showpie" [inputProyect]="outproyect_bar" [Bandera_resultado]="bandera_resultado" (ClickEvent)="configurarDatos($event, item.id)" [proyecto]="item.id" [bandera_click]="0"></app-pie-chart>
-                      <app-bar-chart-simple [showGr]="proyectosMostrados_elementos[i].showbar" (ClickEvent)="configurarDatos($event, item.id)" [idProyect]="item.id"></app-bar-chart-simple>
-                    </div>
-                    <div class="Botones">
-                      <div>
-                      </div>
-                      <div>
-                        <mat-radio-group>
-                          <mat-button-toggle class="button-impactos" (click)="change_graph(1,item.id)"><mat-icon class="icons-options">pie_chart</mat-icon></mat-button-toggle>
-                          <mat-button-toggle class="button-impactos" (click)="change_graph(2,item.id)" ><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
-                        </mat-radio-group>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="elementos-seccionDos">
-                    <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
-                    <div *ngIf="proyectosMostrados_elementos[i].showciclo">
-                      <app-pie-chart [id]="proyectosMostrados_elementos[i].ciclo" [showMe_elementos]="proyectosMostrados_elementos[i].showciclo" (ClickEvent)="configurarData($event, item.id)" [Bandera_resultado]="3" [proyecto]="item.id" [bandera_click]="1"></app-pie-chart>
-                    </div>
-                  </div>
-                  <div>
-                    <p>Dispersión del impacto en cimentación</p>
-                    <div *ngIf="proyectosMostrados_elementos[i].showcimenta">
-                      <app-bar-chart-simple [ciclo]="proyectosMostrados_elementos[i].ciclo" [elemento]="proyectosMostrados_elementos[i].elemento" [showGr]="false" [idProyect]="item.id" [showlastGr]="proyectosMostrados_elementos[i].showcimenta" ></app-bar-chart-simple>
-                      <a>materiales</a>
-                    </div>
-                  </div>
-                </mat-card>
-              </div>
-            </div>
-            -->
         </mat-tab>
       </mat-tab-group>
   </mat-card>
