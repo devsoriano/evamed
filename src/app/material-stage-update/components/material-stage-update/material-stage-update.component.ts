@@ -240,9 +240,6 @@ export class MaterialStageUpdateComponent implements OnInit {
                   item.material_id === materialData.id &&
                   item.section_id === this.indexSheet + 1
                 ) {
-                  console.log('-----------------------------este proceso');
-                  console.log(item);
-                  console.log('-----------este otro item');
                   console.log(materialData);
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = item.quantity;
