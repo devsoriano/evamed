@@ -95,36 +95,29 @@ export class Calculos {
           )[0]['name_standard'];
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
-              let materiales_subetapa = this.materialSchemeDataList.filter(
-                (msd) =>
-                  msd['material_id'] == ps['material_id'] &&
-                  msd['standard_id'] == subetapa &&
-                  msd['potential_type_id'] == impacto['id']
-              );
-              if (materiales_subetapa.length > 0) {
-                banderaMaterialEP = false;
-                materiales_subetapa.forEach((material, index) => {
-                  //Aquí en teoría si es para los cálculos de la segunda sección si se hiran sumando en donde se guarden y no en la variable
-                  resultado_impacto =
-                    resultado_impacto +
-                    materiales_subetapa[index]['value'] * ps['quantity'];
-                });
-              } else {
-                banderaMaterialEP = true;
-              }
-              if (subetapa == 4 && banderaMaterialEP == true) {
-                materiales_subetapa = this.materialSchemeDataList.filter(
+              let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
+              if(baseDatosMaterial[0]['database_from']==='EPDs'){
+                let materiales_subetapa = this.materialSchemeDataList.filter(
                   (msd) =>
                     msd['material_id'] == ps['material_id'] &&
-                    msd['standard_id'] == 1 &&
+                    msd['standard_id'] == subetapa &&
                     msd['potential_type_id'] == impacto['id']
                 );
-                if (materiales_subetapa.length > 0 && impacto['id'] == 3) {
+                if (materiales_subetapa.length > 0) {
+                  banderaMaterialEP = false;
+                  materiales_subetapa.forEach((material, index) => {
+                    //Aquí en teoría si es para los cálculos de la segunda sección si se hiran sumando en donde se guarden y no en la variable
+                    resultado_impacto =
+                      resultado_impacto +
+                      materiales_subetapa[index]['value'] * ps['quantity'];
+                  });
+                } else {
+                  banderaMaterialEP = true;
+                }
+              }else{
+                if (!materialesIgnorados.includes(ps['comercial_name'])) {
+                  materialesIgnorados.push(ps['comercial_name']);
                   this.materiales_EPIC = this.materiales_EPIC + 1;
-                  //Se eliminira el material de schemeProyect
-                  if (!materialesIgnorados.includes(ps['comercial_name'])) {
-                    materialesIgnorados.push(ps['comercial_name']);
-                  }
                 }
               }
             });
@@ -140,53 +133,56 @@ export class Calculos {
         //A4 Transporte
         if (schemeProyect.length > 0) {
           schemeProyect.forEach((ps) => {
-            let internacional;
-            let nacional;
-            if (ps['distance_init'] == null) {
-              internacional = 0;
-            } else {
-              let transporteSeleccionado = 1;
-              if (ps['transport_id_origin'] != null) {
-                transporteSeleccionado = ps['transport_id_origin'];
+            let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
+              if(baseDatosMaterial[0]['database_from']==='EPDs'){
+                let internacional;
+                let nacional;
+                if (ps['distance_init'] == null) {
+                  internacional = 0;
+                } else {
+                  let transporteSeleccionado = 1;
+                  if (ps['transport_id_origin'] != null) {
+                    transporteSeleccionado = ps['transport_id_origin'];
+                  }
+                  let value_transport = this.transporte_list.filter(
+                    (val) =>
+                      val['id_potencial'] == impacto['id'] &&
+                      val['id_transport'] == transporteSeleccionado
+                  );
+                  internacional = value_transport[0]['valor'] * ps['distance_init'];
+                }
+                if (ps['distance_end'] == null) {
+                  nacional = 0;
+                } else {
+                  let transporteSeleccionado = 4;
+                  if (ps['transport_id_end'] != null) {
+                    transporteSeleccionado = ps['transport_id_end'];
+                  }
+                  let value_transport = this.transporte_list.filter(
+                    (val) =>
+                      val['id_potencial'] == impacto['id'] &&
+                      val['id_transport'] == transporteSeleccionado
+                  );
+                  nacional = value_transport[0]['valor'] * ps['distance_end'];
+                }
+                let conversion_val = this.conversion_list.filter(
+                  (val) => val['id_material'] == ps['material_id']
+                );
+                let peso = 1;
+                if (conversion_val.length > 0) {
+                  peso = conversion_val[0]['value'];
+                }
+                let materiales_subetapa = this.materialSchemeDataList.filter(
+                  (msd) =>
+                    msd['material_id'] == ps['material_id'] &&
+                    msd['standard_id'] == 1
+                );
+                if (materiales_subetapa.length < 1) {
+                  resultado_impacto =
+                    resultado_impacto +
+                    peso * ps['quantity'] * (nacional + internacional);
+                }
               }
-              let value_transport = this.transporte_list.filter(
-                (val) =>
-                  val['id_potencial'] == impacto['id'] &&
-                  val['id_transport'] == transporteSeleccionado
-              );
-              internacional = value_transport[0]['valor'] * ps['distance_init'];
-            }
-            if (ps['distance_end'] == null) {
-              nacional = 0;
-            } else {
-              let transporteSeleccionado = 4;
-              if (ps['transport_id_end'] != null) {
-                transporteSeleccionado = ps['transport_id_end'];
-              }
-              let value_transport = this.transporte_list.filter(
-                (val) =>
-                  val['id_potencial'] == impacto['id'] &&
-                  val['id_transport'] == transporteSeleccionado
-              );
-              nacional = value_transport[0]['valor'] * ps['distance_end'];
-            }
-            let conversion_val = this.conversion_list.filter(
-              (val) => val['id_material'] == ps['material_id']
-            );
-            let peso = 1;
-            if (conversion_val.length > 0) {
-              peso = conversion_val[0]['value'];
-            }
-            let materiales_subetapa = this.materialSchemeDataList.filter(
-              (msd) =>
-                msd['material_id'] == ps['material_id'] &&
-                msd['standard_id'] == 1
-            );
-            if (materiales_subetapa.length < 1) {
-              resultado_impacto =
-                resultado_impacto +
-                peso * ps['quantity'] * (nacional + internacional);
-            }
           });
         }
         Datos[nameImpacto]['Construccion']['A4'] = resultado_impacto;
@@ -217,20 +213,23 @@ export class Calculos {
         etapas.forEach((subetapa) => {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
-              let materiales_subetapa = this.materialSchemeDataList.filter(
-                (msd) =>
-                  msd['material_id'] == ps['material_id'] &&
-                  msd['standard_id'] == subetapa &&
-                  msd['potential_type_id'] == impacto['id']
-              );
-              if (materiales_subetapa.length > 0) {
-                materiales_subetapa.forEach((material, index) => {
-                  resultado_impacto =
-                    resultado_impacto +
-                    materiales_subetapa[index]['value'] *
-                      ps['quantity'] *
-                      ps['replaces'];
-                });
+              let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
+              if(baseDatosMaterial[0]['database_from']==='EPDs'){
+                let materiales_subetapa = this.materialSchemeDataList.filter(
+                  (msd) =>
+                    msd['material_id'] == ps['material_id'] &&
+                    msd['standard_id'] == subetapa &&
+                    msd['potential_type_id'] == impacto['id']
+                );
+                if (materiales_subetapa.length > 0) {
+                  materiales_subetapa.forEach((material, index) => {
+                    resultado_impacto =
+                      resultado_impacto +
+                      materiales_subetapa[index]['value'] *
+                        ps['quantity'] *
+                        ps['replaces'];
+                  });
+                }
               }
             });
           }

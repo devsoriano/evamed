@@ -2,14 +2,12 @@ import conversion from 'src/app/calculos/Conversiones.json';
 import transporte from 'src/app/calculos/transportes.json';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import { Injectable } from '@angular/core';
-import { element } from 'protractor';
 
 @Injectable({
     providedIn: 'root',
 })
 
-export class CalculosSegundaSeccion {
-    
+export class CalculosTercerSeccion {
   conversion_list: any = conversion;
   transporte_list: any = transporte;
   subetapas_list: any = subetapasInfo;
@@ -38,8 +36,7 @@ export class CalculosSegundaSeccion {
     'Terrestrial ecotoxicity',
   ];
 
-  OperacionesDeFasePorElementoConstructivo(idProyecto,info) {
-    
+  OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,info) {
     this.projectsList = info.projectsList;
     this.materialList = info.materialList;
     this.materialSchemeDataList = info.materialSchemeDataList;
@@ -58,8 +55,9 @@ export class CalculosSegundaSeccion {
     this.sectionList = info.sectionsList;
     
     let Datos = {};
+    let DatosMateriales = {};
     let schemeProyect = null;
-
+  
     schemeProyect = this.materialSchemeProyectList.filter(
       (msp) => msp['project_id'] == idProyecto
     );
@@ -77,44 +75,51 @@ export class CalculosSegundaSeccion {
       if (impacto_ban) {
         nameImpacto = impacto['name_complete_potential_type'];
         nameImpacto = this.ajustarNombre(nameImpacto);
-        Datos[nameImpacto] = {};
+        Datos[nameImpacto]={};
+        DatosMateriales[nameImpacto]={};
+        Datos[nameImpacto]['Producción'] = {};
+        Datos[nameImpacto]['Construccion']={};
+        Datos[nameImpacto]['Uso']={};
+        DatosMateriales[nameImpacto]['Producción'] = {};
+        DatosMateriales[nameImpacto]['Construccion']={};
+        DatosMateriales[nameImpacto]['Uso']={};
         let elementoscreados=[];
-        let resultado_impacto = 0;
         //Cálculos de la sección de producción
         let etapas = [2, 3, 4]; //Subetaps A1 A2 y A3
-        let banderaMaterialEP = false;
         etapas.forEach((subetapa) => {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
-              let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
+                let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
               if(baseDatosMaterial[0]['database_from']==='EPDs'){
-                let materiales_subetapa = this.materialSchemeDataList.filter(
-                  (msd) =>
-                    msd['material_id'] == ps['material_id'] &&
-                    msd['standard_id'] == subetapa &&
-                    msd['potential_type_id'] == impacto['id']
-                );
-                if (materiales_subetapa.length > 0) {
-                  banderaMaterialEP = false;
-                  materiales_subetapa.forEach((material, index) => {
-                    if(!elementoscreados.includes(ps['section_id'])){
-                      elementoscreados.push(ps['section_id']);
-                      Datos[nameImpacto][ps['section_id']]=0;
-                    }
-                    Datos[nameImpacto][ps['section_id']] =
-                    Datos[nameImpacto][ps['section_id']]+
-                      materiales_subetapa[index]['value'] * ps['quantity'];
-                  });
+                  let materiales_subetapa = this.materialSchemeDataList.filter(
+                    (msd) =>
+                      msd['material_id'] == ps['material_id'] &&
+                      msd['standard_id'] == subetapa &&
+                      msd['potential_type_id'] == impacto['id']
+                  );
+                  if (materiales_subetapa.length > 0) {    
+                        materiales_subetapa.forEach((material, index) => {
+                            if(!elementoscreados.includes(ps['section_id'])){
+                            elementoscreados.push(ps['section_id']);
+                            Datos[nameImpacto]['Producción'][ps['section_id']]=0;
+                            DatosMateriales[nameImpacto]['Producción'][ps['section_id']]={};
+                            }
+                            DatosMateriales[nameImpacto]['Producción'][ps['section_id']][ps['material_id']]=ps['quantity'];
+                            Datos[nameImpacto]['Producción'][ps['section_id']] =
+                            Datos[nameImpacto]['Producción'][ps['section_id']]+
+                            materiales_subetapa[index]['value'] * ps['quantity'];
+                        });
+                    } 
                 }
-              }
             });
           }
         });
         //A4 Transporte
+        elementoscreados=[];
         if (schemeProyect.length > 0) {
           schemeProyect.forEach((ps) => {
             let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
-              if(baseDatosMaterial[0]['database_from']==='EPDs'){
+            if(baseDatosMaterial[0]['database_from']==='EPDs'){
                 let internacional;
                 let nacional;
                 if (ps['distance_init'] == null) {
@@ -160,41 +165,47 @@ export class CalculosSegundaSeccion {
                 if (materiales_subetapa.length < 1) {
                   if(!elementoscreados.includes(ps['section_id'])){
                     elementoscreados.push(ps['section_id']);
-                    Datos[nameImpacto][ps['section_id']]=0;
-                  }
-                  Datos[nameImpacto][ps['section_id']] =
-                  Datos[nameImpacto][ps['section_id']] +
+                    Datos[nameImpacto]['Construccion'][ps['section_id']]=0;
+                    DatosMateriales[nameImpacto]['Construccion'][ps['section_id']] = {};
+                    }
+                    DatosMateriales[nameImpacto]['Construccion'][ps['section_id']][ps['material_id']]=ps['quantity'];
+                  Datos[nameImpacto]['Construccion'][ps['section_id']] =
+                  Datos[nameImpacto]['Construccion'][ps['section_id']] +
                     peso * ps['quantity'] * (nacional + internacional);
                 }
-              }
+            }
           });
         }
+        elementoscreados=[];
         //B4
         //las etapas son las mismas que en la sección de producción
         etapas.forEach((subetapa) => {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
-              let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
+                let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
               if(baseDatosMaterial[0]['database_from']==='EPDs'){
-                let materiales_subetapa = this.materialSchemeDataList.filter(
-                  (msd) =>
-                    msd['material_id'] == ps['material_id'] &&
-                    msd['standard_id'] == subetapa &&
-                    msd['potential_type_id'] == impacto['id']
-                );
-                if (materiales_subetapa.length > 0) {
-                  materiales_subetapa.forEach((material, index) => {
-                    if(!elementoscreados.includes(ps['section_id'])){
-                      elementoscreados.push(ps['section_id']);
-                      Datos[nameImpacto][ps['section_id']]=0;
-                    }
-                    Datos[nameImpacto][ps['section_id']] =
-                    Datos[nameImpacto][ps['section_id']] +
+                  let materiales_subetapa = this.materialSchemeDataList.filter(
+                    (msd) =>
+                      msd['material_id'] == ps['material_id'] &&
+                      msd['standard_id'] == subetapa &&
+                      msd['potential_type_id'] == impacto['id']
+                  );
+                  if (materiales_subetapa.length > 0) {
+                    materiales_subetapa.forEach((material, index) => {
+                      if(!elementoscreados.includes(ps['section_id'])){
+                        elementoscreados.push(ps['section_id']);
+                        Datos[nameImpacto]['Uso'][ps['section_id']]=0;
+                        DatosMateriales[nameImpacto]['Uso'][ps['section_id']]={};
+                      }
+                      DatosMateriales[nameImpacto]['Uso'][ps['section_id']][ps['material_id']]=ps['quantity'];
+                      //DatosMateriales[nameImpacto]['Uso'][ps['section_id']].push(ps['material_id']);
+                      Datos[nameImpacto]['Uso'][ps['section_id']] =
+                      Datos[nameImpacto]['Uso'][ps['section_id']] +
                       materiales_subetapa[index]['value'] *
                         ps['quantity'] *
                         ps['replaces'];
-                  });
-                }
+                    });
+                  }
               }
             });
           }
@@ -203,7 +214,8 @@ export class CalculosSegundaSeccion {
       impacto_ban = true;
     });
 
-    return Datos;
+    let resultado={'materiales':DatosMateriales,'Calculos':Datos}
+    return resultado;
   }
 
   ajustarNombre(name: string) {
@@ -232,5 +244,4 @@ export class CalculosSegundaSeccion {
     
     return help
   }
-
 }

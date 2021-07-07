@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Calculos } from '../../../calculos/calculos'
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
+import { CalculosTercerSeccion } from 'src/app/calculos/calculos-tercer-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
 
 
@@ -172,6 +173,7 @@ export class CompararComponent implements OnInit {
     private users: UserService,
     private calculos:Calculos,
     private calculosSegunaSeccion:CalculosSegundaSeccion,
+    private calculosTercerSeccion: CalculosTercerSeccion,
     private componentFactoryResolver: ComponentFactoryResolver
     ){
       this.users
@@ -353,9 +355,7 @@ export class CompararComponent implements OnInit {
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
       nombre:analisis.Nombre,
-      dataCiclo:analisis.Datos,
-      datoDispercion:analisisPieTres,
-      dataElementos:analisisPieBarDos.Datos
+      data:analisisPieTres,
     }];
     if(this.Elementos_constructivos){
       this.iniciarSeccionTres();
@@ -397,6 +397,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.impactoAmbiental = this.impactoSeleccionadoElementoConstructivoGrafica;
     grafica.instance.ClickEvent.subscribe(e => this.receiveSelectorDos(e));
   }
+
   iniciarSeccionTres(){
     this.containerGraficaT.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.graficasTercerSeccionComponent);
@@ -406,6 +407,8 @@ export class CompararComponent implements OnInit {
     grafica.instance.FaseSeleccionada=this.cicloVidaSeleccionadoElemento;
     grafica.instance.FasesEliminadas = this.ciclosDeVidaIgnoradasElementos;
     grafica.instance.inputProyect = this.proyectosMostrados_elementos;
+    grafica.instance.materiales = this.materialList;
+    grafica.instance.Secciones =  this.sectionList;
   }
 
   iniciaRadiales(){
@@ -448,10 +451,8 @@ export class CompararComponent implements OnInit {
       'ECDPList':this.ECDPList,
       'sectionList':this.sectionList
     };
-
-    let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
-
-    return auxDatos;
+    let aux = this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
+    return aux;
   }
 
   getAnalisisBarras(idProyecto){
@@ -1239,21 +1240,24 @@ export class CompararComponent implements OnInit {
         let auxdatos = [];
         let auxlabel=[];
         element['Datos'].forEach((material,index) => {
-          if(material['section_id'] == this.elementoContructivoSelecionado){
-            let resultado_actual = material['quantity'];
-            suma = suma + material['quantity'];
-            let posicion = 0;
-            auxdatos.forEach(nivel =>{
-              if(resultado_actual<nivel){
-                posicion = posicion+1;
+          let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==material['material_id']);
+          if(baseDatosMaterial[0]['database_from']==='EPDs'){
+            if(material['section_id'] == this.elementoContructivoSelecionado){
+              let resultado_actual = material['quantity'];
+              suma = suma + material['quantity'];
+              let posicion = 0;
+              auxdatos.forEach(nivel =>{
+                if(resultado_actual<nivel){
+                  posicion = posicion+1;
+                }
+              })
+              if(posicion == 0){
+                auxlabel = [index,...auxlabel];
+                auxdatos = [resultado_actual,...auxdatos];
+              }else{
+                auxdatos.splice(posicion,0,resultado_actual);
+                auxlabel.splice(posicion,0,index);
               }
-            })
-            if(posicion == 0){
-              auxlabel = [index,...auxlabel];
-              auxdatos = [resultado_actual,...auxdatos];
-            }else{
-              auxdatos.splice(posicion,0,resultado_actual);
-              auxlabel.splice(posicion,0,index);
             }
           }
         });

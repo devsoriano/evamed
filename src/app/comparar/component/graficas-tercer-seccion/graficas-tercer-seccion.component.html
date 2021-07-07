@@ -57,7 +57,49 @@
     </div>
     <div>
         <div>
-          <p>Dispersión del impacto en</p>
+          <p>Dispersión del impacto en {{item.nombreSeccionMostrado}}</p>
+        </div>
+        <div *ngIf="item.DispercionElementoGrafica">
+            <div class="canvas-container seccionTresBar">
+              <canvas #MyChart='base-chart' #canvas baseChart
+                  [datasets]="item.DataGraficaMateriales"
+                  [labels]="item.labelsMateriales"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  [plugins]="barChartPlugins"
+                  [chartType]="barChartType"
+                   height="205px">
+                </canvas>
+            </div>
+            <div>
+                <p>Materiales</p>
+                <div class="example-container">
+                    <table mat-table [dataSource]="item.infoTabla" >
+                      <ng-container matColumnDef="no" sticky>
+                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                      </ng-container>
+                    
+                      <ng-container matColumnDef="material">
+                        <th mat-header-cell *matHeaderCellDef> Material </th>
+                        <td mat-cell *matCellDef="let element"> {{element.material}} </td>
+                      </ng-container>
+                    
+                      <ng-container matColumnDef="porcentaje">
+                        <th mat-header-cell *matHeaderCellDef> % </th>
+                        <td mat-cell *matCellDef="let element"> {{element.porcentaje}} </td>
+                      </ng-container>
+                    
+                      <ng-container matColumnDef="numero" stickyEnd>
+                        <th mat-header-cell *matHeaderCellDef> # </th>
+                        <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+                      </ng-container>
+                    
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnsDispercion"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnsDispercion;"></tr>
+                    </table>
+                </div>
+              </div>
         </div>
     </div>
 </mat-card>
