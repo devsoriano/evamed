@@ -439,25 +439,12 @@ export class GraficasTercerSeccionComponent implements OnInit {
                   lugar=ii;
                 }
               });
-            }
-            proyecto.Coloreslementos['orden'].forEach((elemento,ii) => {
-              if(lugar==ii){
-                auxelemento=elemento;
-              }
-            });
-            if(proyecto.ElementoConstructivoSeleccionado === ' '){
-              this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=auxelemento;
-              this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
-              let ciclo=this.InfoMostrada[index]['CicloSeleccionado'];
-              let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo);
-              this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
-              this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
-              this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
-              let seccioninfo = this.Secciones.filter((bs)=> bs['id']==auxelemento);
-              this.InfoMostrada[index]['nombreSeccionMostrado'] = seccioninfo[0]['name_section'];
-              this.InfoMostrada[index]['DispercionElementoGrafica']=true;
-            }else{
-              if(proyecto.ElementoConstructivoSeleccionado != auxelemento){
+              proyecto.Coloreslementos['orden'].forEach((elemento,ii) => {
+                if(lugar==ii){
+                  auxelemento=elemento;
+                }
+              });
+              if(proyecto.ElementoConstructivoSeleccionado === ' '){
                 this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=auxelemento;
                 this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
                 let ciclo=this.InfoMostrada[index]['CicloSeleccionado'];
@@ -469,10 +456,23 @@ export class GraficasTercerSeccionComponent implements OnInit {
                 this.InfoMostrada[index]['nombreSeccionMostrado'] = seccioninfo[0]['name_section'];
                 this.InfoMostrada[index]['DispercionElementoGrafica']=true;
               }else{
-                this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=' ';
-                this.InfoMostrada[index]['nombreSeccionMostrado'] = ' ';
-                this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
-                this.InfoMostrada[index]['DispercionElementoGrafica']=false;
+                if(proyecto.ElementoConstructivoSeleccionado != auxelemento){
+                  this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=auxelemento;
+                  this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
+                  let ciclo=this.InfoMostrada[index]['CicloSeleccionado'];
+                  let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo);
+                  this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
+                  this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
+                  this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
+                  let seccioninfo = this.Secciones.filter((bs)=> bs['id']==auxelemento);
+                  this.InfoMostrada[index]['nombreSeccionMostrado'] = seccioninfo[0]['name_section'];
+                  this.InfoMostrada[index]['DispercionElementoGrafica']=true;
+                }else{
+                  this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=' ';
+                  this.InfoMostrada[index]['nombreSeccionMostrado'] = ' ';
+                  this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
+                  this.InfoMostrada[index]['DispercionElementoGrafica']=false;
+                }
               }
             }
           })

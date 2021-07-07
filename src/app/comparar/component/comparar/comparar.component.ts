@@ -961,6 +961,9 @@ export class CompararComponent implements OnInit {
         this.elementoContructivoSelecionado=' ';
       }
     }
+    if(this.Elementos_constructivos){
+      this.iniciarSeccionTres();
+    }
   }
 
   //interacción con la gráfca de bar
@@ -1139,22 +1142,6 @@ export class CompararComponent implements OnInit {
         this.AjustarElementosMostradosElemntos(element.Datos)
       })
       this.banderaAjusteElememtos=false;
-      /*this.bandera_resultado=1;
-      this.showVar=false;
-      this.show_elementos=false;
-      this.ID ='Producción';
-      this.receiveSelector(null);*/
-    }else if(value==0){
-      /*this.indicador_elegido =false;
-      this.show_elementos = true;
-      this.proyectosMostrados_elementos.forEach(element=>{
-        element.showpie= true;
-        element.showbar= false;
-        element.showciclo= false;
-        element.ciclo= ' ';
-        element.showcimenta= false;
-        element.elemento= ' ';
-      });*/
     }
   }
 
