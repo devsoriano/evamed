@@ -72,6 +72,8 @@ export class MaterialsStageComponent implements OnInit {
   options: Material[];
   filteredOptions: Observable<Material[]>;
 
+  displayedColumns: string[] = ['Standard', 'Potencial', 'Valor', 'Unidad'];
+
   constructor(
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
@@ -685,6 +687,10 @@ export class MaterialsStageComponent implements OnInit {
 
   returnListEpds() {
     this.showEPD = false;
+  }
+
+  returnListDB() {
+    this.showMaterial = false;
   }
 
   returnMaterialData() {
