@@ -286,20 +286,19 @@ div.step-four div.mdl-stepper-circle {
 .header-form {
   margin-top: 4px;
   margin-left: 14px;
-
-  span.return {
-    font-weight: 700;
-    font-size: 18px;
-    color: #92be00;
-    cursor: pointer;
-  }
-
-  span.title {
-    font-weight: 600;
-    font-size: 14px;
-  }
 }
 
+span.return {
+  font-weight: 700;
+  font-size: 18px;
+  color: #92be00;
+  cursor: pointer;
+}
+
+span.title {
+  font-weight: 600;
+  font-size: 14px;
+}
 .subtitle {
   font-weight: 600;
   font-size: 14px;
@@ -307,7 +306,16 @@ div.step-four div.mdl-stepper-circle {
   margin-bottom: 16px;
 }
 
-.custom-update {
-  margin-top: 30px;
-  margin-bottom: 20px;
+.item-material {
+  margin: 20px 15px;
+  padding: 5px;
+
+  &:hover {
+    background-color: #edc903;
+    cursor: pointer;
+  }
+}
+
+.logoList {
+  height: 16px;
 }

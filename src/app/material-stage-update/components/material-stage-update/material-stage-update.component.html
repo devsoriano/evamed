@@ -518,6 +518,7 @@
           <div class="form-search">
             <div class="Row">
               <div class="Col">
+                <span class="return" (click)="returnMaterialData()"> < </span>
                 <h3>Realiza tu búsqueda</h3>
               </div>
             </div>
@@ -545,10 +546,88 @@
             <div class="Row">
               <div class="Col">
                 <mat-tab-group mat-align-tabs="start">
-                  <mat-tab label="EPD's">EPD's</mat-tab>
+                  <mat-tab label="EPD's">
+                    <div *ngIf="!showEPD">
+                      <div *ngFor="let item of EPDS" >
+                        <div (click)="showDetailEPD($event, item)" class="item-material">
+                          {{item.name_material}} <img src="../../../../assets/logos/EPD.png" class="logoList" alt="">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="material-target" *ngIf="showEPD">
+                      <span class="return" (click)="returnListEpds()"> < </span>
+                      <h2 class="title">{{dataMaterialSelected.name}}</h2>
+                      <p>
+                        <button
+                          mat-button
+                          class="yellow-button custom-continue"
+                          (click)="onSelectMaterial($event, dataMaterialSelected.name)"
+                        >
+                          Seleccionar
+                        </button>
+                      </p>
+
+                      <p class="description">
+                        {{dataMaterialSelected.description}}
+                      </p>
+
+                      <table mat-table [dataSource]="this.dataMaterialSelected.msd" class="mat-elevation-z8">
+
+                        <ng-container matColumnDef="Standard">
+                          <th mat-header-cell *matHeaderCellDef> Standard </th>
+                          <td mat-cell *matCellDef="let element"> {{element.standard_id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Potencial">
+                          <th mat-header-cell *matHeaderCellDef> Potencial </th>
+                          <td mat-cell *matCellDef="let element"> {{element.potential_type_id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Valor">
+                          <th mat-header-cell *matHeaderCellDef> Valor </th>
+                          <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Unidad">
+                          <th mat-header-cell *matHeaderCellDef> Unidad </th>
+                          <td mat-cell *matCellDef="let element"> {{element.unit_id}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+
+                    </div>
+
+                  </mat-tab>
+
+
                   <mat-tab label="Base de datos">
-                    <div *ngFor="let item of materialsList">
-                      {{item.name_material}}
+                    <div *ngIf="!showMaterial">
+                      <div *ngFor="let item of materialsList" >
+                        <div (click)="showDetailMaterial($event, item)" class="item-material">
+                          {{item.name_material}}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="material-target" *ngIf="showMaterial">
+                      <span class="return" (click)="returnListDB()"> < </span>
+                      <h2 class="title">{{dataMaterialSelected.name}}</h2>
+                      <button
+                        mat-button
+                        class="yellow-button custom-continue"
+                        (click)="onSelectMaterial($event, dataMaterialSelected.name)"
+                      >
+                        Seleccionar
+                      </button>
+                      <p class="description">
+                        {{dataMaterialSelected.description}}
+                      </p>
+                      <div class="item">{{dataMaterialSelected.registrationNumber}}</div>
+                      <div class="item">{{dataMaterialSelected.publicationDate}}</div>
+                      <div class="item">{{dataMaterialSelected.utilLife}}</div>
                     </div>
                   </mat-tab>
                 </mat-tab-group>

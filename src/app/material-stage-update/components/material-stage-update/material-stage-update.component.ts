@@ -7,6 +7,7 @@ import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { AnalisisService } from 'src/app/core/services/analisis/analisis.service';
 
 export interface Material {
   id: number;
@@ -55,20 +56,27 @@ export class MaterialStageUpdateComponent implements OnInit {
   vidaUtilSeleccionadoId: any;
   dataProject: any;
   materialsList: any;
+  showEPD: boolean;
+  EPDS: any;
+  showMaterial: boolean;
 
   myControl = new FormControl();
   options: Material[];
   filteredOptions: Observable<Material[]>;
 
+  displayedColumns: string[] = ['Standard', 'Potencial', 'Valor', 'Unidad'];
+
   constructor(
     private materialsService: MaterialsService,
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
+    private analisis: AnalisisService,
     private router: Router
   ) {
     this.materialsService.getMaterials().subscribe((data) => {
       this.materialsList = data;
       this.options = this.materialsList;
+      this.EPDS = data.filter((res) => res.database_from === 'EPDs');
     });
     this.projectsService.getMaterialSchemeProyect().subscribe((data) => {
       const listData2 = [];
@@ -118,6 +126,7 @@ export class MaterialStageUpdateComponent implements OnInit {
     );
 
     this.selectedMaterial = false;
+    this.showEPD = false;
 
     this.sheetNames = [
       'Cimentación',
@@ -222,6 +231,7 @@ export class MaterialStageUpdateComponent implements OnInit {
     event.stopPropagation();
     this.selectedMaterial = false;
     this.showSearch = false;
+    this.showMaterial = false;
     // let originId = 1;
     // origin === 'revit-user' ? originId = 1 : originId = 2;
     const listMateriales = [];
@@ -412,6 +422,20 @@ export class MaterialStageUpdateComponent implements OnInit {
     });
   }
 
+  showDetailEPD(event, material) {
+    event.stopPropagation();
+    this.showEPD = true;
+    this.dataMaterialSelected.name = material.name_material;
+    this.dataMaterialSelected.id = material.id;
+    this.dataMaterialSelected.description =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.analisis.getMaterialSchemeData().subscribe((msds) => {
+      const msd = msds.filter((msd) => msd.material_id === material.id);
+      console.log(msd);
+      this.dataMaterialSelected.msd = msd;
+    });
+  }
+
   changeReplaces(vidaUtil) {
     let replaces = 0;
     replaces = parseInt(this.vidaUtilSeleccionado, 10) / parseInt(vidaUtil, 10);
@@ -427,6 +451,12 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onReturnListMaterials() {
     this.selectedMaterial = false;
+    this.showSearch = false;
+    this.showMaterial = false;
+  }
+
+  returnMaterialData() {
+    this.selectedMaterial = true;
     this.showSearch = false;
   }
 
@@ -457,5 +487,32 @@ export class MaterialStageUpdateComponent implements OnInit {
   goToSearchInfo() {
     this.showSearch = true;
     this.selectedMaterial = false;
+    this.showMaterial = false;
+    this.showEPD = false;
+  }
+
+  returnListEpds() {
+    this.showEPD = false;
+  }
+
+  onSelectMaterial(event, material) {
+    event.stopPropagation();
+    this.dataMaterialSelected.materialSelectedDB = material;
+    console.log(this.dataMaterialSelected.materialSelectedDB);
+  }
+
+  showDetailMaterial(event, material) {
+    event.stopPropagation();
+    this.showMaterial = true;
+    this.dataMaterialSelected.name = material.name_material;
+    this.dataMaterialSelected.description =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.dataMaterialSelected.registrationNumber = 'S-P-01927';
+    this.dataMaterialSelected.publicationDate = '202-04-01';
+    this.dataMaterialSelected.utilLife = '2025-04-01';
+  }
+
+  returnListDB() {
+    this.showMaterial = false;
   }
 }
