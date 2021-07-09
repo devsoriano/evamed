@@ -286,20 +286,19 @@ div.step-four div.mdl-stepper-circle {
 .header-form {
   margin-top: 4px;
   margin-left: 14px;
-
-  span.return {
-    font-weight: 700;
-    font-size: 18px;
-    color: #92be00;
-    cursor: pointer;
-  }
-
-  span.title {
-    font-weight: 600;
-    font-size: 14px;
-  }
 }
 
+span.return {
+  font-weight: 700;
+  font-size: 18px;
+  color: #92be00;
+  cursor: pointer;
+}
+
+span.title {
+  font-weight: 600;
+  font-size: 14px;
+}
 .subtitle {
   font-weight: 600;
   font-size: 14px;

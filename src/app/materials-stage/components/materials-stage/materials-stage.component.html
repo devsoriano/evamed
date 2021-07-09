@@ -242,7 +242,7 @@
           #materials
           [multiple]="false"
           (selectionChange)="onSelectedMaterial($event, materials.selectedOptions)"
-          *ngIf="selectedMaterial===false && showSearch===false"
+          *ngIf="!selectedMaterial && !showSearch"
         >
           <mat-list-option *ngFor="let material of listMateriales | keyvalue" [value]="material">
             <div class="table-materials">
@@ -270,8 +270,7 @@
         </mat-selection-list>
 
         <!--Form material-->
-        <div class="container-details" *ngIf="selectedMaterial===true">
-          <!-- <a class="return" (click)="onReturnListMaterials()"> < </a> -->
+        <div class="container-details" *ngIf="selectedMaterial">
           <div class="header-form">
             <span class="return" (click)="onReturnListMaterials()"> < </span>
             <span class="title">Edición de material</span>
@@ -494,10 +493,11 @@
         </div>
 
         <!--Form search -->
-        <div class="container-details" *ngIf="showSearch===true">
+        <div class="container-details" *ngIf="showSearch">
           <div class="form-search">
             <div class="Row">
               <div class="Col">
+                <span class="return" (click)="returnMaterialData()"> < </span>
                 <h3>Realiza tu búsqueda</h3>
               </div>
             </div>
@@ -526,7 +526,7 @@
               <div class="Col">
                 <mat-tab-group mat-align-tabs="start">
                   <mat-tab label="EPD's">
-                    <div *ngIf="showEPD===false">
+                    <div *ngIf="!showEPD">
                       <div *ngFor="let item of EPDS" >
                         <div (click)="showDetailEPD($event, item)" class="item-material">
                           {{item.name_material}} <img src="../../../../assets/logos/EPD.png" class="logoList" alt="">
@@ -534,6 +534,7 @@
                       </div>
                     </div>
                     <div class="material-target" *ngIf="showEPD">
+                      <span class="return" (click)="returnListEpds()"> < </span>
                       <h2 class="title">{{dataMaterialSelected.name}}</h2>
                       <p>
                         <button
@@ -567,7 +568,7 @@
                     </div>
                   </mat-tab>
                   <mat-tab label="Base de datos">
-                    <div *ngIf="showMaterial===false">
+                    <div *ngIf="!showMaterial">
                       <div *ngFor="let item of materialsList" >
                         <div (click)="showDetailMaterial($event, item)" class="item-material">
                           {{item.name_material}}
@@ -575,7 +576,15 @@
                       </div>
                     </div>
                     <div class="material-target" *ngIf="showMaterial">
+                      <span class="return" (click)="returnMaterialData()"> < </span>
                       <h2 class="title">{{dataMaterialSelected.name}}</h2>
+                      <button
+                        mat-button
+                        class="yellow-button custom-continue"
+                        (click)="onSelectMaterial($event, dataMaterialSelected.name)"
+                      >
+                        Seleccionar
+                      </button>
                       <p class="description">
                         {{dataMaterialSelected.description}}
                       </p>
