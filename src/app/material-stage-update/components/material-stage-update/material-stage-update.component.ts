@@ -341,10 +341,12 @@ export class MaterialStageUpdateComponent implements OnInit {
         }
       )
       .subscribe((data) => {
-        console.log(
-          'Update data-----------------------------------------------'
-        );
-        console.log(data);
+        //console.log(
+        //  'Update data-----------------------------------------------'
+        //);
+
+        //console.log(data);
+        location.reload();
       });
   }
 
