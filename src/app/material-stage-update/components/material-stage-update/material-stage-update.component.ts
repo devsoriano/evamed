@@ -344,9 +344,8 @@ export class MaterialStageUpdateComponent implements OnInit {
         //console.log(
         //  'Update data-----------------------------------------------'
         //);
-
         //console.log(data);
-        location.reload();
+        // location.reload();
       });
   }
 
