@@ -250,7 +250,7 @@ div.step-four div.mdl-stepper-circle {
 
 .form-search {
   margin-top: 20px;
-  width: 90%;
+  width: 96%;
 }
 
 .button-read {
@@ -307,7 +307,8 @@ span.title {
 }
 
 .item-material {
-  margin: 20px 15px;
+  margin: 2px 15px;
+  border-bottom: 1px solid #cbcbcb;
   padding: 5px;
 
   &:hover {
@@ -318,4 +319,8 @@ span.title {
 
 .logoList {
   height: 16px;
+}
+
+table.mat-elevation-z8.data-info.mat-table {
+  display: contents !important;
 }

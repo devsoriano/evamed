@@ -59,6 +59,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   showEPD: boolean;
   EPDS: any;
   showMaterial: boolean;
+  showListMaterials: boolean;
 
   myControl = new FormControl();
   options: Material[];
@@ -127,6 +128,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
     this.selectedMaterial = false;
     this.showEPD = false;
+    this.showListMaterials = true;
 
     this.sheetNames = [
       'Cimentación',
@@ -511,6 +513,15 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.dataMaterialSelected.registrationNumber = 'S-P-01927';
     this.dataMaterialSelected.publicationDate = '202-04-01';
     this.dataMaterialSelected.utilLife = '2025-04-01';
+  }
+
+  showMexicanIuh(event) {
+    event.stopPropagation();
+    this.showListMaterials = false;
+  }
+
+  returnDatabaseList() {
+    this.showListMaterials = true;
   }
 
   returnListDB() {
