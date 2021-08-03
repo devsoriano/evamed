@@ -903,16 +903,46 @@
                   </mat-tab>
 
                   <mat-tab label="Base de datos">
-                    <div *ngIf="!showMaterial">
+                    <div *ngIf="showListMaterials">
+                      <div
+                        (click)="showMexicanIuh($event)"
+                        class="item-material"
+                      >
+                        <img
+                          src="../../../../assets/logos/MEXICANIUH.png"
+                          class="logoList"
+                          alt=""
+                        />
+                      </div>
+                      <div class="item-material">
+                        <img
+                          src="../../../../assets/logos/EPIC.png"
+                          class="logoList"
+                          alt=""
+                        />
+                      </div>
+                      <div class="item-material">ECOINVENT</div>
+                    </div>
+
+                    <div *ngIf="!showMaterial && !showListMaterials">
+                      <span class="return" (click)="returnDatabaseList()">
+                        <
+                      </span>
                       <div *ngFor="let item of materialsList">
                         <div
                           (click)="showDetailMaterial($event, item)"
                           class="item-material"
                         >
                           {{ item.name_material }}
+                          <img
+                            src="../../../../assets/logos/MEXICANIUH.png"
+                            class="logoList"
+                            alt=""
+                          />
                         </div>
                       </div>
                     </div>
+
                     <div class="material-target" *ngIf="showMaterial">
                       <span class="return" (click)="returnListDB()"> < </span>
                       <h2 class="title">{{ dataMaterialSelected.name }}</h2>

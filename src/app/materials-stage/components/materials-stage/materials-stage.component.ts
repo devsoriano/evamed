@@ -67,6 +67,7 @@ export class MaterialsStageComponent implements OnInit {
   SCseleccionado: string = '';
   materialData: any;
   EPDS: any;
+  showListMaterials: boolean;
 
   myControl = new FormControl();
   options: Material[];
@@ -111,6 +112,7 @@ export class MaterialsStageComponent implements OnInit {
     this.showSearch = false;
     this.showMaterial = false;
     this.showEPD = false;
+    this.showListMaterials = true;
 
     const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
     const data = JSON.parse(sessionStorage.getItem('dataProject'));
@@ -663,6 +665,15 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.registrationNumber = 'S-P-01927';
     this.dataMaterialSelected.publicationDate = '202-04-01';
     this.dataMaterialSelected.utilLife = '2025-04-01';
+  }
+
+  showMexicanIuh(event) {
+    event.stopPropagation();
+    this.showListMaterials = false;
+  }
+
+  returnDatabaseList() {
+    this.showListMaterials = true;
   }
 
   showDetailEPD(event, material) {
