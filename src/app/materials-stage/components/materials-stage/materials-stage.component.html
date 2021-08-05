@@ -727,7 +727,7 @@
                         class="mat-elevation-z8 data-info"
                       >
                         <ng-container matColumnDef="Standard">
-                          <th mat-header-cell *matHeaderCellDef>Standard</th>
+                          <th mat-header-cell *matHeaderCellDef>Impacto</th>
                           <td mat-cell *matCellDef="let element">
                             <ng-container *ngIf="element.standard_id === 1">
                               A1 - A3
@@ -745,7 +745,9 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Potencial">
-                          <th mat-header-cell *matHeaderCellDef>Potencial</th>
+                          <th mat-header-cell *matHeaderCellDef>
+                            Categoría de impacto ambiental
+                          </th>
                           <td mat-cell *matCellDef="let element">
                             <ng-container
                               *ngIf="element.potential_type_id === 1"
@@ -821,7 +823,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Valor">
-                          <th mat-header-cell *matHeaderCellDef>Valor</th>
+                          <th mat-header-cell *matHeaderCellDef>Potencial</th>
                           <td mat-cell *matCellDef="let element">
                             {{ element.value | slice: 0:9 }}
                           </td>
@@ -904,41 +906,44 @@
 
                   <mat-tab label="Base de datos">
                     <div *ngIf="showListMaterials">
-                      <div
-                        (click)="showMexicanIuh($event)"
-                        class="item-material"
-                      >
-                        <img
-                          src="../../../../assets/logos/MEXICANIUH.png"
-                          class="logoList"
-                          alt=""
-                        />
+                      <div class="item-material" (click)="showMexicanIuh()">
+                        mexicaniuh
                       </div>
-                      <div class="item-material">
-                        <img
-                          src="../../../../assets/logos/EPIC.png"
-                          class="logoList"
-                          alt=""
-                        />
-                      </div>
-                      <div class="item-material">ECOINVENT</div>
+                      <div class="item-material" (click)="showEPIC()">EPiC</div>
                     </div>
 
-                    <div *ngIf="!showMaterial && !showListMaterials">
+                    <div
+                      *ngIf="
+                        !showMexican && !showMaterial && !showListMaterials
+                      "
+                    >
                       <span class="return" (click)="returnDatabaseList()">
                         <
                       </span>
-                      <div *ngFor="let item of materialsList">
+                      <div *ngFor="let item of EPiC">
                         <div
                           (click)="showDetailMaterial($event, item)"
                           class="item-material"
                         >
-                          {{ item.name_material }}
-                          <img
-                            src="../../../../assets/logos/MEXICANIUH.png"
-                            class="logoList"
-                            alt=""
-                          />
+                          {{ item.name_material }} -
+                          <span class="epic">EPiC</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      *ngIf="showMexican && !showMaterial && !showListMaterials"
+                    >
+                      <span class="return" (click)="returnDatabaseList()">
+                        <
+                      </span>
+                      <div *ngFor="let item of mexicaniuh">
+                        <div
+                          (click)="showDetailMaterial($event, item)"
+                          class="item-material"
+                        >
+                          {{ item.name_material }} -
+                          <span class="epic">mexicaniuh</span>
                         </div>
                       </div>
                     </div>
@@ -958,15 +963,6 @@
                       <p class="description">
                         {{ dataMaterialSelected.description }}
                       </p>
-                      <div class="item">
-                        {{ dataMaterialSelected.registrationNumber }}
-                      </div>
-                      <div class="item">
-                        {{ dataMaterialSelected.publicationDate }}
-                      </div>
-                      <div class="item">
-                        {{ dataMaterialSelected.utilLife }}
-                      </div>
                     </div>
                   </mat-tab>
                 </mat-tab-group>

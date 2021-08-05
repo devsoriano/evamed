@@ -322,5 +322,17 @@ span.title {
 }
 
 table.mat-elevation-z8.data-info.mat-table {
-  display: contents !important;
+  width: max-content !important;
+  border: 1px solid #97969c !important;
+}
+
+.epic {
+  color: #92be00;
+  font-weight: 800;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+  padding-right: 24px !important;
 }
