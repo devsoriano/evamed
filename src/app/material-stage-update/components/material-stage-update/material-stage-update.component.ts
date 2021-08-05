@@ -60,6 +60,9 @@ export class MaterialStageUpdateComponent implements OnInit {
   EPDS: any;
   showMaterial: boolean;
   showListMaterials: boolean;
+  showMexican: boolean;
+  EPiC: any;
+  mexicaniuh: any;
 
   myControl = new FormControl();
   options: Material[];
@@ -77,7 +80,20 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.materialsService.getMaterials().subscribe((data) => {
       this.materialsList = data;
       this.options = this.materialsList;
-      this.EPDS = data.filter((res) => res.database_from === 'EPDs');
+      const EPDS = data.filter((res) => res.database_from === 'EPDs');
+      const EPIC = data.filter((res) => res.database_from === 'EPiC');
+      const mexicaniuh = data.filter(
+        (res) => res.database_from === 'mexicaniuh'
+      );
+      this.EPDS = EPDS.sort((a, b) =>
+        a.name_material > b.name_material ? 1 : -1
+      );
+      this.EPiC = EPIC.sort((a, b) =>
+        a.name_material > b.name_material ? 1 : -1
+      );
+      this.mexicaniuh = mexicaniuh.sort((a, b) =>
+        a.name_material > b.name_material ? 1 : -1
+      );
     });
     this.projectsService.getMaterialSchemeProyect().subscribe((data) => {
       const listData2 = [];
@@ -128,6 +144,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
     this.selectedMaterial = false;
     this.showEPD = false;
+    this.showMexican = false;
     this.showListMaterials = true;
 
     this.sheetNames = [
@@ -515,9 +532,13 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.dataMaterialSelected.utilLife = '2025-04-01';
   }
 
-  showMexicanIuh(event) {
-    event.stopPropagation();
+  showEPIC() {
     this.showListMaterials = false;
+  }
+
+  showMexicanIuh() {
+    this.showListMaterials = false;
+    this.showMexican = true;
   }
 
   returnDatabaseList() {
