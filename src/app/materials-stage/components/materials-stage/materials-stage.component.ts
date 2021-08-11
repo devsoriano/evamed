@@ -718,6 +718,7 @@ export class MaterialsStageComponent implements OnInit {
     event.stopPropagation();
     this.dataMaterialSelected.materialSelectedDB = material;
     console.log(this.dataMaterialSelected.materialSelectedDB);
+    this.returnMaterialData();
   }
 
   returnListEpds() {
