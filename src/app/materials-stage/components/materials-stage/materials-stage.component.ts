@@ -416,45 +416,6 @@ export class MaterialsStageComponent implements OnInit {
                 .subscribe((material) => {
                   material.map((materialData) => {
                     if (materialData.name_material === data.Material) {
-                      if (
-                        data.paisSeleccionado !== '' ||
-                        data.paisSeleccionado !== undefined
-                      ) {
-                        if (data.paisSeleccionado === 1) {
-                          // México
-                          //lógica para distancia de ciudades
-                          this.catalogsService
-                            .getLocalDistances()
-                            .subscribe((localDistance) => {
-                              localDistance.map((item) => {
-                                if (
-                                  item.city_id_end ===
-                                    this.ciudadOrigenSeleccionada &&
-                                  item.city_id_origin ===
-                                    data.ciudadSeleccionada
-                                ) {
-                                  this.distanciaInicial = parseInt(
-                                    item.distance,
-                                    10
-                                  );
-                                }
-                                if (
-                                  item.city_id_origin ===
-                                    this.ciudadOrigenSeleccionada &&
-                                  item.city_id_end === data.ciudadSeleccionada
-                                ) {
-                                  this.distanciaInicial = parseInt(
-                                    item.distance,
-                                    10
-                                  );
-                                }
-                              });
-                            });
-                        }
-                      }
-
-                      console.log('entra a datos a guardar**************');
-                      console.log(data);
                       this.projectsService
                         .addSchemeProject({
                           construction_system: data.Sistema_constructivo,
@@ -466,10 +427,7 @@ export class MaterialsStageComponent implements OnInit {
                           origin_id: 1,
                           section_id: parseInt(key, 10) + 1,
                           value: null,
-                          distance_init:
-                            this.distanciaInicial === undefined
-                              ? 0
-                              : this.distanciaInicial,
+                          distance_init: 0,
                           distance_end: 0,
                           replaces:
                             data.reemplazos === '' ||
@@ -477,22 +435,10 @@ export class MaterialsStageComponent implements OnInit {
                               ? 0
                               : data.reemplazos,
                           city_id_origin: this.ciudadOrigenSeleccionada,
-                          state_id_origin:
-                            data.estadoSeleccionado === undefined
-                              ? 1
-                              : data.estadoSeleccionado,
-                          city_id_end:
-                            data.ciudadSeleccionada === undefined
-                              ? 1
-                              : data.ciudadSeleccionada,
-                          transport_id_origin:
-                            data.transporteLocal === undefined
-                              ? 1
-                              : data.transporteLocal,
-                          transport_id_end:
-                            data.transporteExtrangero === undefined
-                              ? 1
-                              : data.transporteExtrangero,
+                          state_id_origin: 1,
+                          city_id_end: 1,
+                          transport_id_origin: 1,
+                          transport_id_end: 1,
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
@@ -520,43 +466,6 @@ export class MaterialsStageComponent implements OnInit {
                 .subscribe((material) => {
                   material.map((materialData) => {
                     if (materialData.name_material === data.Material) {
-                      if (
-                        data.paisSeleccionado !== '' ||
-                        data.paisSeleccionado !== undefined
-                      ) {
-                        if (data.paisSeleccionado === 1) {
-                          // México
-                          //lógica para distancia de ciudades
-                          this.catalogsService
-                            .getLocalDistances()
-                            .subscribe((localDistance) => {
-                              localDistance.map((item) => {
-                                if (
-                                  item.city_id_end ===
-                                    this.ciudadOrigenSeleccionada &&
-                                  item.city_id_origin ===
-                                    data.ciudadSeleccionada
-                                ) {
-                                  this.distanciaInicial = parseInt(
-                                    item.distance,
-                                    10
-                                  );
-                                }
-                                if (
-                                  item.city_id_origin ===
-                                    this.ciudadOrigenSeleccionada &&
-                                  item.city_id_end === data.ciudadSeleccionada
-                                ) {
-                                  this.distanciaInicial = parseInt(
-                                    item.distance,
-                                    10
-                                  );
-                                }
-                              });
-                            });
-                        }
-                      }
-
                       this.projectsService
                         .addSchemeProject({
                           construction_system: data.Sistema_constructivo,
@@ -565,13 +474,10 @@ export class MaterialsStageComponent implements OnInit {
                           provider_distance: 0,
                           material_id: materialData.id,
                           project_id: projectId,
-                          origin_id: 2,
+                          origin_id: 1,
                           section_id: parseInt(key, 10) + 1,
                           value: null,
-                          distance_init:
-                            this.distanciaInicial === undefined
-                              ? 0
-                              : this.distanciaInicial,
+                          distance_init: 0,
                           distance_end: 0,
                           replaces:
                             data.reemplazos === '' ||
@@ -579,29 +485,16 @@ export class MaterialsStageComponent implements OnInit {
                               ? 0
                               : data.reemplazos,
                           city_id_origin: this.ciudadOrigenSeleccionada,
-                          state_id_origin:
-                            data.estadoSeleccionado === undefined
-                              ? 1
-                              : data.estadoSeleccionado,
-                          city_id_end:
-                            data.ciudadSeleccionada === undefined
-                              ? 1
-                              : data.ciudadSeleccionada,
-                          transport_id_origin:
-                            data.transporteLocal === undefined
-                              ? 1
-                              : data.transporteLocal,
-                          transport_id_end:
-                            data.transporteExtrangero === undefined
-                              ? 1
-                              : data.transporteExtrangero,
+                          state_id_origin: 1,
+                          city_id_end: 1,
+                          transport_id_origin: 1,
+                          transport_id_end: 1,
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
                         .subscribe((data) => {
                           console.log('Success Modelo Revit o Usuario!');
                           console.log(data);
-                          this.router.navigateByUrl('construction-stage');
                         });
                     }
                   });
