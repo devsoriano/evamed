@@ -467,8 +467,16 @@ export class MaterialsStageComponent implements OnInit {
                           origin_id: 1,
                           section_id: parseInt(key, 10) + 1,
                           value: null,
-                          distance_init: 0,
-                          distance_end: 0,
+                          distance_init:
+                            data.distancia_1 === '' ||
+                            data.distancia_1 === undefined
+                              ? 1
+                              : parseInt(data.distancia_1, 10),
+                          distance_end:
+                            data.distancia_2 === '' ||
+                            data.distancia_2 === undefined
+                              ? 1
+                              : parseInt(data.distancia_2, 10),
                           replaces:
                             data.reemplazos === '' ||
                             data.reemplazos === undefined
@@ -477,8 +485,16 @@ export class MaterialsStageComponent implements OnInit {
                           city_id_origin: this.ciudadOrigenSeleccionada,
                           state_id_origin: 1,
                           city_id_end: 1,
-                          transport_id_origin: 1,
-                          transport_id_end: 1,
+                          transport_id_origin:
+                            data.transporteLocal === '' ||
+                            data.transporteLocal === undefined
+                              ? 1
+                              : parseInt(data.transporteLocal, 10),
+                          transport_id_end:
+                            data.transporteExtrangero === '' ||
+                            data.transporteExtrangero === undefined
+                              ? 1
+                              : parseInt(data.transporteExtrangero, 10),
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
