@@ -236,23 +236,6 @@ export class MaterialsStageComponent implements OnInit {
   onSelectedMaterial(event, value) {
     this.dataMaterialSelected = value.selected[0]?.value.value;
 
-    this.dataMaterialSelected.paisSeleccionado === undefined
-      ? (this.dataMaterialSelected.paisSeleccionado = 1)
-      : this.dataMaterialSelected.paisSeleccionado;
-
-    this.dataMaterialSelected.estadoSeleccionado === undefined
-      ? (this.dataMaterialSelected.estadoSeleccionado = parseInt(
-          sessionStorage.getItem('estadoSeleccionado')
-        ))
-      : this.dataMaterialSelected.estadoSeleccionado;
-
-    this.selectState(parseInt(sessionStorage.getItem('estadoSeleccionado')));
-
-    this.dataMaterialSelected.ciudadSeleccionada === undefined
-      ? (this.dataMaterialSelected.ciudadSeleccionada =
-          this.ciudadOrigenSeleccionada)
-      : this.dataMaterialSelected.ciudadSeleccionada;
-
     this.dataMaterialSelected.vidaUtil === undefined
       ? (this.dataMaterialSelected.vidaUtil = parseInt(
           this.vidaUtilSeleccionado,
@@ -264,28 +247,17 @@ export class MaterialsStageComponent implements OnInit {
       ? (this.dataMaterialSelected.reemplazos = 0)
       : this.dataMaterialSelected.reemplazos;
 
-    this.catalogsService.getCities().subscribe((data) => {
-      data.map((item) => {
-        if (item.state_id === this.dataMaterialSelected.estadoSeleccionado) {
-          this.catalogoCiudades.push(item);
-        }
-      });
-    });
-
     this.catalogoTransportesLocal = [];
     this.catalogsService.getTransports().subscribe((data) => {
-      // if ( this.dataMaterialSelected.paisSeleccionado === 1 ) {
       data.map((item) => {
-        if (item.id >= 3) {
-          this.catalogoTransportesLocal.push(item);
-        }
+        this.catalogoTransportesLocal.push(item);
       });
-      // }
     });
 
-    this.dataMaterialSelected.paisSeleccionado === 1
-      ? (this.dataMaterialSelected.transporteLocal = 3)
-      : this.dataMaterialSelected.transporteLocal;
+    //console.log('transporte local');
+    //console.log(this.dataMaterialSelected.transporteLocal);
+    //console.log('transporte extrangero');
+    //console.log(this.dataMaterialSelected.transporteExtrangero);
 
     this.materialsList.map((material) => {
       if (material.name_material === this.dataMaterialSelected.Material) {
@@ -351,9 +323,9 @@ export class MaterialsStageComponent implements OnInit {
           if (typeTransport === 'terreste') {
             this.catalogsService.getTransports().subscribe((data) => {
               data.map((item) => {
-                if (item.id >= 3) {
-                  this.catalogoTransportesExtrangero.push(item);
-                }
+                // if (item.id >= 3) {
+                this.catalogoTransportesExtrangero.push(item);
+                // }
               });
             });
           } else {
@@ -415,6 +387,8 @@ export class MaterialsStageComponent implements OnInit {
                 .searchMaterial(data.Material)
                 .subscribe((material) => {
                   material.map((materialData) => {
+                    console.log(materialData);
+                    console.log(data);
                     if (materialData.name_material === data.Material) {
                       this.projectsService
                         .addSchemeProject({
@@ -427,8 +401,16 @@ export class MaterialsStageComponent implements OnInit {
                           origin_id: 1,
                           section_id: parseInt(key, 10) + 1,
                           value: null,
-                          distance_init: 0,
-                          distance_end: 0,
+                          distance_init:
+                            data.distancia_1 === '' ||
+                            data.distancia_1 === undefined
+                              ? 1
+                              : parseInt(data.distancia_1, 10),
+                          distance_end:
+                            data.distancia_2 === '' ||
+                            data.distancia_2 === undefined
+                              ? 1
+                              : parseInt(data.distancia_2, 10),
                           replaces:
                             data.reemplazos === '' ||
                             data.reemplazos === undefined
@@ -437,8 +419,16 @@ export class MaterialsStageComponent implements OnInit {
                           city_id_origin: this.ciudadOrigenSeleccionada,
                           state_id_origin: 1,
                           city_id_end: 1,
-                          transport_id_origin: 1,
-                          transport_id_end: 1,
+                          transport_id_origin:
+                            data.transporteLocal === '' ||
+                            data.transporteLocal === undefined
+                              ? 1
+                              : parseInt(data.transporteLocal, 10),
+                          transport_id_end:
+                            data.transporteExtrangero === '' ||
+                            data.transporteExtrangero === undefined
+                              ? 1
+                              : parseInt(data.transporteExtrangero, 10),
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
