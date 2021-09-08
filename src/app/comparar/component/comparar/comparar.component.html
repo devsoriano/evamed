@@ -139,7 +139,10 @@
             <ng-template #barGraphDos>
             </ng-template>
             <p>
-              Elementos constructivos
+              Elementos constructivos  
+            </p>
+            <p>
+              {{impactoSeleccionadoElementoConstructivo}}
             </p>
             <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
               <div id="{{idsIconosElementos[item.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
@@ -152,16 +155,23 @@
             </div>
           </div>
           <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
-            <a (click)="DispercionAP(idsImgEdificios[i],item.id)">
-              <p>{{item.Nombre}}</p>
-              <p>Visuaización de GWP por sistema constructivo</p>
-              <img src="../../../../assets/images/8.png">
-            </a>
+            <button (click)="DispercionAP(idsImgEdificios[i],item.id)">{{item.Nombre}}</button>
           </div>
+          <!--
+            <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
+              <a (click)="DispercionAP(idsImgEdificios[i],item.id)">
+                <p>{{item.Nombre}}</p>
+                <p>Visuaización de GWP por sistema constructivo</p>
+                <img src="../../../../assets/images/8.png">
+              </a>
+            </div>
+          -->
           <div>
             <div *ngIf="show_Dispercion" class="last-div-section-two">
               <div>
-                <p>Disperción AP por materiales de Cimentación </p>
+                <p> {{nombreProyectoElegidoSeleccionadoElementos}} </p>
+                <p> {{elementoSeleccionadoMostrado}} </p>
+                <p> Potenciales impactos ambientales de materiales de construcción </p>
               </div>
               <div class="seccion">
                 <div>

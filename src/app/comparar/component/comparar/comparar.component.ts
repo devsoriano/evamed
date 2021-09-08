@@ -16,6 +16,7 @@ import { Calculos } from '../../../calculos/calculos'
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
 import { CalculosTercerSeccion } from 'src/app/calculos/calculos-tercer-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { CssSelector } from '@angular/compiler';
 
 
 interface impactos_menu{
@@ -136,6 +137,8 @@ export class CompararComponent implements OnInit {
   proyectosMostrados =[];
   idsIconosElementos = {};
   imgSeleccionadaElemento = ' ';
+  nombreProyectoElegidoSeleccionadoElementos = ' ';
+  elementoSeleccionadoMostrado=' ';
   impactoSeleccionadoElementoConstructivo = ' ';
   iconos={'Producción': 'visibility', 'Construccion': 'visibility', 'Uso': 'visibility', 'FinDeVida': 'visibility'}
   iconosCambioElementos = {
@@ -321,6 +324,7 @@ export class CompararComponent implements OnInit {
     let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
     let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
     let analisisPieTres = this.getAnalisisElementos(id);
+    console.log(analisisBarDos)
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -1191,6 +1195,13 @@ export class CompararComponent implements OnInit {
           this.idProyectoSeleccionadoImagen=proyectoID;
           document.getElementById(item).className = 'img-edificio-seleccionado';
           flagMostrarInfo = true;
+          this.proyectosMostrados_elementos.forEach(element => {
+            if(element.idproyecto == proyectoID){
+              this.nombreProyectoElegidoSeleccionadoElementos = element.nombre
+            }
+          });
+          let elemento = this.sectionList.filter(({id}) => id == Number(this.elementoContructivoSelecionado))
+          this.elementoSeleccionadoMostrado = elemento[0]['name_section']
         }else{
           if(item != this.imgSeleccionadaElemento){
             document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
@@ -1198,9 +1209,17 @@ export class CompararComponent implements OnInit {
             this.imgSeleccionadaElemento = item.toString();
             this.idProyectoSeleccionadoImagen=proyectoID;
             flagMostrarInfo = true;
+            this.proyectosMostrados_elementos.forEach(element => {
+              if(element.idproyecto == proyectoID){
+                this.nombreProyectoElegidoSeleccionadoElementos = element.nombre
+              }
+            });
+            let elemento = this.sectionList.filter(({id}) => id == Number(this.elementoContructivoSelecionado))
+            this.elementoSeleccionadoMostrado = elemento[0]['name_section']
           }else{
             this.show_Dispercion=false;
             document.getElementById(item).className = 'img-edificio';
+            this.nombreProyectoElegidoSeleccionadoElementos = ' ';
             this.imgSeleccionadaElemento = ' ';
             this.idProyectoSeleccionadoImagen=' ';
             this.banderaTipoGraficaDispercion=true;
@@ -1346,9 +1365,9 @@ export class CompararComponent implements OnInit {
       }
       let auxnombre=this.calculos.ajustarNombre(aux);
       this.nivelesExistententesElementosConstructivos=$event['niveles'][auxnombre];
-      this.coloresExistententesElementosConstructivos=$event['color'];
-      this.graficabar(aux);
-      this.asignarColorGraficaDispercion();
+        this.coloresExistententesElementosConstructivos=$event['color'];
+        this.graficabar(aux);
+        this.asignarColorGraficaDispercion();
     }else{
       this.graficabar(null);
     }
@@ -1369,6 +1388,7 @@ export class CompararComponent implements OnInit {
 
   graficabar(item){
     if(Number.isInteger(item)){
+      //En caso de oprimir un elemento constructivo 
       if(this.elementoContructivoSelecionado === ' '){
         this.elementoContructivoSelecionado = item.toString();
         if(this.impactoSeleccionadoElementoConstructivo === ' '){
@@ -1376,6 +1396,7 @@ export class CompararComponent implements OnInit {
           document.getElementById("texto".concat(item.toString())).className = 'espacio-seleccionado';
           this.iniciaBarrasSeccionDos();
         }else{
+          //Opción con un impacto elemento seleccionado y todos los botones prendidos
           Object.keys(this.iconosElementosConstrucivos).forEach(element => {
             if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
               if(element === item.toString()){
@@ -1385,20 +1406,26 @@ export class CompararComponent implements OnInit {
               }
             }
           })
-          //Actualizar grafa para que se ilumen el elemento solo del impacto seleccionado
+          //Actualizar grafica para que se ilumen el elemento solo del impacto seleccionado
           this.iniciaBarrasSeccionDos();
         }
       }else{
+        //En caso de tener un elemento constructivo ya seleccionado
         if(item != this.elementoContructivoSelecionado){
+          //Cambio de elemento seleccionado
           document.getElementById("texto".concat(this.elementoContructivoSelecionado)).className = 'espacio-sin-selecciomar';
           document.getElementById("texto".concat(item.toString())).className = 'espacio-seleccionado';
           this.elementoContructivoSelecionado = item.toString();
           this.iniciaBarrasSeccionDos();
         }else{
+          //quitar la selección del elemento constructivo
           document.getElementById("texto".concat(item.toString())).className = 'espacio-sin-selecciomar';
           this.elementoContructivoSelecionado = ' ';
+          this.impactoSeleccionadoElementoConstructivo = ' ';
+          this.impactoSeleccionadoElementoConstructivoGrafica = null;
           this.iniciaBarrasSeccionDos();
           if(this.imgSeleccionadaElemento != ' '){
+            //Quitar la selección dela imagen seleccionado y que se desactiven las graficas de las potencias de impactos
             document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
             this.imgSeleccionadaElemento = ' ';
             this.show_Dispercion=false;
@@ -1406,8 +1433,11 @@ export class CompararComponent implements OnInit {
         }
       }
     }else{
+      //cuando se presiona un impacto ambiental
       if(item === null){
+        //Se elimina la selección del impacto ambiental
         this.impactoSeleccionadoElementoConstructivo = ' ';
+        this.impactoSeleccionadoElementoConstructivoGrafica = null;
         Object.keys(this.iconosElementosConstrucivos).forEach(element => {
           if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
             document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
@@ -1415,11 +1445,13 @@ export class CompararComponent implements OnInit {
         })
         this.elementoContructivoSelecionado = ' ';
         if(this.imgSeleccionadaElemento != ' '){
+          //Quitar la selección dela imagen seleccionado y que se desactiven las graficas de las potencias de impactos
           document.getElementById(this.imgSeleccionadaElemento).className = 'img-edificio';
           this.imgSeleccionadaElemento = ' ';
           this.show_Dispercion=false;
         }
       }else{
+        //seleccionar un impacto ambiental
         if(this.impactoSeleccionadoElementoConstructivo === ' '){
           this.impactoSeleccionadoElementoConstructivo = item;
           if(this.elementoContructivoSelecionado === ' '){
@@ -1430,10 +1462,11 @@ export class CompararComponent implements OnInit {
               }
             })
           }else{
-            //Opción elemento constructivo seleccionado;
-            //Actualizar grafa para que se ilumen el elemento solo del impacto seleccionado
+            //recetear el impacto constructivo seleccionado
+            this.elementoContructivoSelecionado = ' ';
           }
         }else{
+          //cambio de selección en el impacto ambiental
           this.impactoSeleccionadoElementoConstructivo = item;
         }
       }

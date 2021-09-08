@@ -181,6 +181,7 @@ export class BarChartComponent implements OnInit {
     this.barChartData=[];
     this.ElementosEnNiveles=[];
     if(this.Bandera_bar){
+      //Sección para la gráfica de barras mostradas en los impactos ambientales por elementos constructivos
       let numElementos = 0;
       this.inputProyects.forEach(proyecto => {
         const auxData = {};
