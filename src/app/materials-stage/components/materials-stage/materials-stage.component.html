@@ -469,74 +469,76 @@
             </div>
             <div class="Row">
               <div class="Col">
-                <div class="subtitle">
-                  Transporte de lugar de origen a sitio del proyecto
+                <div class="subtitle">Transporte 1</div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col select-middle">
+                <div class="label-general">Tipo de transporte</div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select
+                      [(ngModel)]="dataMaterialSelected.transporteLocal"
+                    >
+                      <mat-option
+                        *ngFor="let transporte of catalogoTransportesLocal"
+                        [value]="transporte.id"
+                      >
+                        {{ transporte.name_transport }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">distancia (KM)</div>
+                <div>
+                  <mat-form-field>
+                    <input
+                      class="input-general-renuew width-90"
+                      [(ngModel)]="dataMaterialSelected.distancia_1"
+                      matInput
+                      type="text"
+                    />
+                  </mat-form-field>
                 </div>
               </div>
             </div>
             <div class="Row">
               <div class="Col">
-                <div class="label-general">Lugar de origen del material</div>
-                <div>
-                  <mat-form-field appearance="outline" class="select-general">
-                    <mat-label>Seleccione una opción</mat-label>
-                    <mat-select
-                      [(ngModel)]="dataMaterialSelected.paisSeleccionado"
-                      (selectionChange)="
-                        selectCountry(dataMaterialSelected.paisSeleccionado)
-                      "
-                    >
-                      <mat-option
-                        *ngFor="let pais of catalogoPaises"
-                        [value]="pais.id"
-                      >
-                        {{ pais.name_country }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+                <div class="subtitle">Transporte 2</div>
               </div>
             </div>
-            <div
-              class="Row"
-              *ngIf="dataMaterialSelected.paisSeleccionado === 1"
-            >
+            <div class="Row">
               <div class="Col select-middle">
-                <div class="label-general">Estado</div>
+                <div class="label-general">Tipo de transporte</div>
                 <div>
                   <mat-form-field appearance="outline" class="select-general">
                     <mat-label>Seleccione una opción</mat-label>
                     <mat-select
-                      [(ngModel)]="dataMaterialSelected.estadoSeleccionado"
-                      (selectionChange)="
-                        selectState(dataMaterialSelected.estadoSeleccionado)
-                      "
+                      [(ngModel)]="dataMaterialSelected.transporteExtrangero"
                     >
                       <mat-option
-                        *ngFor="let estado of catalogoEstados"
-                        [value]="estado.id"
+                        *ngFor="let transporte of catalogoTransportesExtrangero"
+                        [value]="transporte.id"
                       >
-                        {{ estado.name_state }}
+                        {{ transporte.name_transport }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
               </div>
               <div class="Col select-middle">
-                <div class="label-general">Ciudad</div>
+                <div class="label-general">distancia (KM)</div>
                 <div>
-                  <mat-form-field appearance="outline" class="select-general">
-                    <mat-label>Seleccione una opción</mat-label>
-                    <mat-select
-                      [(ngModel)]="dataMaterialSelected.ciudadSeleccionada"
-                    >
-                      <mat-option
-                        *ngFor="let ciudad of catalogoCiudades"
-                        [value]="ciudad.id"
-                      >
-                        {{ ciudad.name_city }}
-                      </mat-option>
-                    </mat-select>
+                  <mat-form-field>
+                    <input
+                      class="input-general-renuew width-90"
+                      [(ngModel)]="dataMaterialSelected.distancia_2"
+                      matInput
+                      type="text"
+                    />
                   </mat-form-field>
                 </div>
               </div>
@@ -560,28 +562,6 @@
                     >
                       <mat-option
                         *ngFor="let transporte of catalogoTransportesExtrangero"
-                        [value]="transporte.id"
-                      >
-                        {{ transporte.name_transport }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
-            </div>
-            <div class="Row">
-              <div class="Col">
-                <div class="label-general">
-                  Tipo de transporte utilizado en el interior del país
-                </div>
-                <div>
-                  <mat-form-field appearance="outline" class="select-general">
-                    <mat-label>Seleccione una opción</mat-label>
-                    <mat-select
-                      [(ngModel)]="dataMaterialSelected.transporteLocal"
-                    >
-                      <mat-option
-                        *ngFor="let transporte of catalogoTransportesLocal"
                         [value]="transporte.id"
                       >
                         {{ transporte.name_transport }}
