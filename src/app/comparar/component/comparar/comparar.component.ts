@@ -324,7 +324,6 @@ export class CompararComponent implements OnInit {
     let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
     let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
     let analisisPieTres = this.getAnalisisElementos(id);
-    console.log(analisisBarDos)
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){

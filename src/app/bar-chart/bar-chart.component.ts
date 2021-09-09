@@ -210,32 +210,36 @@ export class BarChartComponent implements OnInit {
           });
           //acomodar conforme porcentajes y en orden para niveles
           let auxdatos =[]
-          let elementos = [];
+          let help = [];
           Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
-            //se acomodan de mayor a menor
-            let resultado_actual = (proyecto.Datos[indicador.toString()][element] * 100 / suma).toFixed(2);
-            let posicion = 0
-            auxdatos.forEach(nivel =>{
-              if(resultado_actual<nivel){
-                posicion = posicion+1;
-              }
-            })
-            if(posicion == 0){
-              auxdatos = [resultado_actual,...auxdatos];
-              elementos = [index, ...elementos];
-            }else{
-              auxdatos.splice(posicion,0,resultado_actual);
-              elementos.splice(posicion,0,index);
-            }
+            help = [...help,proyecto.Datos[indicador.toString()][element]]
           });
+          auxdatos = help.sort((n1,n2) => {
+            if (n1 > n2) {
+                return 1;
+            }
+        
+            if (n1 < n2) {
+                return -1;
+            }
+        
+            return 0;
+          })
+          auxdatos = auxdatos.reverse()
           //se guarda el nivel de cada elemento constructivo dependiendo del impacto ambiental
-          elementos.forEach(lugar => {
-            Object.keys(proyecto.Datos[indicador.toString()]).forEach((element,index) => {
-              if(lugar==index){
+          auxdatos.forEach((datoC,index) => {
+            Object.keys(proyecto.Datos[indicador.toString()]).forEach(element => {
+              if(datoC == proyecto.Datos[indicador.toString()][element]){
                 this.auxElementos[indicador.toString()].push(element)
               }
             });
           })
+          //Pasar a porsentaje
+          auxdatos.forEach((datoC,index) => {
+            let resultado = (datoC * 100 / suma).toFixed(2);
+            auxdatos[index] = resultado
+          })
+          
           //se guardan por niveles dependiendo del impacto ambiental
           auxdatos.forEach((element,index) => {
             let helpn='n'.concat(index.toString());
