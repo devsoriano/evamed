@@ -255,9 +255,9 @@ export class MaterialsStageComponent implements OnInit {
     });
 
     //console.log('transporte local');
-    //console.log(this.dataMaterialSelected.transporteLocal);
+    //console.log(this.dataMaterialSelected.transporte_1);
     //console.log('transporte extrangero');
-    //console.log(this.dataMaterialSelected.transporteExtrangero);
+    //console.log(this.dataMaterialSelected.transporte_2);
 
     this.materialsList.map((material) => {
       if (material.name_material === this.dataMaterialSelected.Material) {
@@ -420,15 +420,15 @@ export class MaterialsStageComponent implements OnInit {
                           state_id_origin: 1,
                           city_id_end: 1,
                           transport_id_origin:
-                            data.transporteLocal === '' ||
-                            data.transporteLocal === undefined
+                            data.transporte_1 === '' ||
+                            data.transporte_1 === undefined
                               ? 1
-                              : parseInt(data.transporteLocal, 10),
+                              : parseInt(data.transporte_1, 10),
                           transport_id_end:
-                            data.transporteExtrangero === '' ||
-                            data.transporteExtrangero === undefined
+                            data.transporte_2 === '' ||
+                            data.transporte_2 === undefined
                               ? 1
-                              : parseInt(data.transporteExtrangero, 10),
+                              : parseInt(data.transporte_2, 10),
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
@@ -486,15 +486,15 @@ export class MaterialsStageComponent implements OnInit {
                           state_id_origin: 1,
                           city_id_end: 1,
                           transport_id_origin:
-                            data.transporteLocal === '' ||
-                            data.transporteLocal === undefined
+                            data.transporte_1 === '' ||
+                            data.transporte_1 === undefined
                               ? 1
-                              : parseInt(data.transporteLocal, 10),
+                              : data.transporte_1,
                           transport_id_end:
-                            data.transporteExtrangero === '' ||
-                            data.transporteExtrangero === undefined
+                            data.transporte_2 === '' ||
+                            data.transporte_2 === undefined
                               ? 1
-                              : parseInt(data.transporteExtrangero, 10),
+                              : data.transporte_2,
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
