@@ -61,7 +61,6 @@ export class Calculos {
     this.ULList = info.ULList;
     this.ECDPList = info.ECDPList;
     this.sectionList = info.sectionsList;
-    
     let Datos = {};
     let schemeProyect = null;
 
@@ -106,7 +105,6 @@ export class Calculos {
                 if (materiales_subetapa.length > 0) {
                   banderaMaterialEP = false;
                   materiales_subetapa.forEach((material, index) => {
-                    //Aquí en teoría si es para los cálculos de la segunda sección si se hiran sumando en donde se guarden y no en la variable
                     resultado_impacto =
                       resultado_impacto +
                       materiales_subetapa[index]['value'] * ps['quantity'];
@@ -186,7 +184,7 @@ export class Calculos {
           });
         }
         Datos[nameImpacto]['Construccion']['A4'] = resultado_impacto;
-        //console.log('A4:',resultado_impacto);
+      
         resultado_impacto = 0;
         //A5 instalación
         let CSEs = this.CSEList.filter((c) => c['project_id'] == idProyecto);
