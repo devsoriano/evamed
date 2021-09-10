@@ -169,6 +169,25 @@ export class CalculosSegundaSeccion {
               }
           });
         }
+        //A5 instalación
+        let CSEs = this.CSEList.filter((c) => c['project_id'] == idProyecto);
+        if (CSEs.length > 0) {
+          CSEs.forEach((CSE) => {
+            let energia = this.SIDList.filter(
+              (sid) =>
+                sid['sourceInformarion_id'] == CSE['source_information_id'] &&
+                sid['potential_type_id'] == impacto['id']
+            );
+            if (energia.length > 0) {
+              if(!elementoscreados.includes(CSE['section_id'])){
+                elementoscreados.push(CSE['section_id']);
+                Datos[nameImpacto][CSE['section_id']]=0;
+              }
+              Datos[nameImpacto][CSE['section_id']] =
+              Datos[nameImpacto][CSE['section_id']] + energia[0]['value'] * CSE['quantity'];
+            }
+          });
+        }
         //B4
         //las etapas son las mismas que en la sección de producción
         etapas.forEach((subetapa) => {
@@ -199,6 +218,24 @@ export class CalculosSegundaSeccion {
             });
           }
         });
+        //C1
+        let ECDPs = this.ECDPList.filter((c) => c['project_id'] == idProyecto);
+        if (ECDPs.length > 0) {
+          ECDPs.forEach((ECDP) => {
+            let energia = this.SIDList.filter(
+              (sid) =>
+                sid['sourceInformarion_id'] == ECDP['source_information_id'] &&
+                sid['potential_type_id'] == impacto['id']
+            );
+            if(!elementoscreados.includes(ECDP['section_id'])){
+                    elementoscreados.push(ECDP['section_id']);
+                    Datos[nameImpacto][ECDP['section_id']]=0;
+                  }
+                  Datos[nameImpacto][ECDP['section_id']] =
+                  Datos[nameImpacto][ECDP['section_id']] +
+                    ECDP['quantity'] * energia[0]['value'];
+          });
+        }
       }
       impacto_ban = true;
     });

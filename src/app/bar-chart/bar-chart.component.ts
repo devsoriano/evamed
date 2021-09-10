@@ -39,6 +39,8 @@ export class BarChartComponent implements OnInit {
   private auxColorBW = [];
   private ElementosEnNiveles = [];
   private banderaImpacto=false;
+  private auxColoresProyectos = {};
+  private auxColoresBWProyectos = {};
 
   private lastClick='Ninguno';
   private hovered = null;
@@ -183,7 +185,7 @@ export class BarChartComponent implements OnInit {
     if(this.Bandera_bar){
       //Sección para la gráfica de barras mostradas en los impactos ambientales por elementos constructivos
       let numElementos = 0;
-      this.inputProyects.forEach(proyecto => {
+      this.inputProyects.forEach((proyecto,numProyecto) => {
         const auxData = {};
         const auxDatos = {};
         const auxDataElementos = {};
@@ -264,22 +266,27 @@ export class BarChartComponent implements OnInit {
           });
         });
         //algoritmo para llenar adecuadamente los colores
+        let color = [];
         if((numElementos % 2) == 1){
           if(numElementos ==1){
             this.auxColor.push(this.coloresGraph2Nuevo[10]);
+            color.push(this.coloresGraph2Nuevo[10]);
             this.auxColorBW.push(this.coloresBWGraph2Nuevo[10]);
           }else{
             let numerocolores=((numElementos-1)/2);
             for(let i=0;i<(numerocolores);i++){
               this.auxColor.push(this.coloresGraph2Nuevo[i]);
+              color.push(this.coloresGraph2Nuevo[i]);
               this.auxColorBW.push(this.coloresBWGraph2Nuevo[i]);
             }
             this.auxColor.push(this.coloresGraph2Nuevo[5]);
+            color.push(this.coloresGraph2Nuevo[5]);
             this.auxColorBW.push(this.coloresBWGraph2Nuevo[5]);
             let auxreverse = this.coloresGraph2Nuevo.reverse();
             let auxreverseBW = this.coloresBWGraph2Nuevo.reverse();
             for(let i=0;i<(numerocolores);i++){
               this.auxColor.push(auxreverse[i]);
+              color.push(this.coloresGraph2Nuevo[i]);
               this.auxColorBW.push(auxreverseBW[i]);
             }
           }
@@ -287,15 +294,19 @@ export class BarChartComponent implements OnInit {
           let numerocolores=((numElementos)/2);
           for(let i=0;i<(numerocolores);i++){
             this.auxColor.push(this.coloresGraph2Nuevo[i]);
+            color.push(this.coloresGraph2Nuevo[i]);
             this.auxColorBW.push(this.coloresBWGraph2Nuevo[i]);
           }
           let auxreverse = this.coloresGraph2Nuevo.reverse();
           let auxreverseBW = this.coloresBWGraph2Nuevo.reverse();
           for(let i=0;i<(numerocolores);i++){
             this.auxColor.push(auxreverse[i]);
+            color.push(this.coloresGraph2Nuevo[i]);
             this.auxColorBW.push(auxreverseBW[i]);
           }
         }
+
+        this.auxColoresProyectos[numProyecto] = color
 
         Object.keys(auxDatosElementos).forEach(etapa => {
           this.ElementosEnNiveles.push(auxDatosElementos[etapa])
@@ -483,7 +494,7 @@ export class BarChartComponent implements OnInit {
         }else{
           this.barChartData.forEach((datos, index) => {
             let color = new Array(datos.data.length);
-
+            console.log("Resaltar")
             if(this.elementoConstructivo != ' '){
               let coloraux = [];
             this.ElementosEnNiveles[index].forEach((element,ii) => {
