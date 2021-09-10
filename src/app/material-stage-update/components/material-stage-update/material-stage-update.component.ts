@@ -269,7 +269,9 @@ export class MaterialStageUpdateComponent implements OnInit {
                   item.material_id === materialData.id &&
                   item.section_id === this.indexSheet + 1
                 ) {
-                  console.log(materialData);
+                  console.log('Material Data');
+                  // console.log(materialData);
+                  console.log(item);
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = item.quantity;
                   prevData['origin_id'] = item.origin_id;
@@ -287,7 +289,10 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['city_id_origin'] = item.city_id_origin;
                   prevData['city_id_end'] = item.city_id_end;
                   prevData['state_id_origin'] = item.state_id_origin;
-                  prevData['transporteLocal'] = 4;
+                  prevData['transporte_1'] = item.transport_id_origin;
+                  prevData['transporte_2'] = item.transport_id_end;
+                  prevData['distancia_1'] = item.distance_init;
+                  prevData['distancia_2'] = item.distance_end;
                   prevData['key'] = counterRevit++;
                   listMateriales.push(prevData);
                 }
@@ -319,7 +324,10 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['city_id_end'] = item.city_id_end;
                   prevData['city_id_origin'] = item.city_id_origin;
                   prevData['state_id_origin'] = item.state_id_origin;
-                  prevData['transporteLocal'] = 4;
+                  prevData['transporte_1'] = item.transport_id_origin;
+                  prevData['transporte_2'] = item.transport_id_end;
+                  prevData['distancia_1'] = item.distance_init;
+                  prevData['distancia_2'] = item.distancia_2;
                   prevData['key'] = countDynamo++;
 
                   listMateriales.push(prevData);
