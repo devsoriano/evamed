@@ -324,7 +324,6 @@ export class CompararComponent implements OnInit {
     let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
     let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
     let analisisPieTres = this.getAnalisisElementos(id);
-    console.log(analisisBarDos)
 
     this.proyect.forEach((proyecto,index) => {
       if(proyecto.id==id && proyecto.id != this.idProyectoActivo){
@@ -618,10 +617,31 @@ export class CompararComponent implements OnInit {
       id: idProyecto,
       Datos: {}
     };
+
+    /*let DatosCalculos = { 
+      'TEList':this.TEList,
+      'projectsList':this.projectsList,
+      'materialList':this.materialList,
+      'materialSchemeDataList':this.materialSchemeDataList,
+      'materialSchemeProyectList':this.materialSchemeProyectList,
+      'potentialTypesList':this.potentialTypesList,
+      'standarsList':this.standarsList,
+      'CSEList':this.CSEList,
+      'SIDList':this.SIDList,
+      'SIList':this.SIList,
+      'ACRList':this.ACRList,
+      'ECDList':this.ECDList,
+      'TEDList':this.TEDList,
+      'ULList':this.ULList,
+      'ECDPList':this.ECDPList,
+      'sectionList':this.sectionList
+    };
+
+    let auxDatos = this.calculosSegunaSeccion.operacionesPorMaterialesElementosConstructivos(idProyecto,DatosCalculos);
+    console.log(auxDatos)*/
     let auxDatos = this.materialSchemeProyectList.filter(
       (msp) => msp['project_id'] == idProyecto
     );
-    //aqui falta poner un filtro para poner solo los materiles que se estan usando 
     analisisProyectos['Datos']= auxDatos;
     return analisisProyectos;
   }
@@ -1472,6 +1492,8 @@ export class CompararComponent implements OnInit {
       }
     }
     if(this.show_Dispercion){
+      let elemento = this.sectionList.filter(({id}) => id == Number(this.elementoContructivoSelecionado))
+      this.elementoSeleccionadoMostrado = elemento[0]['name_section']
       this.DispercionAP(null,this.idProyectoSeleccionadoImagen);
     }
   }
