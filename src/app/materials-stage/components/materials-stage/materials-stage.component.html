@@ -245,7 +245,7 @@
               >
                 <div
                   style="display: flex; align-items: center; width: 65.8%"
-                  (click)="showMaterials($event, sc, 'dynamo')"
+                  (click)="showMaterials(sc, 'dynamo')"
                   class="item-by-list"
                 >
                   <div style="display: flex; flex-direction: column">
@@ -367,9 +367,7 @@
         <mat-selection-list
           #materials
           [multiple]="false"
-          (selectionChange)="
-            onSelectedMaterial($event, materials.selectedOptions)
-          "
+          (selectionChange)="onSelectedMaterial(materials.selectedOptions)"
           *ngIf="!selectedMaterial && !showSearch"
         >
           <mat-list-option

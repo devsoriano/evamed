@@ -291,8 +291,8 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['state_id_origin'] = item.state_id_origin;
                   prevData['transporte_1'] = item.transport_id_origin;
                   prevData['transporte_2'] = item.transport_id_end;
-                  prevData['distancia_1'] = item.distance_init;
-                  prevData['distancia_2'] = item.distance_end;
+                  prevData['distancia_1'] = parseInt(item.distance_init);
+                  prevData['distancia_2'] = parseInt(item.distance_end);
                   prevData['key'] = counterRevit++;
                   listMateriales.push(prevData);
                 }
@@ -326,8 +326,8 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['state_id_origin'] = item.state_id_origin;
                   prevData['transporte_1'] = item.transport_id_origin;
                   prevData['transporte_2'] = item.transport_id_end;
-                  prevData['distancia_1'] = item.distance_init;
-                  prevData['distancia_2'] = item.distancia_end;
+                  prevData['distancia_1'] = parseInt(item.distance_init);
+                  prevData['distancia_2'] = parseInt(item.distancia_end);
                   prevData['key'] = countDynamo++;
 
                   listMateriales.push(prevData);
