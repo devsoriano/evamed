@@ -159,4 +159,14 @@ export class AnalisisService {
     );
   }
 
+  getMaterials(){
+    return this.http.get<any>(
+      environment.api_materials,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
 }

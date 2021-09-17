@@ -603,7 +603,6 @@ export class BarChartComponent implements OnInit {
     // Pone la serie seleccionada de color normal, el resto se pone en blanco y negro
     this.barChartData.forEach((datos, index) => {
       let color: any;
-      
       if(this.Bandera_bar){
         let coloraux = [];
         this.ElementosEnNiveles[index].forEach(element => {
@@ -622,8 +621,6 @@ export class BarChartComponent implements OnInit {
           color = this.colores[ datos.label];
         }
       }
-
-
       this.barChartData[index].backgroundColor = color;
       this.barChartData[index].hoverBackgroundColor = color;
 

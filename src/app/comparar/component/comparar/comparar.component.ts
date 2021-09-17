@@ -17,6 +17,7 @@ import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccio
 import { CalculosTercerSeccion } from 'src/app/calculos/calculos-tercer-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { CssSelector } from '@angular/compiler';
+import { threadId } from 'node:worker_threads';
 
 
 interface impactos_menu{
@@ -117,6 +118,7 @@ export class CompararComponent implements OnInit {
   ULList: [];
   ECDPList: [];
   sectionList: [];
+  materiales:[];
   click_anterior:'Ninguno';
   labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
   proyectosMostrados_elementos=[];
@@ -197,7 +199,6 @@ export class CompararComponent implements OnInit {
       });
     forkJoin([
       this.analisis.getTypeEnergy(),
-      //this.projects.getProjects(),
       this.materials.getMaterials(),
       this.analisis.getMaterialSchemeData(),
       this.analisis.getMaterialSchemeProyect(),
@@ -211,11 +212,11 @@ export class CompararComponent implements OnInit {
       this.analisis.getTypeEnergyData(),
       this.analisis.getUsefulLife(),
       this.analisis.getECDP(),
-      this.analisis.getSectionsList()
+      this.analisis.getSectionsList(),
+      this.analisis.getMaterials()
     ])
     .subscribe(([
       TE,
-      //projectsData,
       materialData,
       materialSchemeData,
       materialSchemeProyect,
@@ -230,8 +231,8 @@ export class CompararComponent implements OnInit {
       UL,
       ECDP,
       sectionsList,
+      materiales
     ]) => {
-      //this.projectsList = projectsData;
       this.materialList = materialData;
       this.materialSchemeDataList = materialSchemeData;
       this.materialSchemeProyectList = materialSchemeProyect;
@@ -250,6 +251,7 @@ export class CompararComponent implements OnInit {
       this.ULList = UL;
       this.ECDPList = ECDP;
       this.sectionList = sectionsList;
+      this.materiales = materiales;
       this.botones_elementos_constructivos = sectionsList;
       this.llenarIdsBotones(sectionsList);
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
@@ -618,7 +620,7 @@ export class CompararComponent implements OnInit {
       Datos: {}
     };
 
-    /*let DatosCalculos = { 
+    let DatosCalculos = { 
       'TEList':this.TEList,
       'projectsList':this.projectsList,
       'materialList':this.materialList,
@@ -638,10 +640,9 @@ export class CompararComponent implements OnInit {
     };
 
     let auxDatos = this.calculosSegunaSeccion.operacionesPorMaterialesElementosConstructivos(idProyecto,DatosCalculos);
-    console.log(auxDatos)*/
-    let auxDatos = this.materialSchemeProyectList.filter(
+    /*let auxDatos = this.materialSchemeProyectList.filter(
       (msp) => msp['project_id'] == idProyecto
-    );
+    );*/
     analisisProyectos['Datos']= auxDatos;
     return analisisProyectos;
   }
@@ -1259,50 +1260,60 @@ export class CompararComponent implements OnInit {
 
   iniciarTabaDispercion(){
     this.infoTablaDispercion = [];
-    //'no', 'material', 'porcentaje', 'numero'
+    //'color,'no', 'material', 'porcentaje', 'numero'
     this.outproyect_pie_bar_elementos.forEach(element => {
       if(element['id'] == this.idProyectoSeleccionadoImagen){
         let suma = 0;
         let auxdatos = [];
         let auxlabel=[];
-        element['Datos'].forEach((material,index) => {
-          let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==material['material_id']);
-          if(baseDatosMaterial[0]['database_from']==='EPDs'){
-            if(material['section_id'] == this.elementoContructivoSelecionado){
-              let resultado_actual = material['quantity'];
-              suma = suma + material['quantity'];
-              let posicion = 0;
-              auxdatos.forEach(nivel =>{
-                if(resultado_actual<nivel){
-                  posicion = posicion+1;
-                }
-              })
-              if(posicion == 0){
-                auxlabel = [index,...auxlabel];
-                auxdatos = [resultado_actual,...auxdatos];
-              }else{
-                auxdatos.splice(posicion,0,resultado_actual);
-                auxlabel.splice(posicion,0,index);
+        Object.keys(element.Datos).forEach((impacto) => {
+          let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
+          if(impacto === auxNombre){
+            Object.keys(element.Datos[impacto]).forEach(elementoC => {
+              if(elementoC==this.elementoContructivoSelecionado){
+                Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
+                  suma += element.Datos[impacto][elementoC][material];
+                  let posicion = 0;
+                  auxdatos.forEach(nivel =>{
+                    if(element.Datos[impacto][elementoC][material]<nivel){
+                      posicion = posicion+1;
+                    }
+                  })
+                  if(posicion == 0){
+                    auxlabel = [index,...auxlabel];
+                    auxdatos = [element.Datos[impacto][elementoC][material],...auxdatos];
+                  }else{
+                    auxdatos.splice(posicion,0,element.Datos[impacto][elementoC][material]);
+                    auxlabel.splice(posicion,0,index);
+                  }
+                })
               }
-            }
+            })
           }
         });
         let num=0;
-        let auxdata = [];
-        auxlabel.forEach((lugar,ii) => {
-          element['Datos'].forEach((material,index) => {
-            let aux = {};
-            if(material['section_id'] == this.elementoContructivoSelecionado){
-              if(lugar==index){
-                num=num+1;
-                aux['no'] = num;
-                aux['material'] = material['comercial_name'];
-                aux['porcentaje'] = ((material ['quantity'] / suma) * 100).toFixed(2);
-                aux['numero'] = material['quantity'];
-                this.infoTablaDispercion.push(aux);
+        Object.keys(element.Datos).forEach((impacto) => {
+          let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
+          if(impacto === auxNombre){
+            Object.keys(element.Datos[impacto]).forEach(elementoC => {
+              if(elementoC==this.elementoContructivoSelecionado){
+                Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
+                  let aux = {};
+                  auxlabel.forEach((lugar,ii) => {
+                    if(lugar==index){
+                      let helpMaterial = this.materiales.filter(({id}) => id == material);
+                      num=num+1;
+                      aux['no'] = num;
+                      aux['material'] = helpMaterial[0]['name_material'];
+                      aux['porcentaje'] = ((element.Datos[impacto][elementoC][material] / suma) * 100).toFixed(2);
+                      aux['numero'] = (element.Datos[impacto][elementoC][material]).toFixed(2);
+                      this.infoTablaDispercion.push(aux);
+                    }
+                  });
+                })
               }
-            }
-          });
+            })
+          }
         });
       }
     })
@@ -1314,12 +1325,18 @@ export class CompararComponent implements OnInit {
     let aux={}
     this.outproyect_pie_bar_elementos.forEach(element =>{
       if(element['id'] == this.idProyectoSeleccionadoImagen){
-        auxDatos=element['Datos'];
-        auxDatos.forEach(material=>{
-          if(material['section_id'] == this.elementoContructivoSelecionado){
-            aux[material['comercial_name']]= material['quantity'];
+        Object.keys(element.Datos).forEach((impacto) => {
+          let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
+          if(impacto === auxNombre){
+            Object.keys(element.Datos[impacto]).forEach(elementoC => {
+              if(elementoC==this.elementoContructivoSelecionado){
+                Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
+                  aux[material]= material;
+                })
+              }
+            })
           }
-        })
+        });
       }
     })
     this.asignarColorGraficaDispercion();
