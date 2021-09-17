@@ -327,7 +327,7 @@ export class MaterialStageUpdateComponent implements OnInit {
                   prevData['transporte_1'] = item.transport_id_origin;
                   prevData['transporte_2'] = item.transport_id_end;
                   prevData['distancia_1'] = item.distance_init;
-                  prevData['distancia_2'] = item.distancia_2;
+                  prevData['distancia_2'] = item.distancia_end;
                   prevData['key'] = countDynamo++;
 
                   listMateriales.push(prevData);
@@ -351,8 +351,8 @@ export class MaterialStageUpdateComponent implements OnInit {
           provider_distance: 0,
           quantity: dataMaterialSelected.quantity,
           value: null,
-          distance_init: 0,
-          distance_end: 0,
+          distance_init: dataMaterialSelected.distance_init,
+          distance_end: dataMaterialSelected.distance_end,
           replaces: dataMaterialSelected.reemplazos,
           unit_text: dataMaterialSelected.unit_text,
           description_material: dataMaterialSelected.description_material,
@@ -363,8 +363,8 @@ export class MaterialStageUpdateComponent implements OnInit {
           state_id_origin: dataMaterialSelected.state_id_origin,
           city_id_origin: 2,
           city_id_end: 1,
-          transport_id_origin: null,
-          transport_id_end: null,
+          transport_id_origin: dataMaterialSelected.transport_id_origin,
+          transport_id_end: dataMaterialSelected.transport_id_end,
         }
       )
       .subscribe((data) => {
