@@ -265,48 +265,9 @@ export class BarChartComponent implements OnInit {
             })
           });
         });
-        //algoritmo para llenar adecuadamente los colores
-        let color = [];
-        if((numElementos % 2) == 1){
-          if(numElementos ==1){
-            this.auxColor.push(this.coloresGraph2Nuevo[10]);
-            color.push(this.coloresGraph2Nuevo[10]);
-            this.auxColorBW.push(this.coloresBWGraph2Nuevo[10]);
-          }else{
-            let numerocolores=((numElementos-1)/2);
-            for(let i=0;i<(numerocolores);i++){
-              this.auxColor.push(this.coloresGraph2Nuevo[i]);
-              color.push(this.coloresGraph2Nuevo[i]);
-              this.auxColorBW.push(this.coloresBWGraph2Nuevo[i]);
-            }
-            this.auxColor.push(this.coloresGraph2Nuevo[5]);
-            color.push(this.coloresGraph2Nuevo[5]);
-            this.auxColorBW.push(this.coloresBWGraph2Nuevo[5]);
-            let auxreverse = this.coloresGraph2Nuevo.reverse();
-            let auxreverseBW = this.coloresBWGraph2Nuevo.reverse();
-            for(let i=0;i<(numerocolores);i++){
-              this.auxColor.push(auxreverse[i]);
-              color.push(this.coloresGraph2Nuevo[i]);
-              this.auxColorBW.push(auxreverseBW[i]);
-            }
-          }
-        }else{
-          let numerocolores=((numElementos)/2);
-          for(let i=0;i<(numerocolores);i++){
-            this.auxColor.push(this.coloresGraph2Nuevo[i]);
-            color.push(this.coloresGraph2Nuevo[i]);
-            this.auxColorBW.push(this.coloresBWGraph2Nuevo[i]);
-          }
-          let auxreverse = this.coloresGraph2Nuevo.reverse();
-          let auxreverseBW = this.coloresBWGraph2Nuevo.reverse();
-          for(let i=0;i<(numerocolores);i++){
-            this.auxColor.push(auxreverse[i]);
-            color.push(this.coloresGraph2Nuevo[i]);
-            this.auxColorBW.push(auxreverseBW[i]);
-          }
-        }
 
-        this.auxColoresProyectos[numProyecto] = color
+        this.auxColor=this.coloresGraph2Nuevo
+        this.auxColorBW = this.coloresBWGraph2Nuevo
 
         Object.keys(auxDatosElementos).forEach(etapa => {
           this.ElementosEnNiveles.push(auxDatosElementos[etapa])
@@ -317,8 +278,8 @@ export class BarChartComponent implements OnInit {
             data: auxDatos[etapa],
             label: etapa,
             stack: proyecto,
-            backgroundColor: this.auxColor[index],
-            hoverBackgroundColor: this.auxColor[index]
+            backgroundColor: this.coloresGraph2Nuevo[index],
+            hoverBackgroundColor: this.coloresGraph2Nuevo[index]
           }];
         });
       });
@@ -472,18 +433,28 @@ export class BarChartComponent implements OnInit {
     if (this.lastClick !== seleccion.label){
       if(this.Bandera_bar){
         if(this.banderaImpacto){
+          let nivelesAux = [];
+          let count = -1;
           this.barChartData.forEach((datos, index) => {
             let color = new Array(datos.data.length);
             let coloraux = [];
+            if(!nivelesAux.includes(datos.label)){
+              nivelesAux.push(datos.label);
+              count += 1;
+            }else{
+              nivelesAux = [];
+              nivelesAux.push(datos.label);
+              count = 0;
+            }
             this.ElementosEnNiveles[index].forEach((element,ii) => {
               if(ii == seleccion.index){
                 if(element === this.elementoConstructivo){
-                  coloraux.push(this.auxColor[index])
+                  coloraux.push(this.auxColor[count])
                 }else{
-                  coloraux.push(this.auxColorBW[index])
+                  coloraux.push(this.auxColorBW[count])
                 }
               }else{
-                coloraux.push(this.auxColorBW[index])
+                coloraux.push(this.auxColorBW[count])
               }
             });
             color = coloraux;
@@ -492,26 +463,35 @@ export class BarChartComponent implements OnInit {
             this.barChartData[index].hoverBackgroundColor = color;
           });
         }else{
+          let nivelesAux = [];
+          let count = -1;
           this.barChartData.forEach((datos, index) => {
             let color = new Array(datos.data.length);
-            console.log("Resaltar")
+            if(!nivelesAux.includes(datos.label)){
+              nivelesAux.push(datos.label);
+              count += 1;
+            }else{
+              nivelesAux = [];
+              nivelesAux.push(datos.label);
+              count = 0;
+            }
             if(this.elementoConstructivo != ' '){
               let coloraux = [];
-            this.ElementosEnNiveles[index].forEach((element,ii) => {
-              if(ii == seleccion.index){
-                if(element === this.elementoConstructivo){
-                  coloraux.push(this.auxColor[index])
+              this.ElementosEnNiveles[index].forEach((element,ii) => {
+                if(ii == seleccion.index){
+                  if(element === this.elementoConstructivo){
+                    coloraux.push(this.auxColor[count])
+                  }else{
+                    coloraux.push(this.auxColorBW[count])
+                  }
                 }else{
-                  coloraux.push(this.auxColorBW[index])
+                  coloraux.push(this.auxColorBW[count])
                 }
-              }else{
-                coloraux.push(this.auxColorBW[index])
-              }
-            });
-            color = coloraux;
+              });
+              color = coloraux;
             }else{
-              color.fill(this.auxColorBW[index]);
-              color[seleccion.index] = this.auxColor[index];
+              color.fill(this.auxColorBW[count]);
+              color[seleccion.index] = this.auxColor[count];
             }
 
             this.barChartData[index].backgroundColor = color;
@@ -593,8 +573,18 @@ export class BarChartComponent implements OnInit {
   public resetColores() {
     // Pone todas las series en color normal
     if(this.Bandera_bar){
+      let nivelesAux = [];
+      let count = -1;
       this.barChartData.forEach((data, index) => {
-        const color = this.auxColor[index];
+        if(!nivelesAux.includes(data.label)){
+          nivelesAux.push(data.label);
+          count += 1;
+        }else{
+          nivelesAux = [];
+          nivelesAux.push(data.label);
+          count = 0;
+        }
+        const color = this.auxColor[count];
         this.barChartData[index].backgroundColor = color;
         this.barChartData[index].hoverBackgroundColor = color;
       });
