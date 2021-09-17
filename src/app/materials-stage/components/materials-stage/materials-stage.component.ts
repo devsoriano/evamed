@@ -233,7 +233,9 @@ export class MaterialsStageComponent implements OnInit {
     }); */
   }
 
-  onSelectedMaterial(event, value) {
+  onSelectedMaterial(value) {
+    console.log('onSelectMaterial');
+    console.log(value);
     this.dataMaterialSelected = value.selected[0]?.value.value;
 
     this.dataMaterialSelected.vidaUtil === undefined
@@ -512,9 +514,8 @@ export class MaterialsStageComponent implements OnInit {
     });
   }
 
-  showMaterials(event, sc, origin) {
+  showMaterials(sc, origin) {
     this.SCseleccionado = '/ ' + sc;
-    event.stopPropagation();
     this.selectedMaterial = false;
     this.showSearch = false;
     this.showMaterial = false;
