@@ -470,7 +470,10 @@ p.text-duplicados {
   position: relative;
   button{
     width: 144px;
-    height: 34px;
+    height: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
     font-size: 13px;
     margin: 5px;
     border: 0;
@@ -502,7 +505,10 @@ p.text-duplicados {
   margin-bottom: 40px;
   button{
     width: 144px;
-    height: 34px;
+    height:auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
     font-size: 13px;
     margin: 5px;
     border: 1px solid #EDC903;
