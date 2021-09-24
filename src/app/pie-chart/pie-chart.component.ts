@@ -154,21 +154,25 @@ export class PieChartComponent implements OnInit {
       this.pieChartData =[];
       let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
       let suma=0;
+      let auxhelp = []
+      console.log(this.inputProyect)
       Object.keys(this.inputProyect).forEach((element,index) => {
         let resultado_actual = this.inputProyect[element];
         suma=suma+resultado_actual;
-        let posicion = 0
-        auxdatos.forEach(nivel =>{
-          if(resultado_actual<nivel){
-            posicion = posicion+1;
-          }
-        })
-        if(posicion == 0){
-          auxdatos = [resultado_actual,...auxdatos];
-        }else{
-          auxdatos.splice(posicion,0,resultado_actual)
-        }
+        auxhelp = [...auxhelp, resultado_actual]
       });
+      auxdatos = auxhelp.sort((n1,n2) => {
+        if (n1 > n2) {
+            return 1;
+        }
+    
+        if (n1 < n2) {
+            return -1;
+        }
+    
+        return 0;
+      })
+      auxdatos = auxdatos.reverse()
       let sumaOtros = 0;
       let ColorDesplegado = [];
       let help = auxColor[this.colorDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
@@ -184,11 +188,13 @@ export class PieChartComponent implements OnInit {
           sumaOtros = sumaOtros+element;
         }
       })
-      aux.push(((sumaOtros/suma)*100).toFixed(2));
-      let auxrgbcolor='rgb(';
-      auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-      cambioR = (Number(cambioR) + 50).toString();
-      ColorDesplegado.push(auxrgbcolor);
+      if(auxdatos.length>3){
+        aux.push(((sumaOtros/suma)*100).toFixed(2));
+        let auxrgbcolor='rgb(';
+        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+        cambioR = (Number(cambioR) + 50).toString();
+        ColorDesplegado.push(auxrgbcolor);
+      }
       auxdata = [{
         data: aux,
         backgroundColor: ColorDesplegado

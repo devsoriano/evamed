@@ -601,15 +601,25 @@ export class BarChartComponent implements OnInit {
 
   public focusSeries(serie) {
     // Pone la serie seleccionada de color normal, el resto se pone en blanco y negro
+    let count = -1;
+    let nivelesAux = [];
     this.barChartData.forEach((datos, index) => {
       let color: any;
       if(this.Bandera_bar){
         let coloraux = [];
+        if(!nivelesAux.includes(datos.label)){
+          nivelesAux.push(datos.label);
+          count += 1;
+        }else{
+          nivelesAux = [];
+          nivelesAux.push(datos.label);
+          count = 0;
+        }
         this.ElementosEnNiveles[index].forEach(element => {
           if(element === serie){
-            coloraux.push(this.auxColor[index])
+            coloraux.push(this.auxColor[count])
           }else{
-            coloraux.push(this.auxColorBW[index])
+            coloraux.push(this.auxColorBW[count])
           }
         });
         color = coloraux;

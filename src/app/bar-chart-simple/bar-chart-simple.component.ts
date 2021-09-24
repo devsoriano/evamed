@@ -89,6 +89,7 @@ export class BarChartSimpleComponent implements OnInit {
   CargarDatosDispercion(){
     let suma=0;
     let auxdatos = [];
+    let auxhelp = []
     let aux = [];
     let auxdata = [];
     this.barChartDataSecond = [];
@@ -97,18 +98,20 @@ export class BarChartSimpleComponent implements OnInit {
     Object.keys(this.info).forEach((element,index) => {
       let resultado_actual = this.info[element];
       suma=suma+resultado_actual;
-      let posicion = 0
-      auxdatos.forEach(nivel =>{
-        if(resultado_actual<nivel){
-          posicion = posicion+1;
-        }
-      })
-      if(posicion == 0){
-        auxdatos = [resultado_actual,...auxdatos];
-      }else{
-        auxdatos.splice(posicion,0,resultado_actual);
-      }
+      auxhelp = [...auxhelp, resultado_actual]
     });
+    auxdatos = auxhelp.sort((n1,n2) => {
+      if (n1 > n2) {
+          return 1;
+      }
+  
+      if (n1 < n2) {
+          return -1;
+      }
+  
+      return 0;
+    })
+    auxdatos = auxdatos.reverse()
     let sumaOtros = 0;
     let ColorDesplegado = [];
       let help = auxColor[this.colorDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
@@ -125,12 +128,14 @@ export class BarChartSimpleComponent implements OnInit {
         sumaOtros = sumaOtros+element;
       }
     })
-    this.barChartLabelsSecond=[...this.barChartLabelsSecond, 'otros'];
-    aux.push(((sumaOtros/suma)*100).toFixed(2));
-    let auxrgbcolor='rgb(';
-    auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-      cambioR = (Number(cambioR) + 50).toString();
-      ColorDesplegado.push(auxrgbcolor);
+    if(auxdatos.length>3){
+      this.barChartLabelsSecond=[...this.barChartLabelsSecond, 'otros'];
+      aux.push(((sumaOtros/suma)*100).toFixed(2));
+      let auxrgbcolor='rgb(';
+      auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+        cambioR = (Number(cambioR) + 50).toString();
+        ColorDesplegado.push(auxrgbcolor);
+    }
     auxdata = [{
       data: aux,
       backgroundColor: ColorDesplegado

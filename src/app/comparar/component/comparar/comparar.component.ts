@@ -1260,47 +1260,60 @@ export class CompararComponent implements OnInit {
 
   iniciarTabaDispercion(){
     this.infoTablaDispercion = [];
-    //'color,'no', 'material', 'porcentaje', 'numero'
+    //'color-'no', 'material', 'porcentaje', 'numero'
     this.outproyect_pie_bar_elementos.forEach(element => {
       if(element['id'] == this.idProyectoSeleccionadoImagen){
+        let auxhelp = [];
         let suma = 0;
         let auxdatos = [];
-        let auxlabel=[];
         Object.keys(element.Datos).forEach((impacto) => {
           let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
           if(impacto === auxNombre){
             Object.keys(element.Datos[impacto]).forEach(elementoC => {
               if(elementoC==this.elementoContructivoSelecionado){
+                //Ordear de mayor a menor
                 Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
                   suma += element.Datos[impacto][elementoC][material];
-                  let posicion = 0;
-                  auxdatos.forEach(nivel =>{
-                    if(element.Datos[impacto][elementoC][material]<nivel){
-                      posicion = posicion+1;
-                    }
-                  })
-                  if(posicion == 0){
-                    auxlabel = [index,...auxlabel];
-                    auxdatos = [element.Datos[impacto][elementoC][material],...auxdatos];
-                  }else{
-                    auxdatos.splice(posicion,0,element.Datos[impacto][elementoC][material]);
-                    auxlabel.splice(posicion,0,index);
+                  auxhelp = [...auxhelp,element.Datos[impacto][elementoC][material]]
+                })
+                auxdatos = auxhelp.sort((n1,n2) => {
+                  if (n1 > n2) {
+                      return 1;
                   }
+              
+                  if (n1 < n2) {
+                      return -1;
+                  }
+              
+                  return 0;
                 })
               }
             })
           }
         });
         let num=0;
-        Object.keys(element.Datos).forEach((impacto) => {
-          let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
-          if(impacto === auxNombre){
-            Object.keys(element.Datos[impacto]).forEach(elementoC => {
-              if(elementoC==this.elementoContructivoSelecionado){
-                Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
-                  let aux = {};
-                  auxlabel.forEach((lugar,ii) => {
-                    if(lugar==index){
+        let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
+        let colorhelp = auxColor[this.colorGraficaDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+        let cambioR= colorhelp[1];
+        auxdatos = auxdatos.reverse()
+        auxdatos.forEach((lugar,ii) => {
+          Object.keys(element.Datos).forEach((impacto) => {
+            let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
+            if(impacto === auxNombre){
+              Object.keys(element.Datos[impacto]).forEach(elementoC => {
+                if(elementoC==this.elementoContructivoSelecionado){
+                  Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
+                    let aux = {};
+                    if(lugar==element.Datos[impacto][elementoC][material]){
+                      //Sección para determinar el color en la tabla con relación a la gráfica
+                      let auxrgbcolor='rgb(';
+                      if(ii <= 2){
+                        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(colorhelp[2]).concat(',').concat(colorhelp[3]).concat(')');
+                        cambioR = (Number(cambioR) + 50).toString();
+                      }else{
+                        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(colorhelp[2]).concat(',').concat(colorhelp[3]).concat(')');
+                      }
+                      aux['color'] = auxrgbcolor;
                       let helpMaterial = this.materiales.filter(({id}) => id == material);
                       num=num+1;
                       aux['no'] = num;
@@ -1309,11 +1322,11 @@ export class CompararComponent implements OnInit {
                       aux['numero'] = (element.Datos[impacto][elementoC][material]).toFixed(2);
                       this.infoTablaDispercion.push(aux);
                     }
-                  });
-                })
-              }
-            })
-          }
+                  })
+                }
+              })
+            }
+          });
         });
       }
     })
@@ -1331,7 +1344,7 @@ export class CompararComponent implements OnInit {
             Object.keys(element.Datos[impacto]).forEach(elementoC => {
               if(elementoC==this.elementoContructivoSelecionado){
                 Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
-                  aux[material]= material;
+                  aux[material]= element.Datos[impacto][elementoC][material];
                 })
               }
             })
@@ -1402,9 +1415,9 @@ export class CompararComponent implements OnInit {
       }
       let auxnombre=this.calculos.ajustarNombre(aux);
       this.nivelesExistententesElementosConstructivos=$event['niveles'][auxnombre];
-        this.coloresExistententesElementosConstructivos=$event['color'];
-        this.graficabar(aux);
-        this.asignarColorGraficaDispercion();
+      this.coloresExistententesElementosConstructivos=$event['color'];
+      this.graficabar(aux);
+      this.asignarColorGraficaDispercion();
     }else{
       this.graficabar(null);
     }
@@ -1445,6 +1458,9 @@ export class CompararComponent implements OnInit {
           })
           //Actualizar grafica para que se ilumen el elemento solo del impacto seleccionado
           this.iniciaBarrasSeccionDos();
+          if(this.imgSeleccionadaElemento != ' '){
+            this.show_Dispercion = true;
+          }
         }
       }else{
         //En caso de tener un elemento constructivo ya seleccionado
@@ -1500,11 +1516,19 @@ export class CompararComponent implements OnInit {
             })
           }else{
             //recetear el impacto constructivo seleccionado
-            this.elementoContructivoSelecionado = ' ';
+            if(this.imgSeleccionadaElemento != ' '){
+              this.show_Dispercion = true;
+            }
           }
         }else{
           //cambio de selección en el impacto ambiental
           this.impactoSeleccionadoElementoConstructivo = item;
+          if(this.elementoContructivoSelecionado != ' '){
+            this.asignarColorGraficaDispercion();
+            if(this.imgSeleccionadaElemento != ' '){
+              this.show_Dispercion = true;
+            }
+          }
         }
       }
     }
