@@ -336,6 +336,21 @@ export class BarChartComponent implements OnInit {
     this.centrosX = {};
     this.proyectos = [];
     labels.some(label => {
+    if(this.Bandera_bar){
+      const proyecto = label['$context']['dataset'].stack.Nombre;
+      const elemento = label['_el'];
+      const x = elemento['_view'].x;
+      if (this.centrosX[proyecto] == undefined) {
+        this.centrosX[proyecto] = [];
+        this.proyectos = [proyecto, ...this.proyectos];
+      }
+      if(x!=NaN){
+        if (!this.centrosX[proyecto].includes(x)) {
+          this.centrosX[proyecto].push(x);
+        }
+      }
+
+    }else{
       const proyecto = label['$context']['dataset'].stack;
       const elemento = label['_el'];
       const x = elemento['_view'].x;
@@ -347,6 +362,7 @@ export class BarChartComponent implements OnInit {
       if (!this.centrosX[proyecto].includes(x)) {
         this.centrosX[proyecto].push(x);
       }
+    }
     });
   }
 
@@ -355,7 +371,7 @@ export class BarChartComponent implements OnInit {
     const ctx = chart.canvas.getContext('2d');
     const labels = chart['$datalabels']['_labels'];
     const centroY = (chart['boxes'][1].height / 2);
-
+    
     this.iniciaPosiciones(chart);
     if( chart['$datalabels']['_labels'].length == 0){
       return;
@@ -363,7 +379,9 @@ export class BarChartComponent implements OnInit {
     ctx.font = chart['$datalabels']['_labels'][0]['_ctx'].font;//'30px Comic Sans MS';
     ctx.fillStyle = 'gray';
     ctx.textAlign = 'center';
+    //console.log(this.proyectos)
     if (this.proyectos.length < 2) {
+      //console.log("Return , length")
       return;
     }
     // ctx.clearRect( 0, 0,this.canvas.width, chart['boxes'][1].height*3/4 );
