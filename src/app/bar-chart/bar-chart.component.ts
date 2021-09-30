@@ -295,7 +295,7 @@ export class BarChartComponent implements OnInit {
               auxDatos[etapa] = [...auxDatos[etapa],
               this.porcentaje?
               (proyecto.Datos[indicador.toString()][etapa ]*100 /proyecto.Datos[indicador.toString()].total ).toFixed(2):
-              proyecto.Datos[indicador.toString()][etapa].toFixed(2)
+              proyecto.Datos[indicador.toString()][etapa].toExponential(2)
             ];
           }
         });
@@ -379,9 +379,7 @@ export class BarChartComponent implements OnInit {
     ctx.font = chart['$datalabels']['_labels'][0]['_ctx'].font;//'30px Comic Sans MS';
     ctx.fillStyle = 'gray';
     ctx.textAlign = 'center';
-    //console.log(this.proyectos)
     if (this.proyectos.length < 2) {
-      //console.log("Return , length")
       return;
     }
     // ctx.clearRect( 0, 0,this.canvas.width, chart['boxes'][1].height*3/4 );

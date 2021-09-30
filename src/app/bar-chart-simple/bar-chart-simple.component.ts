@@ -26,10 +26,15 @@ export class BarChartSimpleComponent implements OnInit {
     events: ['click'],
     tooltips: { enabled: false },
     hover: { mode: null },
-    legend: { display: false },
+    legend: { display: true },
     plugins: {
       datalabels: {
-        display: false
+        color: 'white',
+        anchor: 'center',
+        align: 'center',
+        font: {
+          size: 7,
+        }
       }
     },
   };

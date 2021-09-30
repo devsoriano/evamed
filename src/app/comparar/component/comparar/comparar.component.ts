@@ -357,6 +357,7 @@ export class CompararComponent implements OnInit {
     this.containerGraficas.clear();
     this.receiveSelector(null);
     this.banderaGrapg == 0;
+    
     this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
       idproyecto: id,
       nombre:analisis.Nombre,
@@ -640,9 +641,6 @@ export class CompararComponent implements OnInit {
     };
 
     let auxDatos = this.calculosSegunaSeccion.operacionesPorMaterialesElementosConstructivos(idProyecto,DatosCalculos);
-    /*let auxDatos = this.materialSchemeProyectList.filter(
-      (msp) => msp['project_id'] == idProyecto
-    );*/
     analisisProyectos['Datos']= auxDatos;
     return analisisProyectos;
   }
@@ -695,14 +693,16 @@ export class CompararComponent implements OnInit {
       this.outproyect_bar.forEach((element)=>{
         Object.keys(element.Datos).forEach(impacto => {
           let auxNombreImpacto = impacto.replace(/\n/g,'');
+          let resultado = element.Datos[impacto][ciclo];
+          let resultadoExponencial = resultado.toExponential(2);
           if(!auximpactos.includes(auxNombreImpacto)){
             auximpactos.push(auxNombreImpacto);
-            auxdata[auxNombreImpacto] = (element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            auxdata[auxNombreImpacto] = resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }else{
             flagMasProyectos = true;
             let last = auxdata[auxNombreImpacto].toString()
             auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
-            auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat((element.Datos[impacto][ciclo]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat(resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
           }
         });
       })
@@ -1319,7 +1319,7 @@ export class CompararComponent implements OnInit {
                       aux['no'] = num;
                       aux['material'] = helpMaterial[0]['name_material'];
                       aux['porcentaje'] = ((element.Datos[impacto][elementoC][material] / suma) * 100).toFixed(2);
-                      aux['numero'] = (element.Datos[impacto][elementoC][material]).toFixed(2);
+                      aux['numero'] = (element.Datos[impacto][elementoC][material]).toExponential(2);
                       this.infoTablaDispercion.push(aux);
                     }
                   })

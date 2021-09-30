@@ -149,13 +149,11 @@ export class PieChartComponent implements OnInit {
     let aux=[];
     this.pieChartLabels=[]
     //carga datos para sección de resultados "Elementos constructivos por ciclo de vida"
-    // console.log(this.Bandera_resultado,indicador)
     if (this.Bandera_resultado == 1){
       this.pieChartData =[];
       let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
       let suma=0;
       let auxhelp = []
-      console.log(this.inputProyect)
       Object.keys(this.inputProyect).forEach((element,index) => {
         let resultado_actual = this.inputProyect[element];
         suma=suma+resultado_actual;
@@ -219,7 +217,7 @@ export class PieChartComponent implements OnInit {
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
                 let abreviacion = marcador.concat(" - ");
                 let auxnamelabel = abreviacion.concat(this.findSubetapa(marcador)).concat(" : ");
-                auxnamelabel = auxnamelabel.concat((auxdatos[marcador]).toFixed(2).toString());
+                auxnamelabel = auxnamelabel.concat((auxdatos[marcador]).toExponential(2).toString());
                 auxdataLabel = [...auxdataLabel, auxnamelabel.concat(this.findUnidad())];
                 datos = [...datos, ((auxdatos[marcador] / auxSuma)*100).toFixed(2).toString()];
               });
@@ -238,10 +236,8 @@ export class PieChartComponent implements OnInit {
         });
 
       }
-       //console.log(this.subetapas);
 
     }else{
-      console.log(this.inputProyect);
       this.pieChartData =[];
       Object.keys(auxlabel_dos).forEach(element => {
         if(auxlabel_dos[element]===ID){

@@ -334,11 +334,11 @@ export class Calculos {
           });
         }
         auxsumetapa[element][etapa]['num'] =
-          auxsumetapa[element][etapa]['num'].toFixed(3);
+          auxsumetapa[element][etapa]['num'].toExponential(2);
         auxsumetapa[element][etapa]['porcentaje'] = (
           (auxsumetapa[element][etapa]['num'] / auxsumimpacto) *
           100
-        ).toFixed(3);
+        ).toFixed(2);
       });
     });
 
@@ -373,7 +373,7 @@ export class Calculos {
           auxsumetapa[element][etapa][subetapa] = {};
           if(flag){
             auxsumetapa[element][etapa][subetapa]['num'] =
-              data[element][etapa][subetapa].toFixed(3);
+              data[element][etapa][subetapa].toExponential(2);
           }else{
             auxsumetapa[element][etapa][subetapa]['num'] = 0;
           }
