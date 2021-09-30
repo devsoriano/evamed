@@ -342,6 +342,8 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   updateMaterialSelected(dataMaterialSelected) {
+    console.log('información a actualizar!!!');
+    console.log(dataMaterialSelected);
     this.projectsService
       .updateMaterialSchemeProject(
         dataMaterialSelected.material_scheme_project_id,
@@ -351,8 +353,8 @@ export class MaterialStageUpdateComponent implements OnInit {
           provider_distance: 0,
           quantity: dataMaterialSelected.quantity,
           value: null,
-          distance_init: dataMaterialSelected.distance_init,
-          distance_end: dataMaterialSelected.distance_end,
+          distance_init: parseInt(dataMaterialSelected.distancia_1, 10),
+          distance_end: parseInt(dataMaterialSelected.distancia_2, 10),
           replaces: dataMaterialSelected.reemplazos,
           unit_text: dataMaterialSelected.unit_text,
           description_material: dataMaterialSelected.description_material,
@@ -371,8 +373,8 @@ export class MaterialStageUpdateComponent implements OnInit {
         //console.log(
         //  'Update data-----------------------------------------------'
         //);
-        //console.log(data);
-        // location.reload();
+        console.log(data);
+        location.reload();
       });
   }
 
