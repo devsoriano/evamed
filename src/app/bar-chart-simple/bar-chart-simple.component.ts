@@ -26,7 +26,7 @@ export class BarChartSimpleComponent implements OnInit {
     events: ['click'],
     tooltips: { enabled: false },
     hover: { mode: null },
-    legend: { display: true },
+    legend: { display: false },
     plugins: {
       datalabels: {
         color: 'white',
@@ -41,7 +41,7 @@ export class BarChartSimpleComponent implements OnInit {
   barChartLabels: Label[] = ['Materiales', 'Construccion', 'Uso', 'FinDeVida'];
   barChartLabelsSecond: Label[] = ['Grava', 'Arena', 'Varilla', 'Cemento', 'Cal','Ladrillo'];
   barChartType: ChartType = 'bar';
-  barChartLegend = true;
+  barChartLegend = false;
   barChartPlugins = [];
   showngraph = false;
 

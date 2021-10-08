@@ -64,7 +64,6 @@ export class CalculosTercerSeccion {
 
     let impacto_ban = true;
     let nameImpacto: string;
-    let materialesIgnorados = [];
 
     this.potentialTypesList.forEach((impacto, index) => {
       this.impactosIgnorar2.forEach((ignorar) => {
@@ -104,10 +103,11 @@ export class CalculosTercerSeccion {
                             Datos[nameImpacto]['Producción'][ps['section_id']]=0;
                             DatosMateriales[nameImpacto]['Producción'][ps['section_id']]={};
                             }
-                            DatosMateriales[nameImpacto]['Producción'][ps['section_id']][ps['material_id']]=ps['quantity'];
+                            let auxres = materiales_subetapa[index]['value'] * ps['quantity'];
+                            DatosMateriales[nameImpacto]['Producción'][ps['section_id']][ps['material_id']]=auxres;
                             Datos[nameImpacto]['Producción'][ps['section_id']] =
                             Datos[nameImpacto]['Producción'][ps['section_id']]+
-                            materiales_subetapa[index]['value'] * ps['quantity'];
+                            auxres;
                         });
                     } 
                 }
@@ -167,17 +167,18 @@ export class CalculosTercerSeccion {
                     elementoscreados.push(ps['section_id']);
                     Datos[nameImpacto]['Construccion'][ps['section_id']]=0;
                     DatosMateriales[nameImpacto]['Construccion'][ps['section_id']] = {};
-                    }
-                    DatosMateriales[nameImpacto]['Construccion'][ps['section_id']][ps['material_id']]=ps['quantity'];
+                  }
+                  let auxres = peso * ps['quantity'] * (nacional + internacional)
+                  DatosMateriales[nameImpacto]['Construccion'][ps['section_id']][ps['material_id']]=auxres;
                   Datos[nameImpacto]['Construccion'][ps['section_id']] =
                   Datos[nameImpacto]['Construccion'][ps['section_id']] +
-                    peso * ps['quantity'] * (nacional + internacional);
+                  auxres;
                 }
             }
           });
         }
         elementoscreados=[];
-        //B4
+        //B4 USO
         //las etapas son las mismas que en la sección de producción
         etapas.forEach((subetapa) => {
           if (schemeProyect.length > 0) {
@@ -197,13 +198,10 @@ export class CalculosTercerSeccion {
                         Datos[nameImpacto]['Uso'][ps['section_id']]=0;
                         DatosMateriales[nameImpacto]['Uso'][ps['section_id']]={};
                       }
-                      DatosMateriales[nameImpacto]['Uso'][ps['section_id']][ps['material_id']]=ps['quantity'];
-                      //DatosMateriales[nameImpacto]['Uso'][ps['section_id']].push(ps['material_id']);
+                      let auxres = materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces']
+                      DatosMateriales[nameImpacto]['Uso'][ps['section_id']][ps['material_id']]=auxres;
                       Datos[nameImpacto]['Uso'][ps['section_id']] =
-                      Datos[nameImpacto]['Uso'][ps['section_id']] +
-                      materiales_subetapa[index]['value'] *
-                        ps['quantity'] *
-                        ps['replaces'];
+                      Datos[nameImpacto]['Uso'][ps['section_id']] + auxres;
                     });
                   }
               }
