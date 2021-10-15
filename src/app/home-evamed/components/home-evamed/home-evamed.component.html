@@ -48,7 +48,12 @@
             {{project.name_project}}
           </div>
           <div class="date-tag">
-            Noviembre 2019
+           <ng-template [ngIf]="project.use_id==1"><div>Habitacional</div></ng-template>
+            <ng-template [ngIf]="project.use_id==2"><div>Comercial</div></ng-template>
+            <ng-template [ngIf]="project.use_id==3"><div>Oficinas</div></ng-template>
+            <ng-template [ngIf]="project.use_id==4"><div>Industrial</div></ng-template>
+            <ng-template [ngIf]="project.use_id==5"><div>Educacional</div></ng-template>
+            <ng-template [ngIf]="project.use_id==6"><div>Hospitalario</div></ng-template>
           </div>
         </div>
       </div>
