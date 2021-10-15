@@ -13,7 +13,7 @@ export interface DialogData {
   filtroUsoSeleccionado: number;
   usoSeleccionado: number;
   paisSeleccionado: any;
-  tipoSeleccionado: string;
+  tipoSeleccionado: any;
   ciudadSeleccionada: any;
   vidaUtilSeleccionado: string;
   esqHabitacionalSeleccionado: string;
