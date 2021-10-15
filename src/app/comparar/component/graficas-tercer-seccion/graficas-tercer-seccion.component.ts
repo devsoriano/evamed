@@ -24,13 +24,15 @@ export class GraficasTercerSeccionComponent implements OnInit {
   @Input() FaseSeleccionada:String;
   @Input() materiales:any;
   @Input() Secciones:any;
+  @Input() flagSubCompleto:Boolean;
 
   public InfoMostrada=[];
   botones_elementos_constructivos=[];
+  botones_ciclo_vida=[];
   elementoContructivoSelecionado = " ";
-  private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#a8d024'};
-  private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)', FinDeVida : 'rgba(222,169,97,0.2)'};
-  private CicloColoresRGB = { FinDeVida: 'rgb(222, 169, 97)', Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)'};
+  private CicloColores = { Subetapas: '#4DBE89', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#767676',A1:'#4DBE89', A2:'#319F6B',A3:'#368460'};
+  private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)', Subetapas : 'rgba(77,190,137,0.2)'};
+  private CicloColoresRGB = { Subetapas: 'rgb(77, 190, 137)', Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)'};
   public displayedColumnsDispercion: string[] = ['no', 'material', 'porcentaje', 'numero'];
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
@@ -117,8 +119,13 @@ export class GraficasTercerSeccionComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.AjusteDatos()
     this.botones_elementos_constructivos = this.Secciones;
+    if(this.FaseSeleccionada==='Subetapas'){
+      this.botones_ciclo_vida=['A1','A2','A3','A4','B4']
+    }else{
+      this.botones_ciclo_vida=['A1 - A3','A4','B4']
+    }
+    this.AjusteDatos()
   }
 
   AjusteDatos(){
@@ -152,6 +159,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
         aux['labelsMateriales'] = auxgrafica['labels'];
         aux['Coloreslementos'] = {};
       }
+      /*if(this.flagSubCompleto){
+        aux['DatosCicloVida']=this.GraficaCicloVida(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],"Subetapas");
+      }else{
+      }*/
       aux['DatosCicloVida']=this.GraficaCicloVida(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado']);
       aux['LabelsCicloVida'] = this.EncontrarLabels(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()]);
       aux['LabelsElementos'] = this.EncontrarLabelsElementos(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado'])
@@ -159,6 +170,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux['ElementoConstructivoSeleccionado'] = ' ';
       aux['nombreSeccionMostrado'] = ' ';
       aux['idsIconosElementos']=this.llenarIdsBotones(this.Secciones,proyecto.idproyecto);
+      aux['idsIconoCiclo']=this.llenarIdsBotonesCiclo(this.botones_ciclo_vida, proyecto.idproyecto);
       this.InfoMostrada.push(aux);
     })
   }
@@ -209,31 +221,35 @@ export class GraficasTercerSeccionComponent implements OnInit {
     Object.keys(data).forEach(fase =>{
       if(ciclo===fase){
         let suma =0;
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+        Object.keys(data[fase]).forEach(subetapa => {
+          Object.keys(data[fase][subetapa]).forEach(ElementoC =>{
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              if(ElementoI === ElementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
+              suma = suma + data[fase][subetapa][ElementoC];
             }
-          });
-          if(banderaElemento){
-            suma = suma + data[fase][ElementoC];
-          }
+          })
         })
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+        Object.keys(data[fase]).forEach(subetapa => {
+          Object.keys(data[fase][subetapa]).forEach(ElementoC =>{
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              if(ElementoI === ElementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
+              let auxrgbcolor='rgb(';
+              auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+              cambioR = (Number(cambioR) + 50).toString();
+              auxcolor.push(auxrgbcolor)
+              auxdata.push(((data[fase][subetapa][ElementoC]/suma)*100).toFixed(2));
             }
-          });
-          if(banderaElemento){
-            let auxrgbcolor='rgb(';
-            auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-            cambioR = (Number(cambioR) + 50).toString();
-            auxcolor.push(auxrgbcolor)
-            auxdata.push(((data[fase][ElementoC]/suma)*100).toFixed(2));
-          }
+          })
         })
       }
     })
@@ -256,36 +272,40 @@ export class GraficasTercerSeccionComponent implements OnInit {
     Object.keys(data).forEach(fase =>{
       if(ciclo===fase){
         let suma =0;
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+        Object.keys(data[fase]).forEach(subetapa => {
+          Object.keys(data[fase][subetapa]).forEach(ElementoC =>{
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              if(ElementoI === ElementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
+              suma = suma + data[fase][subetapa][ElementoC];
             }
-          });
-          if(banderaElemento){
-            suma = suma + data[fase][ElementoC];
-          }
-        })
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+          })
+        });
+        Object.keys(data[fase]).forEach(subetapa => {
+          Object.keys(data[fase][subetapa]).forEach(ElementoC =>{
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              if(ElementoI === ElementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
+              auxColoresElementos.push(ElementoC);
+              let auxrgbcolor='rgb(';
+              auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+              let auxrgbacolor='rgba(';
+              auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(',').concat('0.1').concat(')');
+              auxcolor.push(auxrgbcolor);
+              auxcolordos.push(auxrgbacolor);
+              valores.push(((data[fase][subetapa][ElementoC]/suma)*100).toFixed(2));
+              cambioR = (Number(cambioR) + 50).toString();
             }
-          });
-          if(banderaElemento){
-            auxColoresElementos.push(ElementoC);
-            let auxrgbcolor='rgb(';
-            auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-            let auxrgbacolor='rgba(';
-            auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(',').concat('0.1').concat(')');
-            auxcolor.push(auxrgbcolor);
-            auxcolordos.push(auxrgbacolor);
-            valores.push(((data[fase][ElementoC]/suma)*100).toFixed(2));
-            cambioR = (Number(cambioR) + 50).toString();
-          }
-        })
+          })
+        });
       }
     })
     let resultado= {'orden':auxColoresElementos,'colores':auxcolor,'coloresbtw':auxcolordos,'valores':valores}
@@ -298,6 +318,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let auxcolor = [];
     let Data={};
     let suma = 0;
+    let auxsubetapas = []
     Object.keys(data).forEach((etapa,index) =>{
       let bandera = true;
       this.FasesEliminadas.forEach(element => {
@@ -307,37 +328,65 @@ export class GraficasTercerSeccionComponent implements OnInit {
         }
       });
       if(bandera){
-        Data[etapa] = 0;
-        Object.keys(data[etapa]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            //Para asegurar que el elemento constructivo no este eliminado
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
-            }
-          });
-          if(banderaElemento){
-            Data[etapa] =  Data[etapa] + data[etapa][ElementoC];
-            suma = suma + data[etapa][ElementoC];
+        if(this.flagSubCompleto){
+          if(etapa != 'Producción'){
+            Data[etapa] = 0;
           }
+        }else{
+          Data[etapa] = 0;
+        }
+        Object.keys(data[etapa]).forEach(subetapa => {
+          Object.keys(data[etapa][subetapa]).forEach(ElementoC =>{
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              //Para asegurar que el elemento constructivo no este eliminado
+              if(ElementoI === ElementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
+              if(this.flagSubCompleto){
+                if(etapa === 'Producción'){
+                  if(!auxsubetapas.includes(subetapa)){
+                    Data[subetapa] = 0
+                    auxsubetapas.push(subetapa)
+                  }
+                  Data[subetapa] =  Data[subetapa] + data[etapa][subetapa][ElementoC];
+                }else{
+                  Data[etapa] =  Data[etapa] + data[etapa][subetapa][ElementoC];
+                }
+                suma = suma + data[etapa][subetapa][ElementoC];
+              }else{
+                Data[etapa] =  Data[etapa] + data[etapa][subetapa][ElementoC];
+                suma = suma + data[etapa][subetapa][ElementoC];
+              }
+            }
+          })
         })
       }
     });
+    console.log(Data)
     Object.keys(Data).forEach((etapa,index) =>{
       auxdata.push(((Data[etapa]/suma)*100).toFixed(2))
     })
-    if(flagColor != ' '){
+    if(flagColor === 'Subetapas'){
       Object.keys(Data).forEach((etapa,index) =>{
-        if(etapa === flagColor){
-          auxcolor.push(this.CicloColores[etapa]);
-        }else{
-          auxcolor.push(this.CicloColoresBW[etapa]);
-        }
+        auxcolor.push(this.CicloColores[etapa]);
       })
     }else{
-      Object.keys(Data).forEach((etapa,index) =>{
-        auxcolor.push(this.CicloColores[etapa])
-      })
+      if(flagColor != ' '){
+        Object.keys(Data).forEach((etapa,index) =>{
+          if(etapa === flagColor){
+            auxcolor.push(this.CicloColores[etapa]);
+          }else{
+            auxcolor.push(this.CicloColoresBW[etapa]);
+          }
+        })
+      }else{
+        Object.keys(Data).forEach((etapa,index) =>{
+          auxcolor.push(this.CicloColores[etapa])
+        })
+      }
     }
 
     aux = [
@@ -485,6 +534,11 @@ export class GraficasTercerSeccionComponent implements OnInit {
             this.InfoMostrada[index]['nombreSeccionMostrado'] = ' ';
             this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
             this.InfoMostrada[index]['DispercionElementoGrafica']=false;
+            let ciclo = this.InfoMostrada[index]['CicloSeleccionado']
+            this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo], this.InfoMostrada[index]['CicloSeleccionado'],1);
+            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1);
+            this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
+            this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
           }
         }
 
@@ -534,7 +588,22 @@ export class GraficasTercerSeccionComponent implements OnInit {
     Object.keys(data).forEach(elemento =>{
       if(filtro == 0){
         //Sin seleccionar algun filtro
-        Object.keys(data[elemento]).forEach(elementoC => {
+        Object.keys(data[elemento]).forEach(subetapa =>{
+          Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+            Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+              if(!materialesExistentes.includes(material)){
+                materialesExistentes.push(material)
+                auxmateriales[material] = 0;
+              }
+              auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+            })
+          });
+        })
+        suma = this.sumadatos(auxmateriales)
+        auxdatos = this.acomodaMayoraMenor(auxmateriales);
+      }else if(filtro == 1){
+        //Si se selecciona una fase del ciclo de vida
+        Object.keys(data[elemento]).forEach(elementoC =>{
           Object.keys(data[elemento][elementoC]).forEach(material => {
             if(!materialesExistentes.includes(material)){
               materialesExistentes.push(material)
@@ -542,27 +611,17 @@ export class GraficasTercerSeccionComponent implements OnInit {
             }
             auxmateriales[material] += data[elemento][elementoC][material]
           })
-        });
-        suma = this.sumadatos(auxmateriales)
-        auxdatos = this.acomodaMayoraMenor(auxmateriales);
-      }else if(filtro == 1){
-        //Si se selecciona una fase del ciclo de vida
-        Object.keys(data[elemento]).forEach(material => {
-          if(!materialesExistentes.includes(material)){
-            materialesExistentes.push(material)
-            auxmateriales[material] = 0;
-          }
-          auxmateriales[material] += data[elemento][material]
         })
         suma = this.sumadatos(auxmateriales)
         auxdatos = this.acomodaMayoraMenor(auxmateriales);
       }else{
         //Si se selecciona un elemento constructivo
-        if(elemento === elementoSeleccionado.toString()){
-          suma = this.sumadatos(data[elemento]);
-          auxdatos = this.acomodaMayoraMenor(data[elemento]);
-        }
-
+        Object.keys(data[elemento]).forEach(subetapa => {
+          if(subetapa === elementoSeleccionado.toString()){
+            suma = this.sumadatos(data[elemento][subetapa]);
+            auxdatos = this.acomodaMayoraMenor(data[elemento][subetapa]);
+          }
+        })
       }
     })
     let sumaOtros = 0;
@@ -598,7 +657,22 @@ export class GraficasTercerSeccionComponent implements OnInit {
     Object.keys(data).forEach(elemento =>{
       if(filtro == 0){
         //Sin seleccionar algun filtro
-        Object.keys(data[elemento]).forEach(elementoC => {
+        Object.keys(data[elemento]).forEach(subetapa =>{
+          Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+            Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+              if(!materialesExistentes.includes(material)){
+                materialesExistentes.push(material)
+                auxmateriales[material] = 0;
+              }
+              auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+            })
+          });
+        })
+        suma = this.sumadatos(auxmateriales)
+        auxdatos = this.acomodaMayoraMenor(auxmateriales);
+      }else if(filtro == 1){
+        //Si se selecciona una fase del ciclo de vida
+        Object.keys(data[elemento]).forEach(elementoC =>{
           Object.keys(data[elemento][elementoC]).forEach(material => {
             if(!materialesExistentes.includes(material)){
               materialesExistentes.push(material)
@@ -606,32 +680,24 @@ export class GraficasTercerSeccionComponent implements OnInit {
             }
             auxmateriales[material] += data[elemento][elementoC][material]
           })
-        });
-        suma = this.sumadatos(auxmateriales)
-        auxdatos = this.acomodaMayoraMenor(auxmateriales);
-      }else if(filtro == 1){
-        //Si se selecciona una fase del ciclo de vida
-        Object.keys(data[elemento]).forEach(material => {
-          if(!materialesExistentes.includes(material)){
-            materialesExistentes.push(material)
-            auxmateriales[material] = 0;
-          }
-          auxmateriales[material] += data[elemento][material]
         })
         suma = this.sumadatos(auxmateriales)
         auxdatos = this.acomodaMayoraMenor(auxmateriales);
       }else{
-        if(elemento === elementoSeleccionado.toString()){
-          suma = this.sumadatos(data[elemento])
-          auxdatos = this.acomodaMayoraMenor(data[elemento]);
-          Object.keys(data[elemento]).forEach((material,index) => {
-            auxdatos.forEach(num =>{
-              if(num == data[elemento][material]){
-                auxidsMateriales.push(material)
-              }
-            })
-          });
-        }
+        auxidsMateriales = []
+        Object.keys(data[elemento]).forEach(subetapa => {
+          if(subetapa === elementoSeleccionado.toString()){
+            suma = this.sumadatos(data[elemento][subetapa])
+            auxdatos = this.acomodaMayoraMenor(data[elemento][subetapa]);
+            Object.keys(data[elemento][subetapa]).forEach((material,index) => {
+              auxdatos.forEach(num =>{
+                if(num == data[elemento][subetapa][material]){
+                  auxidsMateriales.push(material)
+                }
+              })
+            });
+          }
+        })
       }
     })
     if(filtro == 0){
@@ -675,22 +741,32 @@ export class GraficasTercerSeccionComponent implements OnInit {
     });
     return iconos;
   }
+  llenarIdsBotonesCiclo(elementos,idProyecto){
+    let iconos = {}
+    for(let ciclo of elementos){
+      iconos[ciclo.toString()] = {};
+      iconos[ciclo.toString()]['idTEXTO']= idProyecto.toString().concat('texto'.concat(ciclo.toString()));
+    }
+    return iconos;
+  }
 
   AjustarElementosMostrados(auxDatos){
     let iconos = {}
     this.Secciones.forEach(element =>{
       let flag = false
       let auxidelemento : String = element['id'];
-      Object.keys(auxDatos).forEach(idelemento => {
-        if(idelemento==auxidelemento.toString()){
-          flag = true
-          this.ElementosContructivosEliminados.forEach(elementoEliminado => {
-            if(elementoEliminado === idelemento){
-              flag = false
-            }
-          });
-        }
-      })
+      Object.keys(auxDatos).forEach(subetapa => {
+        Object.keys(auxDatos[subetapa]).forEach(idelemento => {
+          if(idelemento==auxidelemento.toString()){
+            flag = true
+            this.ElementosContructivosEliminados.forEach(elementoEliminado => {
+              if(elementoEliminado === idelemento){
+                flag = false
+              }
+            });
+          }
+        })
+      });
       if(flag){
         iconos[auxidelemento.toString()] = {};
         iconos[auxidelemento.toString()]['habilitado'] = false;

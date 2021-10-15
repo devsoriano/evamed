@@ -76,16 +76,18 @@ export class CalculosTercerSeccion {
         nameImpacto = this.ajustarNombre(nameImpacto);
         Datos[nameImpacto]={};
         DatosMateriales[nameImpacto]={};
-        Datos[nameImpacto]['Producción'] = {};
-        Datos[nameImpacto]['Construccion']={};
-        Datos[nameImpacto]['Uso']={};
-        DatosMateriales[nameImpacto]['Producción'] = {};
-        DatosMateriales[nameImpacto]['Construccion']={};
-        DatosMateriales[nameImpacto]['Uso']={};
+        Datos[nameImpacto]['Producción'] = {'A1':{},'A2':{},'A3':{}};
+        Datos[nameImpacto]['Construccion']={'A4':{}};
+        Datos[nameImpacto]['Uso']={'B4':{}};
+        DatosMateriales[nameImpacto]['Producción'] = {'A1':{},'A2':{},'A3':{}};
+        DatosMateriales[nameImpacto]['Construccion']={'A4':{}};
+        DatosMateriales[nameImpacto]['Uso']={'B4':{}};
         let elementoscreados=[];
         //Cálculos de la sección de producción
         let etapas = [2, 3, 4]; //Subetaps A1 A2 y A3
         etapas.forEach((subetapa) => {
+          elementoscreados=[];
+          let auxSub = "A".concat((subetapa-1).toString())
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
                 let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
@@ -100,13 +102,13 @@ export class CalculosTercerSeccion {
                         materiales_subetapa.forEach((material, index) => {
                             if(!elementoscreados.includes(ps['section_id'])){
                             elementoscreados.push(ps['section_id']);
-                            Datos[nameImpacto]['Producción'][ps['section_id']]=0;
-                            DatosMateriales[nameImpacto]['Producción'][ps['section_id']]={};
+                            Datos[nameImpacto]['Producción'][auxSub][ps['section_id']]=0;
+                            DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']]={};
                             }
                             let auxres = materiales_subetapa[index]['value'] * ps['quantity'];
-                            DatosMateriales[nameImpacto]['Producción'][ps['section_id']][ps['material_id']]=auxres;
-                            Datos[nameImpacto]['Producción'][ps['section_id']] =
-                            Datos[nameImpacto]['Producción'][ps['section_id']]+
+                            DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']][ps['material_id']]=auxres;
+                            Datos[nameImpacto]['Producción'][auxSub][ps['section_id']] =
+                            Datos[nameImpacto]['Producción'][auxSub][ps['section_id']]+
                             auxres;
                         });
                     } 
@@ -165,13 +167,13 @@ export class CalculosTercerSeccion {
                 if (materiales_subetapa.length < 1) {
                   if(!elementoscreados.includes(ps['section_id'])){
                     elementoscreados.push(ps['section_id']);
-                    Datos[nameImpacto]['Construccion'][ps['section_id']]=0;
-                    DatosMateriales[nameImpacto]['Construccion'][ps['section_id']] = {};
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
+                    DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
                   }
                   let auxres = peso * ps['quantity'] * (nacional + internacional)
-                  DatosMateriales[nameImpacto]['Construccion'][ps['section_id']][ps['material_id']]=auxres;
-                  Datos[nameImpacto]['Construccion'][ps['section_id']] =
-                  Datos[nameImpacto]['Construccion'][ps['section_id']] +
+                  DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
+                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
+                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
                   auxres;
                 }
             }
@@ -183,27 +185,29 @@ export class CalculosTercerSeccion {
         etapas.forEach((subetapa) => {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
+              if(ps['replaces'] != 0){
                 let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
-              if(baseDatosMaterial[0]['database_from']==='EPDs'){
-                  let materiales_subetapa = this.materialSchemeDataList.filter(
-                    (msd) =>
-                      msd['material_id'] == ps['material_id'] &&
-                      msd['standard_id'] == subetapa &&
-                      msd['potential_type_id'] == impacto['id']
-                  );
-                  if (materiales_subetapa.length > 0) {
-                    materiales_subetapa.forEach((material, index) => {
-                      if(!elementoscreados.includes(ps['section_id'])){
-                        elementoscreados.push(ps['section_id']);
-                        Datos[nameImpacto]['Uso'][ps['section_id']]=0;
-                        DatosMateriales[nameImpacto]['Uso'][ps['section_id']]={};
-                      }
-                      let auxres = materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces']
-                      DatosMateriales[nameImpacto]['Uso'][ps['section_id']][ps['material_id']]=auxres;
-                      Datos[nameImpacto]['Uso'][ps['section_id']] =
-                      Datos[nameImpacto]['Uso'][ps['section_id']] + auxres;
-                    });
-                  }
+                if(baseDatosMaterial[0]['database_from']==='EPDs'){
+                    let materiales_subetapa = this.materialSchemeDataList.filter(
+                      (msd) =>
+                        msd['material_id'] == ps['material_id'] &&
+                        msd['standard_id'] == subetapa &&
+                        msd['potential_type_id'] == impacto['id']
+                    );
+                    if (materiales_subetapa.length > 0) {
+                      materiales_subetapa.forEach((material, index) => {
+                        if(!elementoscreados.includes(ps['section_id'])){
+                          elementoscreados.push(ps['section_id']);
+                          Datos[nameImpacto]['Uso']['B4'][ps['section_id']]=0;
+                          DatosMateriales[nameImpacto]['Uso']['B4'][ps['section_id']]={};
+                        }
+                        let auxres = materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces']
+                        DatosMateriales[nameImpacto]['Uso']['B4'][ps['section_id']][ps['material_id']]=auxres;
+                        Datos[nameImpacto]['Uso']['B4'][ps['section_id']] =
+                        Datos[nameImpacto]['Uso']['B4'][ps['section_id']] + auxres;
+                      });
+                    }
+                }
               }
             });
           }
