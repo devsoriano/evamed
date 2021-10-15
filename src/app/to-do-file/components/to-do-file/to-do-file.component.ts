@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { FileSaverService } from 'ngx-filesaver';
 import { MatDialog } from '@angular/material/dialog';
-import { PrevStepsComponent } from 'src/app/to-do-file/components/prev-steps/prev-steps.component';
-
+import { PrevStepsComponent} from 'src/app/to-do-file/components/prev-steps/prev-steps.component';
+import { ViewChild, ElementRef, AfterViewInit, Renderer2 } from '@angular/core';
 type AOA = any[][];
 
 @Component({
@@ -16,10 +16,14 @@ export class ToDoFileComponent implements OnInit {
   fileName: string;
   nameProject: string;
 
+  @ViewChild('asTitle') title: ElementRef;
+  @ViewChild('asImage') image: ElementRef;
+  
   constructor(
     private httpClient: HttpClient,
     private fileSaverService: FileSaverService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private renderer2:Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +33,13 @@ export class ToDoFileComponent implements OnInit {
 
   onFileChange(evt: any) {
     console.log('acción de botón!!!!!');
+    const asTitle=this.title.nativeElement;
+    const asImage=this.image.nativeElement;
+     
+    var file= (<HTMLInputElement>document.getElementById('file')).files[0].name;
+     this.renderer2.setProperty(asTitle,'innerHTML',file);
+    
+     this.renderer2.setAttribute(asImage,'src','assets/images/Icon awesome-file-upload-gren.png',);
     /* wire up file reader */
     const target: DataTransfer = evt.target;
 
