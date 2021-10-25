@@ -124,9 +124,16 @@ export class UsageStageUpdateComponent implements OnInit {
 
    changeCantidadME(cantidadMixElectrico) {
     this.suma=0;
-     this.cantidadMixElectrico =cantidadMixElectrico.toFixed(2).toString();
+     this.cantidadMixElectrico =Math.round((cantidadMixElectrico * 100) / 100);
     this.porcentajeMixElectrico = Math.round((((cantidadMixElectrico * 100) / this.cantidad) * 100) / 100);
     
+    
+     if(this.cantidadCombustible==null){
+    this.cantidadCombustible=0;
+  }
+  if(this.cantidadPanelesFotovoltaicos==null){
+    this.cantidadPanelesFotovoltaicos=0;
+  }
     this.suma=+this.cantidadMixElectrico + +this.cantidadCombustible + +this.cantidadPanelesFotovoltaicos;
     
     console.log(this.suma);
@@ -140,9 +147,16 @@ export class UsageStageUpdateComponent implements OnInit {
 
   changePorcentajeME(porcentajeMixElectrico) {
     this.suma=0;
-    this.porcentajeMixElectrico =porcentajeMixElectrico.toFixed(2).toString();
+    this.porcentajeMixElectrico =Math.round((porcentajeMixElectrico * 100) / 100);
     this.cantidadMixElectrico = Math.round((((porcentajeMixElectrico * this.cantidad) / 100) * 100) / 100);
     
+    
+      if(this.porcentajeCombustible==null){
+   this.porcentajeCombustible=0;
+  }
+  if(this.porcentajePanelesFotovoltaicos==null){
+    this.porcentajePanelesFotovoltaicos=0;
+  }
     this.suma=+this.porcentajeMixElectrico + +this.porcentajeCombustible + +this.porcentajePanelesFotovoltaicos;
     
     console.log(this.suma);
@@ -156,10 +170,17 @@ export class UsageStageUpdateComponent implements OnInit {
 
   changeCantidadC(cantidadCombustible) {
     this.suma=0;
-    this.cantidadCombustible =cantidadCombustible.toFixed(2).toString();
+    this.cantidadCombustible =Math.round((cantidadCombustible * 100) / 100);
     this.porcentajeCombustible = Math.round((((cantidadCombustible * 100) / this.cantidad) * 100) / 100);
     
     
+    if(this.cantidadMixElectrico==null){
+    this.cantidadMixElectrico=0;
+  }
+
+  if(this.cantidadPanelesFotovoltaicos==null){
+    this.cantidadPanelesFotovoltaicos=0;
+  }
      this.suma=+this.cantidadMixElectrico + +this.cantidadCombustible + +this.cantidadPanelesFotovoltaicos;
     
     console.log(this.suma);
@@ -173,9 +194,17 @@ export class UsageStageUpdateComponent implements OnInit {
 
   changePorcentajeC(porcentajeCombustible) {
     this.suma=0;
-    this.porcentajeCombustible =porcentajeCombustible.toFixed(2).toString();
+    this.porcentajeCombustible =Math.round((porcentajeCombustible * 100) / 100);
     this.cantidadCombustible = Math.round((((porcentajeCombustible * this.cantidad) / 100) * 100) / 100);
    
+    
+    if(this.porcentajeMixElectrico==null){
+    this.porcentajeMixElectrico=0;
+  }
+ 
+  if(this.porcentajePanelesFotovoltaicos==null){
+    this.porcentajePanelesFotovoltaicos=0;
+  }
      this.suma=+this.porcentajeMixElectrico + +this.porcentajeCombustible + +this.porcentajePanelesFotovoltaicos;
     
     console.log(this.suma);
@@ -190,10 +219,17 @@ export class UsageStageUpdateComponent implements OnInit {
 
   changeCantidadPF(cantidadPanelesFotovoltaicos) {
     this.suma=0;
-    this.cantidadPanelesFotovoltaicos =cantidadPanelesFotovoltaicos.toFixed(2).toString();
+    this.cantidadPanelesFotovoltaicos =Math.round((cantidadPanelesFotovoltaicos * 100) / 100);
     this.porcentajePanelesFotovoltaicos =
       Math.round((((cantidadPanelesFotovoltaicos * 100) / this.cantidad) * 100) / 100);
     
+    if(this.cantidadMixElectrico==null){
+    this.cantidadMixElectrico=0;
+  }
+  if(this.cantidadCombustible==null){
+    this.cantidadCombustible=0;
+  }
+
      this.suma=+this.cantidadMixElectrico + +this.cantidadCombustible + +this.cantidadPanelesFotovoltaicos;
     
     console.log(this.suma);
@@ -207,10 +243,17 @@ export class UsageStageUpdateComponent implements OnInit {
 
   changePorcentajePF(porcentajePanelesFotovoltaicos) {
     this.suma=0;
-     this.porcentajePanelesFotovoltaicos =porcentajePanelesFotovoltaicos.toFixed(2).toString();
+     this.porcentajePanelesFotovoltaicos =Math.round((porcentajePanelesFotovoltaicos * 100) / 100);
     this.cantidadPanelesFotovoltaicos =
       Math.round((((porcentajePanelesFotovoltaicos * this.cantidad) / 100) * 100) / 100);
    
+    if(this.porcentajeMixElectrico==null){
+    this.porcentajeMixElectrico=0;
+  }
+  if(this.porcentajeCombustible==null){
+   this.porcentajeCombustible=0;
+  }
+ 
      this.suma=+this.porcentajeMixElectrico + +this.porcentajeCombustible + +this.porcentajePanelesFotovoltaicos;
     
     console.log(this.suma);
@@ -222,6 +265,7 @@ export class UsageStageUpdateComponent implements OnInit {
   
   
   }
+
 
   saveStepThree() {
     console.log('entra al proceso de edición');
