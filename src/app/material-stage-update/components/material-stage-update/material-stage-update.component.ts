@@ -42,6 +42,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   SOR = [];
   SOD = [];
   SOU = [];
+  IMGP = [];
   sectionRevit: boolean;
   sectionDynamo: boolean;
   selectedMaterial: boolean;
@@ -135,6 +136,25 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    
+     //carga de imagenes
+    let images = [
+      "../../../../assets/map/2.jpg",
+      "../../../../assets/map/4.jpg",
+      "../../../../assets/map/5.jpg",
+      "../../../../assets/map/6.jpg",
+      "../../../../assets/map/7.jpg",
+      "../../../../assets/map/8.jpg",
+      "../../../../assets/map/9.jpg",
+      "../../../../assets/map/10.jpg",
+      "../../../../assets/map/11.jpg",
+      "../../../../assets/map/12.jpg",
+      "../../../../assets/map/13.jpg",
+      "../../../../assets/map/14.jpg"
+    ];
+    this.preload(images);
+    
     // fragmento para autocompletado
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -177,6 +197,13 @@ export class MaterialStageUpdateComponent implements OnInit {
     );
   }
 
+  preload(array) {
+   
+ for (var i = 0; i < array.length; i++) {
+      this.IMGP[i] = new Image();
+        this.IMGP[i].src = array[i];
+      }
+  }
   onGroupsChange(options: MatListOption[]) {
     options.map((option) => {
       this.selectedSheet = option.value;
