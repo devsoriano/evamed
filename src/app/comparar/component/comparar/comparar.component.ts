@@ -163,8 +163,6 @@ export class CompararComponent implements OnInit {
   catologoImpactoAmbiental = [];
   elementosConstructivosMostradosElementos = {};
   cicloVidaSeleccionadoElemento = ' ';
-  flagSubetapasCompleto = false;
-  cicloSeleccionadoLocal = ' ';
 
   // vars analisis
   idProyectoActivo: number;
@@ -417,7 +415,6 @@ export class CompararComponent implements OnInit {
     grafica.instance.inputProyect = this.proyectosMostrados_elementos;
     grafica.instance.materiales = this.materialList;
     grafica.instance.Secciones =  this.sectionList;
-    grafica.instance.flagSubCompleto = this.flagSubetapasCompleto;
   }
 
   iniciaRadiales(){
@@ -461,6 +458,7 @@ export class CompararComponent implements OnInit {
       'sectionList':this.sectionList
     };
     let aux = this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
+    console.log(aux)
     return aux;
   }
 
@@ -1101,17 +1099,10 @@ export class CompararComponent implements OnInit {
       Producción: '#4DBE89',
       Construccion: '#0DADBA',
       Uso: '#8F5091',
-      Subetapas: '#4DBE89',
+      FinDeVida: '#DEA961',
     };
-    if(this.cicloSeleccionadoLocal === ' '){
-      if(etapa === 'Subetapas'){
-        this.flagSubetapasCompleto = true;
-        this.cicloVidaSeleccionadoElemento = ' ';
-      }else{
-        this.flagSubetapasCompleto = false;
-        this.cicloVidaSeleccionadoElemento = etapa;
-      }
-      this.cicloSeleccionadoLocal = etapa;
+    if(this.cicloVidaSeleccionadoElemento === ' '){
+      this.cicloVidaSeleccionadoElemento = etapa;
       document.getElementById(etapa.concat('TextoElemento')).className = 'button-info-select';
       Object.keys(color).forEach((element) => {
         if (element === etapa) {
@@ -1119,27 +1110,18 @@ export class CompararComponent implements OnInit {
         }
       });
     }else{
-      if(this.cicloSeleccionadoLocal != etapa){
-        if(etapa === 'Subetapas'){
-          this.flagSubetapasCompleto = true;
-          this.cicloVidaSeleccionadoElemento = ' ';
-        }else{
-          this.flagSubetapasCompleto = false;
-          this.cicloVidaSeleccionadoElemento = etapa;
-        }
+      if(this.cicloVidaSeleccionadoElemento != etapa){
         document.getElementById(etapa.concat('TextoElemento')).className = 'button-info-select';
         Object.keys(color).forEach((element) => {
           if (element === etapa) {
             document.getElementById(etapa.concat('TextoElemento')).style.borderColor = color[element];
           }
         });
-        document.getElementById(this.cicloSeleccionadoLocal.concat('TextoElemento')).className = 'button-info';
-        this.cicloSeleccionadoLocal = etapa;
+        document.getElementById(this.cicloVidaSeleccionadoElemento.concat('TextoElemento')).className = 'button-info';
+        this.cicloVidaSeleccionadoElemento = etapa;
       }else{
-        document.getElementById(this.cicloSeleccionadoLocal.concat('TextoElemento')).className = 'button-info';
+        document.getElementById(this.cicloVidaSeleccionadoElemento.concat('TextoElemento')).className = 'button-info';
         this.cicloVidaSeleccionadoElemento = ' ';
-        this.flagSubetapasCompleto = false;
-        this.cicloSeleccionadoLocal = ' ';
       }
     }
     this.iniciarSeccionTres();

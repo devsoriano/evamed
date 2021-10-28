@@ -33,7 +33,7 @@
       <mat-tab-group mat-stretch-tabs class="container-principal-tab" (selectedIndexChange)="show($event)">
         <mat-tab>
           <ng-template mat-tab-label>
-            Impactos ambientales<br>por etapas de ciclo de vida
+            Impactos ambientales<br>por impactos del ciclo de vida
           </ng-template>
           <div class="div-impactos-ambientales">
             <p>Impactos ambientales</p>
@@ -222,7 +222,7 @@
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
-            Impactos ambientales<br>por materiales de construcción
+            Elementos constructivos<br>por etapas del ciclo de vida
           </ng-template>
           <div>
             <div class="div-elementos-constructivos">
@@ -247,6 +247,7 @@
                 <ul>
                   <li> <button id="ProducciónTextoElemento" (click)="selectEtapa('Producción')" mat-stroked-button class="button-info">
                      <div class="some-text">
+                     <a>Producción</a>
                      <a> A1 - A3</a></div>
                      </button>
                      <button class='button-icon' (click)="eliminarEtapa('Producción')">
@@ -255,8 +256,8 @@
                   </li>
                   <li> <button id="ConstruccionTextoElemento" (click)="selectEtapa('Construccion')" mat-stroked-button class="button-info">
                      <div class="some-text">
-                     <a>A4 - Transporte</a>
-                     <a> de materiales </a></div>
+                     <a>Construcción</a>
+                     <a> A4 </a></div>
                      </button>
                      <button class='button-icon' (click)="eliminarEtapa('Construccion')">
                        <mat-icon class="dos">{{iconosCambioElementos['Construccion']}}</mat-icon>
@@ -264,28 +265,10 @@
                    </li>
                 </ul>
                 <ul>
-                  <li> <button id="SubetapasTextoElemento" (click)="selectEtapa('Subetapas')" mat-stroked-button class="button-info">
-                    <div class="some-text">
-                    <a>A1 - Extracción</a>
-                    <a>A2 - Transporte</a>
-                    <a>A3 - Manufactura</a></div>
-                    </button>
-                    <div class="seccion-botones-subetapas">
-                      <button class='button-icon-subetapas'>
-                        <mat-icon class="dos">{{iconosCambioElementos['Uso']}}</mat-icon>
-                      </button>
-                      <button class='button-icon-subetapas'>
-                        <mat-icon class="dos">{{iconosCambioElementos['Uso']}}</mat-icon>
-                      </button>
-                      <button class='button-icon-subetapas'>
-                        <mat-icon class="dos">{{iconosCambioElementos['Uso']}}</mat-icon>
-                      </button>
-                    </div>
-                  </li>
                  <li> <button id="UsoTextoElemento" (click)="selectEtapa('Uso')" mat-stroked-button class="button-info">
                     <div class="some-text">
-                    <a>B4 - Reemplazos</a>
-                    <a> de materiales </a></div>
+                    <a>Uso</a>
+                    <a> B4 </a></div>
                     </button>
                     <button class='button-icon' (click)="eliminarEtapa('Uso')">
                       <mat-icon class="tres">{{iconosCambioElementos['Uso']}}</mat-icon>

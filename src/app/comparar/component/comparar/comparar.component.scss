@@ -243,7 +243,7 @@ p.text-duplicados {
   display: flex;
   align-items: stretch;
   justify-content: space-around;
-  height: 195px;
+  height: 150px;
   > div {
     &:nth-child(1) {
       width: 240px;
@@ -270,20 +270,20 @@ p.text-duplicados {
       }
       li {
         display: flex;
+        padding-bottom: 5px;
       }    
       .button-info {
         border-radius: 10px 0px 0px 10px;
-        width: 102px;
-        height: 71;
+        width: 99px;
+        height: 39px;
         background: #efefef;
         border: 0px;
-        padding:0px;
       }
     
       .button-info-select {
         border-radius: 10px 0px 0px 10px;
-        width: 105px;
-        height: 71px;
+        width: 99px;
+        height: 39px;
         background: #ffffff;
       }
 
@@ -291,7 +291,7 @@ p.text-duplicados {
         color: #ffffff;
         font-size: 14px;
         border-radius: 0px 10px 10px 0px;
-        height: 71px;
+        height: 39px;
         margin-left: 0px;
         display: inline-flex;
         justify-content: center;
@@ -300,48 +300,23 @@ p.text-duplicados {
       }
       .button-icon {
         width: 19px;
-        height: 71px;
+        height: 39px;
         background: #efefef;
         border-radius: 0px 10px 10px 0px;
         border: 0px;
         padding: 1px;
-      }
-      .seccion-botones-subetapas{
-        height: 71px;
-        display: flex;
-        flex-direction: column;
-      }
-      .button-icon-subetapas{
-        width: 19px;
-        height: 23px;
-        background: #efefef;
-        border-radius: 0px 10px 10px 0px;
-        border: 0px;
-        padding: 1px;
-        mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
-          color: #ffffff;
-          font-size: 14px;
-          border-radius: 0px 10px 10px 0px;
-          height: 23px;
-          margin-left: 0px;
-          display: inline-flex;
-          justify-content: center;
-          align-items: center;
-          margin-top: 0.1px;
-        }
       }
     
       .some-text {
+        float: left;
         text-align: left;
-        display: flex;
-        flex-direction: column;
-        align-content: space-around;
+        display: grid;
+        grid-template-columns: repeat(1, auto);
+        grid-template-rows: 12px;
         font-size: 11px;
+        letter-spacing: 0px;
         color: #767676;
         opacity: 1;
-        a{
-          height: 23px;
-        }
       }
     }
   }
@@ -583,7 +558,14 @@ p.text-duplicados {
     }
   }
 
-b  .graficas-dispercion{
+  .circulo-color-tabla{
+    height: 24px;
+    width: 29px;
+    border-radius: 50%;
+    padding-top: 7px;
+  }
+
+  .graficas-dispercion{
     width: 300px;
   }
 

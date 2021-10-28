@@ -32,14 +32,6 @@
               </canvas>
           </div>
       </div>
-      <div class="seccion_botones_elementos_constructivos">
-        <div *ngFor="let cicloDeVida of botones_ciclo_vida" class="botones-elementos-contructivos">
-          <div id="{{item.idsIconoCiclo[cicloDeVida]['idTEXTO']}}" class="espacio-sin-selecciomar">
-            <button class="button-elemento-seleccionado color-texto"> 
-              {{cicloDeVida}}</button>
-          </div>
-        </div>
-      </div>
       <div class="button-graph">
           <mat-button-toggle-group>
               <mat-button-toggle (click)="cambioGrafica(1,item.id)"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
@@ -53,6 +45,15 @@
         </div>
         <div *ngIf="item.ElementosConstructivosGrafica">
             <div class="canvas-container seccionTresPie">
+              <!--
+              <canvas #MyChart='base-chart' #canvas baseChart
+                          [datasets]="item.DatosElementosConstructivos"
+                          [chartType]="doughnutChartType"
+                          [options]="pieChartOptionsDos"
+                          (chartClick)='onChartClickElemento($event,item.id)'
+                          width="217px" height="292px">
+              </canvas>                
+              -->
               <canvas #MyChart='base-chart' #canvas baseChart
                           [datasets]="item.DatosElementosConstructivos"
                           [chartType]="doughnutChartType"
