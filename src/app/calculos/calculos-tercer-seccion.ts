@@ -165,16 +165,18 @@ export class CalculosTercerSeccion {
                     msd['standard_id'] == 1
                 );
                 if (materiales_subetapa.length < 1) {
-                  if(!elementoscreados.includes(ps['section_id'])){
-                    elementoscreados.push(ps['section_id']);
-                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
-                    DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
-                  }
                   let auxres = peso * ps['quantity'] * (nacional + internacional)
-                  DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
-                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
-                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
-                  auxres;
+                  if(auxres != 0){
+                    if(!elementoscreados.includes(ps['section_id'])){
+                      elementoscreados.push(ps['section_id']);
+                      Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
+                      DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
+                    }
+                    DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
+                    auxres;
+                  }
                 }
             }
           });

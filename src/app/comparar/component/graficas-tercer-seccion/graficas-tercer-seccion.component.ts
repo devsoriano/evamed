@@ -6,6 +6,7 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { threadId } from 'node:worker_threads';
 import { chown } from 'node:fs';
 import { element } from 'protractor';
+import { convertToObject } from 'typescript';
 
 @Component({
   selector: 'app-graficas-tercer-seccion',
@@ -28,9 +29,11 @@ export class GraficasTercerSeccionComponent implements OnInit {
   public InfoMostrada=[];
   botones_elementos_constructivos=[];
   elementoContructivoSelecionado = " ";
-  private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#a8d024'};
-  private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)', FinDeVida : 'rgba(222,169,97,0.2)'};
-  private CicloColoresRGB = { FinDeVida: 'rgb(222, 169, 97)', Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)'};
+  private subetapas = {A1:'Producción',A2:'Producción',A3:'Producción',A4:'Construccion',B4:'Uso'};
+  //let SubetapasColores = { B4 : '#8F5091', A4: '#148A93', A1 : '#4DBE89', A2 : '#319F6B', A3:'#368460'};
+  private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#a8d024',B4 : '#8F5091', A4: '#148A93', A1 : '#4DBE89', A2 : '#319F6B', A3:'#368460'};
+  private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)',B4 : 'rgba(143, 80, 145, 0.2)', A4: 'rgba(20, 138, 147, 0.2)', A1 : 'rgba(77, 190, 137, 0.2)', A2 : 'rgba(49, 159, 107, 0.2)', A3:'rgba(54, 132, 96, 0.2)'};
+  private CicloColoresRGB = {Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)',B4 : 'rgb(143, 80, 145)', A4: 'rgb(20, 138, 147)', A1 : 'rgb(77, 190, 137)', A2 : 'rgb(49, 159, 107)', A3:'rgb(54, 132, 96)'};
   public displayedColumnsDispercion: string[] = ['no', 'material', 'porcentaje', 'numero'];
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
@@ -130,37 +133,67 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux['CicloGraficaBar']=false;
       aux['ElementosConstructivosGrafica']=false;
       aux['DispercionElementoGrafica']=false;
+      aux['flagAgruparProduccion'] = false;
+      aux['textoBotonAgrupar'] = "Desagrupar"
       aux['DatosMateriales'] = proyecto.data['materiales'][this.impactoAmbientalMostrado.toString()];
       aux['DispercionElementos'] = proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()];
       if(this.FaseSeleccionada!=' '){
         aux['CicloSeleccionado'] = this.FaseSeleccionada
-        aux['Coloreslementos'] = this.ColoresElementos(aux['DispercionElementos'],aux['CicloSeleccionado']);;
-        aux['DatosElementosConstructivos']=this.GraficaElementosContructivos(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],this.FaseSeleccionada);
+        aux['Coloreslementos'] = this.ColoresElementos(aux['DispercionElementos'],this.FaseSeleccionada,aux['flagAgruparProduccion']);
+        aux['DatosElementosConstructivos']=this.GraficaElementosContructivos(aux['Coloreslementos']['valores'],aux['Coloreslementos']['colores']);
         aux['ElementosConstructivosGrafica']=true;
-        aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'][this.FaseSeleccionada.toString()], aux['CicloSeleccionado'],1);
-        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'][this.FaseSeleccionada.toString()], aux['CicloSeleccionado'], aux['CicloSeleccionado'],1);
+        aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion']," ");
+        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion']);
         aux['DataGraficaMateriales']=auxgrafica['grafica'];
         aux['labelsMateriales'] = auxgrafica['labels'];
-        aux['iconosElementosConstrucivos']=this.AjustarElementosMostrados(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()][this.FaseSeleccionada.toString()])
+        aux['iconosElementosConstrucivos']=this.AjustarElementosMostrados(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],this.FaseSeleccionada.toString(),aux['flagAgruparProduccion'])
       }else{
         aux['DatosElementosConstructivos']=[];
         aux['CicloSeleccionado'] = ' '
         aux['iconosElementosConstrucivos']={};
-        aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'],"",0);
-        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'],"","General",0);
+        aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'],"",0,aux['flagAgruparProduccion']," ");
+        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'],"","General",0,aux['flagAgruparProduccion']);
         aux['DataGraficaMateriales']=auxgrafica['grafica'];
         aux['labelsMateriales'] = auxgrafica['labels'];
         aux['Coloreslementos'] = {};
       }
-      aux['DatosCicloVida']=this.GraficaCicloVida(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado']);
+      aux['DatosCicloVida']=this.GraficaCicloVida(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado'],aux['flagAgruparProduccion']);
       aux['LabelsCicloVida'] = this.EncontrarLabels(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()]);
       aux['LabelsElementos'] = this.EncontrarLabelsElementos(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado'])
       aux['CicloVida'] = proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()];
       aux['ElementoConstructivoSeleccionado'] = ' ';
       aux['nombreSeccionMostrado'] = ' ';
       aux['idsIconosElementos']=this.llenarIdsBotones(this.Secciones,proyecto.idproyecto);
+      aux['coloresBotonesElementos']=this.llenarColoresBotonesElementos(this.Secciones,aux['Coloreslementos']['colores'],aux['Coloreslementos']['orden'])
+      let botonesCiclo = this.llenarBotonesCiclo(aux['flagAgruparProduccion'],aux['id']);
+      aux['botonesCiclo'] = botonesCiclo['botones']
+      aux['ids_RespuestasBotones'] = botonesCiclo
       this.InfoMostrada.push(aux);
     })
+  }
+
+  llenarBotonesCiclo(agrupar,idP){
+    let botones = {'idsBotones' : {},'botones':[], 'respuesta':{},'colores':{}}
+    if(agrupar){
+      //Todas las subetapas
+      let auxBotones = ['A1','A2','A3', 'A4', 'B4']
+      auxBotones.forEach(element => {
+        botones['botones'].push(element);
+        botones['idsBotones'][element] = idP.toString().concat(element.concat('botonC'))
+        botones['respuesta'][element] = element
+        botones['colores'][element] = this.CicloColores[element]
+      });
+    }else{
+      //producción agrupado
+      let auxBotones = {'A1 - A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+      Object.keys(auxBotones).forEach(element => {
+        botones['botones'].push(element);
+        botones['idsBotones'][element] = idP.toString().concat(auxBotones[element].concat('botonC'))
+        botones['respuesta'][element] = auxBotones[element]
+        botones['colores'][element] = this.CicloColores[auxBotones[element]]
+      });
+    }
+    return botones
   }
 
   EncontrarLabels(data){
@@ -183,121 +216,121 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let aux = [];
     Object.keys(data).forEach(fase =>{
       if(ciclo===fase){
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+        Object.keys(data[fase]).forEach(subetapa =>{
+          Object.keys(data[fase][subetapa]).forEach(ElementoC =>{
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              if(ElementoI === ElementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
+              aux.push(ElementoC);
             }
-          });
-          if(banderaElemento){
-            aux.push(ElementoC);
-          }
+          })
         })
       }
     })
     return aux;
   }
 
-  GraficaElementosContructivos(data,ciclo){
+  GraficaElementosContructivos(data,colores){
     let aux = [];
-    let auxdata = [];
-    let auxcolor = [];
-    let help = this.CicloColoresRGB[ciclo].match(/rgb?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
-    let cambioR= help[1];
-    
-    Object.keys(data).forEach(fase =>{
-      if(ciclo===fase){
-        let suma =0;
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
-            }
-          });
-          if(banderaElemento){
-            suma = suma + data[fase][ElementoC];
-          }
-        })
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
-            }
-          });
-          if(banderaElemento){
-            let auxrgbcolor='rgb(';
-            auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-            cambioR = (Number(cambioR) + 50).toString();
-            auxcolor.push(auxrgbcolor)
-            auxdata.push(((data[fase][ElementoC]/suma)*100).toFixed(2));
-          }
-        })
-      }
-    })
     aux = [
       {
-        data: auxdata,
-        backgroundColor: auxcolor,
+        data: data,
+        backgroundColor: colores,
       },
     ];
     return aux;
   }
 
-  ColoresElementos(data,ciclo){
+  ColoresElementos(data,ciclo,flagAgrupar){
     let auxColoresElementos = [];
     let auxcolordos = [];
     let auxcolor = [];
     let valores = [];
     let help = this.CicloColoresRGB[ciclo].match(/rgb?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
     let cambioR= help[1];
+    let auxValores={};
+    let suma =0;
     Object.keys(data).forEach(fase =>{
-      if(ciclo===fase){
-        let suma =0;
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+      if(ciclo===fase || flagAgrupar){
+        Object.keys(data[fase]).forEach(subetapa =>{
+          let flagSubetapa = false;
+          if(flagAgrupar){
+            if(subetapa == ciclo){
+              flagSubetapa = true;
             }
-          });
-          if(banderaElemento){
-            suma = suma + data[fase][ElementoC];
+          }else{
+            flagSubetapa = true;
           }
-        })
-        Object.keys(data[fase]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+          if(flagSubetapa){
+            Object.keys(data[fase][subetapa]).forEach(ElementoC =>{
+              let banderaElemento = true;
+              this.ElementosContructivosEliminados.forEach(ElementoI => {
+                if(ElementoI === ElementoC){
+                  banderaElemento=false;
+                }
+              });
+              if(banderaElemento){
+                suma = suma + data[fase][subetapa][ElementoC];
+              }
+            })
+          }
+        });
+        let elementosExistente = [];
+        Object.keys(data[fase]).forEach(subetapa =>{
+          let flagSubetapa = false;
+          if(flagAgrupar){
+            if(subetapa == ciclo){
+              flagSubetapa = true;
             }
-          });
-          if(banderaElemento){
-            auxColoresElementos.push(ElementoC);
-            let auxrgbcolor='rgb(';
-            auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-            let auxrgbacolor='rgba(';
-            auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(',').concat('0.1').concat(')');
-            auxcolor.push(auxrgbcolor);
-            auxcolordos.push(auxrgbacolor);
-            valores.push(((data[fase][ElementoC]/suma)*100).toFixed(2));
-            cambioR = (Number(cambioR) + 50).toString();
+          }else{
+            flagSubetapa = true;
           }
-        })
+          if(flagSubetapa){
+            Object.keys(data[fase][subetapa]).forEach(ElementoC =>{
+              let banderaElemento = true;
+              this.ElementosContructivosEliminados.forEach(ElementoI => {
+                if(ElementoI === ElementoC){
+                  banderaElemento=false;
+                }
+              });
+              if(banderaElemento){
+                if(!elementosExistente.includes(ElementoC)){
+                  auxColoresElementos.push(ElementoC);
+                  elementosExistente.push(ElementoC);
+                  let auxrgbcolor='rgb(';
+                  auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+                  let auxrgbacolor='rgba(';
+                  auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(',').concat('0.1').concat(')');
+                  auxcolor.push(auxrgbcolor);
+                  auxcolordos.push(auxrgbacolor);
+                  cambioR = (Number(cambioR) + 50).toString();
+                  auxValores[ElementoC] = 0;
+                }
+                auxValores[ElementoC] += data[fase][subetapa][ElementoC];
+              }
+            })
+          }
+        });
       }
+    })
+    Object.keys(auxValores).forEach(elementoC => {
+      valores.push(((auxValores[elementoC]/suma)*100).toFixed(2))
     })
     let resultado= {'orden':auxColoresElementos,'colores':auxcolor,'coloresbtw':auxcolordos,'valores':valores}
     return resultado;
   }
 
-  GraficaCicloVida(data,flagColor){
+  GraficaCicloVida(data,flagColor,flagAgrupar){
     let aux = [];
     let auxdata = [];
     let auxcolor = [];
     let Data={};
     let suma = 0;
+    let subetpascreadas = [];
     Object.keys(data).forEach((etapa,index) =>{
       let bandera = true;
       this.FasesEliminadas.forEach(element => {
@@ -307,20 +340,35 @@ export class GraficasTercerSeccionComponent implements OnInit {
         }
       });
       if(bandera){
-        Data[etapa] = 0;
-        Object.keys(data[etapa]).forEach(ElementoC =>{
-          let banderaElemento = true;
-          this.ElementosContructivosEliminados.forEach(ElementoI => {
-            //Para asegurar que el elemento constructivo no este eliminado
-            if(ElementoI === ElementoC){
-              banderaElemento=false;
+        Object.keys(data[etapa]).forEach(subetapa =>{
+          let subEtpaOEtapa
+          Object.keys(data[etapa][subetapa]).forEach(ElementoC =>{
+            if(flagAgrupar){
+              subEtpaOEtapa = subetapa;
+              if(!subetpascreadas.includes(subetapa)){
+                Data[subEtpaOEtapa] = 0;
+                subetpascreadas.push(subetapa)
+              }
+            }else{
+              subEtpaOEtapa = etapa
+              if(!subetpascreadas.includes(etapa)){
+                Data[subEtpaOEtapa] = 0;
+                subetpascreadas.push(etapa)
+              }
             }
-          });
-          if(banderaElemento){
-            Data[etapa] =  Data[etapa] + data[etapa][ElementoC];
-            suma = suma + data[etapa][ElementoC];
-          }
-        })
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              //Para asegurar que el elemento constructivo no este eliminado
+              if(ElementoI === ElementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
+              Data[subEtpaOEtapa] = Data[subEtpaOEtapa] + data[etapa][subetapa][ElementoC];
+              suma = suma + data[etapa][subetapa][ElementoC];
+            }
+          })
+        });
       }
     });
     Object.keys(Data).forEach((etapa,index) =>{
@@ -366,61 +414,44 @@ export class GraficasTercerSeccionComponent implements OnInit {
       })
     }
   }
-  
-  public onChartClick(e: any,idP,flagGrafica): void {
-    let aux: any;
-    if (this.chartDir.chart.getElementAtEvent(event)[0] != undefined) {
-      Object.keys(this.chartDir.chart.getElementAtEvent(event)[0]).forEach(element => {
-        if (element == '_model') {
-          aux = this.chartDir.chart.getElementAtEvent(event)[0][element];
-          let auxfase=' ';
-          this.InfoMostrada.forEach((proyecto,index) => {
-            if(proyecto.id == idP){
-              this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=' ';
-              this.InfoMostrada[index]['DispercionElementoGrafica']=false;
-              if(flagGrafica ==1){
-                if(aux['backgroundColor'][0] === '#'){
-                  Object.keys(this.CicloColores).forEach(etapa =>{
-                    if(this.CicloColores[etapa]===aux['backgroundColor']){
-                      auxfase = etapa;
-                    }
-                  })
-                }else{
-                  Object.keys(this.CicloColoresBW).forEach(etapa =>{
-                    if(this.CicloColoresBW[etapa]===aux['backgroundColor']){
-                      auxfase = etapa;
-                    }
-                  })
-                }
-              }else{
-                auxfase = aux['label'];
-              }
-              if(proyecto['CicloSeleccionado']=== auxfase){
-                this.InfoMostrada[index]['CicloSeleccionado']=' ';
-                this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado']);
-                this.InfoMostrada[index]['ElementosConstructivosGrafica'] = false;
-                this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0);
-                let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0);
-                this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
-                this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
-                this.InfoMostrada[index]['iconosElementosConstrucivos'] = {}
-              }else{
-                this.InfoMostrada[index]['CicloSeleccionado']=auxfase;
-                this.InfoMostrada[index]['iconosElementosConstrucivos']=this.AjustarElementosMostrados(this.InfoMostrada[index]['DispercionElementos'][auxfase])
-                this.InfoMostrada[index]['DatosElementosConstructivos']=this.GraficaElementosContructivos(this.InfoMostrada[index]['DispercionElementos'],this.InfoMostrada[index]['CicloSeleccionado']);
-                this.InfoMostrada[index]['Coloreslementos'] = this.ColoresElementos(this.InfoMostrada[index]['DispercionElementos'],this.InfoMostrada[index]['CicloSeleccionado']);;
-                this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado']);
-                this.InfoMostrada[index]['ElementosConstructivosGrafica'] = true;
-                this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'][auxfase], this.InfoMostrada[index]['CicloSeleccionado'],1);
-                let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'][auxfase], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1);
-                this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
-                this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
-              }
-            }
-          })
+  public onChartClick(ciclo,idP): void {
+    this.InfoMostrada.forEach((proyecto,index) => {
+      if(proyecto.id == idP){
+        if(proyecto['CicloSeleccionado']=== ciclo){
+          document.getElementById(this.InfoMostrada[index]['id'].toString().concat(ciclo.concat('botonC'))).className = 'espacio-sin-selecciomar';
+          this.InfoMostrada[index]['CicloSeleccionado']=' ';
+          this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
+          this.InfoMostrada[index]['ElementosConstructivosGrafica'] = false;
+          this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0,this.InfoMostrada[index]['flagAgruparProduccion']," ");
+          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion']);
+          this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
+          this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
+          this.InfoMostrada[index]['iconosElementosConstrucivos'] = {}
+        }else{
+          if(this.InfoMostrada[index]['CicloSeleccionado'] === " "){
+            document.getElementById(this.InfoMostrada[index]['id'].toString().concat(ciclo.concat('botonC'))).className = 'espacio-seleccionado';
+          }else{
+            document.getElementById(this.InfoMostrada[index]['id'].toString().concat(this.InfoMostrada[index]['CicloSeleccionado'].concat('botonC'))).className = 'espacio-sin-selecciomar';
+            document.getElementById(this.InfoMostrada[index]['id'].toString().concat(ciclo.concat('botonC'))).className = 'espacio-seleccionado';
+          }
+          if(this.InfoMostrada[index]['ElementoConstructivoSeleccionado'] != " "){
+            document.getElementById(this.InfoMostrada[index]['id'].toString().concat('texto'.concat(this.InfoMostrada[index]['ElementoConstructivoSeleccionado'].toString()))).className = 'espacio-sin-selecciomar';
+            this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=" "
+          }
+          this.InfoMostrada[index]['CicloSeleccionado']=ciclo;
+          this.InfoMostrada[index]['Coloreslementos'] = this.ColoresElementos(this.InfoMostrada[index]['DispercionElementos'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
+          this.InfoMostrada[index]['iconosElementosConstrucivos']=this.AjustarElementosMostrados(this.InfoMostrada[index]['DispercionElementos'],ciclo,this.InfoMostrada[index]['flagAgruparProduccion'])
+          this.InfoMostrada[index]['DatosElementosConstructivos']=this.GraficaElementosContructivos(this.InfoMostrada[index]['Coloreslementos']['valores'],this.InfoMostrada[index]['Coloreslementos']['colores']);
+          this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
+          this.InfoMostrada[index]['ElementosConstructivosGrafica'] = true;
+          this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']," ");
+          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']);
+          this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
+          this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
+          this.InfoMostrada[index]['coloresBotonesElementos']=this.llenarColoresBotonesElementos(this.Secciones,this.InfoMostrada[index]['Coloreslementos']['colores'],this.InfoMostrada[index]['Coloreslementos']['orden']);
         }
-      });
-    }
+      }
+    });
   }
 
   public AjustarColoresGraficaElementos(datacolores,elementoSeleccionado){
@@ -448,19 +479,17 @@ export class GraficasTercerSeccionComponent implements OnInit {
     return(aux);
   }
 
-  //public onChartClickElemento(e: any,idP): void {
   public onChartClickElemento(idelemento,idP): void {
-    let aux: any;
     this.InfoMostrada.forEach((proyecto,index) => {
       if(proyecto.id == idP){
         if(proyecto.ElementoConstructivoSeleccionado === ' '){
           this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=idelemento;
           this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
           let ciclo=this.InfoMostrada[index]['CicloSeleccionado'];
-          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2);
+          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2,this.InfoMostrada[index]['flagAgruparProduccion']);
           this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
           this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
-          this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],2);
+          this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],2,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['CicloSeleccionado']);
           let seccioninfo = this.Secciones.filter((bs)=> bs['id']==idelemento);
           this.InfoMostrada[index]['nombreSeccionMostrado'] = seccioninfo[0]['name_section'];
           this.InfoMostrada[index]['DispercionElementoGrafica']=true;
@@ -471,10 +500,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
             this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=idelemento;
             this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
             let ciclo=this.InfoMostrada[index]['CicloSeleccionado'];
-            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2);
+            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2,this.InfoMostrada[index]['flagAgruparProduccion']);
             this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
             this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
-            this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'][ciclo],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],2);
+            this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],2,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['CicloSeleccionado']);
             let seccioninfo = this.Secciones.filter((bs)=> bs['id']==idelemento);
             this.InfoMostrada[index]['nombreSeccionMostrado'] = seccioninfo[0]['name_section'];
             this.InfoMostrada[index]['DispercionElementoGrafica']=true;
@@ -485,6 +514,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
             this.InfoMostrada[index]['nombreSeccionMostrado'] = ' ';
             this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
             this.InfoMostrada[index]['DispercionElementoGrafica']=false;
+            this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']," ");
+            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']);
+            this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
+            this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
           }
         }
 
@@ -522,11 +555,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
     return auxdatos.reverse()
   }
 
-  IniciarGraficaMateriales(data,elementoSeleccionado,color,filtro){
+  IniciarGraficaMateriales(data,elementoSeleccionado,color,filtro,flagAgrupar){
     let aux = [];
     let auxgrafica = [];
     let auxlabel=[];
-    let auxdata = [];
     let auxdatos = [];
     let suma=0;
     let materialesExistentes = []
@@ -534,38 +566,81 @@ export class GraficasTercerSeccionComponent implements OnInit {
     Object.keys(data).forEach(elemento =>{
       if(filtro == 0){
         //Sin seleccionar algun filtro
-        Object.keys(data[elemento]).forEach(elementoC => {
-          Object.keys(data[elemento][elementoC]).forEach(material => {
-            if(!materialesExistentes.includes(material)){
-              materialesExistentes.push(material)
-              auxmateriales[material] = 0;
-            }
-            auxmateriales[material] += data[elemento][elementoC][material]
-          })
+        Object.keys(data[elemento]).forEach(subetapa => {
+          Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+            Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+              if(!materialesExistentes.includes(material)){
+                materialesExistentes.push(material)
+                auxmateriales[material] = 0;
+              }
+              auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+            })
+          });
         });
         suma = this.sumadatos(auxmateriales)
         auxdatos = this.acomodaMayoraMenor(auxmateriales);
       }else if(filtro == 1){
         //Si se selecciona una fase del ciclo de vida
-        Object.keys(data[elemento]).forEach(material => {
-          if(!materialesExistentes.includes(material)){
-            materialesExistentes.push(material)
-            auxmateriales[material] = 0;
+        if(elementoSeleccionado===elemento || flagAgrupar){
+          Object.keys(data[elemento]).forEach(subetapa => {
+            let flagSubetapa = false;
+            if(flagAgrupar){
+              if(subetapa == elementoSeleccionado){
+                flagSubetapa = true;
+              }
+            }else{
+              flagSubetapa = true;
+            }
+          if(flagSubetapa){
+            Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+              Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+                if(!materialesExistentes.includes(material)){
+                  materialesExistentes.push(material)
+                  auxmateriales[material] = 0;
+                }
+                auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+              })
+            });
           }
-          auxmateriales[material] += data[elemento][material]
-        })
+          });
+        }
         suma = this.sumadatos(auxmateriales)
         auxdatos = this.acomodaMayoraMenor(auxmateriales);
       }else{
         //Si se selecciona un elemento constructivo
-        if(elemento === elementoSeleccionado.toString()){
-          suma = this.sumadatos(data[elemento]);
-          auxdatos = this.acomodaMayoraMenor(data[elemento]);
+        if(color===elemento || flagAgrupar){
+          Object.keys(data[elemento]).forEach(subetapa => {
+            let flagSubetapa = false;
+            if(flagAgrupar){
+              if(subetapa == color){
+                flagSubetapa = true;
+              }
+            }else{
+              flagSubetapa = true;
+            }
+            if(flagSubetapa){
+            Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+              if(elementoC === elementoSeleccionado.toString()){
+                Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+                  if(!materialesExistentes.includes(material)){
+                    materialesExistentes.push(material)
+                    auxmateriales[material] = 0;
+                  }
+                  auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+                  suma += data[elemento][subetapa][elementoC][material]
+                })
+              }
+            });
+          }
+          });
         }
-
       }
     })
     let sumaOtros = 0;
+    if(filtro == 2){
+      suma = this.sumadatos(auxmateriales)
+      auxdatos = this.acomodaMayoraMenor(auxmateriales);
+    }
     auxdatos.forEach((element, index) =>{
       if(index <= 2){
         aux.push(((element/suma)*100).toFixed(2))
@@ -588,7 +663,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     return {'grafica':auxgrafica,'labels':auxlabel}
   }
 
-  IniciarTablaMateriales(data,elementoSeleccionado,filtro){
+  IniciarTablaMateriales(data,elementoSeleccionado,filtro,flagAgrupar,ciclo){
     let infoTablaDispercion = [];
     let suma = 0;
     let auxdatos = [];
@@ -598,38 +673,71 @@ export class GraficasTercerSeccionComponent implements OnInit {
     Object.keys(data).forEach(elemento =>{
       if(filtro == 0){
         //Sin seleccionar algun filtro
-        Object.keys(data[elemento]).forEach(elementoC => {
-          Object.keys(data[elemento][elementoC]).forEach(material => {
-            if(!materialesExistentes.includes(material)){
-              materialesExistentes.push(material)
-              auxmateriales[material] = 0;
-            }
-            auxmateriales[material] += data[elemento][elementoC][material]
-          })
+        Object.keys(data[elemento]).forEach(subetapa => {
+          Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+            Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+              if(!materialesExistentes.includes(material)){
+                materialesExistentes.push(material)
+                auxmateriales[material] = 0;
+              }
+              auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+            })
+          });
         });
         suma = this.sumadatos(auxmateriales)
         auxdatos = this.acomodaMayoraMenor(auxmateriales);
       }else if(filtro == 1){
         //Si se selecciona una fase del ciclo de vida
-        Object.keys(data[elemento]).forEach(material => {
-          if(!materialesExistentes.includes(material)){
-            materialesExistentes.push(material)
-            auxmateriales[material] = 0;
+        if(elementoSeleccionado===elemento || flagAgrupar){
+          Object.keys(data[elemento]).forEach(subetapa => {
+            let flagSubetapa = false;
+            if(flagAgrupar){
+              if(subetapa == elementoSeleccionado){
+                flagSubetapa = true;
+              }
+            }else{
+              flagSubetapa = true;
+            }
+          if(flagSubetapa){
+            Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+              Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+                if(!materialesExistentes.includes(material)){
+                  materialesExistentes.push(material)
+                  auxmateriales[material] = 0;
+                }
+                auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+              })
+            });
           }
-          auxmateriales[material] += data[elemento][material]
-        })
+          });
+        }
         suma = this.sumadatos(auxmateriales)
         auxdatos = this.acomodaMayoraMenor(auxmateriales);
       }else{
-        if(elemento === elementoSeleccionado.toString()){
-          suma = this.sumadatos(data[elemento])
-          auxdatos = this.acomodaMayoraMenor(data[elemento]);
-          Object.keys(data[elemento]).forEach((material,index) => {
-            auxdatos.forEach(num =>{
-              if(num == data[elemento][material]){
-                auxidsMateriales.push(material)
+        if(ciclo===elemento || flagAgrupar){
+          Object.keys(data[elemento]).forEach(subetapa => {
+            let flagSubetapa = false;
+            if(flagAgrupar){
+              if(subetapa == ciclo){
+                flagSubetapa = true;
               }
-            })
+            }else{
+              flagSubetapa = true;
+            }
+            if(flagSubetapa){
+            Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+              if(elementoC === elementoSeleccionado.toString()){
+                Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+                  if(!materialesExistentes.includes(material)){
+                    materialesExistentes.push(material)
+                    auxmateriales[material] = 0;
+                  }
+                  auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+                  suma += data[elemento][subetapa][elementoC][material]
+                })
+              }
+            });
+          }
           });
         }
       }
@@ -643,6 +751,17 @@ export class GraficasTercerSeccionComponent implements OnInit {
         })
       });
     }else if(filtro ==1){
+      Object.keys(auxmateriales).forEach((material,index) => {
+        auxdatos.forEach(num =>{
+          if(!auxidsMateriales.includes(material)){
+            if(num == auxmateriales[material]){
+              auxidsMateriales.push(material)
+            }
+          }
+        })
+      });
+    }else{
+      auxdatos = this.acomodaMayoraMenor(auxmateriales);
       Object.keys(auxmateriales).forEach((material,index) => {
         auxdatos.forEach(num =>{
           if(!auxidsMateriales.includes(material)){
@@ -676,21 +795,58 @@ export class GraficasTercerSeccionComponent implements OnInit {
     return iconos;
   }
 
-  AjustarElementosMostrados(auxDatos){
+  llenarColoresBotonesElementos(elementos,colores,orden){
+    let iconos = {}
+    elementos.forEach(element => {
+      let count =0;  
+      let flagColor = true;    
+      if(orden != undefined){
+        for (let i of orden) {
+          if(i === element['id'].toString()){
+            iconos[element.id.toString()] = colores[count];
+            flagColor = false;
+          }
+          count ++;
+        }
+      }
+      if(flagColor){
+        iconos[element.id.toString()]= '#EFEFEF';
+      }
+    });
+    return iconos;
+  }
+
+  AjustarElementosMostrados(auxDatos,ciclo,flagAgrupar){
     let iconos = {}
     this.Secciones.forEach(element =>{
       let flag = false
       let auxidelemento : String = element['id'];
-      Object.keys(auxDatos).forEach(idelemento => {
-        if(idelemento==auxidelemento.toString()){
-          flag = true
-          this.ElementosContructivosEliminados.forEach(elementoEliminado => {
-            if(elementoEliminado === idelemento){
-              flag = false
+      Object.keys(auxDatos).forEach(fase => {
+      if(ciclo===fase || flagAgrupar){
+        Object.keys(auxDatos[fase]).forEach(subetapas => {
+          let flagSubetapa = false;
+          if(flagAgrupar){
+            if(subetapas == ciclo){
+              flagSubetapa = true;
             }
-          });
-        }
-      })
+          }else{
+            flagSubetapa = true;
+          }
+          if(flagSubetapa){
+            Object.keys(auxDatos[fase][subetapas]).forEach(idelemento => {
+              if(idelemento==auxidelemento.toString()){
+                flag = true
+                this.ElementosContructivosEliminados.forEach(elementoEliminado => {
+                  if(elementoEliminado === idelemento){
+                    flag = false
+                  }
+                });
+              }
+            })
+          }
+        });
+      }
+      });
       if(flag){
         iconos[auxidelemento.toString()] = {};
         iconos[auxidelemento.toString()]['habilitado'] = false;
@@ -700,6 +856,38 @@ export class GraficasTercerSeccionComponent implements OnInit {
       }
     })
     return iconos;
+  }
+
+  agrupacionDeProduccion(idP){
+    this.InfoMostrada.forEach((proyecto,index) => {
+      if(proyecto.id == idP){
+        if(this.InfoMostrada[index]['flagAgruparProduccion']){
+          this.InfoMostrada[index]['flagAgruparProduccion'] = false
+          this.InfoMostrada[index]['textoBotonAgrupar'] = "Desagrupar"
+        }else{
+          this.InfoMostrada[index]['flagAgruparProduccion'] = true;
+          this.InfoMostrada[index]['textoBotonAgrupar'] = "Agrupar"
+        }
+      }
+      if(this.InfoMostrada[index]['CicloSeleccionado'] != " "){
+        document.getElementById(this.InfoMostrada[index]['id'].toString().concat(this.InfoMostrada[index]['CicloSeleccionado'].concat('botonC'))).className = 'espacio-sin-selecciomar';
+        this.InfoMostrada[index]['CicloSeleccionado'] = ' '
+        this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0,this.InfoMostrada[index]['flagAgruparProduccion']," ");
+        let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion']);
+        this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
+        this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
+        this.InfoMostrada[index]['ElementosConstructivosGrafica'] = false;
+        this.InfoMostrada[index]['DatosElementosConstructivos']=[];
+        this.InfoMostrada[index]['iconosElementosConstrucivos']={};
+        this.InfoMostrada[index]['Coloreslementos'] = {};
+      }
+      this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=" "
+      this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
+      let botonesCiclo = this.llenarBotonesCiclo(this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['id']);
+      this.InfoMostrada[index]['botonesCiclo'] = botonesCiclo['botones']
+      this.InfoMostrada[index]['ids_RespuestasBotones'] = botonesCiclo
+
+    });
   }
 }
 

@@ -3,7 +3,7 @@
       <div class="subtitulo-proyecto">
         <div>
           <a>{{item.nombre}}</a>
-          <p>Dispersión del impacto ambiental <br> por fases del ciclo de vida</p>
+          <p>Dispersión del impacto ambiental <br> por elementos constructivos</p>
         </div>
         <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
       </div>
@@ -13,30 +13,40 @@
                           [datasets]="item.DatosCicloVida"
                           [chartType]="doughnutChartType"
                           [options]="pieChartOptions"
-                          (chartClick)='onChartClick($event,item.id,1)'
                           width="217px" height="292px">
               </canvas>
             </div>
       </div>
       <div *ngIf="item.CicloGraficaBar">
-          <div class="canvas-container seccionTresBar">
-            <canvas #MyChart='base-chart' #canvas baseChart
-                [datasets]="item.DatosCicloVida"
-                [labels]="item.LabelsCicloVida"
-                [options]="barChartOptions"
-                [legend]="barChartLegend"
-                [plugins]="barChartPlugins"
-                [chartType]="barChartType"
-                (chartClick)='onChartClick($event,item.id,2)'
-                  height="305px">
-              </canvas>
+        <div class="canvas-container seccionTresBar">
+          <canvas #MyChart='base-chart' #canvas baseChart
+              [datasets]="item.DatosCicloVida"
+              [labels]="item.LabelsCicloVida"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [plugins]="barChartPlugins"
+              [chartType]="barChartType"
+                height="305px">
+            </canvas>
+        </div>
+    </div>
+      <div class="seccion_botones_elementos_constructivos">
+        <div *ngFor="let ciclo of item.botonesCiclo" class="botones-elementos-contructivos">
+          <div id="{{item.ids_RespuestasBotones['idsBotones'][ciclo]}}" class="espacio-sin-selecciomar">
+            <button class="button-elemento-seleccionado color-texto" (click)="onChartClick(item.ids_RespuestasBotones['respuesta'][ciclo],item.id)"> 
+              <div>{{ciclo}}</div>
+              <div [style.background-color] =item.ids_RespuestasBotones.colores[ciclo] class='button-icon'>
+              </div></button>
           </div>
+        </div>
       </div>
       <div class="button-graph">
           <mat-button-toggle-group>
               <mat-button-toggle (click)="cambioGrafica(1,item.id)"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
               <mat-button-toggle (click)="cambioGrafica(2,item.id)"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
           </mat-button-toggle-group>
+          <button class="espacio-sin-selecciomar color-texto" (click) = "agrupacionDeProduccion(item.id)"> 
+            {{item.textoBotonAgrupar}}</button>
       </div>
     </div>
     <div>
@@ -45,15 +55,6 @@
         </div>
         <div *ngIf="item.ElementosConstructivosGrafica">
             <div class="canvas-container seccionTresPie">
-              <!--
-              <canvas #MyChart='base-chart' #canvas baseChart
-                          [datasets]="item.DatosElementosConstructivos"
-                          [chartType]="doughnutChartType"
-                          [options]="pieChartOptionsDos"
-                          (chartClick)='onChartClickElemento($event,item.id)'
-                          width="217px" height="292px">
-              </canvas>                
-              -->
               <canvas #MyChart='base-chart' #canvas baseChart
                           [datasets]="item.DatosElementosConstructivos"
                           [chartType]="doughnutChartType"
@@ -65,7 +66,9 @@
               <div *ngFor="let elementoConstructivo of botones_elementos_constructivos" class="botones-elementos-contructivos">
                 <div id="{{item.idsIconosElementos[elementoConstructivo.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
                   <button class="button-elemento-seleccionado color-texto" [disabled]="item.iconosElementosConstrucivos[elementoConstructivo.id]['habilitado']" (click)="onChartClickElemento(elementoConstructivo.id,item.id)"> 
-                    {{elementoConstructivo.name_section}}</button>
+                    <div>{{elementoConstructivo.name_section}}</div>
+                    <div [style.background-color] =item.coloresBotonesElementos[elementoConstructivo.id] class='button-icon'>
+                    </div></button>
                 </div>
               </div>
             </div>
@@ -73,7 +76,7 @@
     </div>
     <div>
         <div>
-          <p>Dispersión del impacto en {{item.nombreSeccionMostrado}}</p>
+          <p>Dispersión del impacto {{item.nombreSeccionMostrado}}</p>
         </div>
         <div>
             <div class="canvas-container seccionTresBar">

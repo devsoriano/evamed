@@ -54,6 +54,19 @@
               align-items: center;
               margin: 2px;
             }
+            .espacio-sin-selecciomar{
+              width: 82px;
+              height: 34px;
+              background: #EFEFEF;
+              display: flex;
+              align-items: center;
+              margin: 4px;
+              border: 0;
+              border-radius: 0px 10px 10px 0px;
+              .color-texto{
+                color: #767676;
+              }
+            }
           }
           .seccionTresPie {
             padding-left: 28px;
@@ -70,6 +83,7 @@
           .seccionTresPie {
             padding-left: 28px;
           }
+          
         }
         &:nth-child(3) {
           width: 312px;
@@ -114,51 +128,60 @@
     }
 }
 
+
 .seccion_botones_elementos_constructivos{
   display: flex;
   flex-wrap: wrap;
   .botones-elementos-contructivos {
     display: inline-block;
     .espacio-sin-selecciomar{
-      padding-top: 4px;
       width: 82px;
-      height: 27px;
+      height: 34px;
       background: #EFEFEF;
-      border-radius: 4px;
       display: flex;
       align-items: center;
-      margin: 5px;
+      margin: 4px;
       border: 0;
+      border-radius: 0px 10px 10px 0px;
       .color-texto{
         color: #767676;
       }
     }
   
     .espacio-seleccionado{
-      padding-top: 4px;
       width: 82px;
-      height: 27px;
+      height: 34px;
       background: #FFFFFF;
-      border-radius: 4px;
       display: flex;
       align-items: center;
-      margin: 5px;
+      margin: 4px;
+      border-radius: 0px 10px 10px 0px;
       border: 1px solid #EDC903;
       box-shadow: 0px 3px 6px #00000029;
       .color-texto{
         color: #343434;
       }
     }
+    .button-icon {
+      height: 20px;
+      background: #efefef;
+      border-radius: 0px 10px 10px 0px;
+      border: 0px;
+      padding: 7px;
+    }
   
     .button-elemento-seleccionado {
       width: 130px;
       height: 34px;
-      //color: #767676;
       background: none;
       text-align: left;
       font-size: 10px;
       margin: 5px;
       border: 0;
+      display: flex;
+      align-items: inherit;
+      padding: unset;
+      justify-content: space-between;
     }
   }
 }
