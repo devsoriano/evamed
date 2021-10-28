@@ -28,7 +28,8 @@ export class UsageStageUpdateComponent implements OnInit {
   cantidadPanelesFotovoltaicos: number;
   unidadPanelesFotovoltaicos: number;
   porcentajePanelesFotovoltaicos: number;
-
+  suma:number;
+  
   panelOpenFirst = false;
   panelOpenSecond = false;
   panelOpenThird = false;
@@ -121,31 +122,150 @@ export class UsageStageUpdateComponent implements OnInit {
 
   ngOnInit() {}
 
-  changeCantidadME(cantidadMixElectrico) {
-    this.porcentajeMixElectrico = (cantidadMixElectrico * 100) / this.cantidad;
+   changeCantidadME(cantidadMixElectrico) {
+    this.suma=0;
+     this.cantidadMixElectrico =Math.round((cantidadMixElectrico * 100) / 100);
+    this.porcentajeMixElectrico = Math.round((((cantidadMixElectrico * 100) / this.cantidad) * 100) / 100);
+    
+    
+     if(this.cantidadCombustible==null){
+    this.cantidadCombustible=0;
+  }
+  if(this.cantidadPanelesFotovoltaicos==null){
+    this.cantidadPanelesFotovoltaicos=0;
+  }
+    this.suma=+this.cantidadMixElectrico + +this.cantidadCombustible + +this.cantidadPanelesFotovoltaicos;
+    
+    console.log(this.suma);
+    if(this.suma > this.cantidad){
+     alert("la cantidad supera el consumo anual requerido");
+      this.cantidadMixElectrico=0;
+      this.porcentajeMixElectrico=0;
+    }else{ console.log(this.suma);}
+      
   }
 
   changePorcentajeME(porcentajeMixElectrico) {
-    this.cantidadMixElectrico = (porcentajeMixElectrico * this.cantidad) / 100;
+    this.suma=0;
+    this.porcentajeMixElectrico =Math.round((porcentajeMixElectrico * 100) / 100);
+    this.cantidadMixElectrico = Math.round((((porcentajeMixElectrico * this.cantidad) / 100) * 100) / 100);
+    
+    
+      if(this.porcentajeCombustible==null){
+   this.porcentajeCombustible=0;
+  }
+  if(this.porcentajePanelesFotovoltaicos==null){
+    this.porcentajePanelesFotovoltaicos=0;
+  }
+    this.suma=+this.porcentajeMixElectrico + +this.porcentajeCombustible + +this.porcentajePanelesFotovoltaicos;
+    
+    console.log(this.suma);
+    if(this.suma > 100){
+     alert("la cantidad supera el consumo anual requerido");
+      this.porcentajeMixElectrico=0;
+      this.cantidadMixElectrico=0;
+    }else{ console.log(this.suma);}
+  
   }
 
   changeCantidadC(cantidadCombustible) {
-    this.porcentajeCombustible = (cantidadCombustible * 100) / this.cantidad;
+    this.suma=0;
+    this.cantidadCombustible =Math.round((cantidadCombustible * 100) / 100);
+    this.porcentajeCombustible = Math.round((((cantidadCombustible * 100) / this.cantidad) * 100) / 100);
+    
+    
+    if(this.cantidadMixElectrico==null){
+    this.cantidadMixElectrico=0;
+  }
+
+  if(this.cantidadPanelesFotovoltaicos==null){
+    this.cantidadPanelesFotovoltaicos=0;
+  }
+     this.suma=+this.cantidadMixElectrico + +this.cantidadCombustible + +this.cantidadPanelesFotovoltaicos;
+    
+    console.log(this.suma);
+    if(this.suma > this.cantidad){
+     alert("la cantidad supera el consumo anual requerido");
+      this.cantidadCombustible=0;
+      this.porcentajeCombustible=0;
+    }else{ console.log(this.suma);}
+  
   }
 
   changePorcentajeC(porcentajeCombustible) {
-    this.cantidadCombustible = (porcentajeCombustible * this.cantidad) / 100;
+    this.suma=0;
+    this.porcentajeCombustible =Math.round((porcentajeCombustible * 100) / 100);
+    this.cantidadCombustible = Math.round((((porcentajeCombustible * this.cantidad) / 100) * 100) / 100);
+   
+    
+    if(this.porcentajeMixElectrico==null){
+    this.porcentajeMixElectrico=0;
+  }
+ 
+  if(this.porcentajePanelesFotovoltaicos==null){
+    this.porcentajePanelesFotovoltaicos=0;
+  }
+     this.suma=+this.porcentajeMixElectrico + +this.porcentajeCombustible + +this.porcentajePanelesFotovoltaicos;
+    
+    console.log(this.suma);
+    if(this.suma > 100){
+     alert("la cantidad supera el consumo anual requerido");
+      this.porcentajeCombustible=0;
+      this.cantidadCombustible=0;
+    }else{ console.log(this.suma);}
+  
+  
   }
 
   changeCantidadPF(cantidadPanelesFotovoltaicos) {
+    this.suma=0;
+    this.cantidadPanelesFotovoltaicos =Math.round((cantidadPanelesFotovoltaicos * 100) / 100);
     this.porcentajePanelesFotovoltaicos =
-      (cantidadPanelesFotovoltaicos * 100) / this.cantidad;
+      Math.round((((cantidadPanelesFotovoltaicos * 100) / this.cantidad) * 100) / 100);
+    
+    if(this.cantidadMixElectrico==null){
+    this.cantidadMixElectrico=0;
+  }
+  if(this.cantidadCombustible==null){
+    this.cantidadCombustible=0;
+  }
+
+     this.suma=+this.cantidadMixElectrico + +this.cantidadCombustible + +this.cantidadPanelesFotovoltaicos;
+    
+    console.log(this.suma);
+    if(this.suma > this.cantidad){
+     alert("la cantidad supera el consumo anual requerido");
+      this.cantidadPanelesFotovoltaicos=0;
+      this.porcentajePanelesFotovoltaicos=0;
+    }else{ console.log(this.suma);}
+  
   }
 
   changePorcentajePF(porcentajePanelesFotovoltaicos) {
+    this.suma=0;
+     this.porcentajePanelesFotovoltaicos =Math.round((porcentajePanelesFotovoltaicos * 100) / 100);
     this.cantidadPanelesFotovoltaicos =
-      (porcentajePanelesFotovoltaicos * this.cantidad) / 100;
+      Math.round((((porcentajePanelesFotovoltaicos * this.cantidad) / 100) * 100) / 100);
+   
+    if(this.porcentajeMixElectrico==null){
+    this.porcentajeMixElectrico=0;
   }
+  if(this.porcentajeCombustible==null){
+   this.porcentajeCombustible=0;
+  }
+ 
+     this.suma=+this.porcentajeMixElectrico + +this.porcentajeCombustible + +this.porcentajePanelesFotovoltaicos;
+    
+    console.log(this.suma);
+    if(this.suma > 100){
+     alert("la cantidad supera el consumo anual requerido");
+      this.porcentajePanelesFotovoltaicos=0;
+      this.cantidadPanelesFotovoltaicos=0;
+    }else{ console.log(this.suma);}
+  
+  
+  }
+
 
   saveStepThree() {
     console.log('entra al proceso de edición');

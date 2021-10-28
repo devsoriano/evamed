@@ -32,6 +32,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
   DG: any;
   selectedSheet: any;
   CSE: any;
+  IMGP = [];
 
   constructor(
     private catalogsService: CatalogsService,
@@ -85,6 +86,25 @@ export class ConstructionStageUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    
+     //carga de imagenes
+    let images = [
+      "../../../../assets/map/2.jpg",
+      "../../../../assets/map/4.jpg",
+      "../../../../assets/map/5.jpg",
+      "../../../../assets/map/6.jpg",
+      "../../../../assets/map/7.jpg",
+      "../../../../assets/map/8.jpg",
+      "../../../../assets/map/9.jpg",
+      "../../../../assets/map/10.jpg",
+      "../../../../assets/map/11.jpg",
+      "../../../../assets/map/12.jpg",
+      "../../../../assets/map/13.jpg",
+      "../../../../assets/map/14.jpg"
+    ];
+    this.preload(images);
+    
     this.sheetNames = [
       'Cimentación',
       'Muros interiores',
@@ -100,6 +120,13 @@ export class ConstructionStageUpdateComponent implements OnInit {
     ];
   }
 
+   preload(array) {
+   
+ for (var i = 0; i < array.length; i++) {
+      this.IMGP[i] = new Image();
+        this.IMGP[i].src = array[i];
+      }
+  }
   onGroupsChange(options: MatListOption[]) {
     let selectedSheet;
     // map these MatListOptions to their values
