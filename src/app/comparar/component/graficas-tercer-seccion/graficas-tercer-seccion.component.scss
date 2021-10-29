@@ -1,3 +1,6 @@
+.viewport {
+  height: 580px;
+}
 .card-indicador {
     display: flex;
     border-width: 1px;
@@ -6,7 +9,7 @@
     border-radius: 17px;
     margin-bottom: 15px;
     padding: 0%;
-    height: 530px;
+    height: 563px;
     p {
         text-align: left;
         font-family: normal normal normal;
@@ -18,7 +21,7 @@
     > div {
         margin: 10px;
         &:nth-child(1) {
-          width: 312px;
+          width: 290px;
           border-right-width: 1px;
           border-right-style: solid;
           border-right-color: #cbcbcb;
@@ -37,6 +40,10 @@
               }
               .titulo-proyecto{
                 width: 143px;
+                position: relative;
+                word-wrap: break-word;
+                overflow: hidden;
+                text-align: justify;
               }
               button{
                 margin-left: 50px;
@@ -79,7 +86,7 @@
           }
         }
         &:nth-child(2) {
-          width: 312px;
+          width: 290px;
           border-right-width: 1px;
           border-right-style: solid;
           border-right-color: #cbcbcb;
@@ -89,7 +96,7 @@
           
         }
         &:nth-child(3) {
-          width: 312px;
+          width: 290px;
           .example-container {
             height: 237px;
             max-width: 100%;
@@ -105,7 +112,7 @@
             width: 27px;
             padding-right: 6px;
             text-align: center;
-            color: #ACA8A8;
+            color: #787777;
           }
         
           .mat-column-porcentaje {
@@ -113,7 +120,7 @@
             padding-right: 12px;
             padding-left: 12px;
             text-align: center;
-            color: #ACA8A8;
+            color: #787777;
           }
         
           .mat-column-numero {
@@ -121,11 +128,11 @@
             padding-right: 6px;
             padding-left: 6px;
             text-align: center;
-            color: #ACA8A8;
+            color: #787777;
           }
         
           .mat-column-material{
-            color: #ACA8A8;
+            color: #787777;
           }
         }
     }

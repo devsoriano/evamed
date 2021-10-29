@@ -1,124 +1,126 @@
-<mat-card *ngFor="let item of InfoMostrada; let i = index" class="card-indicador">
-    <div>
-      <div class="subtitulo-proyecto">
-        <div class="titulo-proyecto">
-          <a>{{item.nombre}}</a>
-          <p>Dispersión del impacto ambiental <br> por elementos constructivos</p>
+<cdk-virtual-scroll-viewport appendOnly itemSize="50" class="viewport">
+  <mat-card *ngFor="let item of InfoMostrada; let i = index" class="card-indicador">
+      <div>
+        <div class="subtitulo-proyecto">
+          <div class="titulo-proyecto">
+            <a>{{item.nombre}}</a>
+            <p>Dispersión del impacto ambiental <br> por elementos constructivos</p>
+          </div>
+          <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
         </div>
-        <button mat-icon-button>Exportar<mat-icon>camera_rear</mat-icon></button>
-      </div>
-      <div *ngIf="item.CicloGraficaPie">
-        <div class="canvas-container seccionTresPie">
-              <canvas #MyChart='base-chart' #canvas baseChart
-                          [datasets]="item.DatosCicloVida"
-                          [chartType]="doughnutChartType"
-                          [options]="pieChartOptions"
-                          width="217px" height="292px">
+        <div *ngIf="item.CicloGraficaPie">
+          <div class="canvas-container seccionTresPie">
+                <canvas #MyChart='base-chart' #canvas baseChart
+                            [datasets]="item.DatosCicloVida"
+                            [chartType]="doughnutChartType"
+                            [options]="pieChartOptions"
+                            width="217px" height="292px">
+                </canvas>
+              </div>
+        </div>
+        <div *ngIf="item.CicloGraficaBar">
+          <div class="canvas-container seccionTresBar">
+            <canvas #MyChart='base-chart' #canvas baseChart
+                [datasets]="item.DatosCicloVida"
+                [labels]="item.LabelsCicloVida"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [plugins]="barChartPlugins"
+                [chartType]="barChartType"
+                  height="305px">
               </canvas>
-            </div>
+          </div>
       </div>
-      <div *ngIf="item.CicloGraficaBar">
-        <div class="canvas-container seccionTresBar">
-          <canvas #MyChart='base-chart' #canvas baseChart
-              [datasets]="item.DatosCicloVida"
-              [labels]="item.LabelsCicloVida"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [plugins]="barChartPlugins"
-              [chartType]="barChartType"
-                height="305px">
-            </canvas>
-        </div>
-    </div>
-      <div class="seccion_botones_elementos_constructivos">
-        <div *ngFor="let ciclo of item.botonesCiclo" class="botones-elementos-contructivos">
-          <div id="{{item.ids_RespuestasBotones['idsBotones'][ciclo]}}" class="espacio-sin-selecciomar">
-            <button class="button-elemento-seleccionado color-texto" (click)="onChartClick(item.ids_RespuestasBotones['respuesta'][ciclo],item.id)"> 
-              <div>{{ciclo}}</div>
-              <div [style.background-color] =item.ids_RespuestasBotones.colores[ciclo] class='button-icon'>
-              </div></button>
+        <div class="seccion_botones_elementos_constructivos">
+          <div *ngFor="let ciclo of item.botonesCiclo" class="botones-elementos-contructivos">
+            <div id="{{item.ids_RespuestasBotones['idsBotones'][ciclo]}}" class="espacio-sin-selecciomar">
+              <button class="button-elemento-seleccionado color-texto" (click)="onChartClick(item.ids_RespuestasBotones['respuesta'][ciclo],item.id)"> 
+                <div>{{ciclo}}</div>
+                <div [style.background-color] =item.ids_RespuestasBotones.colores[ciclo] class='button-icon'>
+                </div></button>
+            </div>
           </div>
         </div>
+        <div class="button-graph">
+            <mat-button-toggle-group>
+                <mat-button-toggle (click)="cambioGrafica(1,item.id)"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
+                <mat-button-toggle (click)="cambioGrafica(2,item.id)"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+            </mat-button-toggle-group>
+            <button class="espacio-sin-selecciomar color-texto" (click) = "agrupacionDeProduccion(item.id)"> 
+              {{item.textoBotonAgrupar}}</button>
+        </div>
       </div>
-      <div class="button-graph">
-          <mat-button-toggle-group>
-              <mat-button-toggle (click)="cambioGrafica(1,item.id)"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
-              <mat-button-toggle (click)="cambioGrafica(2,item.id)"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
-          </mat-button-toggle-group>
-          <button class="espacio-sin-selecciomar color-texto" (click) = "agrupacionDeProduccion(item.id)"> 
-            {{item.textoBotonAgrupar}}</button>
-      </div>
-    </div>
-    <div>
-        <div>
-          <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
-        </div>
-        <div *ngIf="item.ElementosConstructivosGrafica">
-            <div class="canvas-container seccionTresPie">
-              <canvas #MyChart='base-chart' #canvas baseChart
-                          [datasets]="item.DatosElementosConstructivos"
-                          [chartType]="doughnutChartType"
-                          [options]="pieChartOptionsDos"
-                          width="217px" height="292px">
-              </canvas>
-            </div>
-            <div class="seccion_botones_elementos_constructivos">
-              <div *ngFor="let elementoConstructivo of botones_elementos_constructivos" class="botones-elementos-contructivos">
-                <div id="{{item.idsIconosElementos[elementoConstructivo.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
-                  <button class="button-elemento-seleccionado color-texto" [disabled]="item.iconosElementosConstrucivos[elementoConstructivo.id]['habilitado']" (click)="onChartClickElemento(elementoConstructivo.id,item.id)"> 
-                    <div>{{elementoConstructivo.name_section}}</div>
-                    <div [style.background-color] =item.coloresBotonesElementos[elementoConstructivo.id] class='button-icon'>
-                    </div></button>
-                </div>
-              </div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <div>
-          <p>Dispersión del impacto {{item.nombreSeccionMostrado}}</p>
-        </div>
-        <div>
-            <div class="canvas-container seccionTresBar">
-              <canvas #MyChart='base-chart' #canvas baseChart
-                  [datasets]="item.DataGraficaMateriales"
-                  [labels]="item.labelsMateriales"
-                  [options]="barChartOptions"
-                  [legend]="barChartLegend"
-                  [plugins]="barChartPlugins"
-                  [chartType]="barChartType"
-                   height="205px">
+      <div>
+          <div>
+            <p>Dispersión del impacto en fase del cico de vida<br> por impactos elementos constructivos</p>
+          </div>
+          <div *ngIf="item.ElementosConstructivosGrafica">
+              <div class="canvas-container seccionTresPie">
+                <canvas #MyChart='base-chart' #canvas baseChart
+                            [datasets]="item.DatosElementosConstructivos"
+                            [chartType]="doughnutChartType"
+                            [options]="pieChartOptionsDos"
+                            width="217px" height="292px">
                 </canvas>
-            </div>
-            <div>
-                <p>Materiales</p>
-                <div class="example-container">
-                    <table mat-table [dataSource]="item.infoTabla" >
-                      <ng-container matColumnDef="no" sticky>
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
-                      </ng-container>
-                    
-                      <ng-container matColumnDef="material">
-                        <th mat-header-cell *matHeaderCellDef> Material </th>
-                        <td mat-cell *matCellDef="let element"> {{element.material}} </td>
-                      </ng-container>
-                    
-                      <ng-container matColumnDef="porcentaje">
-                        <th mat-header-cell *matHeaderCellDef> % </th>
-                        <td mat-cell *matCellDef="let element"> {{element.porcentaje}} </td>
-                      </ng-container>
-                    
-                      <ng-container matColumnDef="numero" stickyEnd>
-                        <th mat-header-cell *matHeaderCellDef> # </th>
-                        <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
-                      </ng-container>
-                    
-                      <tr mat-header-row *matHeaderRowDef="displayedColumnsDispercion"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumnsDispercion;"></tr>
-                    </table>
+              </div>
+              <div class="seccion_botones_elementos_constructivos">
+                <div *ngFor="let elementoConstructivo of botones_elementos_constructivos" class="botones-elementos-contructivos">
+                  <div id="{{item.idsIconosElementos[elementoConstructivo.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
+                    <button class="button-elemento-seleccionado color-texto" [disabled]="item.iconosElementosConstrucivos[elementoConstructivo.id]['habilitado']" (click)="onChartClickElemento(elementoConstructivo.id,item.id)"> 
+                      <div>{{elementoConstructivo.name_section}}</div>
+                      <div [style.background-color] =item.coloresBotonesElementos[elementoConstructivo.id] class='button-icon'>
+                      </div></button>
+                  </div>
                 </div>
               </div>
-        </div>
-    </div>
-</mat-card>
+          </div>
+      </div>
+      <div>
+          <div>
+            <p>Dispersión del impacto {{item.nombreSeccionMostrado}}</p>
+          </div>
+          <div>
+              <div class="canvas-container seccionTresBar">
+                <canvas #MyChart='base-chart' #canvas baseChart
+                    [datasets]="item.DataGraficaMateriales"
+                    [labels]="item.labelsMateriales"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [plugins]="barChartPlugins"
+                    [chartType]="barChartType"
+                     height="205px">
+                  </canvas>
+              </div>
+              <div>
+                  <p>Materiales</p>
+                  <div class="example-container">
+                      <table mat-table [dataSource]="item.infoTabla" >
+                        <ng-container matColumnDef="no" sticky>
+                          <th mat-header-cell *matHeaderCellDef> No. </th>
+                          <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="material">
+                          <th mat-header-cell *matHeaderCellDef> Material </th>
+                          <td mat-cell *matCellDef="let element"> {{element.material}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="porcentaje">
+                          <th mat-header-cell *matHeaderCellDef> % </th>
+                          <td mat-cell *matCellDef="let element"> {{element.porcentaje}} </td>
+                        </ng-container>
+                      
+                        <ng-container matColumnDef="numero" stickyEnd>
+                          <th mat-header-cell *matHeaderCellDef> # </th>
+                          <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+                        </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsDispercion"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsDispercion;"></tr>
+                      </table>
+                  </div>
+                </div>
+          </div>
+      </div>
+  </mat-card>
+</cdk-virtual-scroll-viewport>

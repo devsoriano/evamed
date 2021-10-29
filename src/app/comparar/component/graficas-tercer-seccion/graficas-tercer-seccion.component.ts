@@ -304,7 +304,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
                   let auxrgbcolor='rgb(';
                   auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
                   let auxrgbacolor='rgba(';
-                  auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(',').concat('0.1').concat(')');
+                  auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(',').concat('0.2').concat(')');
                   auxcolor.push(auxrgbcolor);
                   auxcolordos.push(auxrgbacolor);
                   cambioR = (Number(cambioR) + 50).toString();
