@@ -24,7 +24,7 @@
 
 label.title-action {
   color: #767676;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   padding-top: 70px!important;
 }
@@ -191,7 +191,8 @@ p.p-instrucciones {
   align-items: center;
   justify-content: center;
   margin-top: 50px;
-
+  overflow-wrap: anywhere;
+  
   &:hover {
     border: 1px solid #A8D024;
   }
