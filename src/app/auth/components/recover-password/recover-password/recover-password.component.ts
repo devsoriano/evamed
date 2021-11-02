@@ -37,7 +37,7 @@ export class RecoverPasswordComponent implements OnInit {
      event.preventDefault()
     if (this.form.valid) {
       const value = this.form.value;
-      this.authService.resetPassword(value.email)
+      this.authService.resetPassword(value.email);
       .then( () => {
         alert('El correo para restablecer la contraseña se ha enviado corectamente');
         this.router.navigate(['/']);
