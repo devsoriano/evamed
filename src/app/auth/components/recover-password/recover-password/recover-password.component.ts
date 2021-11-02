@@ -35,10 +35,17 @@ export class RecoverPasswordComponent implements OnInit {
   }
 
   recovery(event: Event) {
-    event.preventDefault();
+     event.preventDefault()
     if (this.form.valid) {
-      console.log('recuperar password');
-    }
-  }
+      const value = this.form.value;
+      this.authService.resetPassword(value.email)
+      .then( () => {
+        alert('El correo para restablecer la contraseña se ha enviado corectamente');
+        this.router.navigate(['/']);
+      })
+      .catch( () => {
+        alert('Error! Intenta nuevamente la solicitud');
+      });
+     }
 
 }
