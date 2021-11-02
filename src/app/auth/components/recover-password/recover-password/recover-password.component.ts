@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 
+
 @Component({
   selector: 'app-recover-password',
   templateUrl: './recover-password.component.html',
@@ -26,9 +27,11 @@ export class RecoverPasswordComponent implements OnInit {
   private buildForm() {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required]],
+      
     });
   }
 
+  
   register() {
     this.router.navigate(['/auth/register']);
   }
@@ -46,5 +49,6 @@ export class RecoverPasswordComponent implements OnInit {
         alert('Error! Intenta nuevamente la solicitud');
       });
      }
+  }
 
 }
