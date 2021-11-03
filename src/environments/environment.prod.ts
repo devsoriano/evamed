@@ -67,12 +67,12 @@ export const environment = {
   api_exterternal_distances: `${apiEvamed}${externalDistance}`,
   api_sections: `${apiEvamed}${sections}`,
   firebaseConfig: {
-    apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
-    authDomain: 'platzi-store-1a207.firebaseapp.com',
-    databaseURL: 'https://platzi-store-1a207.firebaseio.com',
-    projectId: 'platzi-store-1a207',
-    storageBucket: 'platzi-store-1a207.appspot.com',
-    messagingSenderId: '255188436131',
-    appId: '1:255188436131:web:8c3728876042c077f9ab16'
+    apiKey: "AIzaSyAiYvITU78Lq3ixhRlf84BVKDyzgBQmqsw",
+  authDomain: "evamed-b4a5e.firebaseapp.com",
+  projectId: "evamed-b4a5e",
+  storageBucket: "evamed-b4a5e.appspot.com",
+  messagingSenderId: "1002649233755",
+  appId: "1:1002649233755:web:18da85b6d4d502d8b5127e",
+  measurementId: "G-PM8R9P6HXQ"
   }
 };
