@@ -23,7 +23,7 @@ export class RecoverPasswordComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  
   private buildForm() {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required]],
@@ -31,16 +31,16 @@ export class RecoverPasswordComponent implements OnInit {
     });
   }
 
-  
+
   register() {
     this.router.navigate(['/auth/register']);
   }
 
   recovery(event: Event) {
-     event.preventDefault()
+    event.preventDefault()
     if (this.form.valid) {
       const value = this.form.value;
-      this.authService.resetPassword(value.email);
+      this.authService.resetPassword(value.email)
       .then( () => {
         alert('El correo para restablecer la contraseña se ha enviado corectamente');
         this.router.navigate(['/']);
@@ -49,6 +49,7 @@ export class RecoverPasswordComponent implements OnInit {
         alert('Error! Intenta nuevamente la solicitud');
       });
      }
-  }
-
+   }
+  
+  
 }
