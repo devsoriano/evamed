@@ -39,8 +39,6 @@ export class BarChartComponent implements OnInit {
   private auxColorBW = [];
   private ElementosEnNiveles = [];
   private banderaImpacto=false;
-  private auxColoresProyectos = {};
-  private auxColoresBWProyectos = {};
 
   private lastClick='Ninguno';
   private hovered = null;
