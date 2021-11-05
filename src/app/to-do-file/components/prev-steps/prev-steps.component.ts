@@ -38,10 +38,12 @@ export class PrevStepsComponent implements OnInit {
     });
     let filterConstructiveSystems = constructiveSystems.filter(this.onlyUnique);
     this.ConstructiveSystems = filterConstructiveSystems.length;
+    this.ConstructiveSystems=this.ConstructiveSystems-1;
     
     let filterMaterialsExcel = materialsExcel.filter(this.onlyUnique);
     this.TotalMaterialsDB = filterMaterialsExcel.length;
-
+    this.TotalMaterialsDB = this.TotalMaterialsDB -1;
+    
     this.TotalExistDB = 0
     filterMaterialsExcel.map( filteredMaterial => {
       this.materialsService.getMaterials().subscribe( materials => { 
