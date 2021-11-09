@@ -23,21 +23,27 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  login(event: Event) {
+ login(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
       const value = this.form.value;
       this.authService.login(value.email, value.password)
       .then( () => {
+        if(this.authService.isEmailVerified() == true ){
         localStorage.setItem('email-login', value.email);
         this.router.navigate(['/']);
+        } else {
+          
+        alert('correo no validado, revisa tu correo para validar tu cuenta');
+         this.authService.verifyEmail();
+      }
       })
       .catch( () => {
         alert('no es válido');
       });
     }
   }
-
+  
   private buildForm() {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required]],
