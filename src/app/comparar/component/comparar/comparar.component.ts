@@ -366,7 +366,8 @@ export class CompararComponent implements OnInit {
     this.estadoTercerSeccion[id] = {
       'agruparProduccion':false,
       'cicloSeleccionado':" ",
-      'elementoConstructivoSeleccionado': " "
+      'flagPie':true,
+      'fragBar':false
     }
     if(this.Elementos_constructivos){
       this.iniciarSeccionTres();
@@ -1134,7 +1135,6 @@ export class CompararComponent implements OnInit {
       }
       Object.keys(this.estadoTercerSeccion).forEach(idP => {
         this.estadoTercerSeccion[idP]['cicloSeleccionado'] = auxResultado
-        //this.estadoTercerSeccion[idP]['elementoConstructivoSeleccionado'] = " "
       })
       this.iniciarSeccionTres();
     }
@@ -1159,10 +1159,8 @@ export class CompararComponent implements OnInit {
       Object.keys(this.estadoTercerSeccion).forEach(idP => {
         if(this.estadoTercerSeccion[idP]['cicloSeleccionado'] === etapa){
           this.estadoTercerSeccion[idP]['cicloSeleccionado'] = " ";
-          this.estadoTercerSeccion[idP]['elementoConstructivoSeleccionado'] = " "
         }else if(this.estadoTercerSeccion[idP]['cicloSeleccionado'] === auxBotonesEtapa[etapa]){
           this.estadoTercerSeccion[idP]['cicloSeleccionado'] = " ";
-          this.estadoTercerSeccion[idP]['elementoConstructivoSeleccionado'] = " "
         }
       })
     }
@@ -1178,11 +1176,6 @@ export class CompararComponent implements OnInit {
       })
     }else{
       this.elementosContructivosEliminadosElementos.push(recive.toString());
-      Object.keys(this.estadoTercerSeccion).forEach(idP => {
-        if(this.estadoTercerSeccion[idP]['elementoConstructivoSeleccionado'] === recive.toString){
-          this.estadoTercerSeccion[idP]['elementoConstructivoSeleccionado'] = " "
-        }
-      })
     }
     this.iniciarSeccionTres();
   }
@@ -1619,8 +1612,11 @@ export class CompararComponent implements OnInit {
             this.cicloVidaSeleccionadoElemento=" ";
           }
           this.estadoTercerSeccion[idP]['cicloSeleccionado'] = cambio['cambio'];
-        }else if(cambio['cambioEn']==="ElementoContructivo"){
-          this.estadoTercerSeccion[idP]['elementoConstructivoSeleccionado'] = cambio['cambio'];
+        }else if(cambio['cambioEn']==="CambioGrafica"){
+          //'flagPie':true,
+          //'fragBar':false  
+          this.estadoTercerSeccion[idP]['flagPie'] = cambio['cambio'].pie;
+          this.estadoTercerSeccion[idP]['fragBar'] = cambio['cambio'].bar;
         }else{
           this.estadoTercerSeccion[idP]['agruparProduccion'] = cambio['cambio'];
         }
