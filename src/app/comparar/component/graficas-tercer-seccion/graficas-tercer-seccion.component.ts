@@ -24,7 +24,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
   public InfoMostrada=[];
   botones_elementos_constructivos=[];
   elementoContructivoSelecionado = " ";
-  private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#a8d024',B4 : '#8F5091', A4: '#148A93', A1 : '#4DBE89', A2 : '#319F6B', A3:'#368460'};
+  private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#707070',B4 : '#8F5091', A4: '#148A93', A1 : '#4DBE89', A2 : '#319F6B', A3:'#368460'};
   private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)',B4 : 'rgba(143, 80, 145, 0.2)', A4: 'rgba(20, 138, 147, 0.2)', A1 : 'rgba(77, 190, 137, 0.2)', A2 : 'rgba(49, 159, 107, 0.2)', A3:'rgba(54, 132, 96, 0.2)'};
   private CicloColoresRGB = {Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)',B4 : 'rgb(143, 80, 145)', A4: 'rgb(20, 138, 147)', A1 : 'rgb(77, 190, 137)', A2 : 'rgb(49, 159, 107)', A3:'rgb(54, 132, 96)'};
   public displayedColumnsDispercion: string[] = ['no', 'material', 'porcentaje', 'numero'];
@@ -297,6 +297,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let cambioR= help[1];
     let auxValores={};
     let suma =0;
+    //console.log(data, ciclo,flagAgrupar)
     Object.keys(data).forEach(fase =>{
       if(ciclo===fase || flagAgrupar){
         Object.keys(data[fase]).forEach(subetapa =>{
@@ -308,7 +309,11 @@ export class GraficasTercerSeccionComponent implements OnInit {
               let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
               Object.keys(auxSubetapas).forEach(auxetapa=>{
                 if(auxetapa === ciclo){
-                  flagSubetapa=true;
+                  auxSubetapas[ciclo].forEach(auxsub => {
+                    if(subetapa === auxsub){
+                      flagSubetapa=true;
+                    }
+                  });
                 }
               })
             }
@@ -339,7 +344,11 @@ export class GraficasTercerSeccionComponent implements OnInit {
               let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
               Object.keys(auxSubetapas).forEach(auxetapa=>{
                 if(auxetapa === ciclo){
-                  flagSubetapa=true;
+                  auxSubetapas[ciclo].forEach(auxsub => {
+                    if(subetapa === auxsub){
+                      flagSubetapa=true;
+                    }
+                  });
                 }
               })
             }
@@ -728,7 +737,11 @@ export class GraficasTercerSeccionComponent implements OnInit {
                 let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
                 Object.keys(auxSubetapas).forEach(auxetapa=>{
                   if(auxetapa === color){
-                    flagSubetapa=true;
+                    auxSubetapas[auxetapa].forEach(auxsub => {
+                      if(subetapa === auxsub){
+                        flagSubetapa=true;
+                      }
+                    });
                   }
                 })
               }
@@ -851,8 +864,12 @@ export class GraficasTercerSeccionComponent implements OnInit {
               }else{
                 let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
                 Object.keys(auxSubetapas).forEach(auxetapa=>{
-                  if(auxetapa === elementoSeleccionado){
-                    flagSubetapa=true;
+                  if(auxetapa === ciclo){
+                    auxSubetapas[auxetapa].forEach(auxsub => {
+                      if(subetapa === auxsub){
+                        flagSubetapa=true;
+                      }
+                    });
                   }
                 })
               }
@@ -918,6 +935,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux['numero'] = auxdatos[ii].toExponential(2);
       infoTablaDispercion.push(aux);
     });
+    console.log(infoTablaDispercion)
     return infoTablaDispercion
   }
 
@@ -967,7 +985,11 @@ export class GraficasTercerSeccionComponent implements OnInit {
               let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
               Object.keys(auxSubetapas).forEach(auxetapa=>{
                 if(auxetapa === ciclo){
-                  flagSubetapa=true;
+                  auxSubetapas[ciclo].forEach(auxsub => {
+                    if(subetapas === auxsub){
+                      flagSubetapa=true;
+                    }
+                  });
                 }
               })
             }
