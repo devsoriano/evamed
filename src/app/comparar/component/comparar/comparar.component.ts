@@ -164,6 +164,7 @@ export class CompararComponent implements OnInit {
   elementosConstructivosMostradosElementos = {};
   cicloVidaSeleccionadoElemento = ' ';
   estadoTercerSeccion={};
+  unidadImpactoAmientalTabla="";
 
   // vars analisis
   idProyectoActivo: number;
@@ -422,6 +423,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.materiales = this.materialList;
     grafica.instance.Secciones =  this.sectionList;
     grafica.instance.EstadoSeccion = this.estadoTercerSeccion;
+    grafica.instance.unidades = this.potentialTypesList;
     grafica.instance.CambioEstadoTercerSeccion.subscribe(e => this.cambioEstadoTercerSección(e));
   }
 
@@ -1283,6 +1285,19 @@ export class CompararComponent implements OnInit {
     }
   }
 
+  findUnidad(indicador){
+    let final_unit;
+    let impacto = indicador.replace(/\n/g,'');
+    impacto = impacto.replace(/\s/g, '')
+    this.potentialTypesList.forEach(element => {
+      let aux_element = element['name_complete_potential_type'].replace(/\s/g, '')
+      if(impacto === aux_element){
+        final_unit=element['unit_potential_type'];
+      }
+    });
+    return final_unit
+  }
+
   iniciarTabaDispercion(){
     this.infoTablaDispercion = [];
     //'color-'no', 'material', 'porcentaje', 'numero'
@@ -1325,6 +1340,7 @@ export class CompararComponent implements OnInit {
           Object.keys(element.Datos).forEach((impacto) => {
             let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
             if(impacto === auxNombre){
+              this.unidadImpactoAmientalTabla = impacto;
               Object.keys(element.Datos[impacto]).forEach(elementoC => {
                 if(elementoC==this.elementoContructivoSelecionado){
                   Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
@@ -1355,6 +1371,7 @@ export class CompararComponent implements OnInit {
         });
       }
     })
+    this.unidadImpactoAmientalTabla = this.findUnidad(this.unidadImpactoAmientalTabla)
   }
 
   iniciarGraficaEspecificaDispercion(){

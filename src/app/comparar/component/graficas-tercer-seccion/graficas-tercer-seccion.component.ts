@@ -19,11 +19,13 @@ export class GraficasTercerSeccionComponent implements OnInit {
   @Input() materiales:any;
   @Input() Secciones:any;
   @Input() EstadoSeccion:any;
+  @Input() unidades:any;
   @Output() CambioEstadoTercerSeccion = new EventEmitter<any>();
 
   public InfoMostrada=[];
   botones_elementos_constructivos=[];
   elementoContructivoSelecionado = " ";
+  unidadImpactoAmiental = "";
   private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#707070',B4 : '#8F5091', A4: '#148A93', A1 : '#4DBE89', A2 : '#319F6B', A3:'#368460'};
   private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)',B4 : 'rgba(143, 80, 145, 0.2)', A4: 'rgba(20, 138, 147, 0.2)', A1 : 'rgba(77, 190, 137, 0.2)', A2 : 'rgba(49, 159, 107, 0.2)', A3:'rgba(54, 132, 96, 0.2)'};
   private CicloColoresRGB = {Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)',B4 : 'rgb(143, 80, 145)', A4: 'rgb(20, 138, 147)', A1 : 'rgb(77, 190, 137)', A2 : 'rgb(49, 159, 107)', A3:'rgb(54, 132, 96)'};
@@ -173,6 +175,20 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux['ids_RespuestasBotones'] = botonesCiclo
       this.InfoMostrada.push(aux);
     })
+    this.unidadImpactoAmiental=this.findUnidad();
+  }
+
+  findUnidad(){
+    let final_unit;
+    let impacto = this.impactoAmbientalMostrado.replace(/\n/g,'');
+    impacto = impacto.replace(/\s/g, '')
+    this.unidades.forEach(element => {
+      let aux_element = element['name_complete_potential_type'].replace(/\s/g, '')
+      if(impacto === aux_element){
+        final_unit=element['unit_potential_type'];
+      }
+    });
+    return final_unit
   }
   
   actualizarEstado(){
@@ -458,7 +474,6 @@ export class GraficasTercerSeccionComponent implements OnInit {
 
   graficaCicloVidaBar(data,flagAgrupar){
     let aux = []
-    let res = [];
     if(flagAgrupar){
       let auxBotones = ['A1','A2','A3', 'A4', 'B4']
       let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
