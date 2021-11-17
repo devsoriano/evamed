@@ -80,7 +80,9 @@ export class CalculosSegundaSeccion {
         nameImpacto = this.ajustarNombre(nameImpacto);
         Datos[nameImpacto] = {};
         let elementoscreados=[];
-        let resultado_impacto = 0;
+        let sumaParaReempazos = {};
+        let auxMaterialesTransporte = {};
+        let auxMaterialesYaSumados={};
         //Cálculos de la sección de producción
         let etapas = [2, 3, 4]; //Subetaps A1 A2 y A3
         let banderaMaterialEP = false;
@@ -101,6 +103,9 @@ export class CalculosSegundaSeccion {
                     if(!elementoscreados.includes(ps['section_id'])){
                       elementoscreados.push(ps['section_id']);
                       Datos[nameImpacto][ps['section_id']]=0;
+                      sumaParaReempazos[ps['section_id']]={};
+                      auxMaterialesYaSumados[ps['section_id']] = [];
+                      auxMaterialesTransporte[ps['section_id']] = [];
                     }
                     Datos[nameImpacto][ps['section_id']] =
                     Datos[nameImpacto][ps['section_id']]+
@@ -162,7 +167,16 @@ export class CalculosSegundaSeccion {
                   if(!elementoscreados.includes(ps['section_id'])){
                     elementoscreados.push(ps['section_id']);
                     Datos[nameImpacto][ps['section_id']]=0;
+                    sumaParaReempazos[ps['section_id']]={}
+                    auxMaterialesTransporte[ps['section_id']] = [];
+                    auxMaterialesYaSumados[ps['section_id']] = [];
                   }
+                  if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
+                    sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
+                    auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+                  }
+                  sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
+                  
                   Datos[nameImpacto][ps['section_id']] =
                   Datos[nameImpacto][ps['section_id']] +
                     peso * ps['quantity'] * (nacional + internacional);
@@ -204,14 +218,20 @@ export class CalculosSegundaSeccion {
                 );
                 if (materiales_subetapa.length > 0) {
                   materiales_subetapa.forEach((material, index) => {
+                    let auxValorProduccionTransporte = 0;
                     if(!elementoscreados.includes(ps['section_id'])){
                       elementoscreados.push(ps['section_id']);
                       Datos[nameImpacto][ps['section_id']]=0;
                     }
+                    
+                    if(!auxMaterialesYaSumados[ps['section_id']].includes(ps['material_id'])){
+                      auxValorProduccionTransporte += sumaParaReempazos[ps['section_id']][ps['material_id']];
+                      auxMaterialesYaSumados[ps['section_id']].push(ps['material_id']);
+                    }
                     Datos[nameImpacto][ps['section_id']] =
                     Datos[nameImpacto][ps['section_id']] +
-                      materiales_subetapa[index]['value'] *
-                        ps['quantity'] *
+                      ((materiales_subetapa[index]['value'] *
+                        ps['quantity']) + auxValorProduccionTransporte) *
                         ps['replaces'];
                   });
                 }

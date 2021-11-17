@@ -262,7 +262,6 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   async ngOnInit() {
-    //this.DatosCalculos=[]
     this.DatosCalculos = {
       TEList: await this.analisis.getTypeEnergy().toPromise(),
       projectsList: await this.projectsService.getProjects().toPromise(),
@@ -348,6 +347,9 @@ export class HomeEvamedComponent implements OnInit {
           ),
           []
         ),
+        mostrarOpcionCarbono: false,
+        iconoCarbono:"switch_left",
+        graficasCarbonoOResultados:{'resultados':true,'carbono':false}
       };
 
       this.auxDataProjectList.push(auxDatos);
@@ -739,6 +741,12 @@ export class HomeEvamedComponent implements OnInit {
   selectImpactoAmbiental(impacto, indexRecivido) {
     this.auxDataProjectList[indexRecivido].impactoSelect =
       this.calculos.ajustarNombre(impacto);
+    if(impacto === "Calentamiento Global"){
+      this.auxDataProjectList[indexRecivido].mostrarOpcionCarbono = true;
+      this.auxDataProjectList[indexRecivido].iconoCarbono = "switch_left";
+    }else{
+      this.auxDataProjectList[indexRecivido].mostrarOpcionCarbono = false;
+    }
     this.auxDataProjectList[indexRecivido].impactoCompleteSelect = impacto;
     this.auxDataProjectList[indexRecivido].etapasIgnoradas = [];
     this.catologoImpactoAmbiental.forEach((element) => {
@@ -757,6 +765,19 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[indexRecivido].impactoSelect,
       this.auxDataProjectList[indexRecivido].etapasIgnoradas
     );
+  }
+
+  mostrarHuellaCarbono(id,indexRecivido){
+    //Camiar graficas a Huella de Carbono o Resultados por ciclo de vida
+    if(this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['carbono']){
+      this.auxDataProjectList[indexRecivido].iconoCarbono = "switch_left";
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['carbono'] = false;
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['resultados'] = true; 
+    }else{
+      this.auxDataProjectList[indexRecivido].iconoCarbono = "switch_right";
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['carbono'] = true; 
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['resultados'] = false; 
+    }
   }
 
   selectEtapa(etapa, i, id) {

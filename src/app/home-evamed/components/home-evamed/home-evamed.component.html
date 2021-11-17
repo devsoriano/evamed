@@ -138,114 +138,137 @@
           </div>
         </mat-tab>
         <mat-tab label="Resultados" class="label-principal-tab">
-          <div class="mat-tab-resultados" *ngIf="cargaDatosCalculo">
-            <div>
-              <div class="seccionUno">
-                <p>Selecciona impacto ambiental</p>
-                <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].impactoCompleteSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoCompleteSelect,i)" required>
-                  <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
-                    {{impacto.name_complete_potential_type}}
-                  </mat-option>
-                </mat-select>
-                <p>Fases de ciclo de vida</p>
-                <ul>
-                   <li> <button id="{{auxDataProjectList[i].idsBotones['Producción']}}" (click)="selectEtapa('Producción',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a id="{{auxDataProjectList[i].idsTextBotones['Producción']}}">Producción</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['porcentaje']}}%
-                         / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}}
+          <div *ngIf="cargaDatosCalculo">
+            <div class="mat-tab-resultados" *ngIf="auxDataProjectList[i]['graficasCarbonoOResultados']['resultados']">
+              <div>
+                <div class="seccionUno">
+                  <p>Selecciona impacto ambiental</p>
+                  <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].impactoCompleteSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoCompleteSelect,i)" required>
+                    <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
+                      {{impacto.name_complete_potential_type}}
+                    </mat-option>
+                  </mat-select>
+                  <p>Fases de ciclo de vida</p>
+                  <ul>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['Producción']}}" (click)="selectEtapa('Producción',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['Producción']}}">Producción</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['porcentaje']}}%
+                           / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}}
+                            {{auxDataProjectList[i].unit_impacto}}</a></div>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('Producción',i)">
+                          <mat-icon class="uno">{{auxDataProjectList[i].iconosCambio['Producción']}}</mat-icon>
+                        </button>
+                     </li>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['Construccion']}}" (click)="selectEtapa('Construccion',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['Construccion']}}">Construcción</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}%
+                          / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}}
                           {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>
-                      <button class='button-icon' (click)="eliminarEtapa('Producción',i)">
-                        <mat-icon class="uno">{{auxDataProjectList[i].iconosCambio['Producción']}}</mat-icon>
-                      </button>
-                   </li>
-                   <li> <button id="{{auxDataProjectList[i].idsBotones['Construccion']}}" (click)="selectEtapa('Construccion',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a id="{{auxDataProjectList[i].idsTextBotones['Construccion']}}">Construcción</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}%
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}}
-                        {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>
-                      <button class='button-icon' (click)="eliminarEtapa('Construccion',i)">
-                        <mat-icon class="dos">{{auxDataProjectList[i].iconosCambio['Construccion']}}</mat-icon>
-                      </button>
-                    </li>
-                   <li> <button id="{{auxDataProjectList[i].idsBotones['Uso']}}" (click)="selectEtapa('Uso',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a id="{{auxDataProjectList[i].idsTextBotones['Uso']}}">Uso</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}%
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}}
-                        {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>
-                      <button class='button-icon' (click)="eliminarEtapa('Uso',i)">
-                        <mat-icon class="tres">{{auxDataProjectList[i].iconosCambio['Uso']}}</mat-icon>
-                      </button>
-                    </li>
-                   <li> <button id="{{auxDataProjectList[i].idsBotones['FinDeVida']}}" (click)="selectEtapa('FinDeVida',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
-                      <div class="some-text">
-                      <a id="{{auxDataProjectList[i].idsTextBotones['FinDeVida']}}">Fin de vida</a>
-                      <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}%
-                        / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
-                        {{auxDataProjectList[i].unit_impacto}}</a></div>
-                      </button>
-                      <button class='button-icon' (click)="eliminarEtapa('FinDeVida',i)">
-                        <mat-icon class="cuatro">{{auxDataProjectList[i].iconosCambio['FinDeVida']}}</mat-icon>
-                      </button>
-                    </li>
-                </ul>
-              </div>
-              <button mat-stroked-button class="Detalle ver"
-              (click)="redirectResultados(project.id)"
-              >Ver detalle</button>
-            </div>
-            <div>
-              <div class="button-graph">
-                <mat-button-toggle-group>
-                     <mat-button-toggle (click)="cambioGrafica(i,'Pie')"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
-                     <mat-button-toggle (click)="cambioGrafica(i,'Bar')"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
-                   </mat-button-toggle-group>
-                <button>Exportar</button>
-              </div>
-              <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Pie']">
-                <div class="canvas-container seccionTres">
-                  <canvas #MyChart='base-chart' #canvas baseChart
-                              [datasets]="auxDataProjectList[i].dataGraficaPie"
-                              [chartType]="doughnutChartType"
-                              [options]="pieChartOptions"
-                              width="217px" height="292px">
-                  </canvas>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('Construccion',i)">
+                          <mat-icon class="dos">{{auxDataProjectList[i].iconosCambio['Construccion']}}</mat-icon>
+                        </button>
+                      </li>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['Uso']}}" (click)="selectEtapa('Uso',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['Uso']}}">Uso</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}%
+                          / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}}
+                          {{auxDataProjectList[i].unit_impacto}}</a></div>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('Uso',i)">
+                          <mat-icon class="tres">{{auxDataProjectList[i].iconosCambio['Uso']}}</mat-icon>
+                        </button>
+                      </li>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['FinDeVida']}}" (click)="selectEtapa('FinDeVida',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['FinDeVida']}}">Fin de vida</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}%
+                          / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
+                          {{auxDataProjectList[i].unit_impacto}}</a></div>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('FinDeVida',i)">
+                          <mat-icon class="cuatro">{{auxDataProjectList[i].iconosCambio['FinDeVida']}}</mat-icon>
+                        </button>
+                      </li>
+                  </ul>
                 </div>
+                <button mat-stroked-button class="Detalle ver"
+                (click)="redirectResultados(project.id)"
+                >Ver detalle</button>
               </div>
-              <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Bar']">
-                <div class="canvas-container seccionTres">
-                  <canvas #MyChart='base-chart' #canvas baseChart
-                      [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
-                      [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
-                      [options]="barChartOptions"
-                      [legend]="barChartLegend"
-                      [plugins]="barChartPlugins"
-                      [chartType]="barChartType"
-                       height="305px">
+              <div>
+                <div class="button-graph">
+                  <mat-button-toggle-group>
+                       <mat-button-toggle (click)="cambioGrafica(i,'Pie')"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
+                       <mat-button-toggle (click)="cambioGrafica(i,'Bar')"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+                     </mat-button-toggle-group>
+                  <button>Exportar</button>
+                </div>
+                <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Pie']">
+                  <div class="canvas-container seccionTres">
+                    <canvas #MyChart='base-chart' #canvas baseChart
+                                [datasets]="auxDataProjectList[i].dataGraficaPie"
+                                [chartType]="doughnutChartType"
+                                [options]="pieChartOptions"
+                                width="217px" height="292px">
                     </canvas>
+                  </div>
+                </div>
+                <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Bar']">
+                  <div class="canvas-container seccionTres">
+                    <canvas #MyChart='base-chart' #canvas baseChart
+                        [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
+                        [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
+                        [options]="barChartOptions"
+                        [legend]="barChartLegend"
+                        [plugins]="barChartPlugins"
+                        [chartType]="barChartType"
+                         height="305px">
+                      </canvas>
+                  </div>
+                </div>
+  
+              </div>
+              <div>
+                <button mat-stroked-button class="Detalle reporte">Generar reporte</button>
+                <p>Dispersión de impactos por subetapa</p>
+                <ul class="mostrar-subetapas">
+                  <li *ngFor = "let subetapa of auxDataProjectList[i].subetasMostrada">
+                    <span class="dot" [ngStyle]="{'background-color': subetapa.color}"></span>
+                    <div class="text-subetapas" *ngIf = "auxDataProjectList[i].banderaEtapa">
+                      <a>{{subetapa.abreviacion}} - {{subetapa.nombre_subeatapa}}</a>
+                      <a>{{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['porcentaje']}}% /
+                        {{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['num']}}
+                        {{auxDataProjectList[i].unit_impacto}}</a>
+                    </div>
+                  </li>
+                </ul>
+                <div *ngIf = "auxDataProjectList[i].mostrarOpcionCarbono">
+                  <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
+                    <mat-icon>{{auxDataProjectList[i].iconoCarbono}}</mat-icon>
+                  </button>
                 </div>
               </div>
-
             </div>
-            <div>
-              <button mat-stroked-button class="Detalle reporte">Generar reporte</button>
-              <p>Dispersión de impactos por subetapa</p>
-              <ul class="mostrar-subetapas">
-                <li *ngFor = "let subetapa of auxDataProjectList[i].subetasMostrada">
-                  <span class="dot" [ngStyle]="{'background-color': subetapa.color}"></span>
-                  <div class="text-subetapas" *ngIf = "auxDataProjectList[i].banderaEtapa">
-                    <a>{{subetapa.abreviacion}} - {{subetapa.nombre_subeatapa}}</a>
-                    <a>{{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['porcentaje']}}% /
-                      {{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['num']}}
-                      {{auxDataProjectList[i].unit_impacto}}</a>
-                  </div>
-                </li>
-              </ul>
+            <div *ngIf="auxDataProjectList[i]['graficasCarbonoOResultados']['carbono']" class="graficas-huella-carbono">
+              <div class="canvas-container">
+                <canvas #MyChart='base-chart' #canvas baseChart
+                    [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
+                    [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [plugins]="barChartPlugins"
+                    [chartType]="barChartType"
+                     height="305px">
+                  </canvas>
+              </div>
+              <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
+                <mat-icon>{{auxDataProjectList[i].iconoCarbono}}</mat-icon>
+              </button>
             </div>
           </div>
         </mat-tab>

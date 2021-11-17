@@ -83,6 +83,9 @@ export class CalculosTercerSeccion {
         DatosMateriales[nameImpacto]['Construccion']={'A4':{}};
         DatosMateriales[nameImpacto]['Uso']={'B4':{}};
         let elementoscreados=[];
+        let sumaParaReempazos = {};
+        let auxMaterialesTransporte = {};
+        let auxMaterialesYaSumados={};
         //Cálculos de la sección de producción
         let etapas = [2, 3, 4]; //Subetaps A1 A2 y A3
         etapas.forEach((subetapa) => {
@@ -101,9 +104,12 @@ export class CalculosTercerSeccion {
                   if (materiales_subetapa.length > 0) {    
                         materiales_subetapa.forEach((material, index) => {
                             if(!elementoscreados.includes(ps['section_id'])){
-                            elementoscreados.push(ps['section_id']);
-                            Datos[nameImpacto]['Producción'][auxSub][ps['section_id']]=0;
-                            DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']]={};
+                              elementoscreados.push(ps['section_id']);
+                              Datos[nameImpacto]['Producción'][auxSub][ps['section_id']]=0;
+                              DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']]={};
+                              sumaParaReempazos[ps['section_id']]={};
+                              auxMaterialesYaSumados[ps['section_id']] = [];
+                              auxMaterialesTransporte[ps['section_id']] = [];
                             }
                             let auxres = materiales_subetapa[index]['value'] * ps['quantity'];
                             DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']][ps['material_id']]=auxres;
@@ -171,7 +177,15 @@ export class CalculosTercerSeccion {
                       elementoscreados.push(ps['section_id']);
                       Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
                       DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
+                      sumaParaReempazos[ps['section_id']]={};
+                      auxMaterialesYaSumados[ps['section_id']] = [];
+                      auxMaterialesTransporte[ps['section_id']] = [];
                     }
+                    if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
+                      sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
+                      auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+                    }
+                    sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
                     DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
                     Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
                     Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
@@ -198,12 +212,17 @@ export class CalculosTercerSeccion {
                     );
                     if (materiales_subetapa.length > 0) {
                       materiales_subetapa.forEach((material, index) => {
+                        let auxValorProduccionTransporte = 0;
                         if(!elementoscreados.includes(ps['section_id'])){
                           elementoscreados.push(ps['section_id']);
                           Datos[nameImpacto]['Uso']['B4'][ps['section_id']]=0;
                           DatosMateriales[nameImpacto]['Uso']['B4'][ps['section_id']]={};
                         }
-                        let auxres = materiales_subetapa[index]['value'] * ps['quantity'] * ps['replaces']
+                        if(!auxMaterialesYaSumados[ps['section_id']].includes(ps['material_id'])){
+                          auxValorProduccionTransporte += sumaParaReempazos[ps['section_id']][ps['material_id']];
+                          auxMaterialesYaSumados[ps['section_id']].push(ps['material_id']);
+                        }
+                        let auxres = ((materiales_subetapa[index]['value'] * ps['quantity'])+auxValorProduccionTransporte) * ps['replaces']
                         DatosMateriales[nameImpacto]['Uso']['B4'][ps['section_id']][ps['material_id']]=auxres;
                         Datos[nameImpacto]['Uso']['B4'][ps['section_id']] =
                         Datos[nameImpacto]['Uso']['B4'][ps['section_id']] + auxres;
