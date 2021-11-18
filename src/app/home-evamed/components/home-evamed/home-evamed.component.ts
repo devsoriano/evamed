@@ -55,6 +55,7 @@ export class HomeEvamedComponent implements OnInit {
   sections: any;
   dataMaterial: any;
   catologoImpactoAmbiental: any;
+  catologoOpcionesCarbono = ['Opción1','Opcion 2']
   auxDataProjectList: any;
   ConstructiveSystemElements: any;
   sourceInformation: any;
@@ -125,7 +126,46 @@ export class HomeEvamedComponent implements OnInit {
       },
     },
   };
+  public barChartHorizontalOptions: ChartOptions = {
+    responsive: true,
+    title: { display: true },
+    legend: { display: false },
+    tooltips: { enabled: false, mode: 'label' },
+    scales: {
+      yAxes: [
+        {
+          display: true,
+          ticks: {
+            beginAtZero: true,
+            fontSize: 11,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          display: true,
+          ticks: {
+            beginAtZero: true,
+            fontSize: 11,
+          },
+        },
+      ],
+    },
+    plugins: {
+      indexAxis: 'y',
+      datalabels: {
+        color: 'white',
+        anchor: 'center',
+        align: 'center',
+        font: {
+          size: 7,
+        },
+      },
+    },
+  };
   public barChartType: ChartType = 'bar';
+  public barChartHorizonatlType: ChartType = 'horizontalBar';
+
   public barChartLegend = true;
   public pieChartType = 'pie';
   public pieChartOptions_elementos = {
@@ -349,7 +389,8 @@ export class HomeEvamedComponent implements OnInit {
         ),
         mostrarOpcionCarbono: false,
         iconoCarbono:"switch_left",
-        graficasCarbonoOResultados:{'resultados':true,'carbono':false}
+        graficasCarbonoOResultados:{'resultados':true,'carbono':false},
+        opcionCarbonoSeleccionada:this.catologoOpcionesCarbono[0]
       };
 
       this.auxDataProjectList.push(auxDatos);
@@ -765,6 +806,10 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[indexRecivido].impactoSelect,
       this.auxDataProjectList[indexRecivido].etapasIgnoradas
     );
+  }
+
+  selectOpcionCarbono(opcion,indexRecivido){
+    console.log(opcion,indexRecivido)
   }
 
   mostrarHuellaCarbono(id,indexRecivido){

@@ -135,38 +135,57 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
   > div {
     &:nth-child(1) {
       width: 239px;
+      .boton-carbono{
+        background-color: transparent;
+        border: none;
+        width: 40px;
+        height: 40px;
+        margin-left: 67px;
+      }
+      .botones-finales{
+        display: flex;
+      }
     }
     &:nth-child(2) {
       width: 293px;
     }
     &:nth-child(3) {
       width: 231px;
-      .boton-carbono{
-        background-color: transparent;
-        border: none;
-        width: 40px;
-        height: 40px;
-        margin-left: 90px;
-        padding-top: 12px;
-        padding-left: 16px;
-      }
     }
   }
 }
+
 
 .seccionTres {
   padding-left: 46px;
 }
 
 .graficas-huella-carbono{
-  .boton-carbono{
-    background-color: transparent;
-    border: none;
-    width: 40px;
-    height: 40px;
-    margin-left: 90px;
-    padding-top: 12px;
-    padding-left: 16px;
+  .titulo-carbono{
+    font-size: 17px;
+    margin: 5px;
+  }
+  .secciones{
+    display: flex;
+    > div {
+      &:nth-child(1) {
+        .texto-descripcion{
+          font-size: 12px;
+          margin: 5px;
+          padding-top: 23px;
+          text-align: center;
+        }
+      }
+    }
+    .boton-carbono{
+      background-color: transparent;
+      border: none;
+      width: 40px;
+      height: 40px;
+      margin-left: 90px;
+      padding-top: 12px;
+      padding-left: 16px;
+    }
   }
 }
 

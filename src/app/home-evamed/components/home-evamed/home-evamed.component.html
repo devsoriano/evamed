@@ -196,9 +196,16 @@
                       </li>
                   </ul>
                 </div>
-                <button mat-stroked-button class="Detalle ver"
-                (click)="redirectResultados(project.id)"
-                >Ver detalle</button>
+                <div class="botones-finales">
+                  <button mat-stroked-button class="Detalle ver"
+                  (click)="redirectResultados(project.id)"
+                  >Ver detalle</button>
+                  <div *ngIf = "auxDataProjectList[i].mostrarOpcionCarbono">
+                    <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
+                      <mat-icon>{{auxDataProjectList[i].iconoCarbono}}</mat-icon>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div>
                 <div class="button-graph">
@@ -231,7 +238,6 @@
                       </canvas>
                   </div>
                 </div>
-  
               </div>
               <div>
                 <button mat-stroked-button class="Detalle reporte">Generar reporte</button>
@@ -247,28 +253,43 @@
                     </div>
                   </li>
                 </ul>
-                <div *ngIf = "auxDataProjectList[i].mostrarOpcionCarbono">
+              </div>
+            </div>
+            <div *ngIf="auxDataProjectList[i]['graficasCarbonoOResultados']['carbono']" class="graficas-huella-carbono">
+              <div class="titulo-carbono">
+                Huella de carbono fase uso
+              </div>
+              <div class="secciones">
+                <div>
+                  <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].opcionCarbonoSeleccionada" (selectionChange)="selectOpcionCarbono(auxDataProjectList[i].opcionCarbonoSeleccionada,i)" required>
+                    <mat-option *ngFor="let opcion of catologoOpcionesCarbono" [value]="opcion">
+                      {{opcion}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="texto-descripcion">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras dapibus dapibus ligula nec luctus. Suspendisse dolor justo, vestibulum vitae nisi ut, porta imperdiet nulla. In mollis lacinia nulla vitae gravida. Phasellus semper venenatis nunc ac ultrices.
+                  </div>
+                 </div>
+                <div class="canvas-container">
+                  <canvas #MyChart='base-chart' #canvas baseChart
+                      [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
+                      [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
+                      [options]="barChartHorizontalOptions"
+                      [legend]="barChartLegend"
+                      [plugins]="barChartPlugins"
+                      [chartType]="barChartHorizonatlType"
+                       height="305px">
+                    </canvas>
+                </div>
+                <div>
+                  El valor de calentamiento global del proyecto
+                </div>
+                <div>
                   <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
                     <mat-icon>{{auxDataProjectList[i].iconoCarbono}}</mat-icon>
                   </button>
                 </div>
               </div>
-            </div>
-            <div *ngIf="auxDataProjectList[i]['graficasCarbonoOResultados']['carbono']" class="graficas-huella-carbono">
-              <div class="canvas-container">
-                <canvas #MyChart='base-chart' #canvas baseChart
-                    [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
-                    [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
-                    [options]="barChartOptions"
-                    [legend]="barChartLegend"
-                    [plugins]="barChartPlugins"
-                    [chartType]="barChartType"
-                     height="305px">
-                  </canvas>
-              </div>
-              <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
-                <mat-icon>{{auxDataProjectList[i].iconoCarbono}}</mat-icon>
-              </button>
             </div>
           </div>
         </mat-tab>
