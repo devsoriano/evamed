@@ -715,6 +715,13 @@ export class GraficasTercerSeccionComponent implements OnInit {
         if(flagEtapa){
           Object.keys(data[elemento]).forEach(subetapa => {
             Object.keys(data[elemento][subetapa]).forEach(elementoC => {
+            let banderaElemento = true;
+            this.ElementosContructivosEliminados.forEach(ElementoI => {
+              if(ElementoI === elementoC){
+                banderaElemento=false;
+              }
+            });
+            if(banderaElemento){
               Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
                 if(!materialesExistentes.includes(material)){
                   materialesExistentes.push(material)
@@ -722,6 +729,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
                 }
                 auxmateriales[material] += data[elemento][subetapa][elementoC][material]
               })
+            }
             });
           });
         }
@@ -752,13 +760,21 @@ export class GraficasTercerSeccionComponent implements OnInit {
             }
           if(flagSubetapa){
             Object.keys(data[elemento][subetapa]).forEach(elementoC => {
-              Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
-                if(!materialesExistentes.includes(material)){
-                  materialesExistentes.push(material)
-                  auxmateriales[material] = 0;
+              let banderaElemento = true;
+              this.ElementosContructivosEliminados.forEach(ElementoI => {
+                if(ElementoI === elementoC){
+                  banderaElemento=false;
                 }
-                auxmateriales[material] += data[elemento][subetapa][elementoC][material]
-              })
+              });
+              if(banderaElemento){
+                Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+                  if(!materialesExistentes.includes(material)){
+                    materialesExistentes.push(material)
+                    auxmateriales[material] = 0;
+                  }
+                  auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+                })
+              }
             });
           }
           });
@@ -1087,7 +1103,9 @@ export class GraficasTercerSeccionComponent implements OnInit {
         this.CambioEstadoTercerSeccion.emit(aux);
 
         if(this.InfoMostrada[index]['CicloSeleccionado'] != " "){
-          document.getElementById(this.InfoMostrada[index]['id'].toString().concat(this.InfoMostrada[index]['CicloSeleccionado'].concat('botonC'))).className = 'espacio-sin-selecciomar';
+          if(this.InfoMostrada[index]['flagAgruparProduccion']){
+            document.getElementById(this.InfoMostrada[index]['id'].toString().concat(this.InfoMostrada[index]['CicloSeleccionado'].concat('botonC'))).className = 'espacio-sin-selecciomar';
+          }
           this.InfoMostrada[index]['CicloSeleccionado'] = ' '
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0,this.InfoMostrada[index]['flagAgruparProduccion']," ");
           let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion']);
