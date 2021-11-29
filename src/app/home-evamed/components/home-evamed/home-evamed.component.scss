@@ -169,11 +169,23 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
     display: flex;
     > div {
       &:nth-child(1) {
+        width: 239px;
         .texto-descripcion{
           font-size: 12px;
           margin: 5px;
           padding-top: 23px;
           text-align: center;
+        }
+      }
+      &:nth-child(3) {
+        padding-top: 65px;
+        span{
+          height: 23px;
+          width: 70px;
+          border-radius: 50% 0% 0% 50%;
+          display: block;
+          align-self: center;
+          margin: 6px;
         }
       }
     }

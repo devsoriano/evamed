@@ -1,6 +1,7 @@
 import conversion from 'src/app/calculos/Conversiones.json';
 import transporte from 'src/app/calculos/transportes.json';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';
+import escalasCarbono from 'src/app/calculos/EscalasCarbono.json';
 import { Injectable } from '@angular/core';
 import { element } from 'protractor';
 
@@ -13,6 +14,7 @@ export class Calculos {
   conversion_list: any = conversion;
   transporte_list: any = transporte;
   subetapas_list: any = subetapasInfo;
+  catalogoEscalasCarbono :any = escalasCarbono;
   projectsList: [];
   materialList: [];
   materialSchemeDataList: [];
@@ -490,5 +492,73 @@ export class Calculos {
 
   findSubetapas(etapa) {
     return this.subetapas_list.filter((s) => s['etapa'] == etapa);
+  }
+
+  llenarGraficaCarbono(opcion){
+    let auxdata =[]
+    let aux=[]
+    let auxcolor = []
+    let auxlabels = []
+    this.catalogoEscalasCarbono.forEach(element => {
+      if(element.nombre_caso === opcion){
+        for (var _i = 1; _i < 8; _i++) {
+          var valor = "valor_".concat(_i.toString());
+          var color = "color_".concat(_i.toString())
+          auxlabels.push(_i)
+          auxcolor.push(element[color])
+          if(element[valor].length>1){
+            auxdata.push(element[valor][1])
+          }else{
+            auxdata.push(element[valor][0])
+          }
+        }
+      }
+    });
+    aux = [...aux,
+    {
+      data:auxdata,
+      backgroundColor:auxcolor
+    }]
+    let regreso = {datos:aux,labels:auxlabels}
+    return regreso
+  }
+
+  determinaValorCarbono(data){
+    let impacto = this.ajustarNombre("Calentamiento Global");
+    let res = 0;
+    Object.keys(data[impacto]["Uso"]).forEach(subetapa =>{
+      res += data[impacto]["Uso"][subetapa]
+    })
+    return res;
+  }
+
+  buscarValosCarbono(data,opcion){
+    let aux = {}
+    let valorCarbono = this.determinaValorCarbono(data);
+    this.catalogoEscalasCarbono.forEach(element => {
+      if(element.nombre_caso === opcion){
+        for (var _i = 1; _i < 8; _i++) {
+          var valor = "valor_".concat(_i.toString());
+          var color = "color_".concat(_i.toString());
+          aux[valor] = "#FFFFFF"
+          if(element[valor].length>1){
+            if ((valorCarbono <= element[valor][1])&&(valorCarbono >= element[valor][0])) {
+              aux[valor] = element[color]
+            }
+          }else{
+            if(_i ==1){
+              if(valorCarbono < element[valor][0]){
+                aux[valor] = element[color]
+              }
+            }else{
+              if(valorCarbono > element[valor][0]){
+                aux[valor] = element[color]
+              }
+            }
+          }
+        }
+      }
+    });
+    return aux
   }
 }

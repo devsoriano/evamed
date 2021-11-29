@@ -272,8 +272,8 @@
                  </div>
                 <div class="canvas-container">
                   <canvas #MyChart='base-chart' #canvas baseChart
-                      [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
-                      [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
+                      [datasets]="auxDataProjectList[i].dataGraficaCarbono['datos']"
+                      [labels]="auxDataProjectList[i].dataGraficaCarbono['labels']"
                       [options]="barChartHorizontalOptions"
                       [legend]="barChartLegend"
                       [plugins]="barChartPlugins"
@@ -282,7 +282,17 @@
                     </canvas>
                 </div>
                 <div>
-                  El valor de calentamiento global del proyecto
+                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_1']}">
+                    <!--
+                      {{auxDataProjectList[i].valorCarbono}}
+                    -->
+                  </span>
+                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_2']}"></span>
+                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_3']}"></span>
+                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_4']}"></span>
+                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_5']}"></span>
+                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_6']}"></span>
+                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_7']}"></span>
                 </div>
                 <div>
                   <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">

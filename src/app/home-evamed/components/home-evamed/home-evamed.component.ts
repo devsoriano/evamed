@@ -18,6 +18,7 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { MaterialsService } from '../../../core/services/materials/materials.service';
 import { AnalisisService } from '../../../core/services/analisis/analisis.service';
 
+
 @Component({
   selector: 'app-home-evamed',
   templateUrl: './home-evamed.component.html',
@@ -55,7 +56,7 @@ export class HomeEvamedComponent implements OnInit {
   sections: any;
   dataMaterial: any;
   catologoImpactoAmbiental: any;
-  catologoOpcionesCarbono = ['Opción1','Opcion 2']
+  catologoOpcionesCarbono = ['CASO 1','CASO 2']
   auxDataProjectList: any;
   ConstructiveSystemElements: any;
   sourceInformation: any;
@@ -134,11 +135,8 @@ export class HomeEvamedComponent implements OnInit {
     scales: {
       yAxes: [
         {
-          display: true,
-          ticks: {
-            beginAtZero: true,
-            fontSize: 11,
-          },
+          display: false,
+          
         },
       ],
       xAxes: [
@@ -154,7 +152,7 @@ export class HomeEvamedComponent implements OnInit {
     plugins: {
       indexAxis: 'y',
       datalabels: {
-        color: 'white',
+        color: 'black',
         anchor: 'center',
         align: 'center',
         font: {
@@ -390,9 +388,11 @@ export class HomeEvamedComponent implements OnInit {
         mostrarOpcionCarbono: false,
         iconoCarbono:"switch_left",
         graficasCarbonoOResultados:{'resultados':true,'carbono':false},
-        opcionCarbonoSeleccionada:this.catologoOpcionesCarbono[0]
+        opcionCarbonoSeleccionada:this.catologoOpcionesCarbono[0],
+        dataGraficaCarbono : this.calculos.llenarGraficaCarbono(this.catologoOpcionesCarbono[0]),
+        valorCarbono : this.calculos.determinaValorCarbono(calculosOperacionesDeFase).toExponential(2),
+        flagsCarbono: this.calculos.buscarValosCarbono(calculosOperacionesDeFase,this.catologoOpcionesCarbono[0])
       };
-
       this.auxDataProjectList.push(auxDatos);
     });
     this.cargaDatosCalculo = true;
@@ -809,7 +809,8 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   selectOpcionCarbono(opcion,indexRecivido){
-    console.log(opcion,indexRecivido)
+    this.auxDataProjectList[indexRecivido].dataGraficaCarbono = this.calculos.llenarGraficaCarbono(opcion)
+    this.auxDataProjectList[indexRecivido].flagsCarbono = this.calculos.buscarValosCarbono(this.auxDataProjectList[indexRecivido].datos,opcion)
   }
 
   mostrarHuellaCarbono(id,indexRecivido){
