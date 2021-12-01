@@ -4,6 +4,7 @@ import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import escalasCarbono from 'src/app/calculos/EscalasCarbono.json';
 import { Injectable } from '@angular/core';
 import { element } from 'protractor';
+import { concat } from 'rxjs-compat/operator/concat';
 
 @Injectable({
   providedIn: 'root',
@@ -499,18 +500,35 @@ export class Calculos {
     let aux=[]
     let auxcolor = []
     let auxlabels = []
+    let auxDataLabels = {1:"A",2:"B",3:"C",4:"D",5:"E",6:"F",7:"G"}
     this.catalogoEscalasCarbono.forEach(element => {
       if(element.nombre_caso === opcion){
         for (var _i = 1; _i < 8; _i++) {
+          let auxl = ""
+          let auxv = 0
           var valor = "valor_".concat(_i.toString());
           var color = "color_".concat(_i.toString())
-          auxlabels.push(_i)
           auxcolor.push(element[color])
           if(element[valor].length>1){
-            auxdata.push(element[valor][1])
+            auxl = auxl.concat((element[valor][0]).toString()).concat(" - ").concat((element[valor][1]).toString())
+            if(_i != 1){
+              let auxValor =  "valor_".concat((_i-1).toString());
+              auxv = element[auxValor][0]
+            }
+            auxdata.push(element[valor][1] + auxv)
           }else{
-            auxdata.push(element[valor][0])
+            if(_i == 1){
+              auxl = auxl.concat((element[valor][0]).toString()).concat(" < ")
+              auxdata.push(element[valor][0])
+            }else{
+              let auxValor =  "valor_".concat((_i-1).toString());
+              auxv = element[auxValor][0]
+              auxl = auxl.concat((element[valor][0]).toString()).concat(" > ")
+              auxdata.push(element[valor][0] + auxv)
+            }
           }
+          auxl = auxl.concat(" : ").concat(auxDataLabels[_i])
+          auxlabels.push(auxl)
         }
       }
     });

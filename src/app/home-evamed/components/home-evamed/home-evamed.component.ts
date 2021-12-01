@@ -129,36 +129,33 @@ export class HomeEvamedComponent implements OnInit {
   };
   public barChartHorizontalOptions: ChartOptions = {
     responsive: true,
-    title: { display: true },
+    title: { display: true,
+      text: 'KgCo2/m2a por año',
+      position: 'bottom',
+    },
     legend: { display: false },
     tooltips: { enabled: false, mode: 'label' },
     scales: {
       yAxes: [
         {
-          display: false,
-          
+          display: true,
+          ticks: {
+            fontSize: 11,
+          },
         },
       ],
       xAxes: [
         {
-          display: true,
-          ticks: {
-            beginAtZero: true,
-            fontSize: 11,
-          },
+          display: false,
         },
       ],
     },
     plugins: {
       indexAxis: 'y',
       datalabels: {
-        color: 'black',
-        anchor: 'center',
-        align: 'center',
-        font: {
-          size: 7,
-        },
+        display : false
       },
+      
     },
   };
   public barChartType: ChartType = 'bar';

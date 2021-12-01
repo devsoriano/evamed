@@ -142,6 +142,16 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
         height: 40px;
         margin-left: 67px;
       }
+      .boton-carbono-verde{
+        background: #a8d024;
+        box-shadow: 0px 2px 2px #00000027;
+        border-radius: 5px;
+        font-size: 15px;
+        color: #ffffff;
+        text-align: center;
+        border: none;
+        margin-left: 33px;
+      }
       .botones-finales{
         display: flex;
       }
@@ -174,29 +184,46 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
           font-size: 12px;
           margin: 5px;
           padding-top: 23px;
-          text-align: center;
+          padding-left: 25px;
+          padding-right: 25px;
+          text-align: justify;
         }
       }
       &:nth-child(3) {
-        padding-top: 65px;
+        padding-top: 1px;
         span{
-          height: 23px;
+          height: 27px;
           width: 70px;
           border-radius: 50% 0% 0% 50%;
-          display: block;
-          align-self: center;
+          display: inline-flex;
+          color: white;
           margin: 6px;
+          align-items: center;
+          padding-left: 11px;
         }
+      }
+      &:nth-child(4) {
+        display: flex;
       }
     }
     .boton-carbono{
       background-color: transparent;
       border: none;
       width: 40px;
+      margin: 10px;
       height: 40px;
-      margin-left: 90px;
-      padding-top: 12px;
-      padding-left: 16px;
+    }
+    .boton-carbono-verde{
+      background: #a8d024;
+      box-shadow: 0px 2px 2px #00000027;
+      border-radius: 5px;
+      font-size: 15px;
+      color: #ffffff;
+      text-align: center;
+      border: none;
+      height: 63px;
+      margin: 15px;
+      align-self: end;
     }
   }
 }
