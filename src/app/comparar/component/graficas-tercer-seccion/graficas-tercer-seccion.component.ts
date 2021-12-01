@@ -868,13 +868,21 @@ export class GraficasTercerSeccionComponent implements OnInit {
         if(flagEtapa){
           Object.keys(data[elemento]).forEach(subetapa => {
             Object.keys(data[elemento][subetapa]).forEach(elementoC => {
-              Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
-                if(!materialesExistentes.includes(material)){
-                  materialesExistentes.push(material)
-                  auxmateriales[material] = 0;
+              let banderaElemento = true;
+              this.ElementosContructivosEliminados.forEach(ElementoI => {
+                if(ElementoI === elementoC){
+                  banderaElemento=false;
                 }
-                auxmateriales[material] += data[elemento][subetapa][elementoC][material]
-              })
+              });
+              if(banderaElemento){
+                Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+                  if(!materialesExistentes.includes(material)){
+                    materialesExistentes.push(material)
+                    auxmateriales[material] = 0;
+                  }
+                  auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+                })
+              }
             });
           });
         }
@@ -905,13 +913,21 @@ export class GraficasTercerSeccionComponent implements OnInit {
             }
           if(flagSubetapa){
             Object.keys(data[elemento][subetapa]).forEach(elementoC => {
-              Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
-                if(!materialesExistentes.includes(material)){
-                  materialesExistentes.push(material)
-                  auxmateriales[material] = 0;
+              let banderaElemento = true;
+              this.ElementosContructivosEliminados.forEach(ElementoI => {
+                if(ElementoI === elementoC){
+                  banderaElemento=false;
                 }
-                auxmateriales[material] += data[elemento][subetapa][elementoC][material]
-              })
+              });
+              if(banderaElemento){
+                Object.keys(data[elemento][subetapa][elementoC]).forEach(material => {
+                  if(!materialesExistentes.includes(material)){
+                    materialesExistentes.push(material)
+                    auxmateriales[material] = 0;
+                  }
+                  auxmateriales[material] += data[elemento][subetapa][elementoC][material]
+                })
+              }
             });
           }
           });
@@ -959,34 +975,35 @@ export class GraficasTercerSeccionComponent implements OnInit {
       }
     })
     if(filtro == 0){
-      Object.keys(auxmateriales).forEach((material,index) => {
-        auxdatos.forEach(num =>{
+      auxdatos.forEach(num =>{
+        Object.keys(auxmateriales).forEach((material,index) => {
           if(num == auxmateriales[material]){
             auxidsMateriales.push(material)
           }
         })
-      });
+      })
     }else if(filtro ==1){
-      Object.keys(auxmateriales).forEach((material,index) => {
-        auxdatos.forEach(num =>{
+      auxdatos.forEach(num =>{
+        Object.keys(auxmateriales).forEach((material,index) => {
           if(!auxidsMateriales.includes(material)){
             if(num == auxmateriales[material]){
               auxidsMateriales.push(material)
             }
           }
         })
-      });
+      })
     }else{
       auxdatos = this.acomodaMayoraMenor(auxmateriales);
-      Object.keys(auxmateriales).forEach((material,index) => {
-        auxdatos.forEach(num =>{
+      auxdatos.forEach(num =>{
+        Object.keys(auxmateriales).forEach((material,index) => {
           if(!auxidsMateriales.includes(material)){
             if(num == auxmateriales[material]){
               auxidsMateriales.push(material)
             }
           }
-        })
-      });
+        });
+      })
+
     }
     let num=0;
     auxidsMateriales.forEach((material,ii) => {
@@ -1104,7 +1121,15 @@ export class GraficasTercerSeccionComponent implements OnInit {
 
         if(this.InfoMostrada[index]['CicloSeleccionado'] != " "){
           if(this.InfoMostrada[index]['flagAgruparProduccion']){
+            console.log('in')
             document.getElementById(this.InfoMostrada[index]['id'].toString().concat(this.InfoMostrada[index]['CicloSeleccionado'].concat('botonC'))).className = 'espacio-sin-selecciomar';
+          }else{
+            let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+            Object.keys(auxBotonesEtapa).forEach(element => {
+              if(auxBotonesEtapa[element] === this.InfoMostrada[index]['CicloSeleccionado']){
+                document.getElementById(this.InfoMostrada[index]['id'].toString().concat(element.concat('botonC'))).className = 'espacio-sin-selecciomar';
+              }
+            });
           }
           this.InfoMostrada[index]['CicloSeleccionado'] = ' '
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0,this.InfoMostrada[index]['flagAgruparProduccion']," ");
