@@ -235,7 +235,7 @@
                 <p>Elementos constructivos</p>
                 <section class="example-section">
                   <section *ngFor="let item of botones_elementos_constructivos">
-                    <mat-checkbox class="example-margin" (change)="elementoSeleccionadoElementos(item.id)" [disabled]="elementosConstructivosMostradosElementos[item.id]['habilitado']">{{elementosConstructivosMostradosElementos[item.id]['nombre']}}</mat-checkbox>
+                    <mat-checkbox class="example-margin" [(ngModel)]="elementosConstructivosMostradosElementos[item.id]['check']" (change)="elementoSeleccionadoElementos(item.id)" [disabled]="elementosConstructivosMostradosElementos[item.id]['habilitado']">{{elementosConstructivosMostradosElementos[item.id]['nombre']}}</mat-checkbox>
                   </section>
                 </section>
               </div>

@@ -16,8 +16,6 @@ import { Calculos } from '../../../calculos/calculos'
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
 import { CalculosTercerSeccion } from 'src/app/calculos/calculos-tercer-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { CssSelector } from '@angular/compiler';
-import { threadId } from 'node:worker_threads';
 
 
 interface impactos_menu{
@@ -165,6 +163,13 @@ export class CompararComponent implements OnInit {
   cicloVidaSeleccionadoElemento = ' ';
   estadoTercerSeccion={};
   unidadImpactoAmientalTabla="";
+  checkboxes: any[] = [
+    { name: 'cb1', value: 'cb1', checked: false },
+    { name: 'cb2', value: 'cb2', checked: true },
+    { name: 'cb3', value: 'cb3', checked: false },
+    { name: 'cb4', value: 'cb4', checked: false },
+    { name: 'cb5', value: 'cb5', checked: false },
+  ]
 
   // vars analisis
   idProyectoActivo: number;
@@ -696,9 +701,22 @@ export class CompararComponent implements OnInit {
     //se prepara la información por filas
     let aux=[];
     let flagMasProyectos = false;
+    let auxtotal={};
+    let auxImpactosTotal = {}
+    this.outproyect_bar.forEach((element)=>{
+      auxtotal[element.id]={}
+      auxImpactosTotal[element.id] = []
+      Object.keys(element.Datos).forEach(impacto => {
+        let auxNombreImpacto = impacto.replace(/\n/g,'');
+        if(!auxImpactosTotal[element.id].includes(auxNombreImpacto)){
+          auxtotal[element.id][auxNombreImpacto] = 0
+          auxImpactosTotal[element.id].push(auxNombreImpacto)
+        }
+      });
+    });
     auxL.forEach((ciclo,index) => {
       let auxdata = {};
-      let auximpactos =[];
+      let auximpactos =[]
       auxdata["ciclo de vida"]=ciclo;
       this.outproyect_bar.forEach((element)=>{
         Object.keys(element.Datos).forEach(impacto => {
@@ -708,17 +726,42 @@ export class CompararComponent implements OnInit {
           if(!auximpactos.includes(auxNombreImpacto)){
             auximpactos.push(auxNombreImpacto);
             auxdata[auxNombreImpacto] = resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            auxtotal[element.id][auxNombreImpacto] += resultado
           }else{
             flagMasProyectos = true;
             let last = auxdata[auxNombreImpacto].toString()
             auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
             auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat(resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            auxtotal[element.id][auxNombreImpacto] += resultado
           }
         });
       })
       auximpactos =[];
       aux=[...aux, {data:auxdata,
         color: aux_color[index]}];
+      if(ciclo === "FinDeVida"){
+        auxdata = {}
+        Object.keys(auxtotal).forEach((element, indexproyectos) => {
+          if(indexproyectos == 0){
+            Object.keys(auxtotal[element]).forEach(impacto => {
+              let resultado = auxtotal[element][impacto]
+              let resultadoExponencial = resultado.toExponential(2);
+              auxdata[impacto] = resultadoExponencial
+            })
+          }else{
+            Object.keys(auxtotal[element]).forEach(impacto => {
+              let resultado = auxtotal[element][impacto]
+              let resultadoExponencial = resultado.toExponential(2);
+              let last = auxdata[impacto].toString()
+              auxdata[impacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
+              auxdata[impacto] = auxdata[impacto].concat(resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            })
+          }
+        });
+        auxdata["ciclo de vida"]="total";
+        aux=[...aux, {data:auxdata,
+        color: aux_color[index+1]}];
+      }
       if(ciclo === "FinDeVida" && flagMasProyectos == true){
         auxdata = {};
         let numProyecto = 0;
@@ -737,7 +780,7 @@ export class CompararComponent implements OnInit {
           });
         });
         aux=[{data:auxdata,
-                      color: aux_color[index+1]},...aux];
+               color: aux_color[index+1]},...aux];
       }
     })
     this.DatosTabla = aux;
@@ -877,10 +920,12 @@ export class CompararComponent implements OnInit {
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()] = {};
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['nombre'] = element['name_section'];
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['habilitado'] = false;
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['check'] = true;
         }else{
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()] = {};
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['nombre'] = element['name_section'];
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['habilitado'] = true;
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['check'] = false;
         }
       })
     }
@@ -898,6 +943,7 @@ export class CompararComponent implements OnInit {
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()] = {};
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['nombre'] = element['name_section'];
           this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['habilitado'] = false;
+          this.elementosConstructivosMostradosElementos[auxidelemento.toString()]['check'] = true;
         }
       })
     }

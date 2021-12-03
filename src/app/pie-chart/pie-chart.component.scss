@@ -8,10 +8,12 @@
 .mostrar-subetapas {
   display: flex;
   flex-direction: column;
-  margin-left: 60px;
   li {
     display: flex;
     padding-bottom: 5px;
+  }
+  a{
+    width: 50px;
   }
   button{
     border: none;
@@ -20,7 +22,7 @@
 }
 
 .dot {
-  height: 20px;
+  height: 19px;
   width: 19px;
   border-radius: 50%;
   display: inline-flex;

@@ -279,7 +279,7 @@ p.text-duplicados {
     
       .button-info-select {
         border-radius: 10px 0px 0px 10px;
-        width: 99px;
+        width: 102px;
         height: 39px;
         background: #ffffff;
       }
@@ -648,4 +648,8 @@ mat-select {
 }
 .example-margin {
   margin: 0 10px;
+}
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: #a8d024 !important;
 }

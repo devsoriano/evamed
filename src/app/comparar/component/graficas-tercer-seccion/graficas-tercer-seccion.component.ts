@@ -148,7 +148,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
         aux['DatosElementosConstructivos']=this.GraficaElementosContructivos(aux['Coloreslementos']['valores'],aux['Coloreslementos']['colores']);
         aux['ElementosConstructivosGrafica']=true;
         aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion']," ");
-        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion']);
+        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion'],aux['Coloreslementos']);
         aux['DataGraficaMateriales']=auxgrafica['grafica'];
         aux['labelsMateriales'] = auxgrafica['labels'];
         aux['iconosElementosConstrucivos']=this.AjustarElementosMostrados(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],seleccion.toString(),aux['flagAgruparProduccion'])
@@ -157,7 +157,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
         aux['CicloSeleccionado'] = ' '
         aux['iconosElementosConstrucivos']={};
         aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'],"",0,aux['flagAgruparProduccion']," ");
-        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'],"","General",0,aux['flagAgruparProduccion']);
+        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'],"","General",0,aux['flagAgruparProduccion'],"");
         aux['DataGraficaMateriales']=auxgrafica['grafica'];
         aux['labelsMateriales'] = auxgrafica['labels'];
         aux['Coloreslementos'] = {};
@@ -543,7 +543,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
           this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosCicloVida'],this.InfoMostrada[index]['flagAgruparProduccion'])
           this.InfoMostrada[index]['ElementosConstructivosGrafica'] = false;
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0,this.InfoMostrada[index]['flagAgruparProduccion']," ");
-          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion']);
+          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion'],"");
           this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
           this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
           this.InfoMostrada[index]['iconosElementosConstrucivos'] = {}
@@ -580,7 +580,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
           this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosCicloVida'],this.InfoMostrada[index]['flagAgruparProduccion'])
           this.InfoMostrada[index]['ElementosConstructivosGrafica'] = true;
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']," ");
-          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']);
+          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['Coloreslementos']);
           this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
           this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
           this.InfoMostrada[index]['coloresBotonesElementos']=this.llenarColoresBotonesElementos(this.Secciones,this.InfoMostrada[index]['Coloreslementos']['colores'],this.InfoMostrada[index]['Coloreslementos']['orden']);
@@ -625,7 +625,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
           resultado=idelemento;
           this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
           let ciclo=this.InfoMostrada[index]['CicloSeleccionado'];
-          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2,this.InfoMostrada[index]['flagAgruparProduccion']);
+          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['Coloreslementos']);
           this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
           this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],2,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['CicloSeleccionado']);
@@ -640,7 +640,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
             resultado=idelemento;
             this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
             let ciclo=this.InfoMostrada[index]['CicloSeleccionado'];
-            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2,this.InfoMostrada[index]['flagAgruparProduccion']);
+            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],ciclo,2,this.InfoMostrada[index]['flagAgruparProduccion'], this.InfoMostrada[index]['Coloreslementos']);
             this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
             this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
             this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['ElementoConstructivoSeleccionado'],2,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['CicloSeleccionado']);
@@ -656,7 +656,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
             this.InfoMostrada[index]['DatosElementosConstructivos'] = this.AjustarColoresGraficaElementos(proyecto.Coloreslementos,this.InfoMostrada[index]['ElementoConstructivoSeleccionado']);
             this.InfoMostrada[index]['DispercionElementoGrafica']=false;
             this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']," ");
-            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']);
+            let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['Coloreslementos']);
             this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
             this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
           }
@@ -695,7 +695,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     return auxdatos.reverse()
   }
 
-  IniciarGraficaMateriales(data,elementoSeleccionado,color,filtro,flagAgrupar){
+  IniciarGraficaMateriales(data,elementoSeleccionado,color,filtro,flagAgrupar,coloresElementos){
     let aux = [];
     let auxgrafica = [];
     let auxlabel=[];
@@ -839,12 +839,27 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux.push(((sumaOtros/suma)*100).toFixed(2));
       auxlabel=[...auxlabel, 'otros'];
     }
-    auxgrafica = [
-      {
-        data: aux,
-        backgroundColor: this.CicloColores[color],
-      },
-    ];
+    if(filtro != 2){
+      auxgrafica = [
+        {
+          data: aux,
+          backgroundColor: this.CicloColores[color],
+        },
+      ];
+    }else{
+      let auxColor = ""
+      coloresElementos['orden'].forEach((element, index) => {
+        if(element === elementoSeleccionado.toString()){
+          auxColor = coloresElementos['colores'][index]
+        }
+      });
+      auxgrafica = [
+        {
+          data: aux,
+          backgroundColor: auxColor,
+        },
+      ];
+    }
 
     return {'grafica':auxgrafica,'labels':auxlabel}
   }
@@ -1121,7 +1136,6 @@ export class GraficasTercerSeccionComponent implements OnInit {
 
         if(this.InfoMostrada[index]['CicloSeleccionado'] != " "){
           if(this.InfoMostrada[index]['flagAgruparProduccion']){
-            console.log('in')
             document.getElementById(this.InfoMostrada[index]['id'].toString().concat(this.InfoMostrada[index]['CicloSeleccionado'].concat('botonC'))).className = 'espacio-sin-selecciomar';
           }else{
             let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
@@ -1133,7 +1147,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
           }
           this.InfoMostrada[index]['CicloSeleccionado'] = ' '
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0,this.InfoMostrada[index]['flagAgruparProduccion']," ");
-          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion']);
+          let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion'],"");
           this.InfoMostrada[index]['DataGraficaMateriales']=auxgrafica['grafica'];
           this.InfoMostrada[index]['labelsMateriales'] = auxgrafica['labels'];
           this.InfoMostrada[index]['ElementosConstructivosGrafica'] = false;
