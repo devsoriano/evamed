@@ -549,6 +549,16 @@ export class Calculos {
     return res;
   }
 
+  determinarDescripcionCarbono(opcion){
+    let aux=""
+    this.catalogoEscalasCarbono.forEach(element => {
+      if(element.nombre_caso === opcion){
+        aux = element['descripcion']
+      }
+    });
+    return aux
+  }
+
   buscarValosCarbono(data,opcion){
     let aux = {}
     let valorCarbono = this.determinaValorCarbono(data);

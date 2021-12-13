@@ -56,7 +56,7 @@ export class HomeEvamedComponent implements OnInit {
   sections: any;
   dataMaterial: any;
   catologoImpactoAmbiental: any;
-  catologoOpcionesCarbono = ['CASO 1','CASO 2']
+  catologoOpcionesCarbono = ['Promedio del sector vivienda','Vivienda sustentable']
   auxDataProjectList: any;
   ConstructiveSystemElements: any;
   sourceInformation: any;
@@ -388,7 +388,8 @@ export class HomeEvamedComponent implements OnInit {
         opcionCarbonoSeleccionada:this.catologoOpcionesCarbono[0],
         dataGraficaCarbono : this.calculos.llenarGraficaCarbono(this.catologoOpcionesCarbono[0]),
         valorCarbono : this.calculos.determinaValorCarbono(calculosOperacionesDeFase).toExponential(2),
-        flagsCarbono: this.calculos.buscarValosCarbono(calculosOperacionesDeFase,this.catologoOpcionesCarbono[0])
+        flagsCarbono: this.calculos.buscarValosCarbono(calculosOperacionesDeFase,this.catologoOpcionesCarbono[0]),
+        descripcionCarbono : this.calculos.determinarDescripcionCarbono(this.catologoOpcionesCarbono[0])
       };
       this.auxDataProjectList.push(auxDatos);
     });
@@ -808,6 +809,7 @@ export class HomeEvamedComponent implements OnInit {
   selectOpcionCarbono(opcion,indexRecivido){
     this.auxDataProjectList[indexRecivido].dataGraficaCarbono = this.calculos.llenarGraficaCarbono(opcion)
     this.auxDataProjectList[indexRecivido].flagsCarbono = this.calculos.buscarValosCarbono(this.auxDataProjectList[indexRecivido].datos,opcion)
+    this.auxDataProjectList[indexRecivido].descripcionCarbono = this.calculos.determinarDescripcionCarbono(opcion)
   }
 
   mostrarHuellaCarbono(id,indexRecivido){
