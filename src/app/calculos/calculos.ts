@@ -316,7 +316,6 @@ export class Calculos {
       }
       impacto_ban = true;
     });
-
     return Datos;
   }
 

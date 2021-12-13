@@ -303,10 +303,9 @@ export class CalculosSegundaSeccion {
         nameImpacto = this.ajustarNombre(nameImpacto);
         Datos[nameImpacto] = {};
         let elementoscreados=[];
-        let materialescreados=[];
+        let materialescreados={};
         //Cálculos de la sección de producción
         let etapas = [2, 3, 4]; //Subetaps A1 A2 y A3
-        let banderaMaterialEP = false;
         etapas.forEach((subetapa) => {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
@@ -319,26 +318,26 @@ export class CalculosSegundaSeccion {
                     msd['potential_type_id'] == impacto['id']
                 );
                 if (materiales_subetapa.length > 0) {
-                  banderaMaterialEP = false;
                   materiales_subetapa.forEach((material, index) => {
                     if(!elementoscreados.includes(ps['section_id'])){
                       elementoscreados.push(ps['section_id']);
                       Datos[nameImpacto][ps['section_id']]=[];
+                      materialescreados[ps['section_id']] = [];
                     }
-                    if(!materialescreados.includes(ps['material_id'])){
-                      materialescreados.push(ps['material_id'])
+                    if(!materialescreados[ps['section_id']].includes(ps['material_id'])){
+                      materialescreados[ps['section_id']].push(ps['material_id'])
                       Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] = 0
                     }
-                    Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] =
-                    Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()]+
-                    materiales_subetapa[index]['value'] * ps['quantity'];
+                    console.log(Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()],"sección: ",ps['section_id'],"material: ",ps['material_id'],"valor: ", materiales_subetapa[index]['value'] * ps['quantity'],"ANTES")
+                    Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] += materiales_subetapa[index]['value'] * ps['quantity'];
+                    console.log(Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()],"sección: ",ps['section_id'],"material: ",ps['material_id'],"valor: ", materiales_subetapa[index]['value'] * ps['quantity'],"DESPUES")
                   });
                 }
               }
             });
           }
         });
-        //console.log(Datos[nameImpacto])
+        //console.log(Datos[nameImpacto], nameImpacto)
         //A4 Transporte
         if (schemeProyect.length > 0) {
           schemeProyect.forEach((ps) => {
@@ -391,7 +390,7 @@ export class CalculosSegundaSeccion {
                     elementoscreados.push(ps['section_id']);
                     Datos[nameImpacto][ps['section_id']]=[];
                   }
-                  if(!materialescreados.includes(ps['material_id'])){
+                  if(!materialescreados[ps['section_id']].includes(ps['material_id'])){
                     Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] = 0
                   }
                   
@@ -421,7 +420,7 @@ export class CalculosSegundaSeccion {
                       elementoscreados.push(ps['section_id']);
                       Datos[nameImpacto][ps['section_id']]=[];
                     }
-                    if(!materialescreados.includes(ps['material_id'])){
+                    if(!materialescreados[ps['section_id']].includes(ps['material_id'])){
                       Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] = 0
                     }
                     Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] =
@@ -438,7 +437,6 @@ export class CalculosSegundaSeccion {
       }
       impacto_ban = true;
     });
-
     return Datos;
   }
 

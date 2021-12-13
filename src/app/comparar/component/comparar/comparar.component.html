@@ -173,7 +173,10 @@
                 <p> {{elementoSeleccionadoMostrado}} </p>
                 <p> Potenciales impactos ambientales de materiales de construcción </p>
               </div>
-              <div class="seccion">
+              <div *ngIf="flagSinMaterialesDispercion">
+                <p>Sin materiales en estos calculos</p>
+              </div>
+              <div class="seccion" *ngIf="flagMaterialesDispercion">
                 <div>
                   <div class="button-graph">
                     <mat-button-toggle-group>

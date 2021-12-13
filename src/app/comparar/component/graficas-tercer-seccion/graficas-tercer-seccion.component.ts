@@ -992,8 +992,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
     if(filtro == 0){
       auxdatos.forEach(num =>{
         Object.keys(auxmateriales).forEach((material,index) => {
-          if(num == auxmateriales[material]){
-            auxidsMateriales.push(material)
+          if(!auxidsMateriales.includes(material)){
+            if(num == auxmateriales[material]){
+              auxidsMateriales.push(material)
+            }
           }
         })
       })

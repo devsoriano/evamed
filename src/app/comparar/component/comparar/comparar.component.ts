@@ -16,6 +16,7 @@ import { Calculos } from '../../../calculos/calculos'
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
 import { CalculosTercerSeccion } from 'src/app/calculos/calculos-tercer-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { isEmpty } from 'rxjs-compat/operator/isEmpty';
 
 
 interface impactos_menu{
@@ -161,6 +162,8 @@ export class CompararComponent implements OnInit {
   catologoImpactoAmbiental = [];
   elementosConstructivosMostradosElementos = {};
   cicloVidaSeleccionadoElemento = ' ';
+  flagMaterialesDispercion = true;
+  flagSinMaterialesDispercion = false;
   estadoTercerSeccion={};
   unidadImpactoAmientalTabla="";
   checkboxes: any[] = [
@@ -656,6 +659,7 @@ export class CompararComponent implements OnInit {
     };
 
     let auxDatos = this.calculosSegunaSeccion.operacionesPorMaterialesElementosConstructivos(idProyecto,DatosCalculos);
+    console.log(auxDatos)
     analisisProyectos['Datos']= auxDatos;
     return analisisProyectos;
   }
@@ -1341,6 +1345,8 @@ export class CompararComponent implements OnInit {
         final_unit=element['unit_potential_type'];
       }
     });
+    if(indicador != undefined){
+    }
     return final_unit
   }
 
@@ -1352,6 +1358,7 @@ export class CompararComponent implements OnInit {
         let auxhelp = [];
         let suma = 0;
         let auxdatos = [];
+        console.log(element.Datos)
         Object.keys(element.Datos).forEach((impacto) => {
           let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
           if(impacto === auxNombre){
@@ -1359,6 +1366,7 @@ export class CompararComponent implements OnInit {
               if(elementoC==this.elementoContructivoSelecionado){
                 //Ordear de mayor a menor
                 Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
+                  console.log("suma: ",suma ,"num a sumar: ", element.Datos[impacto][elementoC][material])
                   suma += element.Datos[impacto][elementoC][material];
                   auxhelp = [...auxhelp,element.Datos[impacto][elementoC][material]]
                 })
@@ -1381,7 +1389,13 @@ export class CompararComponent implements OnInit {
         let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
         let colorhelp = auxColor[this.colorGraficaDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
         let cambioR= colorhelp[1];
-        auxdatos = auxdatos.reverse()
+        if(auxdatos.length == 0){
+          this.flagMaterialesDispercion = false
+          this.flagSinMaterialesDispercion = true
+        }else{
+          this.flagMaterialesDispercion = true
+          this.flagSinMaterialesDispercion = false
+        }
         auxdatos.forEach((lugar,ii) => {
           Object.keys(element.Datos).forEach((impacto) => {
             let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
@@ -1417,7 +1431,9 @@ export class CompararComponent implements OnInit {
         });
       }
     })
-    this.unidadImpactoAmientalTabla = this.findUnidad(this.unidadImpactoAmientalTabla)
+    if(this.flagMaterialesDispercion){
+      this.unidadImpactoAmientalTabla = this.findUnidad(this.unidadImpactoAmientalTabla)
+    }
   }
 
   iniciarGraficaEspecificaDispercion(){
