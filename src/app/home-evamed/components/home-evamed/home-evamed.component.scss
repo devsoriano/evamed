@@ -189,17 +189,40 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
           text-align: justify;
         }
       }
+      &:nth-child(2) {
+        p{
+          padding-left: 90px;
+        }
+      }
       &:nth-child(3) {
         padding-top: 1px;
-        span{
+        /*span{
           height: 27px;
           width: 70px;
-          border-radius: 50% 0% 0% 50%;
           display: inline-flex;
           color: white;
           margin: 6px;
           align-items: center;
           padding-left: 11px;
+        }*/
+        .flecha{
+          height: 27px;
+          width: 70px;
+          display: inline-flex;
+          color: white;
+          margin: 8px;
+          position: relative;
+          align-items: center;
+          padding-left: 11px;
+          border-left: none;
+        }
+        .punta{
+          position: absolute;
+          width: 16px;
+          margin-top: 12px;
+          height: 18px;
+          transform: rotate(134deg) skewX(-10deg) skewY(-10deg);
+          content: "";
         }
       }
       &:nth-child(4) {

@@ -328,9 +328,7 @@ export class CalculosSegundaSeccion {
                       materialescreados[ps['section_id']].push(ps['material_id'])
                       Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] = 0
                     }
-                    console.log(Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()],"sección: ",ps['section_id'],"material: ",ps['material_id'],"valor: ", materiales_subetapa[index]['value'] * ps['quantity'],"ANTES")
                     Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()] += materiales_subetapa[index]['value'] * ps['quantity'];
-                    console.log(Datos[nameImpacto][ps['section_id']][ps['material_id'].toString()],"sección: ",ps['section_id'],"material: ",ps['material_id'],"valor: ", materiales_subetapa[index]['value'] * ps['quantity'],"DESPUES")
                   });
                 }
               }

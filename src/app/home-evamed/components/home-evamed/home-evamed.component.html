@@ -205,11 +205,6 @@
                       (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
                       Ver <br>referencia
                     </button>
-                    <!--
-                      <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
-                        <mat-icon>{{auxDataProjectList[i].iconoCarbono}}</mat-icon>
-                      </button>
-                    -->
                   </div>
                 </div>
               </div>
@@ -286,40 +281,80 @@
                       [chartType]="barChartHorizonatlType"
                        height="305px">
                     </canvas>
+                    <p>KgCO<sub>2</sub> / m<sup>2</sup>a por año</p>
                 </div>
                 <div>
-                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_1']}">
-                    {{auxDataProjectList[i].valorCarbono}}
-                  </span>
-                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_2']}">
-                    {{auxDataProjectList[i].valorCarbono}}
-                  </span>
-                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_3']}">
-                    {{auxDataProjectList[i].valorCarbono}}
-                  </span>
-                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_4']}">
-                    {{auxDataProjectList[i].valorCarbono}}
-                  </span>
-                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_5']}">
-                    {{auxDataProjectList[i].valorCarbono}}
-                  </span>
-                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_6']}">
-                    {{auxDataProjectList[i].valorCarbono}}
-                  </span>
-                  <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_7']}">
-                    {{auxDataProjectList[i].valorCarbono}}
-                  </span>
+                  <!--
+                    <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_1']}" >
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                    <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_2']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                    <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_3']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                    <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_4']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                    <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_5']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                    <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_6']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                    <span [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_7']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  -->
+                  <div>
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_1']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_1']}" >
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div>
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_2']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_2']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div>
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_3']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_3']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div>
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_4']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_4']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div>
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_5']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_5']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div>
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_6']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_6']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div>
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_7']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_7']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
                 </div>
                 <div>
                   <button class="boton-carbono-verde"
                       (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
-                      Resumen de <br>redultados
+                      Resumen de <br>resultados
                     </button>
-                    <!--
-                      <button class="boton-carbono" (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
-                        <mat-icon>{{auxDataProjectList[i].iconoCarbono}}</mat-icon>
-                      </button>
-                    -->
                 </div>
               </div>
             </div>

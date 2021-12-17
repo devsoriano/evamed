@@ -129,8 +129,8 @@ export class HomeEvamedComponent implements OnInit {
   };
   public barChartHorizontalOptions: ChartOptions = {
     responsive: true,
-    title: { display: true,
-      text: 'KgCo2/m2a por año',
+    title: { display: false,
+      text: 'KgCO2 / m2a por año',
       position: 'bottom',
     },
     legend: { display: false },
@@ -155,7 +155,6 @@ export class HomeEvamedComponent implements OnInit {
       datalabels: {
         display : false
       },
-      
     },
   };
   public barChartType: ChartType = 'bar';
