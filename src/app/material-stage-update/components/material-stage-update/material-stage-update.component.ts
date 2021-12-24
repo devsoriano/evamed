@@ -136,25 +136,23 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-    
-     //carga de imagenes
+    //carga de imagenes
     let images = [
-      "../../../../assets/map/2.jpg",
-      "../../../../assets/map/4.jpg",
-      "../../../../assets/map/5.jpg",
-      "../../../../assets/map/6.jpg",
-      "../../../../assets/map/7.jpg",
-      "../../../../assets/map/8.jpg",
-      "../../../../assets/map/9.jpg",
-      "../../../../assets/map/10.jpg",
-      "../../../../assets/map/11.jpg",
-      "../../../../assets/map/12.jpg",
-      "../../../../assets/map/13.jpg",
-      "../../../../assets/map/14.jpg"
+      '../../../../assets/map/2.jpg',
+      '../../../../assets/map/4.jpg',
+      '../../../../assets/map/5.jpg',
+      '../../../../assets/map/6.jpg',
+      '../../../../assets/map/7.jpg',
+      '../../../../assets/map/8.jpg',
+      '../../../../assets/map/9.jpg',
+      '../../../../assets/map/10.jpg',
+      '../../../../assets/map/11.jpg',
+      '../../../../assets/map/12.jpg',
+      '../../../../assets/map/13.jpg',
+      '../../../../assets/map/14.jpg',
     ];
     this.preload(images);
-    
+
     // fragmento para autocompletado
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
@@ -198,11 +196,10 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   preload(array) {
-   
- for (var i = 0; i < array.length; i++) {
+    for (var i = 0; i < array.length; i++) {
       this.IMGP[i] = new Image();
-        this.IMGP[i].src = array[i];
-      }
+      this.IMGP[i].src = array[i];
+    }
   }
   onGroupsChange(options: MatListOption[]) {
     options.map((option) => {
@@ -387,13 +384,13 @@ export class MaterialStageUpdateComponent implements OnInit {
           description_material: dataMaterialSelected.description_material,
           material_id: dataMaterialSelected.material_id,
           project_id: dataMaterialSelected.project_id,
-          origin_id: parseInt(this.vidaUtilSeleccionadoId),
+          origin_id: parseInt(dataMaterialSelected.origin_id),
           section_id: dataMaterialSelected.section_id,
           state_id_origin: dataMaterialSelected.state_id_origin,
           city_id_origin: 2,
           city_id_end: 1,
-          transport_id_origin: dataMaterialSelected.transport_id_origin,
-          transport_id_end: dataMaterialSelected.transport_id_end,
+          transport_id_origin: parseInt(dataMaterialSelected.transporte_1),
+          transport_id_end: parseInt(dataMaterialSelected.transporte_2),
         }
       )
       .subscribe((data) => {
@@ -401,7 +398,7 @@ export class MaterialStageUpdateComponent implements OnInit {
         //  'Update data-----------------------------------------------'
         //);
         console.log(data);
-        location.reload();
+        // location.reload();
       });
   }
 
@@ -554,6 +551,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   onSelectMaterial(event, material) {
     event.stopPropagation();
+    console.log('onselected material');
     this.dataMaterialSelected.materialSelectedDB = material;
     console.log(this.dataMaterialSelected.materialSelectedDB);
   }

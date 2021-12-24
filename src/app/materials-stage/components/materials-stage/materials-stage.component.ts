@@ -118,21 +118,20 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   ngOnInit() {
-    
     //carga de imagenes
     let images = [
-      "../../../../assets/map/2.jpg",
-      "../../../../assets/map/4.jpg",
-      "../../../../assets/map/5.jpg",
-      "../../../../assets/map/6.jpg",
-      "../../../../assets/map/7.jpg",
-      "../../../../assets/map/8.jpg",
-      "../../../../assets/map/9.jpg",
-      "../../../../assets/map/10.jpg",
-      "../../../../assets/map/11.jpg",
-      "../../../../assets/map/12.jpg",
-      "../../../../assets/map/13.jpg",
-      "../../../../assets/map/14.jpg"
+      '../../../../assets/map/2.jpg',
+      '../../../../assets/map/4.jpg',
+      '../../../../assets/map/5.jpg',
+      '../../../../assets/map/6.jpg',
+      '../../../../assets/map/7.jpg',
+      '../../../../assets/map/8.jpg',
+      '../../../../assets/map/9.jpg',
+      '../../../../assets/map/10.jpg',
+      '../../../../assets/map/11.jpg',
+      '../../../../assets/map/12.jpg',
+      '../../../../assets/map/13.jpg',
+      '../../../../assets/map/14.jpg',
     ];
     this.preload(images);
     // fragmento para autocompletado
@@ -192,13 +191,12 @@ export class MaterialsStageComponent implements OnInit {
       (option) => option.name_material.toLowerCase().indexOf(filterValue) === 0
     );
   }
-  
+
   preload(array) {
-   
- for (var i = 0; i < array.length; i++) {
+    for (var i = 0; i < array.length; i++) {
       this.IMGP[i] = new Image();
-        this.IMGP[i].src = array[i];
-      }
+      this.IMGP[i].src = array[i];
+    }
   }
   onGroupsChange(options: MatListOption[]) {
     options.map((option) => {
@@ -431,12 +429,12 @@ export class MaterialsStageComponent implements OnInit {
                           distance_init:
                             data.distancia_1 === '' ||
                             data.distancia_1 === undefined
-                              ? 1
+                              ? 0
                               : parseInt(data.distancia_1, 10),
                           distance_end:
                             data.distancia_2 === '' ||
                             data.distancia_2 === undefined
-                              ? 1
+                              ? 0
                               : parseInt(data.distancia_2, 10),
                           replaces:
                             data.reemplazos === '' ||
@@ -449,18 +447,20 @@ export class MaterialsStageComponent implements OnInit {
                           transport_id_origin:
                             data.transporte_1 === '' ||
                             data.transporte_1 === undefined
-                              ? 1
+                              ? null
                               : parseInt(data.transporte_1, 10),
                           transport_id_end:
                             data.transporte_2 === '' ||
                             data.transporte_2 === undefined
-                              ? 1
+                              ? null
                               : parseInt(data.transporte_2, 10),
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
                         .subscribe((data) => {
-                          console.log('Success Modelo Revit o Template EVAMED!');
+                          console.log(
+                            'Success Modelo Revit o Template EVAMED!'
+                          );
                           console.log(data);
                         });
                     }
@@ -497,12 +497,12 @@ export class MaterialsStageComponent implements OnInit {
                           distance_init:
                             data.distancia_1 === '' ||
                             data.distancia_1 === undefined
-                              ? 1
+                              ? 0
                               : parseInt(data.distancia_1, 10),
                           distance_end:
                             data.distancia_2 === '' ||
                             data.distancia_2 === undefined
-                              ? 1
+                              ? 0
                               : parseInt(data.distancia_2, 10),
                           replaces:
                             data.reemplazos === '' ||
@@ -515,18 +515,20 @@ export class MaterialsStageComponent implements OnInit {
                           transport_id_origin:
                             data.transporte_1 === '' ||
                             data.transporte_1 === undefined
-                              ? 1
+                              ? null
                               : data.transporte_1,
                           transport_id_end:
                             data.transporte_2 === '' ||
                             data.transporte_2 === undefined
-                              ? 1
+                              ? null
                               : data.transporte_2,
                           unit_text: data.Unidad,
                           description_material: data['Descripción de Material'],
                         })
                         .subscribe((data) => {
-                          console.log('Success Modelo Revit o Template EVAMED!');
+                          console.log(
+                            'Success Modelo Revit o Template EVAMED!'
+                          );
                           console.log(data);
                         });
                     }
@@ -550,7 +552,10 @@ export class MaterialsStageComponent implements OnInit {
 
     this.listData.map((data) => {
       if (data.Sistema_constructivo === sc && origin === 'revit-user') {
-        if (data.Origen === 'Modelo de Revit' || data.Origen === 'Template EVAMED') {
+        if (
+          data.Origen === 'Modelo de Revit' ||
+          data.Origen === 'Template EVAMED'
+        ) {
           data.signal = false;
           let materialABuscar = data.Material;
           if (data.materialSelectedDB !== undefined) {
