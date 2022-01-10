@@ -475,11 +475,17 @@ export class MaterialsStageComponent implements OnInit {
         value.map((sc) => {
           if (data.Sistema_constructivo === sc) {
             if (data.Origen === 'Modelo de Revit') {
+              let materialToSearch = data.Material;
+
+              if (data.name_material_db !== undefined) {
+                materialToSearch = data.materialSelectedDB;
+              }
+
               this.materialsService
-                .searchMaterial(data.Material)
+                .searchMaterial(materialToSearch)
                 .subscribe((material) => {
                   material.map((materialData) => {
-                    if (materialData.name_material === data.Material) {
+                    if (materialData.name_material === materialToSearch) {
                       this.projectsService
                         .addSchemeProject({
                           construction_system: data.Sistema_constructivo,
