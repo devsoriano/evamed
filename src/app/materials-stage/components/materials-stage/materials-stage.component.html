@@ -586,7 +586,7 @@
             <div class="Row">
               <div class="Col">
                 <div class="button-read" (click)="goToSearchInfo()">
-                  {{ this.dataMaterialSelected.materialSelectedDB }}
+                  {{ dataMaterialSelected.materialSelectedDB }}
                 </div>
               </div>
             </div>
@@ -612,7 +612,7 @@
                       matInput
                       [formControl]="myControl"
                       [matAutocomplete]="auto"
-                      [(ngModel)]="dataMaterialSelected.materialDB"
+                      [(ngModel)]="dataMaterialSelected.materialFiltrado"
                     />
                     <mat-autocomplete
                       #auto="matAutocomplete"
@@ -626,6 +626,7 @@
                       </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
+
                 </form>
               </div>
             </div>

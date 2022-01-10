@@ -72,6 +72,7 @@ export class MaterialsStageComponent implements OnInit {
   mexicaniuh: any;
   showListMaterials: boolean;
   showMexican: boolean;
+  materialFiltrado: string = '';
 
   myControl = new FormControl();
   options: Material[];
@@ -181,7 +182,10 @@ export class MaterialsStageComponent implements OnInit {
 
   // Lógica para autocompletado
   displayFn(material: Material): string {
-    return material && material.name_material ? material.name_material : '';
+    if (material !== null || material !== undefined) {
+      this.materialFiltrado = material.name_material;
+    }
+    return material && this.materialFiltrado;
   }
 
   private _filter(name: string): Material[] {
@@ -198,6 +202,7 @@ export class MaterialsStageComponent implements OnInit {
       this.IMGP[i].src = array[i];
     }
   }
+
   onGroupsChange(options: MatListOption[]) {
     options.map((option) => {
       this.selectedSheet = option.value;
@@ -241,25 +246,13 @@ export class MaterialsStageComponent implements OnInit {
         this.selectedOptionsUsuario = this.SOU[i];
       }
     }
-
-    // console.log('Avance indicador');
-    /* Object.entries(this.SOR).forEach(([key, value]) => {
-      this.contentData[parseInt(key, 10) + 1].map(data => {
-        value.map(sc => {
-          if (data.Sistema_constructivo === sc) {
-            if (data.Origen === 'Modelo de Revit' || data.Origen === 'Template EVAMED') {
-              console.log(parseInt(key, 10) + 1);
-            }
-          }
-        });
-      });
-    }); */
   }
 
   onSelectedMaterial(value) {
-    console.log('onSelectMaterial');
-    console.log(value);
     this.dataMaterialSelected = value.selected[0]?.value.value;
+
+    console.log('ON SELECTED MATERIAL!!!!!');
+    console.log(this.dataMaterialSelected);
 
     this.dataMaterialSelected.vidaUtil === undefined
       ? (this.dataMaterialSelected.vidaUtil = parseInt(
@@ -279,11 +272,6 @@ export class MaterialsStageComponent implements OnInit {
       });
     });
 
-    //console.log('transporte local');
-    //console.log(this.dataMaterialSelected.transporte_1);
-    //console.log('transporte extrangero');
-    //console.log(this.dataMaterialSelected.transporte_2);
-
     this.materialsList.map((material) => {
       if (material.name_material === this.dataMaterialSelected.Material) {
         this.dataMaterialSelected.name_material_db = material.name_material;
@@ -299,6 +287,11 @@ export class MaterialsStageComponent implements OnInit {
     if (this.dataMaterialSelected.materialDB !== undefined) {
       this.dataMaterialSelected.materialSelectedDB =
         this.dataMaterialSelected.materialDB.name_material;
+    }
+
+    if (this.dataMaterialSelected.name !== undefined) {
+      this.dataMaterialSelected.materialSelectedDB =
+        this.dataMaterialSelected.name;
     }
 
     this.selectedMaterial = true;
@@ -408,13 +401,17 @@ export class MaterialsStageComponent implements OnInit {
               data.Origen === 'Modelo de Revit' ||
               data.Origen === 'Template EVAMED'
             ) {
+              let materialToSearch = data.Material;
+
+              if (data.name_material_db !== undefined) {
+                materialToSearch = data.materialSelectedDB;
+              }
+
               this.materialsService
-                .searchMaterial(data.Material)
+                .searchMaterial(materialToSearch)
                 .subscribe((material) => {
                   material.map((materialData) => {
-                    console.log(materialData);
-                    console.log(data);
-                    if (materialData.name_material === data.Material) {
+                    if (materialData.name_material === materialToSearch) {
                       this.projectsService
                         .addSchemeProject({
                           construction_system: data.Sistema_constructivo,
@@ -606,8 +603,6 @@ export class MaterialsStageComponent implements OnInit {
   showDetailMaterial(event, material) {
     event.stopPropagation();
     this.showMaterial = true;
-    console.log('este detail!!!!!!!!!!!!!!!!!!!!');
-    console.log(material);
     this.dataMaterialSelected.name = material.name_material;
     this.dataMaterialSelected.description = material.description;
     // this.dataMaterialSelected.registrationNumber = 'S-P-01927';
@@ -637,17 +632,18 @@ export class MaterialsStageComponent implements OnInit {
     this.dataMaterialSelected.description = material.description;
     this.analisis.getMaterialSchemeData().subscribe((msds) => {
       const msd = msds.filter((msd) => msd.material_id === material.id);
-      console.log('esta perra mamada!!!!!');
-      console.log(msd);
-
       this.dataMaterialSelected.msd = msd;
     });
   }
 
   onSelectMaterial(event, material) {
     event.stopPropagation();
+    console.log('ON SELECT MATERIAL!!!!!!');
     this.dataMaterialSelected.materialSelectedDB = material;
-    console.log(this.dataMaterialSelected.materialSelectedDB);
+    if (this.dataMaterialSelected.materialFiltrado !== undefined) {
+      this.dataMaterialSelected.materialFiltrado = undefined;
+    }
+    console.log(this.dataMaterialSelected);
     this.returnMaterialData();
   }
 
@@ -660,6 +656,16 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   returnMaterialData() {
+    console.log('returnMaterialData-----');
+    if (this.dataMaterialSelected.materialFiltrado !== undefined) {
+      this.dataMaterialSelected.materialSelectedDB =
+        this.dataMaterialSelected.materialFiltrado.name_material;
+
+      this.dataMaterialSelected.name =
+        this.dataMaterialSelected.materialSelectedDB;
+    }
+
+    console.log(this.dataMaterialSelected);
     this.selectedMaterial = true;
     this.showSearch = false;
   }
