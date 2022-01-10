@@ -296,6 +296,7 @@ export class MaterialStageUpdateComponent implements OnInit {
                   console.log('Material Data');
                   // console.log(materialData);
                   console.log(item);
+                  prevData['comercial_name'] = item.comercial_name;
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = item.quantity;
                   prevData['origin_id'] = item.origin_id;
@@ -331,6 +332,7 @@ export class MaterialStageUpdateComponent implements OnInit {
             .subscribe((material) => {
               material.map((materialData) => {
                 if (item.material_id === materialData.id) {
+                  prevData['comercial_name'] = item.comercial_name;
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = item.quantity;
                   prevData['origin_id'] = item.origin_id;
@@ -367,38 +369,55 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   updateMaterialSelected(dataMaterialSelected) {
     console.log('información a actualizar!!!');
-    console.log(dataMaterialSelected);
-    this.projectsService
-      .updateMaterialSchemeProject(
-        dataMaterialSelected.material_scheme_project_id,
-        {
-          comercial_name: dataMaterialSelected.name_material,
-          construction_system: dataMaterialSelected.construction_system, // en duro
-          provider_distance: 0,
-          quantity: dataMaterialSelected.quantity,
-          value: null,
-          distance_init: parseInt(dataMaterialSelected.distancia_1, 10),
-          distance_end: parseInt(dataMaterialSelected.distancia_2, 10),
-          replaces: dataMaterialSelected.reemplazos,
-          unit_text: dataMaterialSelected.unit_text,
-          description_material: dataMaterialSelected.description_material,
-          material_id: dataMaterialSelected.material_id,
-          project_id: dataMaterialSelected.project_id,
-          origin_id: parseInt(dataMaterialSelected.origin_id),
-          section_id: dataMaterialSelected.section_id,
-          state_id_origin: dataMaterialSelected.state_id_origin,
-          city_id_origin: 2,
-          city_id_end: 1,
-          transport_id_origin: parseInt(dataMaterialSelected.transporte_1),
-          transport_id_end: parseInt(dataMaterialSelected.transporte_2),
-        }
-      )
-      .subscribe((data) => {
-        //console.log(
-        //  'Update data-----------------------------------------------'
-        //);
-        console.log(data);
-        // location.reload();
+
+    this.materialsService
+      .searchMaterial(dataMaterialSelected.materialSelectedDB)
+      .subscribe((material) => {
+        material.map((materialData) => {
+          if (
+            materialData.name_material ===
+            dataMaterialSelected.materialSelectedDB
+          ) {
+            console.log('IF DEFINITIVO!!!!');
+            console.log(dataMaterialSelected);
+            console.log(materialData);
+            this.projectsService
+              .updateMaterialSchemeProject(
+                dataMaterialSelected.material_scheme_project_id,
+                {
+                  comercial_name: dataMaterialSelected.comercial_name,
+                  construction_system: dataMaterialSelected.construction_system, // en duro
+                  provider_distance: 0,
+                  quantity: dataMaterialSelected.quantity,
+                  value: null,
+                  distance_init: parseInt(dataMaterialSelected.distancia_1, 10),
+                  distance_end: parseInt(dataMaterialSelected.distancia_2, 10),
+                  replaces: dataMaterialSelected.reemplazos,
+                  unit_text: dataMaterialSelected.unit_text,
+                  description_material:
+                    dataMaterialSelected.description_material,
+                  material_id: materialData.id,
+                  project_id: dataMaterialSelected.project_id,
+                  origin_id: parseInt(dataMaterialSelected.origin_id),
+                  section_id: dataMaterialSelected.section_id,
+                  state_id_origin: dataMaterialSelected.state_id_origin,
+                  city_id_origin: 2,
+                  city_id_end: 1,
+                  transport_id_origin: parseInt(
+                    dataMaterialSelected.transporte_1
+                  ),
+                  transport_id_end: parseInt(dataMaterialSelected.transporte_2),
+                }
+              )
+              .subscribe((data) => {
+                console.log(
+                  'Update data-----------------------------------------------'
+                );
+                console.log(data);
+                location.reload();
+              });
+          }
+        });
       });
   }
 
@@ -418,11 +437,10 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   onSelectedMaterial(event, value) {
-    console.log('selección de materiales ***************************');
-    console.log(value.selected[0]?.value.value);
-
     this.selectState(value.selected[0]?.value.value.state_id_origin);
     this.dataMaterialSelected = value.selected[0]?.value.value;
+    this.dataMaterialSelected.materialSelectedDB =
+      this.dataMaterialSelected.name_material;
     this.selectedMaterial = true;
   }
 
@@ -510,6 +528,10 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   returnMaterialData() {
+    if (this.dataMaterialSelected.materialDB !== undefined) {
+      this.dataMaterialSelected.materialSelectedDB =
+        this.dataMaterialSelected.materialDB.name_material;
+    }
     this.selectedMaterial = true;
     this.showSearch = false;
   }
@@ -553,7 +575,11 @@ export class MaterialStageUpdateComponent implements OnInit {
     event.stopPropagation();
     console.log('onselected material');
     this.dataMaterialSelected.materialSelectedDB = material;
+    if (this.dataMaterialSelected.materialFiltrado !== undefined) {
+      this.dataMaterialSelected.materialFiltrado = undefined;
+    }
     console.log(this.dataMaterialSelected.materialSelectedDB);
+    this.returnMaterialData();
   }
 
   showDetailMaterial(event, material) {
