@@ -62,6 +62,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   showMaterial: boolean;
   showListMaterials: boolean;
   showMexican: boolean;
+  showListEPIC: boolean;
   EPiC: any;
   mexicaniuh: any;
 
@@ -163,6 +164,7 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.selectedMaterial = false;
     this.showEPD = false;
     this.showMexican = false;
+    this.showListEPIC = false;
     this.showListMaterials = true;
 
     this.sheetNames = [
@@ -595,10 +597,12 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   showEPIC() {
     this.showListMaterials = false;
+    this.showListEPIC = true;
   }
 
   showMexicanIuh() {
     this.showListMaterials = false;
+    this.showListEPIC = false;
     this.showMexican = true;
   }
 
