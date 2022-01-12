@@ -86,25 +86,23 @@ export class ConstructionStageUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-    
-     //carga de imagenes
+    //carga de imagenes
     let images = [
-      "../../../../assets/map/2.jpg",
-      "../../../../assets/map/4.jpg",
-      "../../../../assets/map/5.jpg",
-      "../../../../assets/map/6.jpg",
-      "../../../../assets/map/7.jpg",
-      "../../../../assets/map/8.jpg",
-      "../../../../assets/map/9.jpg",
-      "../../../../assets/map/10.jpg",
-      "../../../../assets/map/11.jpg",
-      "../../../../assets/map/12.jpg",
-      "../../../../assets/map/13.jpg",
-      "../../../../assets/map/14.jpg"
+      '../../../../assets/map/2.jpg',
+      '../../../../assets/map/4.jpg',
+      '../../../../assets/map/5.jpg',
+      '../../../../assets/map/6.jpg',
+      '../../../../assets/map/7.jpg',
+      '../../../../assets/map/8.jpg',
+      '../../../../assets/map/9.jpg',
+      '../../../../assets/map/10.jpg',
+      '../../../../assets/map/11.jpg',
+      '../../../../assets/map/12.jpg',
+      '../../../../assets/map/13.jpg',
+      '../../../../assets/map/14.jpg',
     ];
     this.preload(images);
-    
+
     this.sheetNames = [
       'Cimentación',
       'Muros interiores',
@@ -120,12 +118,11 @@ export class ConstructionStageUpdateComponent implements OnInit {
     ];
   }
 
-   preload(array) {
-   
- for (var i = 0; i < array.length; i++) {
+  preload(array) {
+    for (var i = 0; i < array.length; i++) {
       this.IMGP[i] = new Image();
-        this.IMGP[i].src = array[i];
-      }
+      this.IMGP[i].src = array[i];
+    }
   }
   onGroupsChange(options: MatListOption[]) {
     let selectedSheet;
@@ -144,6 +141,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
       if (item.section_id === this.indexSheet + 1) {
         switch (item.constructive_process_id) {
           case 1:
+            prevData['id'] = item.id;
             prevData['cantidad'] = item.quantity;
             prevData['fuente'] = item.source_information_id;
             prevData['energy_unit_id'] = item.energy_unit_id;
@@ -181,7 +179,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
     }
 
     //Load Save
-    this.onSaveEC();
+    this.onSaveECNatural();
   }
 
   addFormEC() {
@@ -195,6 +193,18 @@ export class ConstructionStageUpdateComponent implements OnInit {
     this.dataArrayEC.splice(i);
   }
 
+  onSaveECNatural() {
+    let i;
+    if (this.EC === undefined) {
+      this.EC = [];
+    }
+    for (i = 0; i <= this.sheetNames.length; i++) {
+      if (this.indexSheet === i) {
+        this.EC[i] = this.dataArrayEC;
+      }
+    }
+  }
+
   onSaveEC() {
     let i;
     if (this.EC === undefined) {
@@ -205,6 +215,44 @@ export class ConstructionStageUpdateComponent implements OnInit {
         this.EC[i] = this.dataArrayEC;
       }
     }
+
+    Object.entries(this.EC).forEach(([key, ec]) => {
+      let ecAny: any;
+      ecAny = ec;
+      if (this.indexSheet === parseInt(key)) {
+        ecAny.map((data) => {
+          console.log(data);
+          if (data.id !== undefined) {
+            this.constructionStageService
+              .deleteConstructiveSystemElement(data.id)
+              .subscribe(() => {
+                console.log(`Se eliminó ${data.id}`);
+              });
+          }
+          try {
+            this.constructionStageService
+              .addConstructiveSistemElement({
+                quantity: data.cantidad,
+                project_id: parseInt(
+                  localStorage.getItem('idProyectoConstrucción'),
+                  10
+                ),
+                section_id: parseInt(key, 10) + 1,
+                constructive_process_id: 1,
+                volume_unit_id: null,
+                energy_unit_id: 2, // value hours
+                bulk_unit_id: null,
+                source_information_id: data.fuente,
+              })
+              .subscribe((data) => {
+                console.log(`Se agregó ${data.id}`);
+              });
+          } catch (e) {
+            console.log('No hay que eliminar');
+          }
+        });
+      }
+    });
   }
 
   addFormAC() {
@@ -257,7 +305,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
 
   saveStepTwo() {
     console.log('update steep two');
-    this.constructionStageService
+    /*this.constructionStageService
       .getConstructiveSystemElement()
       .subscribe((CSE) => {
         CSE.map((item) => {
@@ -303,7 +351,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
           })
           // this.router.navigateByUrl('usage-stage');
         );
-      });
+      });*/
   }
 
   goToMaterialStage() {
