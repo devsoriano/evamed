@@ -20,8 +20,8 @@ export class EndLifeUpdateComponent implements OnInit {
   EC: any;
   TD: any;
   catalogoFuentes: any;
-  catalogoUnidadEnergia: [];
-  ECDP: [];
+  catalogoUnidadEnergia: any;
+  ECDP: any;
   projectId: any;
 
   constructor(
@@ -49,13 +49,23 @@ export class EndLifeUpdateComponent implements OnInit {
       let energia = [];
       data.map((unidad) => {
         if (unidad.name_energy_unit === 'Hrs') {
-          energia.push(data);
+          energia.push(unidad);
         }
       });
-      this.catalogoUnidadEnergia = data;
+      this.catalogoUnidadEnergia = energia;
     });
     this.endLifeService.getECDP().subscribe((data) => {
-      this.ECDP = data;
+      const ECDP = [];
+      data.map((item) => {
+        if (
+          item.project_id ===
+          parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
+        ) {
+          ECDP.push(item);
+        }
+      });
+
+      this.ECDP = ECDP;
     });
   }
 
@@ -74,21 +84,8 @@ export class EndLifeUpdateComponent implements OnInit {
       'Otros',
     ];
 
-    this.initialChange();
     this.indexSheet = undefined;
     this.dataArrayTD.push([]);
-  }
-
-  initialChange() {
-    // take index of selection
-    this.indexSheet = this.sheetNames.indexOf('Cimentación');
-    let i;
-    for (i = 0; i <= this.sheetNames.length; i++) {
-      if (this.indexSheet === i && this.EC !== undefined) {
-        this.dataArrayEC = this.EC[i];
-        this.dataArrayTD = this.TD[i];
-      }
-    }
   }
 
   onGroupsChange(options: MatListOption[]) {
@@ -106,6 +103,7 @@ export class EndLifeUpdateComponent implements OnInit {
     this.ECDP.map((item: any) => {
       const prevData = [];
       if (item.section_id === this.indexSheet + 1) {
+        prevData['id'] = item.id;
         prevData['cantidad'] = item.quantity;
         prevData['fuente'] = item.source_information_id;
         prevData['energy_unit_id'] = item.energy_unit_id;
@@ -113,7 +111,6 @@ export class EndLifeUpdateComponent implements OnInit {
       }
     });
 
-    console.log(getDataECPD);
     let i;
     for (i = 0; i <= this.sheetNames.length; i++) {
       if (this.indexSheet === i) {
@@ -142,7 +139,7 @@ export class EndLifeUpdateComponent implements OnInit {
       this.dataArrayTD.push([]);
     }
 
-    this.onSaveEC();
+    this.onSaveECNatural();
   }
 
   removeFormEC(i) {
@@ -156,57 +153,71 @@ export class EndLifeUpdateComponent implements OnInit {
     this.dataArrayEC.push([]);
   }
 
+  onSaveECNatural() {
+    let i;
+    if (this.EC === undefined) {
+      this.EC = [];
+    }
+    /*if (this.TD === undefined) {
+      this.TD = [];
+    }*/
+    for (i = 0; i <= this.sheetNames.length; i++) {
+      if (this.indexSheet === i) {
+        this.EC[i] = this.dataArrayEC;
+        // this.TD[i] = this.dataArrayTD;
+      }
+    }
+  }
+
   onSaveEC() {
     let i;
     if (this.EC === undefined) {
       this.EC = [];
     }
-    if (this.TD === undefined) {
+    /*if (this.TD === undefined) {
       this.TD = [];
-    }
+    }*/
     for (i = 0; i <= this.sheetNames.length; i++) {
       if (this.indexSheet === i) {
         this.EC[i] = this.dataArrayEC;
-        this.TD[i] = this.dataArrayTD;
+        // this.TD[i] = this.dataArrayTD;
       }
     }
-  }
-
-  saveStepFour() {
-    this.endLifeService.getECDP().subscribe((ECDP) => {
-      ECDP.map((item) => {
-        if (
-          item.project_id ===
-          parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
-        ) {
-          this.endLifeService.deleteECDP(item.id).subscribe(() => {
-            console.log('Eliminar CSE pasados!!!!!!');
-          });
-        }
-      });
-    });
 
     Object.entries(this.EC).forEach(([key, ec]) => {
       let ecAny: any;
       ecAny = ec;
-      ecAny.map((data) => {
-        console.log('Fin de vida!!!');
-        console.log(data);
-        this.endLifeService
-          .addECDP({
-            quantity: data.cantidad,
-            unit_id: data.unidad,
-            source_information_id: data.fuente,
-            section_id: parseInt(key, 10) + 1,
-            project_id: this.projectId,
-          })
-          .subscribe((data) => {
-            console.log(data);
-          });
-      });
+      if (this.indexSheet === parseInt(key)) {
+        ecAny.map((data) => {
+          if (data.id !== undefined) {
+            this.endLifeService.deleteECDP(data.id).subscribe(() => {
+              console.log(`Se eliminó ${data.id}`);
+            });
+          }
+          try {
+            this.endLifeService
+              .addECDP({
+                quantity: data.cantidad,
+                unit_id: 2,
+                source_information_id: data.fuente,
+                section_id: parseInt(key, 10) + 1,
+                project_id: parseInt(
+                  localStorage.getItem('idProyectoConstrucción'),
+                  10
+                ),
+              })
+              .subscribe((data) => {
+                console.log(data);
+              });
+          } catch (e) {
+            console.log('No hay que eliminar***');
+          }
+        });
+      }
     });
-    // this.router.navigateByUrl('/');
   }
+
+  saveStepFour() {}
 
   goToMaterialStage() {
     this.router.navigateByUrl('materials-stage');

@@ -305,53 +305,6 @@ export class ConstructionStageUpdateComponent implements OnInit {
 
   saveStepTwo() {
     console.log('update steep two');
-    /*this.constructionStageService
-      .getConstructiveSystemElement()
-      .subscribe((CSE) => {
-        CSE.map((item) => {
-          if (
-            item.project_id ===
-            parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
-          ) {
-            this.constructionStageService
-              .deleteConstructiveSystemElement(item.id)
-              .subscribe(() => {
-                console.log('Eliminar CSE pasados!!!!!!');
-              });
-          }
-        }).then(
-          Object.entries(this.EC).forEach(([key, ec]) => {
-            let ecAny: any;
-            ecAny = ec;
-            ecAny.map((data) => {
-              console.log(key);
-              console.log(data);
-              console.log(
-                parseInt(localStorage.getItem('idProyectoConstrucción'), 10)
-              );
-              this.constructionStageService
-                .addConstructiveSistemElement({
-                  quantity: data.cantidad,
-                  project_id: parseInt(
-                    localStorage.getItem('idProyectoConstrucción'),
-                    10
-                  ),
-                  section_id: parseInt(key, 10) + 1,
-                  constructive_process_id: 1,
-                  volume_unit_id: null,
-                  energy_unit_id: data.energy_unit_id,
-                  bulk_unit_id: null,
-                  source_information_id: data.fuente,
-                })
-                .subscribe((data) => {
-                  console.log('Success EC!!!!!!!');
-                  console.log(data);
-                });
-            });
-          })
-          // this.router.navigateByUrl('usage-stage');
-        );
-      });*/
   }
 
   goToMaterialStage() {

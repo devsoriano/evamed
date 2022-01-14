@@ -105,11 +105,13 @@
               </label>
               <mat-form-field appearance="outline">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
-                  <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
-                    {{unidad.name_energy_unit}}
+                  <mat-select  [(ngModel)]="data.unidad" style="display:none" name="fuente{{i}}">
+                    <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
                   </mat-option>
                 </mat-select>
+                <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
+                  {{unidad.name_energy_unit}}
+                </mat-option>
               </mat-form-field>
             </div>
             <div class="Col col-small-space">
@@ -132,59 +134,13 @@
         >
           <mat-icon>add_circle</mat-icon>
         </button>
-
-      </div>
-      <h3>2. Tratamiento de desechos generados</h3>
-      <div class="Row top-0"  *ngFor="let dataTD of dataArrayTD; let i=index;">
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Vertedero
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="dataTD.vertedero"
-              name="vertedero"
-              matInput
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Reciclaje
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="dataTD.reciclaje"
-              name="reciclaje"
-              matInput
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Reuso
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="dataTD.reuso"
-              name="reuso"
-              matInput
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-      </div>
-      <button
+        <button
           mat-button
           (click)="onSaveEC()"
         >
           <mat-icon>save</mat-icon>
         </button>
+      </div>
     </section>
   </section>
 </div>
@@ -196,6 +152,6 @@
     class="yellow-button"
     (click)="saveStepFour()"
   >
-    Actualizar
+    Guardar
   </button>
 </div>
