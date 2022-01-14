@@ -132,59 +132,14 @@
         >
           <mat-icon>add_circle</mat-icon>
         </button>
-
-      </div>
-      <h3>2. Tratamiento de desechos generados</h3>
-      <div class="Row top-0"  *ngFor="let dataTD of dataArrayTD; let i=index;">
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Vertedero
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="dataTD.vertedero"
-              name="vertedero"
-              matInput
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Reciclaje
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="dataTD.reciclaje"
-              name="reciclaje"
-              matInput
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Reuso
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="dataTD.reuso"
-              name="reuso"
-              matInput
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-      </div>
+        
       <button
-          mat-button
-          (click)="onSaveEC()"
-        >
-          <mat-icon>save</mat-icon>
-        </button>
+      mat-button
+      (click)="onSaveEC()"
+    >
+      <mat-icon>save</mat-icon>
+    </button>
+      </div>
     </section>
   </section>
 </div>
