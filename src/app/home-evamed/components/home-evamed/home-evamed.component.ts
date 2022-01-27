@@ -17,6 +17,7 @@ import { Label, BaseChartDirective } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { MaterialsService } from '../../../core/services/materials/materials.service';
 import { AnalisisService } from '../../../core/services/analisis/analisis.service';
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 
 
 @Component({
@@ -317,6 +318,8 @@ export class HomeEvamedComponent implements OnInit {
       ULList: await this.analisis.getUsefulLife().toPromise(),
       ECDPList: await this.analisis.getECDP().toPromise(),
       sectionList: await this.analisis.getSectionsList().toPromise(),
+      PTList: await this.analisis.getPotentialTransport().toPromise(),
+      conversionList : await this.analisis.getConversion().toPromise()
     };
     this.auxDataProjectList = [];
     this.projectsList.forEach((element) => {

@@ -1,5 +1,3 @@
-import conversion from 'src/app/calculos/Conversiones.json';
-import transporte from 'src/app/calculos/transportes.json';
 import subetapasInfo from 'src/app/calculos/Subetapas.json';
 import { Injectable } from '@angular/core';
 import { element } from 'protractor';
@@ -10,9 +8,7 @@ import { of } from 'rxjs';
 })
 
 export class CalculosSegundaSeccion {
-    
-  conversion_list: any = conversion;
-  transporte_list: any = transporte;
+  
   subetapas_list: any = subetapasInfo;
   projectsList: [];
   materialList: [];
@@ -30,6 +26,8 @@ export class CalculosSegundaSeccion {
   ULList: [];
   ECDPList: [];
   sectionList: [];
+  PTList:[];
+  conversionList:[];
   impactosIgnorar2 = [
     'PARNR',
     'POT',
@@ -57,6 +55,8 @@ export class CalculosSegundaSeccion {
     this.ULList = info.ULList;
     this.ECDPList = info.ECDPList;
     this.sectionList = info.sectionsList;
+    this.PTList = info.PTList;
+    this.conversionList =  info.conversionList;
     
     let Datos = {};
     let schemeProyect = null;
@@ -67,7 +67,6 @@ export class CalculosSegundaSeccion {
 
     let impacto_ban = true;
     let nameImpacto: string;
-    let materialesIgnorados = [];
 
     this.potentialTypesList.forEach((impacto, index) => {
       this.impactosIgnorar2.forEach((ignorar) => {
@@ -130,12 +129,12 @@ export class CalculosSegundaSeccion {
                   if (ps['transport_id_origin'] != null) {
                     transporteSeleccionado = ps['transport_id_origin'];
                   }
-                  let value_transport = this.transporte_list.filter(
+                  let value_transport = this.PTList.filter(
                     (val) =>
-                      val['id_potencial'] == impacto['id'] &&
-                      val['id_transport'] == transporteSeleccionado
+                      val['potential_type_id'] == impacto['id'] &&
+                      val['transport_id'] == transporteSeleccionado
                   );
-                  internacional = value_transport[0]['valor'] * ps['distance_init'];
+                  internacional = value_transport[0]['value'] * ps['distance_init'];
                 }
                 if (ps['distance_end'] == null) {
                   nacional = 0;
@@ -144,15 +143,15 @@ export class CalculosSegundaSeccion {
                   if (ps['transport_id_end'] != null) {
                     transporteSeleccionado = ps['transport_id_end'];
                   }
-                  let value_transport = this.transporte_list.filter(
+                  let value_transport = this.PTList.filter(
                     (val) =>
-                      val['id_potencial'] == impacto['id'] &&
-                      val['id_transport'] == transporteSeleccionado
+                      val['potential_type_id'] == impacto['id'] &&
+                      val['transport_id'] == transporteSeleccionado
                   );
-                  nacional = value_transport[0]['valor'] * ps['distance_end'];
+                  nacional = value_transport[0]['value'] * ps['distance_end'];
                 }
-                let conversion_val = this.conversion_list.filter(
-                  (val) => val['id_material'] == ps['material_id']
+                let conversion_val = this.conversionList.filter(
+                  (val) => val['material_id'] == ps['material_id']
                 );
                 let peso = 1;
                 if (conversion_val.length > 0) {
@@ -281,6 +280,8 @@ export class CalculosSegundaSeccion {
     this.ULList = info.ULList;
     this.ECDPList = info.ECDPList;
     this.sectionList = info.sectionsList;
+    this.PTList = info.PTList;
+    this.conversionList =  info.conversionList;
     
     let Datos = {};
     let schemeProyect = null;
@@ -350,12 +351,12 @@ export class CalculosSegundaSeccion {
                   if (ps['transport_id_origin'] != null) {
                     transporteSeleccionado = ps['transport_id_origin'];
                   }
-                  let value_transport = this.transporte_list.filter(
+                  let value_transport = this.PTList.filter(
                     (val) =>
-                      val['id_potencial'] == impacto['id'] &&
-                      val['id_transport'] == transporteSeleccionado
+                      val['potential_type_id'] == impacto['id'] &&
+                      val['transport_id'] == transporteSeleccionado
                   );
-                  internacional = value_transport[0]['valor'] * ps['distance_init'];
+                  internacional = value_transport[0]['value'] * ps['distance_init'];
                 }
                 if (ps['distance_end'] == null) {
                   nacional = 0;
@@ -364,15 +365,15 @@ export class CalculosSegundaSeccion {
                   if (ps['transport_id_end'] != null) {
                     transporteSeleccionado = ps['transport_id_end'];
                   }
-                  let value_transport = this.transporte_list.filter(
+                  let value_transport = this.PTList.filter(
                     (val) =>
-                      val['id_potencial'] == impacto['id'] &&
-                      val['id_transport'] == transporteSeleccionado
+                      val['potential_type_id'] == impacto['id'] &&
+                      val['transport_id'] == transporteSeleccionado
                   );
-                  nacional = value_transport[0]['valor'] * ps['distance_end'];
+                  nacional = value_transport[0]['value'] * ps['distance_end'];
                 }
-                let conversion_val = this.conversion_list.filter(
-                  (val) => val['id_material'] == ps['material_id']
+                let conversion_val = this.conversionList.filter(
+                  (val) => val['material_id'] == ps['material_id']
                 );
                 let peso = 1;
                 if (conversion_val.length > 0) {
