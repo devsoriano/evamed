@@ -114,6 +114,14 @@ const routes: Routes = [
             (m) => m.MaterialsAdminModule
           ),
       },
+      {
+        path: 'admin-potential-transport',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import(
+            './potential-transport-admin/potential-transport-admin.module'
+          ).then((m) => m.PotentialTransportAdminModule),
+      },
     ],
   },
   {

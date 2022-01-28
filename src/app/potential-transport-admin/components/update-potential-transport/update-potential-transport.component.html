@@ -1,0 +1,61 @@
+<form [formGroup]="form" (ngSubmit)="saveMaterial($event)">
+  <mat-card  class="custom-card">
+    <mat-card-header>
+      <mat-card-title>Actualizar datos de potencial de transporte</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field  appearance="outline" >
+            <input matInput placeholder="Valor" formControlName="value">
+            <mat-error *ngIf="form.controls['value'].hasError('required')">
+              Valor es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Transporte" formControlName="transport_id">
+              <mat-option *ngFor="let data of transportList" [value]="data.id">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['transport_id'].hasError('required')">
+              Transporte es <strong>requiredo</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Tipo de potencial" formControlName="potential_type_id">
+              <mat-option *ngFor="let data of potentialTypesList" [value]="data.id">
+                {{ data.name_complete_potential_type }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['potential_type_id'].hasError('required')">
+              Transporte es <strong>requiredo</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Editar Material</button>
+      <button
+        mat-button
+        class="yellow-button"
+        (click)="goToMaterialList()"
+      >
+        Lista de materiales
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
