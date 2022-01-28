@@ -118,6 +118,8 @@ export class CompararComponent implements OnInit {
   ECDPList: [];
   sectionList: [];
   materiales:[];
+  PTList:[];
+  conversionList:[];
   click_anterior:'Ninguno';
   labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
   proyectosMostrados_elementos=[];
@@ -223,7 +225,9 @@ export class CompararComponent implements OnInit {
       this.analisis.getUsefulLife(),
       this.analisis.getECDP(),
       this.analisis.getSectionsList(),
-      this.analisis.getMaterials()
+      this.analisis.getMaterials(),
+      this.analisis.getPotentialTransport(),
+      this.analisis.getConversion()
     ])
     .subscribe(([
       TE,
@@ -241,7 +245,9 @@ export class CompararComponent implements OnInit {
       UL,
       ECDP,
       sectionsList,
-      materiales
+      materiales,
+      PT,
+      conversions
     ]) => {
       this.materialList = materialData;
       this.materialSchemeDataList = materialSchemeData;
@@ -262,6 +268,8 @@ export class CompararComponent implements OnInit {
       this.ECDPList = ECDP;
       this.sectionList = sectionsList;
       this.materiales = materiales;
+      this.PTList = PT;
+      this.conversionList = conversions;
       this.botones_elementos_constructivos = sectionsList;
       this.llenarIdsBotones(sectionsList);
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
@@ -473,7 +481,9 @@ export class CompararComponent implements OnInit {
       'TEDList':this.TEDList,
       'ULList':this.ULList,
       'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList
+      'sectionList':this.sectionList,
+      'PTList':this.PTList,
+      'conversionList':this.conversionList
     };
     let aux = this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
     return aux;
@@ -503,7 +513,9 @@ export class CompararComponent implements OnInit {
       'TEDList':this.TEDList,
       'ULList':this.ULList,
       'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList
+      'sectionList':this.sectionList,
+      'PTList':this.PTList,
+      'conversionList':this.conversionList
     };
 
     //Datos[impacto][fase]
@@ -553,7 +565,9 @@ export class CompararComponent implements OnInit {
       'TEDList':this.TEDList,
       'ULList':this.ULList,
       'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList
+      'sectionList':this.sectionList,
+      'PTList':this.PTList,
+      'conversionList':this.conversionList
     };
 
     //Datos[Fase][impacto]
@@ -605,7 +619,9 @@ export class CompararComponent implements OnInit {
       'TEDList':this.TEDList,
       'ULList':this.ULList,
       'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList
+      'sectionList':this.sectionList,
+      'PTList':this.PTList,
+      'conversionList':this.conversionList
     };
     //Datos[impacto][fase][subetapa]
     let auxDatos = this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
@@ -655,11 +671,12 @@ export class CompararComponent implements OnInit {
       'TEDList':this.TEDList,
       'ULList':this.ULList,
       'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList
+      'sectionList':this.sectionList,
+      'PTList':this.PTList,
+      'conversionList':this.conversionList
     };
 
     let auxDatos = this.calculosSegunaSeccion.operacionesPorMaterialesElementosConstructivos(idProyecto,DatosCalculos);
-    console.log(auxDatos)
     analisisProyectos['Datos']= auxDatos;
     return analisisProyectos;
   }
@@ -848,7 +865,9 @@ export class CompararComponent implements OnInit {
       'TEDList':this.TEDList,
       'ULList':this.ULList,
       'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList
+      'sectionList':this.sectionList,
+      'PTList':this.PTList,
+      'conversionList':this.conversionList
     };
 
     let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivo(idProyecto,DatosCalculos);
@@ -1358,7 +1377,6 @@ export class CompararComponent implements OnInit {
         let auxhelp = [];
         let suma = 0;
         let auxdatos = [];
-        console.log(element.Datos)
         Object.keys(element.Datos).forEach((impacto) => {
           let auxNombre = this.calculosSegunaSeccion.ajustarNombre(this.impactoSeleccionadoElementoConstructivo)
           if(impacto === auxNombre){
@@ -1366,7 +1384,6 @@ export class CompararComponent implements OnInit {
               if(elementoC==this.elementoContructivoSelecionado){
                 //Ordear de mayor a menor
                 Object.keys(element.Datos[impacto][elementoC]).forEach((material,index) => {
-                  console.log("suma: ",suma ,"num a sumar: ", element.Datos[impacto][elementoC][material])
                   suma += element.Datos[impacto][elementoC][material];
                   auxhelp = [...auxhelp,element.Datos[impacto][elementoC][material]]
                 })

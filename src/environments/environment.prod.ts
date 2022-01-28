@@ -34,6 +34,8 @@ const localDistances = '/local-distances/';
 const externalDistance = '/external-distance/';
 const sections = '/sections/';
 const units = '/units/';
+const potentialTranposrt = '/potential-transport/';
+const conversion = '/conversions/';
 
 export const environment = {
   production: true,
@@ -69,6 +71,8 @@ export const environment = {
   api_exterternal_distances: `${apiEvamed}${externalDistance}`,
   api_sections: `${apiEvamed}${sections}`,
   api_units: `${apiEvamed}${units}`,
+  api_potential_transport: `${apiEvamed}${potentialTranposrt}`,
+  api_conversions: `${apiEvamed}${conversion}`,
   firebaseConfig: {
     apiKey: 'AIzaSyAiYvITU78Lq3ixhRlf84BVKDyzgBQmqsw',
     authDomain: 'evamed-b4a5e.firebaseapp.com',

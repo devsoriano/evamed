@@ -169,4 +169,22 @@ export class AnalisisService {
     );
   }
 
+  getPotentialTransport(){
+    return this.http.get<any>(
+      environment.api_potential_transport,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+  getConversion(){
+    return this.http.get<any>(
+      environment.api_conversions,
+    ).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }
