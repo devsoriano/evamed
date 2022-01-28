@@ -55,4 +55,8 @@ export class UpdatePotentialTransportComponent implements OnInit {
       potential_type_id: [null, Validators.required],
     });
   }
+
+  saveMaterial() {}
+
+  goToMaterialList() {}
 }
