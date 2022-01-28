@@ -106,6 +106,14 @@ const routes: Routes = [
             (m) => m.UsageStageUpdateModule
           ),
       },
+      {
+        path: 'admin-materials',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./materials-admin/materials-admin.module').then(
+            (m) => m.MaterialsAdminModule
+          ),
+      },
     ],
   },
   {

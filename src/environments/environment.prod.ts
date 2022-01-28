@@ -20,7 +20,8 @@ const annualConsumptionRequired = '/annual-consumption-required/';
 const typeEnergy = '/type-energy/';
 const electricityConsumptionData = '/electricity-consumption-data/';
 const treatmentOfGenerateWasted = '/treatment-of-generate-wasted/';
-const electricityConsumptionDeconstructiveProcess = '/electricity-consumption-deconstructive-process/';
+const electricityConsumptionDeconstructiveProcess =
+  '/electricity-consumption-deconstructive-process/';
 const materialSchemeData = '/material-scheme-data/';
 const potentialTypes = '/potential-types/';
 const standards = '/standards/';
@@ -32,6 +33,7 @@ const cities = '/cities/';
 const localDistances = '/local-distances/';
 const externalDistance = '/external-distance/';
 const sections = '/sections/';
+const units = '/units/';
 
 export const environment = {
   production: true,
@@ -66,13 +68,14 @@ export const environment = {
   api_local_distances: `${apiEvamed}${localDistances}`,
   api_exterternal_distances: `${apiEvamed}${externalDistance}`,
   api_sections: `${apiEvamed}${sections}`,
+  api_units: `${apiEvamed}${units}`,
   firebaseConfig: {
-    apiKey: "AIzaSyAiYvITU78Lq3ixhRlf84BVKDyzgBQmqsw",
-  authDomain: "evamed-b4a5e.firebaseapp.com",
-  projectId: "evamed-b4a5e",
-  storageBucket: "evamed-b4a5e.appspot.com",
-  messagingSenderId: "1002649233755",
-  appId: "1:1002649233755:web:18da85b6d4d502d8b5127e",
-  measurementId: "G-PM8R9P6HXQ"
-  }
+    apiKey: 'AIzaSyAiYvITU78Lq3ixhRlf84BVKDyzgBQmqsw',
+    authDomain: 'evamed-b4a5e.firebaseapp.com',
+    projectId: 'evamed-b4a5e',
+    storageBucket: 'evamed-b4a5e.appspot.com',
+    messagingSenderId: '1002649233755',
+    appId: '1:1002649233755:web:18da85b6d4d502d8b5127e',
+    measurementId: 'G-PM8R9P6HXQ',
+  },
 };

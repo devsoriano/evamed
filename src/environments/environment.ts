@@ -20,7 +20,8 @@ const annualConsumptionRequired = '/annual-consumption-required/';
 const typeEnergy = '/type-energy/';
 const electricityConsumptionData = '/electricity-consumption-data/';
 const treatmentOfGenerateWasted = '/treatment-of-generate-wasted/';
-const electricityConsumptionDeconstructiveProcess = '/electricity-consumption-deconstructive-process/';
+const electricityConsumptionDeconstructiveProcess =
+  '/electricity-consumption-deconstructive-process/';
 const materialSchemeData = '/material-scheme-data/';
 const potentialTypes = '/potential-types/';
 const standards = '/standards/';
@@ -32,6 +33,7 @@ const cities = '/cities/';
 const localDistances = '/local-distances/';
 const externalDistance = '/external-distance/';
 const sections = '/sections/';
+const units = '/units/';
 
 export const environment = {
   production: false,
@@ -66,6 +68,7 @@ export const environment = {
   api_local_distances: `${apiEvamed}${localDistances}`,
   api_exterternal_distances: `${apiEvamed}${externalDistance}`,
   api_sections: `${apiEvamed}${sections}`,
+  api_units: `${apiEvamed}${units}`,
   firebaseConfig: {
     apiKey: 'AIzaSyDEygXrnkO5kjueKT_cVtEJKgQlcQx3bdc',
     authDomain: 'platzi-store-1a207.firebaseapp.com',
@@ -73,6 +76,6 @@ export const environment = {
     projectId: 'platzi-store-1a207',
     storageBucket: 'platzi-store-1a207.appspot.com',
     messagingSenderId: '255188436131',
-    appId: '1:255188436131:web:8c3728876042c077f9ab16'
-  }
+    appId: '1:255188436131:web:8c3728876042c077f9ab16',
+  },
 };

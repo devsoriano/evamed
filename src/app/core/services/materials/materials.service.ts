@@ -27,6 +27,30 @@ export class MaterialsService {
       );
   }
 
+  addMaterial(data: object) {
+    return this.http.post<any>(environment.api_materials, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  deleteMaterial(id: number) {
+    return this.http.delete(`${environment.api_materials}${id}/`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updateMaterial(id: string, changes) {
+    return this.http.put(`${environment.api_materials}${id}/`, changes).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   getfake() {
     return this.http
       .get<any>(
@@ -63,5 +87,13 @@ export class MaterialsService {
           return data;
         })
       );
+  }
+
+  getUnits() {
+    return this.http.get<any>(environment.api_units).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
   }
 }

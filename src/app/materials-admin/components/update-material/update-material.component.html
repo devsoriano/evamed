@@ -1,0 +1,73 @@
+<form [formGroup]="form" (ngSubmit)="saveMaterial($event)">
+  <mat-card  class="custom-card">
+    <mat-card-header>
+      <mat-card-title>Actualizar datos del material</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field  appearance="outline" >
+            <input matInput placeholder="Nombre" formControlName="name_material">
+            <mat-error *ngIf="form.controls['name_material'].hasError('required')">
+              El nombre es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Base de datos" formControlName="database_from">
+              <mat-option *ngFor="let data of dataBase" [value]="data.id">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['database_from'].hasError('required')">
+              Base de datos es <strong>requiredo</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field  appearance="outline" >
+            <textarea matInput placeholder="Descripción" formControlName="description"></textarea>
+            <mat-error *ngIf="form.controls['description'].hasError('required')">
+              Descripción es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Unidad" formControlName="unit_id">
+              <mat-option *ngFor="let data of units" [value]="data.id">
+                {{ data.name_unit }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['unit_id'].hasError('required')">
+              Unidad es un campo <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content> 
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Editar Material</button>
+      <button
+        mat-button
+        class="yellow-button"
+        (click)="goToMaterialList()"
+      >
+        Lista de materiales
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
