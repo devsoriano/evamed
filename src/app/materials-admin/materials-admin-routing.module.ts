@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MaterialsAdminComponent } from './components/materials-admin/materials-admin.component';
 import { AddMaterialComponent } from './components/add-material/add-material.component';
 import { UpdateMaterialComponent } from './components/update-material/update-material.component';
+import { UpdateSchemeComponent } from './components/update-scheme/update-scheme.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'update/:id',
     component: UpdateMaterialComponent,
+  },
+  {
+    path: 'scheme-update/:id',
+    component: UpdateSchemeComponent,
   },
 ];
 

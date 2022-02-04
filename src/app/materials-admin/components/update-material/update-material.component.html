@@ -69,5 +69,51 @@
         Lista de materiales
       </button>
     </mat-card-actions>
+    <mat-card-content>
+
+      <table mat-table [dataSource]="ListSchemeData" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> Id. </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="potential_type_id">
+          <th mat-header-cell *matHeaderCellDef> Potencial </th>
+          <td mat-cell *matCellDef="let element"> {{getPotential(element.potential_type_id)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="standard_id">
+          <th mat-header-cell *matHeaderCellDef> Estandar </th>
+          <td mat-cell *matCellDef="let element"> {{getStandard(element.standard_id)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="unit_id">
+          <th mat-header-cell *matHeaderCellDef> Unidad </th>
+          <td mat-cell *matCellDef="let element"> {{getUnit(element.unit_id)}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef> Valor </th>
+          <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let element"> 
+            <a 
+              mat-raised-button 
+              [routerLink]="['../../scheme-update', element.id]"
+            >Editar
+          </a>
+            <button mat-raised-button color="warn" (click)="deleteSchema(element.id)">Eliminar</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </mat-card-content>
   </mat-card>
 </form>

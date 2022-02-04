@@ -56,7 +56,7 @@ export class UpdatePotentialTransportComponent implements OnInit {
     });
   }
 
-  saveMaterial() {}
+  saveMaterial(e) {}
 
   goToMaterialList() {}
 }

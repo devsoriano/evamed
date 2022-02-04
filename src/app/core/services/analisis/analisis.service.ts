@@ -123,6 +123,16 @@ export class AnalisisService {
     );
   }
 
+  updateMaterialSchemeData(id: string, changes) {
+    return this.http
+      .put(`${environment.api_material_scheme_data}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
   getSectionsList() {
     return this.http.get<any>(environment.api_sections).pipe(
       tap((data) => {
