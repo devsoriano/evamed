@@ -62,6 +62,13 @@
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit">Editar Material</button>
       <button
+      mat-raised-button
+        color="primary"
+        (click)="goToAddScheme()"
+      >
+        Agregar Esquema
+      </button>
+      <button
         mat-button
         class="yellow-button"
         (click)="goToMaterialList()"

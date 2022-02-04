@@ -109,6 +109,10 @@ export class UpdateMaterialComponent implements OnInit {
     this.router.navigateByUrl('admin-materials');
   }
 
+  goToAddScheme() {
+    this.router.navigateByUrl(`/admin-materials/scheme-add/${this.id}`);
+  }
+
   deleteSchema(id: number) {
     console.log('Delete...');
     console.log(id);

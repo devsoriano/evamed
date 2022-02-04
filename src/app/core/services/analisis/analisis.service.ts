@@ -133,6 +133,14 @@ export class AnalisisService {
       );
   }
 
+  addMaterialSchemeData(data: object) {
+    return this.http.post<any>(environment.api_material_scheme_data, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   getSectionsList() {
     return this.http.get<any>(environment.api_sections).pipe(
       tap((data) => {

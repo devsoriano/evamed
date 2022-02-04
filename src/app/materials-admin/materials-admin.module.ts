@@ -9,9 +9,10 @@ import { MaterialModule } from '../material/material.module';
 import { AddMaterialComponent } from './components/add-material/add-material.component';
 import { UpdateMaterialComponent } from './components/update-material/update-material.component';
 import { UpdateSchemeComponent } from './components/update-scheme/update-scheme.component';
+import { AddSchemeComponent } from './components/add-scheme/add-scheme.component';
 
 @NgModule({
-  declarations: [MaterialsAdminComponent, AddMaterialComponent, UpdateMaterialComponent, UpdateSchemeComponent],
+  declarations: [MaterialsAdminComponent, AddMaterialComponent, UpdateMaterialComponent, UpdateSchemeComponent, AddSchemeComponent],
   imports: [
     CommonModule,
     MaterialsAdminRoutingModule,

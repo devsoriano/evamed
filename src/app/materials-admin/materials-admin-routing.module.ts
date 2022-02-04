@@ -4,6 +4,7 @@ import { MaterialsAdminComponent } from './components/materials-admin/materials-
 import { AddMaterialComponent } from './components/add-material/add-material.component';
 import { UpdateMaterialComponent } from './components/update-material/update-material.component';
 import { UpdateSchemeComponent } from './components/update-scheme/update-scheme.component';
+import { AddSchemeComponent } from './components/add-scheme/add-scheme.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'scheme-update/:id',
     component: UpdateSchemeComponent,
+  },
+  {
+    path: 'scheme-add/:id',
+    component: AddSchemeComponent,
   },
 ];
 
