@@ -84,30 +84,33 @@
               <p>Selecciona una fase del ciclo de vida</p>
               <ul>
                 <li>
+                  <button id="Producción" class="boton-principal" mat-stroked-button (click)="grafica('Producción')">
+                    Producción</button>
                   <button id="ProducciónOjo" (click)="ajusteDeGraficaFASE('Producción')" class="boton-icono">
                     <mat-icon class="uno">{{iconos['Producción']}}</mat-icon>
                   </button>
-                  <button id="Producción" class="boton-principal" mat-stroked-button (click)="grafica('Producción')">
-                  Producción</button>
                 </li>
                 <li>
-                  <button id="ConstruccionOjo" (click)="ajusteDeGraficaFASE('Construccion')" class="boton-icono">
-                    <mat-icon class="dos">{{iconos['Construccion']}}</mat-icon>
-                  </button>
                   <button id="Construccion"class="boton-principal" mat-stroked-button (click)="grafica('Construccion')">
-                  Construcción</button> </li>
+                    Construcción</button> 
+                    <button id="ConstruccionOjo" (click)="ajusteDeGraficaFASE('Construccion')" class="boton-icono">
+                      <mat-icon class="dos">{{iconos['Construccion']}}</mat-icon>
+                    </button>
+                </li>
                 <li>
+                  <button id="Uso" class="boton-principal" mat-stroked-button (click)="grafica('Uso')">
+                    Uso</button> 
                   <button id="UsoOjo" (click)="ajusteDeGraficaFASE('Uso')" class="boton-icono">
                     <mat-icon class="tres">{{iconos['Uso']}}</mat-icon>
                   </button>
-                  <button id="Uso" class="boton-principal" mat-stroked-button (click)="grafica('Uso')">
-                  Uso</button> </li>
+                </li>
                 <li>
+                  <button id="FinDeVida" class="boton-principal" mat-stroked-button (click)="grafica('FinDeVida')">
+                    Fin de vida</button>
                   <button id="FinDeVidaOjo" (click)="ajusteDeGraficaFASE('FinDeVida')" class="boton-icono">
                     <mat-icon class="cuatro">{{iconos['FinDeVida']}}</mat-icon>
                   </button>
-                  <button id="FinDeVida" class="boton-principal" mat-stroked-button (click)="grafica('FinDeVida')">
-                  Fin de vida</button> </li>
+                </li>
               </ul>
             </div>
             <div>
@@ -146,11 +149,11 @@
             </p>
             <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
               <div id="{{idsIconosElementos[item.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
-                <button id="{{idsIconosElementos[item.id]['idOJO']}}" class="button-icono color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="AjusteGraficaElementosContructivos(item.id)">
-                  <mat-icon>{{iconosElementosConstrucivos[item.id]['icono']}}</mat-icon>
-                </button>
                 <button class="button-elemento-seleccionado color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="graficabar(item.id)"> 
                   {{item.name_section}}</button>
+                  <button id="{{idsIconosElementos[item.id]['idOJO']}}" class="button-icono color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="AjusteGraficaElementosContructivos(item.id)">
+                    <mat-icon>{{iconosElementosConstrucivos[item.id]['icono']}}</mat-icon>
+                  </button>
               </div>
             </div>
           </div>

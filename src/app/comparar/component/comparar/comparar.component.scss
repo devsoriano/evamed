@@ -184,6 +184,7 @@ ng-template {
 
   li {
     margin-bottom: 5px;
+    display: flex;
   }
 
   .boton-principal {
@@ -198,18 +199,22 @@ ng-template {
   }
 
   .boton-icono {
-    border-radius: 50%;
-    padding: 0px;
-    border: none;
+    background: #efefef;
+    border-radius: 0px 10px 10px 0px;
+    border: 0px;
+    padding: 1px;
   }
 
   mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
-    border-radius: 50%;
-    font-size: 12px;
     color: #ffffff;
-    display: flex;
+    font-size: 14px;
+    border-radius: 0px 10px 10px 0px;
+    height: 39px;
+    margin-left: 0px;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
+    margin-top: 0.1px;
   }
 }
 
@@ -375,9 +380,10 @@ p.text-duplicados {
   }
 
   .botones-elementos-contructivos {
-    display: inline-block;
+    display:inline-flex;
+    justify-content: space-between;
     .espacio-sin-selecciomar{
-      padding-top: 4px;
+      //padding-top: 4px;
       width: 144px;
       height: 34px;
       background: #EFEFEF;
@@ -393,7 +399,7 @@ p.text-duplicados {
     }
 
     .espacio-seleccionado{
-      padding-top: 4px;
+      //padding-top: 4px;
       width: 144px;
       height: 34px;
       background: #FFFFFF;
@@ -401,7 +407,7 @@ p.text-duplicados {
       font-size: 15px;
       display: flex;
       align-items: center;
-      margin: 5px;
+      //margin: 5px;
       border: 1px solid #EDC903;
       box-shadow: 0px 3px 6px #00000029;
       .color-texto{
@@ -410,14 +416,14 @@ p.text-duplicados {
     }
 
     .button-elemento-seleccionado {
-      padding-top: 4px;
+      //padding-top: 4px;
       width: 130px;
       height: 34px;
       //color: #767676;
       background: none;
       text-align: left;
       font-size: 13px;
-      margin: 5px;
+      //margin: 5px;
       border: 0;
     }
     .button-icono{

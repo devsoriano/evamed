@@ -134,7 +134,7 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
 
   > div {
     &:nth-child(1) {
-      width: 239px;
+      width: 245px;
       .boton-carbono{
         background-color: transparent;
         border: none;
@@ -154,6 +154,7 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
       }
       .botones-finales{
         display: flex;
+        justify-content: space-between;
       }
     }
     &:nth-child(2) {
@@ -196,15 +197,6 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
       }
       &:nth-child(3) {
         padding-top: 1px;
-        /*span{
-          height: 27px;
-          width: 70px;
-          display: inline-flex;
-          color: white;
-          margin: 6px;
-          align-items: center;
-          padding-left: 11px;
-        }*/
         .flecha{
           height: 27px;
           width: 70px;
