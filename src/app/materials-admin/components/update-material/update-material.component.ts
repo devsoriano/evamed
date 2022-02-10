@@ -74,10 +74,14 @@ export class UpdateMaterialComponent implements OnInit {
           this.form.patchValue(material);
           this.ListSchemeData = [];
           this.analisisService.getMaterialSchemeData().subscribe((msds) => {
-            this.ListSchemeData = msds.filter(
+            const ListSchemeData = msds.filter(
               (msd) => msd.material_id === material.id
             );
-            console.log('Lista!!!!!!');
+
+            this.ListSchemeData = ListSchemeData.sort((a, b) => {
+              a.standard > b.standard ? 1 : -1;
+            });
+
             console.log(this.ListSchemeData);
           });
         });
@@ -151,8 +155,6 @@ export class UpdateMaterialComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('result!!!!!!');
-      console.log(result);
       this.ngOnInit();
     });
   }
