@@ -43,7 +43,11 @@ export class AddSchemeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.id = params.id;
+    });
+  }
 
   addScheme(event: Event) {
     event.preventDefault();
@@ -71,5 +75,9 @@ export class AddSchemeComponent implements OnInit {
       standard_id: [null, Validators.required],
       value: [null, Validators.required],
     });
+  }
+
+  goToMaterialList() {
+    this.router.navigateByUrl(`admin-materials/update/${this.id}`);
   }
 }
