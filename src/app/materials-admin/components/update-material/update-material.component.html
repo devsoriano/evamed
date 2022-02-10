@@ -110,7 +110,7 @@
           <td mat-cell *matCellDef="let element"> 
             <a 
               mat-raised-button 
-              [routerLink]="['../../scheme-update', element.id]"
+              (click)="openModalSchema(element)"
             >Editar
           </a>
             <button mat-raised-button color="warn" (click)="deleteSchema(element.id)">Eliminar</button>

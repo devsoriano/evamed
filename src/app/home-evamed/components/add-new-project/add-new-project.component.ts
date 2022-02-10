@@ -27,35 +27,31 @@ export interface DialogData {
 @Component({
   selector: 'app-add-new-project',
   templateUrl: './add-new-project.component.html',
-  styleUrls: ['./add-new-project.component.scss']
+  styleUrls: ['./add-new-project.component.scss'],
 })
 export class AddNewProjectComponent implements OnInit {
-
   catalogoCiudades: any;
 
   constructor(
     private catalogsService: CatalogsService,
     public dialogRef: MatDialogRef<AddNewProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
-  }
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close(this.data);
   }
 
-  ngOnInit(): void { 
-  }
+  ngOnInit(): void {}
 
   select(id) {
     this.catalogoCiudades = [];
-    this.catalogsService.getCities().subscribe( data => {
-      data.map( item => {
-        if ( item.state_id === id) {
+    this.catalogsService.getCities().subscribe((data) => {
+      data.map((item) => {
+        if (item.state_id === id) {
           this.catalogoCiudades.push(item);
         }
       });
     });
   }
-
 }

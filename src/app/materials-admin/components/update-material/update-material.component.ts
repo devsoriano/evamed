@@ -3,6 +3,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { AnalisisService } from './../../../core/services/analisis/analisis.service';
+import { UpdateDataSchemeComponent } from '../update-data-scheme/update-data-scheme.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-update-material',
@@ -44,7 +46,8 @@ export class UpdateMaterialComponent implements OnInit {
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private materialsService: MaterialsService,
-    private analisisService: AnalisisService
+    private analisisService: AnalisisService,
+    public dialog: MatDialog
   ) {
     this.buildForm();
     this.materialsService.getUnits().subscribe((data) => {
@@ -138,5 +141,19 @@ export class UpdateMaterialComponent implements OnInit {
     const unit = this.units.filter((unit) => unit.id === id);
 
     return unit[0].name_unit;
+  }
+
+  openModalSchema(elem) {
+    console.log(elem);
+    const dialogRef = this.dialog.open(UpdateDataSchemeComponent, {
+      width: '680px',
+      data: { ...elem },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('result!!!!!!');
+      console.log(result);
+      this.ngOnInit();
+    });
   }
 }

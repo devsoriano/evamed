@@ -17,8 +17,6 @@ import { Label, BaseChartDirective } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { MaterialsService } from '../../../core/services/materials/materials.service';
 import { AnalisisService } from '../../../core/services/analisis/analisis.service';
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
-
 
 @Component({
   selector: 'app-home-evamed',
@@ -57,7 +55,10 @@ export class HomeEvamedComponent implements OnInit {
   sections: any;
   dataMaterial: any;
   catologoImpactoAmbiental: any;
-  catologoOpcionesCarbono = ['Promedio del sector vivienda','Vivienda sustentable']
+  catologoOpcionesCarbono = [
+    'Promedio del sector vivienda',
+    'Vivienda sustentable',
+  ];
   auxDataProjectList: any;
   ConstructiveSystemElements: any;
   sourceInformation: any;
@@ -130,10 +131,7 @@ export class HomeEvamedComponent implements OnInit {
   };
   public barChartHorizontalOptions: ChartOptions = {
     responsive: true,
-    title: { display: false,
-      text: 'KgCO2 / m2a por año',
-      position: 'bottom',
-    },
+    title: { display: false, text: 'KgCO2 / m2a por año', position: 'bottom' },
     legend: { display: false },
     tooltips: { enabled: false, mode: 'label' },
     scales: {
@@ -154,7 +152,7 @@ export class HomeEvamedComponent implements OnInit {
     plugins: {
       indexAxis: 'y',
       datalabels: {
-        display : false
+        display: false,
       },
     },
   };
@@ -319,7 +317,7 @@ export class HomeEvamedComponent implements OnInit {
       ECDPList: await this.analisis.getECDP().toPromise(),
       sectionList: await this.analisis.getSectionsList().toPromise(),
       PTList: await this.analisis.getPotentialTransport().toPromise(),
-      conversionList : await this.analisis.getConversion().toPromise()
+      conversionList: await this.analisis.getConversion().toPromise(),
     };
     this.auxDataProjectList = [];
     this.projectsList.forEach((element) => {
@@ -385,13 +383,22 @@ export class HomeEvamedComponent implements OnInit {
           []
         ),
         mostrarOpcionCarbono: false,
-        iconoCarbono:"switch_left",
-        graficasCarbonoOResultados:{'resultados':true,'carbono':false},
-        opcionCarbonoSeleccionada:this.catologoOpcionesCarbono[0],
-        dataGraficaCarbono : this.calculos.llenarGraficaCarbono(this.catologoOpcionesCarbono[0]),
-        valorCarbono : this.calculos.determinaValorCarbono(calculosOperacionesDeFase).toExponential(2),
-        flagsCarbono: this.calculos.buscarValosCarbono(calculosOperacionesDeFase,this.catologoOpcionesCarbono[0]),
-        descripcionCarbono : this.calculos.determinarDescripcionCarbono(this.catologoOpcionesCarbono[0])
+        iconoCarbono: 'switch_left',
+        graficasCarbonoOResultados: { resultados: true, carbono: false },
+        opcionCarbonoSeleccionada: this.catologoOpcionesCarbono[0],
+        dataGraficaCarbono: this.calculos.llenarGraficaCarbono(
+          this.catologoOpcionesCarbono[0]
+        ),
+        valorCarbono: this.calculos
+          .determinaValorCarbono(calculosOperacionesDeFase)
+          .toExponential(2),
+        flagsCarbono: this.calculos.buscarValosCarbono(
+          calculosOperacionesDeFase,
+          this.catologoOpcionesCarbono[0]
+        ),
+        descripcionCarbono: this.calculos.determinarDescripcionCarbono(
+          this.catologoOpcionesCarbono[0]
+        ),
       };
       this.auxDataProjectList.push(auxDatos);
     });
@@ -782,10 +789,10 @@ export class HomeEvamedComponent implements OnInit {
   selectImpactoAmbiental(impacto, indexRecivido) {
     this.auxDataProjectList[indexRecivido].impactoSelect =
       this.calculos.ajustarNombre(impacto);
-    if(impacto === "Calentamiento Global"){
+    if (impacto === 'Calentamiento Global') {
       this.auxDataProjectList[indexRecivido].mostrarOpcionCarbono = true;
-      this.auxDataProjectList[indexRecivido].iconoCarbono = "switch_left";
-    }else{
+      this.auxDataProjectList[indexRecivido].iconoCarbono = 'switch_left';
+    } else {
       this.auxDataProjectList[indexRecivido].mostrarOpcionCarbono = false;
     }
     this.auxDataProjectList[indexRecivido].impactoCompleteSelect = impacto;
@@ -808,22 +815,40 @@ export class HomeEvamedComponent implements OnInit {
     );
   }
 
-  selectOpcionCarbono(opcion,indexRecivido){
-    this.auxDataProjectList[indexRecivido].dataGraficaCarbono = this.calculos.llenarGraficaCarbono(opcion)
-    this.auxDataProjectList[indexRecivido].flagsCarbono = this.calculos.buscarValosCarbono(this.auxDataProjectList[indexRecivido].datos,opcion)
-    this.auxDataProjectList[indexRecivido].descripcionCarbono = this.calculos.determinarDescripcionCarbono(opcion)
+  selectOpcionCarbono(opcion, indexRecivido) {
+    this.auxDataProjectList[indexRecivido].dataGraficaCarbono =
+      this.calculos.llenarGraficaCarbono(opcion);
+    this.auxDataProjectList[indexRecivido].flagsCarbono =
+      this.calculos.buscarValosCarbono(
+        this.auxDataProjectList[indexRecivido].datos,
+        opcion
+      );
+    this.auxDataProjectList[indexRecivido].descripcionCarbono =
+      this.calculos.determinarDescripcionCarbono(opcion);
   }
 
-  mostrarHuellaCarbono(id,indexRecivido){
+  mostrarHuellaCarbono(id, indexRecivido) {
     //Camiar graficas a Huella de Carbono o Resultados por ciclo de vida
-    if(this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['carbono']){
-      this.auxDataProjectList[indexRecivido].iconoCarbono = "switch_left";
-      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['carbono'] = false;
-      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['resultados'] = true; 
-    }else{
-      this.auxDataProjectList[indexRecivido].iconoCarbono = "switch_right";
-      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['carbono'] = true; 
-      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados']['resultados'] = false; 
+    if (
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados'][
+        'carbono'
+      ]
+    ) {
+      this.auxDataProjectList[indexRecivido].iconoCarbono = 'switch_left';
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados'][
+        'carbono'
+      ] = false;
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados'][
+        'resultados'
+      ] = true;
+    } else {
+      this.auxDataProjectList[indexRecivido].iconoCarbono = 'switch_right';
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados'][
+        'carbono'
+      ] = true;
+      this.auxDataProjectList[indexRecivido]['graficasCarbonoOResultados'][
+        'resultados'
+      ] = false;
     }
   }
 

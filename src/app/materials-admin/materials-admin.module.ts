@@ -10,9 +10,18 @@ import { AddMaterialComponent } from './components/add-material/add-material.com
 import { UpdateMaterialComponent } from './components/update-material/update-material.component';
 import { UpdateSchemeComponent } from './components/update-scheme/update-scheme.component';
 import { AddSchemeComponent } from './components/add-scheme/add-scheme.component';
+import { ChartsModule } from 'ng2-charts';
+import { UpdateDataSchemeComponent } from './components/update-data-scheme/update-data-scheme.component';
 
 @NgModule({
-  declarations: [MaterialsAdminComponent, AddMaterialComponent, UpdateMaterialComponent, UpdateSchemeComponent, AddSchemeComponent],
+  declarations: [
+    MaterialsAdminComponent,
+    AddMaterialComponent,
+    UpdateMaterialComponent,
+    UpdateSchemeComponent,
+    AddSchemeComponent,
+    UpdateDataSchemeComponent,
+  ],
   imports: [
     CommonModule,
     MaterialsAdminRoutingModule,
@@ -20,6 +29,16 @@ import { AddSchemeComponent } from './components/add-scheme/add-scheme.component
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    ChartsModule,
   ],
+  exports: [
+    MaterialsAdminComponent,
+    AddMaterialComponent,
+    UpdateMaterialComponent,
+    UpdateSchemeComponent,
+    AddSchemeComponent,
+    UpdateDataSchemeComponent,
+  ],
+  entryComponents: [UpdateDataSchemeComponent],
 })
 export class MaterialsAdminModule {}
