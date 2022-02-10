@@ -5,6 +5,7 @@ import { MaterialsService } from './../../../core/services/materials/materials.s
 import { AnalisisService } from './../../../core/services/analisis/analisis.service';
 import { UpdateDataSchemeComponent } from '../update-data-scheme/update-data-scheme.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddDataSchemeComponent } from '../add-data-scheme/add-data-scheme.component';
 
 @Component({
   selector: 'app-update-material',
@@ -117,7 +118,16 @@ export class UpdateMaterialComponent implements OnInit {
   }
 
   goToAddScheme() {
-    this.router.navigateByUrl(`/admin-materials/scheme-add/${this.id}`);
+    // this.router.navigateByUrl(`/admin-materials/scheme-add/${this.id}`);
+    console.log('add shema');
+    const dialogRef = this.dialog.open(AddDataSchemeComponent, {
+      width: '680px',
+      data: { material_id: this.id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit();
+    });
   }
 
   deleteSchema(id: number) {

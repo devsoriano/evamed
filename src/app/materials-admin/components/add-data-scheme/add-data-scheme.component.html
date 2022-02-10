@@ -1,0 +1,86 @@
+
+<form [formGroup]="form" (ngSubmit)="addScheme($event)">
+  <div class="header-modal">
+    <h1 mat-dialog-title class="title-standard-second-light">
+      Agregar esquema
+    </h1>
+    <a (click)="onNoClick()" class="close-modal">
+      X
+    </a>
+  </div>
+
+  <div mat-dialog-content>
+    <mat-card  class="custom-card">
+  
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field appearance="outline">
+              <mat-select placeholder="Potencial" formControlName="potential_type_id">
+                <mat-option *ngFor="let data of ListPotential" [value]="data.id">
+                  {{ data.name_complete_potential_type }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['potential_type_id'].hasError('required')">
+                Potencial es un campo <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+  
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field appearance="outline">
+              <mat-select placeholder="Estandard" formControlName="standard_id">
+                <mat-option *ngFor="let data of ListStandards" [value]="data.id">
+                  {{ data.name_standard }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['standard_id'].hasError('required')">
+                Estandard es un campo <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+  
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field appearance="outline">
+              <mat-select placeholder="Unidad" formControlName="unit_id">
+                <mat-option *ngFor="let data of units" [value]="data.id">
+                  {{ data.name_unit }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['unit_id'].hasError('required')">
+                Unidad es un campo <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+  
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field  appearance="outline" >
+              <input matInput placeholder="Valor" formControlName="value">
+              <mat-error *ngIf="form.controls['value'].hasError('required')">
+                El valor es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+  
+    </mat-card>
+  </div>
+
+  <div mat-dialog-actions class="center">
+    <button mat-raised-button color="primary" type="submit">Add esquema</button>
+  </div>
+
+</form>
