@@ -82,8 +82,6 @@ export class UpdateMaterialComponent implements OnInit {
             this.ListSchemeData = ListSchemeData.sort((a, b) => {
               a.standard > b.standard ? 1 : -1;
             });
-
-            console.log(this.ListSchemeData);
           });
         });
       });
@@ -103,11 +101,10 @@ export class UpdateMaterialComponent implements OnInit {
     event.preventDefault();
     if (this.form.valid) {
       const material = this.form.value;
-      console.log(material);
       this.materialsService
         .updateMaterial(this.id, material)
         .subscribe((newProduct) => {
-          console.log(newProduct);
+          this.ngOnInit();
           //this.router.navigate(['./']);
         });
     }
@@ -118,8 +115,6 @@ export class UpdateMaterialComponent implements OnInit {
   }
 
   goToAddScheme() {
-    // this.router.navigateByUrl(`/admin-materials/scheme-add/${this.id}`);
-    console.log('add shema');
     const dialogRef = this.dialog.open(AddDataSchemeComponent, {
       width: '680px',
       data: { material_id: this.id },
@@ -158,7 +153,6 @@ export class UpdateMaterialComponent implements OnInit {
   }
 
   openModalSchema(elem) {
-    console.log(elem);
     const dialogRef = this.dialog.open(UpdateDataSchemeComponent, {
       width: '680px',
       data: { ...elem },
