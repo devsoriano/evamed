@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AnalisisService } from '../../../core/services/analisis/analisis.service';
-import { Router } from '@angular/router';
 
 export interface DialogData {
   id: number;
@@ -36,11 +35,12 @@ export class AddDataSchemeComponent implements OnInit {
 
   potential: any;
 
+  standard_id: number;
+
   constructor(
     private materialsService: MaterialsService,
     private analisisService: AnalisisService,
     private formBuilder: FormBuilder,
-    private router: Router,
     public dialogRef: MatDialogRef<AddDataSchemeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
@@ -68,7 +68,7 @@ export class AddDataSchemeComponent implements OnInit {
     this.form = this.formBuilder.group({
       unit_id: [null, Validators.required],
       potential_type_id: [null, Validators.required],
-      standard_id: [null, Validators.required],
+      // standard_id: [null],
       value: [null, Validators.required],
     });
   }
@@ -77,9 +77,13 @@ export class AddDataSchemeComponent implements OnInit {
     event.preventDefault();
     if (this.form.valid) {
       const material = this.form.value;
-      // console.log({ ...material, material_id: this.material_id });
+
       this.analisisService
-        .addMaterialSchemeData({ ...material, material_id: this.material_id })
+        .addMaterialSchemeData({
+          ...material,
+          material_id: this.material_id,
+          standard_id: this.standard_id,
+        })
         .subscribe((newScheme) => {
           console.log(newScheme);
           this.onNoClick();

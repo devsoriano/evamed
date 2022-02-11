@@ -32,16 +32,11 @@
       <mat-card-content>
         <div class="Row">
           <div class="Col">
-            <mat-form-field appearance="outline">
-              <mat-select placeholder="Estandard" formControlName="standard_id">
-                <mat-option *ngFor="let data of ListStandards" [value]="data.id">
-                  {{ data.name_standard }}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="form.controls['standard_id'].hasError('required')">
-                Estandard es un campo <strong>requerido</strong>
-              </mat-error>
-            </mat-form-field>
+            <mat-radio-group [(ngModel)]="standard_id" [ngModelOptions]="{standalone: true}" class="margin-left" >
+              <mat-radio-button *ngFor="let data of ListStandards" name="opciones" [value]="data.id"  style="margin: 10px">
+                {{ data.name_standard }}
+              </mat-radio-button>
+            </mat-radio-group>
           </div>
         </div>
       </mat-card-content>
