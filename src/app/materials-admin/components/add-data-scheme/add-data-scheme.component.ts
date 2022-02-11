@@ -68,7 +68,6 @@ export class AddDataSchemeComponent implements OnInit {
     this.form = this.formBuilder.group({
       unit_id: [null, Validators.required],
       potential_type_id: [null, Validators.required],
-      // standard_id: [null],
       value: [null, Validators.required],
     });
   }

@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AnalisisService } from '../../../core/services/analisis/analisis.service';
-import { Router } from '@angular/router';
 
 export interface DialogData {
   id: number;
@@ -34,11 +33,12 @@ export class UpdateDataSchemeComponent implements OnInit {
 
   potential: any;
 
+  standard_id: number;
+
   constructor(
     private materialsService: MaterialsService,
     private analisisService: AnalisisService,
     private formBuilder: FormBuilder,
-    private router: Router,
     public dialogRef: MatDialogRef<UpdateDataSchemeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
@@ -64,6 +64,7 @@ export class UpdateDataSchemeComponent implements OnInit {
         (schemaSelected) => schemaSelected.id === this.data.id
       );
       this.id = schema[0].id;
+      this.standard_id = schema[0].standard_id;
       this.form.patchValue(schema[0]);
     });
   }
@@ -72,17 +73,21 @@ export class UpdateDataSchemeComponent implements OnInit {
     this.form = this.formBuilder.group({
       unit_id: [null, Validators.required],
       potential_type_id: [null, Validators.required],
-      standard_id: [null, Validators.required],
+      // standard_id: [null, Validators.required],
       value: [null, Validators.required],
     });
   }
 
   updateScheme(event) {
+    console.log(this.standard_id);
     event.preventDefault();
     if (this.form.valid) {
       const scheme = this.form.value;
       this.analisisService
-        .updateMaterialSchemeData(this.id, scheme)
+        .updateMaterialSchemeData(this.id, {
+          ...scheme,
+          standard_id: this.standard_id,
+        })
         .subscribe((newScheme) => {
           console.log(newScheme);
           this.onNoClick();
