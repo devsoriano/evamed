@@ -122,11 +122,19 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'admin-db-naterials',
+        path: 'admin-db-materials',
         canActivate: [AdminGuard],
         loadChildren: () =>
           import('./data-base-admin/data-base-admin.module').then(
             (m) => m.DataBaseAdminModule
+          ),
+      },
+      {
+        path: 'admin-potential',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./potential-admin/potential-admin.module').then(
+            (m) => m.PotentialAdminModule
           ),
       },
     ],
