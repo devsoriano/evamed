@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { AdminGuard } from './admin.guard';
-import { EndLifeUpdateModule } from './end-life-update/end-life-update.module';
 
 const routes: Routes = [
   {
@@ -112,6 +111,14 @@ const routes: Routes = [
         loadChildren: () =>
           import('./materials-admin/materials-admin.module').then(
             (m) => m.MaterialsAdminModule
+          ),
+      },
+      {
+        path: 'admin-units',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./units-admin/units-admin.module').then(
+            (m) => m.UnitsAdminModule
           ),
       },
       {

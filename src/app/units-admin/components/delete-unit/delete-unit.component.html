@@ -1,0 +1,16 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Eliminar unidad
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-content>
+  <h1>¿Desea eliminar la unidad {{data[0].name_unit}} ?</h1>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="deleteUnit($event, data[0].id)">Eliminar</button>
+</div>

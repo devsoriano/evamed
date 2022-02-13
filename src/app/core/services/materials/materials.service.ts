@@ -97,6 +97,30 @@ export class MaterialsService {
     );
   }
 
+  addUnit(data: object) {
+    return this.http.post<any>(environment.api_units, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updateUnit(id: string, changes) {
+    return this.http.put(`${environment.api_units}${id}/`, changes).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  deleteUnit(id: number) {
+    return this.http.delete(`${environment.api_units}${id}/`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   getPotentialTypes() {
     return this.http.get<any>(environment.api_potetnial_types).pipe(
       tap((data) => {
