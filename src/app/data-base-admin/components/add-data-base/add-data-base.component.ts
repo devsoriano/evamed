@@ -4,21 +4,21 @@ import { MaterialsService } from './../../../core/services/materials/materials.s
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 export interface DialogData {
-  name_unit: string;
+  name: string;
 }
 
 @Component({
-  selector: 'app-add-unit',
-  templateUrl: './add-unit.component.html',
-  styleUrls: ['./add-unit.component.scss'],
+  selector: 'app-add-data-base',
+  templateUrl: './add-data-base.component.html',
+  styleUrls: ['./add-data-base.component.scss'],
 })
-export class AddUnitComponent implements OnInit {
+export class AddDataBaseComponent implements OnInit {
   form: FormGroup;
 
   constructor(
     private materialsService: MaterialsService,
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<AddUnitComponent>,
+    public dialogRef: MatDialogRef<AddDataBaseComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
     this.buildForm();
@@ -32,15 +32,15 @@ export class AddUnitComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      name_unit: [null, Validators.required],
+      name: [null, Validators.required],
     });
   }
 
-  addUnit(event: Event) {
+  addDbMaterial(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
-      const unit = this.form.value;
-      this.materialsService.addUnit(unit).subscribe((data) => {
+      const dataBase = this.form.value;
+      this.materialsService.addDbMaterial(dataBase).subscribe((data) => {
         this.onNoClick();
       });
     }

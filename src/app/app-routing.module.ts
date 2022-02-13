@@ -122,12 +122,12 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'admin-potential-transport',
+        path: 'admin-db-naterials',
         canActivate: [AdminGuard],
         loadChildren: () =>
-          import(
-            './potential-transport-admin/potential-transport-admin.module'
-          ).then((m) => m.PotentialTransportAdminModule),
+          import('./data-base-admin/data-base-admin.module').then(
+            (m) => m.DataBaseAdminModule
+          ),
       },
     ],
   },

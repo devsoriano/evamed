@@ -36,6 +36,7 @@ const sections = '/sections/';
 const units = '/units/';
 const potentialTranposrt = '/potential-transport/';
 const conversion = '/conversions/';
+const dbMaterial = '/database-material/';
 
 export const environment = {
   production: true,
@@ -73,6 +74,7 @@ export const environment = {
   api_units: `${apiEvamed}${units}`,
   api_potential_transport: `${apiEvamed}${potentialTranposrt}`,
   api_conversions: `${apiEvamed}${conversion}`,
+  api_db_material: `${apiEvamed}${dbMaterial}`,
   firebaseConfig: {
     apiKey: 'AIzaSyAiYvITU78Lq3ixhRlf84BVKDyzgBQmqsw',
     authDomain: 'evamed-b4a5e.firebaseapp.com',

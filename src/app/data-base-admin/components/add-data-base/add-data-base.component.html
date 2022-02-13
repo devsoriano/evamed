@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="addDbMaterial($event)">
+  <div class="header-modal">
+    <h1 mat-dialog-title class="title-standard-second-light">
+      Agregar base de datos
+    </h1>
+    <a (click)="onNoClick()" class="close-modal">
+      X
+    </a>
+  </div>
+
+  <div mat-dialog-content>
+    <mat-card  class="custom-card">
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field  appearance="outline" >
+              <input matInput placeholder="Nombre de base de datos" formControlName="name">
+              <mat-error *ngIf="form.controls['name'].hasError('required')">
+                Nombre de la base de datos es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div mat-dialog-actions class="center">
+    <button mat-raised-button color="primary" type="submit">Agregar</button>
+  </div>
+</form>

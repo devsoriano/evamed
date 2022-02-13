@@ -2,17 +2,18 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UpdateDataSchemeComponent } from 'src/app/materials-admin/components/update-data-scheme/update-data-scheme.component';
 
 export interface DialogData {
-  name_unit: string;
+  name: string;
 }
 
 @Component({
-  selector: 'app-update-unit',
-  templateUrl: './update-unit.component.html',
-  styleUrls: ['./update-unit.component.scss'],
+  selector: 'app-update-data-base',
+  templateUrl: './update-data-base.component.html',
+  styleUrls: ['./update-data-base.component.scss'],
 })
-export class UpdateUnitComponent implements OnInit {
+export class UpdateDataBaseComponent implements OnInit {
   form: FormGroup;
 
   id: string;
@@ -20,7 +21,7 @@ export class UpdateUnitComponent implements OnInit {
   constructor(
     private materialsService: MaterialsService,
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<UpdateUnitComponent>,
+    public dialogRef: MatDialogRef<UpdateDataSchemeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
     this.buildForm();
@@ -37,17 +38,19 @@ export class UpdateUnitComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      name_unit: [null, Validators.required],
+      name: [null, Validators.required],
     });
   }
 
-  updateUnit(event: Event) {
+  updateDbMaterial(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
-      const unit = this.form.value;
-      this.materialsService.updateUnit(this.id, unit).subscribe((data) => {
-        this.onNoClick();
-      });
+      const dataBase = this.form.value;
+      this.materialsService
+        .updateDbMaterial(this.id, dataBase)
+        .subscribe((data) => {
+          this.onNoClick();
+        });
     }
   }
 }

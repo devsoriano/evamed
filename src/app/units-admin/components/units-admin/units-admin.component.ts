@@ -28,7 +28,6 @@ export class UnitsAdminComponent implements OnInit {
 
   addUnit(event: Event) {
     event.preventDefault();
-    console.log('add unit');
     const dialogRef = this.dialog.open(AddUnitComponent, {
       width: '680px',
       data: {},

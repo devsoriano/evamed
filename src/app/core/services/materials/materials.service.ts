@@ -136,4 +136,36 @@ export class MaterialsService {
       })
     );
   }
+
+  getDbMaterials() {
+    return this.http.get<any>(environment.api_db_material).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  addDbMaterial(data: object) {
+    return this.http.post<any>(environment.api_db_material, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updateDbMaterial(id: string, changes) {
+    return this.http.put(`${environment.api_db_material}${id}/`, changes).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  deleteDbMaterial(id: number) {
+    return this.http.delete(`${environment.api_db_material}${id}/`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }
