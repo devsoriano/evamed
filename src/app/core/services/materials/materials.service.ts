@@ -129,6 +129,32 @@ export class MaterialsService {
     );
   }
 
+  addPotentialTypes(data: object) {
+    return this.http.post<any>(environment.api_potetnial_types, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updatePotentialTypes(id: string, changes) {
+    return this.http
+      .put(`${environment.api_potetnial_types}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  deletePotentialType(id: number) {
+    return this.http.delete(`${environment.api_potetnial_types}${id}/`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   getStandards() {
     return this.http.get<any>(environment.api_standards).pipe(
       tap((data) => {
