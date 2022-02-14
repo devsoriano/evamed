@@ -1,0 +1,16 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Eliminar transporte
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-content>
+  <h1>¿Desea eliminar el transporte {{data[0].name_transport}}?</h1>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="deleteTransport($event, data[0].id)">Eliminar</button>
+</div>

@@ -137,6 +137,14 @@ const routes: Routes = [
             (m) => m.PotentialAdminModule
           ),
       },
+      {
+        path: 'admin-transports',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./transport-admin/transport-admin.module').then(
+            (m) => m.TransportAdminModule
+          ),
+      },
     ],
   },
   {

@@ -105,7 +105,7 @@ export class UpdateMaterialComponent implements OnInit {
         .updateMaterial(this.id, material)
         .subscribe((newProduct) => {
           this.ngOnInit();
-          //this.router.navigate(['./']);
+          this.router.navigate(['./admin-materials']);
         });
     }
   }
