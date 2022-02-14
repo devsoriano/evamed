@@ -226,4 +226,40 @@ export class MaterialsService {
       })
     );
   }
+
+  getPotentialTransport() {
+    return this.http.get<any>(environment.api_potential_transport).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  addPotentialTransport(data: object) {
+    return this.http.post<any>(environment.api_potential_transport, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updatePotentialTransport(id: string, changes) {
+    return this.http
+      .put(`${environment.api_potential_transport}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  deletePotentialTransport(id: number) {
+    return this.http
+      .delete(`${environment.api_potential_transport}${id}/`)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
 }

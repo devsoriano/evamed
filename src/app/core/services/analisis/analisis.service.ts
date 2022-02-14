@@ -164,6 +164,7 @@ export class AnalisisService {
       })
     );
   }
+
   getConversion() {
     return this.http.get<any>(environment.api_conversions).pipe(
       tap((data) => {

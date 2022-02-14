@@ -3,6 +3,9 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { MatDialog } from '@angular/material/dialog';
+import { AddPotentialTransportComponent } from '../potential/add-potential-transport/add-potential-transport.component';
+import { UpdatePotentialTransportComponent } from '../potential/update-potential-transport/update-potential-transport.component';
+import { DeletePotentialTransportComponent } from '../potential/delete-potential-transport/delete-potential-transport.component';
 
 @Component({
   selector: 'app-update-transport',
@@ -14,6 +17,12 @@ export class UpdateTransportComponent implements OnInit {
 
   id: string;
 
+  potentialList: any;
+
+  potentialTypeList: any;
+
+  displayedColumns: string[] = ['id', 'potential_type_id', 'value', 'actions'];
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -22,6 +31,9 @@ export class UpdateTransportComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.buildForm();
+    this.materialsService.getPotentialTypes().subscribe((data) => {
+      this.potentialTypeList = data;
+    });
   }
 
   ngOnInit(): void {
@@ -34,6 +46,13 @@ export class UpdateTransportComponent implements OnInit {
         transportFiltered.map((transport) => {
           this.id = transport.id;
           this.form.patchValue(transport);
+          this.potentialList = [];
+          this.materialsService.getPotentialTransport().subscribe((data) => {
+            const potentialList = data.filter(
+              (potential) => potential.transport_id === transport.id
+            );
+            this.potentialList = potentialList;
+          });
         });
       });
     });
@@ -60,5 +79,55 @@ export class UpdateTransportComponent implements OnInit {
 
   goToTransportList() {
     this.router.navigateByUrl('admin-transports');
+  }
+
+  addPotential(event: Event) {
+    event.preventDefault();
+    const dialogRef = this.dialog.open(AddPotentialTransportComponent, {
+      width: '680px',
+      data: { transport_id: this.id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit();
+    });
+  }
+
+  updatePotential(event: Event, potentialId) {
+    event.preventDefault();
+    const potentialSelected = this.potentialList.filter(
+      (data) => data.id === potentialId
+    );
+    const dialogRef = this.dialog.open(UpdatePotentialTransportComponent, {
+      width: '680px',
+      data: potentialSelected,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit();
+    });
+  }
+
+  deletePotential(event: Event, potentialId) {
+    event.preventDefault();
+    const potentialSelected = this.potentialList.filter(
+      (data) => data.id === potentialId
+    );
+    const dialogRef = this.dialog.open(DeletePotentialTransportComponent, {
+      width: '680px',
+      data: potentialSelected,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit();
+    });
+  }
+
+  getPotential(id: number) {
+    const potencial = this.potentialTypeList.filter(
+      (potencial) => potencial.id === id
+    );
+
+    return potencial[0].name_complete_potential_type;
   }
 }

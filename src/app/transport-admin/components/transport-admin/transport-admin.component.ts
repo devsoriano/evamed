@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTransportComponent } from '../add-transport/add-transport.component';
-import { UpdateTransportComponent } from '../update-transport/update-transport.component';
 import { DeleteTransportComponent } from '../delete-transport/delete-transport.component';
 
 @Component({

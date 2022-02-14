@@ -10,6 +10,9 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { ChartsModule } from 'ng2-charts';
+import { AddPotentialTransportComponent } from './components/potential/add-potential-transport/add-potential-transport.component';
+import { DeletePotentialTransportComponent } from './components/potential/delete-potential-transport/delete-potential-transport.component';
+import { UpdatePotentialTransportComponent } from './components/potential/update-potential-transport/update-potential-transport.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +20,9 @@ import { ChartsModule } from 'ng2-charts';
     AddTransportComponent,
     UpdateTransportComponent,
     DeleteTransportComponent,
+    AddPotentialTransportComponent,
+    DeletePotentialTransportComponent,
+    UpdatePotentialTransportComponent,
   ],
   imports: [
     CommonModule,
@@ -32,7 +38,16 @@ import { ChartsModule } from 'ng2-charts';
     AddTransportComponent,
     UpdateTransportComponent,
     DeleteTransportComponent,
+    AddPotentialTransportComponent,
+    DeletePotentialTransportComponent,
+    UpdatePotentialTransportComponent,
   ],
-  entryComponents: [AddTransportComponent, DeleteTransportComponent],
+  entryComponents: [
+    AddTransportComponent,
+    DeleteTransportComponent,
+    AddPotentialTransportComponent,
+    DeletePotentialTransportComponent,
+    UpdatePotentialTransportComponent,
+  ],
 })
 export class TransportAdminModule {}
