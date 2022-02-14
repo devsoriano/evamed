@@ -4,21 +4,21 @@ import { MaterialsService } from './../../../core/services/materials/materials.s
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 export interface DialogData {
-  name_transport: string;
+  name_source_information: string;
 }
 
 @Component({
-  selector: 'app-add-transport',
-  templateUrl: './add-transport.component.html',
-  styleUrls: ['./add-transport.component.scss'],
+  selector: 'app-add-machinery',
+  templateUrl: './add-machinery.component.html',
+  styleUrls: ['./add-machinery.component.scss'],
 })
-export class AddTransportComponent implements OnInit {
+export class AddMachineryComponent implements OnInit {
   form: FormGroup;
 
   constructor(
     private materialsService: MaterialsService,
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<AddTransportComponent>,
+    public dialogRef: MatDialogRef<AddMachineryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
     this.buildForm();
@@ -32,15 +32,15 @@ export class AddTransportComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      name_transport: [null, Validators.required],
+      name_source_information: [null, Validators.required],
     });
   }
 
-  addTransport(event: Event) {
+  addMachinery(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
-      const transport = this.form.value;
-      this.materialsService.addTransport(transport).subscribe((data) => {
+      const machinery = this.form.value;
+      this.materialsService.addMachinery(machinery).subscribe((data) => {
         this.onNoClick();
       });
     }

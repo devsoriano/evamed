@@ -1,0 +1,16 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Eliminar Maquinaria
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-content>
+  <h1>¿Desea eliminar la maquinaria {{data[0].name_source_information}}?</h1>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="deleteMachinery($event, data[0].id)">Eliminar</button>
+</div>

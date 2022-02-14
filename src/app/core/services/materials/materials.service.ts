@@ -262,4 +262,76 @@ export class MaterialsService {
         })
       );
   }
+
+  getMachinery() {
+    return this.http.get<any>(environment.api_source_information).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  addMachinery(data: object) {
+    return this.http.post<any>(environment.api_source_information, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updateMachinery(id: string, changes) {
+    return this.http
+      .put(`${environment.api_source_information}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  deleteMachinery(id: number) {
+    return this.http.delete(`${environment.api_source_information}${id}/`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getMachineryPotential() {
+    return this.http.get<any>(environment.api_source_information_data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  addMachineryPotential(data: object) {
+    return this.http
+      .post<any>(environment.api_source_information_data, data)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  updateMachineryPotential(id: string, changes) {
+    return this.http
+      .put(`${environment.api_source_information_data}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  deleteMachineryPotential(id: number) {
+    return this.http
+      .delete(`${environment.api_source_information_data}${id}/`)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
 }
