@@ -334,4 +334,70 @@ export class MaterialsService {
         })
       );
   }
+
+  getTypeEnergy() {
+    return this.http.get<any>(environment.api_type_energy).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  addTypeEnergy(data: object) {
+    return this.http.post<any>(environment.api_type_energy, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updateTypeEnergy(id: string, changes) {
+    return this.http.put(`${environment.api_type_energy}${id}/`, changes).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  deleteTypeEnergy(id: number) {
+    return this.http.delete(`${environment.api_type_energy}${id}/`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getTypeEnergyData() {
+    return this.http.get<any>(environment.api_type_energy_data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  addTypeEnergyData(data: object) {
+    return this.http.post<any>(environment.api_type_energy_data, data).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updateTypeEnergyData(id: string, changes) {
+    return this.http
+      .put(`${environment.api_type_energy_data}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  deleteTypeEnergyData(id: number) {
+    return this.http.delete(`${environment.api_type_energy_data}${id}/`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }
