@@ -161,6 +161,14 @@ const routes: Routes = [
             (m) => m.EnergyAdminModule
           ),
       },
+      {
+        path: 'admin',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./principal-admin/principal-admin.module').then(
+            (m) => m.PrincipalAdminModule
+          ),
+      },
     ],
   },
   {
