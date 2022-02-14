@@ -13,11 +13,7 @@ export class AddMaterialComponent implements OnInit {
 
   units: any;
 
-  dataBase = [
-    { id: 'EPiC', name: 'EPiC' },
-    { id: 'EPDs', name: 'EPDs' },
-    { id: 'mexicaniuh', name: 'mexicaniuh' },
-  ];
+  ListDatabases: any;
 
   constructor(
     private router: Router,
@@ -27,6 +23,9 @@ export class AddMaterialComponent implements OnInit {
     this.buildForm();
     this.materialsService.getUnits().subscribe((data) => {
       this.units = data;
+    });
+    this.materialsService.getDbMaterials().subscribe((data) => {
+      this.ListDatabases = data;
     });
   }
 
@@ -45,7 +44,6 @@ export class AddMaterialComponent implements OnInit {
     if (this.addMaterialForm.valid) {
       const material = this.addMaterialForm.value;
       this.materialsService.addMaterial(material).subscribe((data) => {
-        console.log('se ha agregado un nuevo material');
         console.log(data);
       });
     }

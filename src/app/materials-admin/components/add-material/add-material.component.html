@@ -20,7 +20,7 @@
         <div class="Col">
           <mat-form-field appearance="outline">
             <mat-select placeholder="Base de datos" formControlName="database_from">
-              <mat-option *ngFor="let data of dataBase" [value]="data.id">
+              <mat-option *ngFor="let data of ListDatabases" [value]="data.name">
                 {{ data.name }}
               </mat-option>
             </mat-select>

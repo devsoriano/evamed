@@ -27,11 +27,7 @@ export class UpdateMaterialComponent implements OnInit {
 
   potential: any;
 
-  dataBase = [
-    { id: 'EPiC', name: 'EPiC' },
-    { id: 'EPDs', name: 'EPDs' },
-    { id: 'mexicaniuh', name: 'mexicaniuh' },
-  ];
+  ListDatabases: any;
 
   displayedColumns: string[] = [
     'id',
@@ -59,6 +55,10 @@ export class UpdateMaterialComponent implements OnInit {
     });
     this.materialsService.getPotentialTypes().subscribe((data) => {
       this.ListPotential = data;
+    });
+
+    this.materialsService.getDbMaterials().subscribe((data) => {
+      this.ListDatabases = data;
     });
   }
 
