@@ -1,9 +1,18 @@
 <h1>Administrador de Materiales</h1>
 
-<div>
+<div class="custom-container">
   <button mat-button class="yellow-button" (click)="goToAddMaterial()">
     Agregar material
   </button>
+  <mat-form-field appearance="outline" class="select-general">
+    <mat-label>Seleccione una opción</mat-label>
+    <mat-select [(ngModel)]="filterSelected" (selectionChange)="selectFilter(filterSelected)">
+      <mat-option *ngFor="let filter of filters" [value]="filter.name">
+        {{filter.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
 </div>
 
 <table mat-table [dataSource]="materialList" class="mat-elevation-z8">

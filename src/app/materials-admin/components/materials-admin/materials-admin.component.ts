@@ -26,12 +26,43 @@ export class MaterialsAdminComponent implements OnInit {
     'actions',
   ];
 
+  filterSelected: any;
+
+  filters: any = [
+    {
+      id: 'a',
+      name: 'orden alfabético',
+    },
+    {
+      id: 'b',
+      name: 'más antiguo',
+    },
+    {
+      id: 'c',
+      name: 'más reciente',
+    },
+  ];
+
+  alpha: any;
+
+  orderMayorId: any;
+
+  orderMinorId: any;
+
+  inmutableList: any;
+
   constructor(
     private router: Router,
     private materialsService: MaterialsService
   ) {
     this.materialsService.getMaterials().subscribe((data) => {
       this.materialList = data;
+      this.inmutableList = data;
+    });
+    this.materialsService.getDbMaterials().subscribe((data) => {
+      data.map((db) => {
+        this.filters.push(db);
+      });
     });
   }
 
@@ -47,5 +78,45 @@ export class MaterialsAdminComponent implements OnInit {
         this.materialList = data;
       });
     });
+  }
+
+  SortArray(x, y) {
+    return x.name_material.localeCompare(y.name_material, 'fr', {
+      ignorePunctuation: true,
+    });
+  }
+
+  filterAlpha(materialList) {
+    return materialList.slice().sort(this.SortArray);
+  }
+
+  filterOrderMinorId(materialList) {
+    return materialList.slice().sort((a, b) => (a.id > b.id ? 1 : -1));
+  }
+
+  filterOrderMayorId(materialList) {
+    return materialList.slice().sort((a, b) => (a.id < b.id ? 1 : -1));
+  }
+
+  filterByDataBase(filter) {
+    return this.inmutableList.filter((res) => res.database_from === filter);
+  }
+
+  selectFilter(filter) {
+    let filterSelected = [];
+
+    if (filter === 'orden alfabético') {
+      filterSelected = this.filterAlpha(this.inmutableList);
+    } else if (filter === 'más antiguo') {
+      filterSelected = this.filterOrderMinorId(this.inmutableList);
+    } else if (filter === 'más reciente') {
+      filterSelected = this.filterOrderMayorId(this.inmutableList);
+    } else {
+      filterSelected = this.filterByDataBase(filter);
+    }
+
+    this.materialList = filterSelected;
+
+    console.log(filterSelected);
   }
 }
