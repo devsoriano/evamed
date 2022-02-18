@@ -199,7 +199,7 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
         padding-top: 1px;
         .flecha{
           height: 27px;
-          width: 70px;
+          width: 1px;
           display: inline-flex;
           color: white;
           margin: 8px;
@@ -215,6 +215,13 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
           height: 18px;
           transform: rotate(134deg) skewX(-10deg) skewY(-10deg);
           content: "";
+        }
+        .fle{
+          display: flex;
+        }
+        .texto-flecha{
+          align-self: center;
+          padding-top: 3px;
         }
       }
       &:nth-child(4) {

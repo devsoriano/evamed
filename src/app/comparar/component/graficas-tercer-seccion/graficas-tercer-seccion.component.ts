@@ -289,6 +289,8 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let valores = [];
     let help = this.CicloColoresRGB[ciclo].match(/rgb?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
     let cambioR= help[1];
+    let cambioG= help[2];
+    let cambioB= help[3];
     let auxValores={};
     let suma =0;
     Object.keys(data).forEach(fase =>{
@@ -361,12 +363,18 @@ export class GraficasTercerSeccionComponent implements OnInit {
                   auxColoresElementos.push(ElementoC);
                   elementosExistente.push(ElementoC);
                   let auxrgbcolor='rgb(';
-                  auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
+                  auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(cambioG).concat(',').concat(cambioB).concat(')');
                   let auxrgbacolor='rgba(';
-                  auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(',').concat('0.2').concat(')');
+                  auxrgbacolor = auxrgbacolor.concat(cambioR.toString()).concat(',').concat(cambioG).concat(',').concat(cambioB).concat(',').concat('0.2').concat(')');
                   auxcolor.push(auxrgbcolor);
                   auxcolordos.push(auxrgbacolor);
-                  cambioR = (Number(cambioR) + 50).toString();
+                  if((255 - cambioR) >= 40){
+                    cambioR = (Number(cambioR) + 40).toString();
+                  }else if((cambioG - 40) >= 0){
+                    cambioG = (Number(cambioG) - 40).toString();
+                  }else{
+                    cambioB = (Number(cambioB) + 40).toString();
+                  }
                   auxValores[ElementoC] = 0;
                 }
                 auxValores[ElementoC] += data[fase][subetapa][ElementoC];
