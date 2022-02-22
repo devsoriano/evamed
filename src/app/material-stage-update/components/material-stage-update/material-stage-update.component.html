@@ -14,19 +14,19 @@
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-two">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToConstructionStage()"></div>
         <div class="mdl-stepper-tag">Construcción</div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-three">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToUsageStage()"></div>
         <div class="mdl-stepper-tag">Uso</div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-four">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToEndLife()"></div>
         <div class="mdl-stepper-tag">Fin de vida</div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
@@ -931,11 +931,4 @@
 
 <!--Section continue-->
 <div class="section-continue">
-  <button
-    mat-button
-    class="yellow-button custom-continue"
-    (click)="updateStepOne()"
-  >
-    Continuar
-  </button>
 </div>

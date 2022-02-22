@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
+import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
 
 @Component({
@@ -43,6 +44,7 @@ export class UsageStageUpdateComponent implements OnInit {
   ECD_IDS: any;
 
   constructor(
+    private materialsService: MaterialsService,
     private catalogsService: CatalogsService,
     private router: Router,
     private electricitConsumptionService: ElectricitConsumptionService
@@ -368,7 +370,7 @@ export class UsageStageUpdateComponent implements OnInit {
   }
 
   goToMaterialStage() {
-    /*this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+    this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
       const schemaFilter = msp.filter(
         (schema) => schema.project_id === this.projectId
       );
@@ -378,11 +380,21 @@ export class UsageStageUpdateComponent implements OnInit {
       } else {
         this.router.navigateByUrl('material-stage-update');
       }
-    });*/
+    });
   }
 
   goToConstructionStage() {
-    this.router.navigateByUrl('construction-stage');
+    this.materialsService.getConstructionStage().subscribe((cse) => {
+      const schemaFilter = cse.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('construction-stage');
+      } else {
+        this.router.navigateByUrl('construction-stage-update');
+      }
+    });
   }
 
   goToUsageStage() {
@@ -390,6 +402,16 @@ export class UsageStageUpdateComponent implements OnInit {
   }
 
   goToEndLife() {
-    this.router.navigateByUrl('end-life-stage');
+    this.materialsService.getEDCP().subscribe((edcp) => {
+      const schemaFilter = edcp.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('end-life-stage');
+      } else {
+        this.router.navigateByUrl('update-end-life');
+      }
+    });
   }
 }

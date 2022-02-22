@@ -546,22 +546,6 @@ export class MaterialStageUpdateComponent implements OnInit {
     console.log('add SC');
   }
 
-  goToMaterialStage() {
-    this.router.navigateByUrl('material-stage');
-  }
-
-  goToConstructionStage() {
-    this.router.navigateByUrl('construction-stage');
-  }
-
-  goToUsageStage() {
-    this.router.navigateByUrl('usage-stage');
-  }
-
-  goToEndLife() {
-    this.router.navigateByUrl('end-life-stage');
-  }
-
   goToSearchInfo() {
     this.showSearch = true;
     this.selectedMaterial = false;
@@ -612,5 +596,51 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   returnListDB() {
     this.showMaterial = false;
+  }
+
+  goToMaterialStage() {
+    this.router.navigateByUrl('material-stage');
+  }
+
+  goToConstructionStage() {
+    this.materialsService.getConstructionStage().subscribe((cse) => {
+      const schemaFilter = cse.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('construction-stage');
+      } else {
+        this.router.navigateByUrl('construction-stage-update');
+      }
+    });
+  }
+
+  goToUsageStage() {
+    this.materialsService.getACR().subscribe((acr) => {
+      const schemaFilter = acr.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('usage-stage');
+      } else {
+        this.router.navigateByUrl('usage-stage-update');
+      }
+    });
+  }
+
+  goToEndLife() {
+    this.materialsService.getEDCP().subscribe((edcp) => {
+      const schemaFilter = edcp.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('end-life-stage');
+      } else {
+        this.router.navigateByUrl('update-end-life');
+      }
+    });
   }
 }

@@ -34,6 +34,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
   selectedSheet: any;
   CSE: any;
   IMGP = [];
+  projectId: number;
 
   constructor(
     private materialsService: MaterialsService,
@@ -118,6 +119,9 @@ export class ConstructionStageUpdateComponent implements OnInit {
       'Inst. especiales',
       'Otros',
     ];
+
+    const PDP = JSON.parse(sessionStorage.getItem('primaryDataProject'));
+    this.projectId = PDP.id;
   }
 
   preload(array) {
@@ -310,7 +314,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
   }
 
   goToMaterialStage() {
-    /*this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+    this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
       const schemaFilter = msp.filter(
         (schema) => schema.project_id === this.projectId
       );
@@ -320,7 +324,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
       } else {
         this.router.navigateByUrl('material-stage-update');
       }
-    });*/
+    });
   }
 
   goToConstructionStage() {
@@ -328,10 +332,30 @@ export class ConstructionStageUpdateComponent implements OnInit {
   }
 
   goToUsageStage() {
-    this.router.navigateByUrl('usage-stage');
+    this.materialsService.getACR().subscribe((acr) => {
+      const schemaFilter = acr.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('usage-stage');
+      } else {
+        this.router.navigateByUrl('usage-stage-update');
+      }
+    });
   }
 
   goToEndLife() {
-    this.router.navigateByUrl('end-life-stage');
+    this.materialsService.getEDCP().subscribe((edcp) => {
+      const schemaFilter = edcp.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('end-life-stage');
+      } else {
+        this.router.navigateByUrl('update-end-life');
+      }
+    });
   }
 }
