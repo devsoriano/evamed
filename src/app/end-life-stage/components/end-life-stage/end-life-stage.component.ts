@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatListOption } from '@angular/material/list';
 import 'rxjs/add/operator/filter';
+import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 
 @Component({
   selector: 'app-end-life-stage',
@@ -35,7 +36,8 @@ export class EndLifeStageComponent implements OnInit {
   constructor(
     private router: Router,
     private endLifeService: EndLifeService,
-    private catalogsService: CatalogsService
+    private catalogsService: CatalogsService,
+    private materialsService: MaterialsService
   ) {
     this.catalogsService.getSourceInformation().subscribe((data) => {
       const fuentes = [];
@@ -198,15 +200,45 @@ export class EndLifeStageComponent implements OnInit {
   }
 
   goToMaterialStage() {
-    this.router.navigateByUrl('materials-stage');
+    this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+      const schemaFilter = msp.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('materials-stage');
+      } else {
+        this.router.navigateByUrl('material-stage-update');
+      }
+    });
   }
 
   goToConstructionStage() {
-    this.router.navigateByUrl('construction-stage');
+    this.materialsService.getConstructionStage().subscribe((cse) => {
+      const schemaFilter = cse.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('construction-stage');
+      } else {
+        this.router.navigateByUrl('construction-stage-update');
+      }
+    });
   }
 
   goToUsageStage() {
-    this.router.navigateByUrl('usage-stage');
+    this.materialsService.getACR().subscribe((acr) => {
+      const schemaFilter = acr.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('usage-stage');
+      } else {
+        this.router.navigateByUrl('usage-stage-update');
+      }
+    });
   }
 
   goToEndLife() {

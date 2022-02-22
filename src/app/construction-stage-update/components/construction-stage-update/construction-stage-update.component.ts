@@ -5,6 +5,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
+import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 
 @Component({
   selector: 'app-construction-stage-update',
@@ -35,6 +36,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
   IMGP = [];
 
   constructor(
+    private materialsService: MaterialsService,
     private catalogsService: CatalogsService,
     private projectsService: ProjectsService,
     private constructionStageService: ConstructionStageService,
@@ -308,7 +310,17 @@ export class ConstructionStageUpdateComponent implements OnInit {
   }
 
   goToMaterialStage() {
-    this.router.navigateByUrl('materials-stage');
+    /*this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+      const schemaFilter = msp.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('materials-stage');
+      } else {
+        this.router.navigateByUrl('material-stage-update');
+      }
+    });*/
   }
 
   goToConstructionStage() {

@@ -9,6 +9,40 @@ import { environment } from './../../../../environments/environment';
 export class MaterialsService {
   constructor(private http: HttpClient) {}
 
+  getMaterialSchemeProyects() {
+    return this.http.get<any>(environment.api_scheme_project).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getConstructionStage() {
+    return this.http.get<any>(environment.api_construction_stage).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getACR() {
+    return this.http.get<any>(environment.api_annual_consumption_required).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getEDCP() {
+    return this.http
+      .get<any>(environment.api_electricity_consumption_deconstructive_process)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
   getMaterials() {
     return this.http.get<any>(environment.api_materials).pipe(
       tap((data) => {

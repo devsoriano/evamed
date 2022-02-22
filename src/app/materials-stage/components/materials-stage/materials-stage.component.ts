@@ -701,15 +701,45 @@ export class MaterialsStageComponent implements OnInit {
   }
 
   goToConstructionStage() {
-    this.router.navigateByUrl('construction-stage');
+    this.materialsService.getConstructionStage().subscribe((cse) => {
+      const schemaFilter = cse.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('construction-stage');
+      } else {
+        this.router.navigateByUrl('construction-stage-update');
+      }
+    });
   }
 
   goToUsageStage() {
-    this.router.navigateByUrl('usage-stage');
+    this.materialsService.getACR().subscribe((acr) => {
+      const schemaFilter = acr.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('usage-stage');
+      } else {
+        this.router.navigateByUrl('usage-stage-update');
+      }
+    });
   }
 
   goToEndLife() {
-    this.router.navigateByUrl('end-life-stage');
+    this.materialsService.getEDCP().subscribe((edcp) => {
+      const schemaFilter = edcp.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('end-life-stage');
+      } else {
+        this.router.navigateByUrl('update-end-life');
+      }
+    });
   }
 
   goToSearchInfo() {

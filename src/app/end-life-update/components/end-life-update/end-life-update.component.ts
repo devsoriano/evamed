@@ -220,7 +220,17 @@ export class EndLifeUpdateComponent implements OnInit {
   saveStepFour() {}
 
   goToMaterialStage() {
-    this.router.navigateByUrl('materials-stage');
+    /*this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+      const schemaFilter = msp.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('materials-stage');
+      } else {
+        this.router.navigateByUrl('material-stage-update');
+      }
+    });*/
   }
 
   goToConstructionStage() {
