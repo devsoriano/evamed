@@ -289,35 +289,36 @@ export class CompararComponent implements OnInit {
 
   //eliminar fase de ciclo de visa y redistribución;
   ajusteDeGraficaFASE(fase:string){
+    if(this.fasesEliminadas.includes(fase)){
+      this.fasesEliminadas.forEach((element,index) => {
+        if(element == fase){
+          this.fasesEliminadas.splice(index,1)
+          document.getElementById(fase.concat("Ojo")).className = 'boton-icono';
+          this.iconos[fase] = 'visibility'
+        }
+      })
+    }else{
+      this.iconos[fase] = 'visibility_off'
+      document.getElementById(fase.concat("Ojo")).className = 'boton-ojito-select';
+      this.fasesEliminadas.push(fase);
+    }
+    this.outproyect_bar=[];
+    this.proyect_active.forEach(element => {
+      let analisis = this.getAnalisisBarras(element);
+      this.outproyect_bar.push(analisis);
+    })
+    this.fasesEliminadas.forEach(value => {
+      this.outproyect_bar.forEach((proyecto, index)=> {
+        let indicadores = Object.keys(proyecto.Datos);
+        indicadores.forEach(element => {
+          delete this.outproyect_bar[index].Datos[element][value];
+        })
+      })
+    })
     if (this.resultdosGraficos){
-      if(this.fasesEliminadas.includes(fase)){
-        this.fasesEliminadas.forEach((element,index) => {
-          if(element == fase){
-            this.fasesEliminadas.splice(index,1)
-            document.getElementById(fase.concat("Ojo")).className = 'boton-icono';
-            this.iconos[fase] = 'visibility'
-          }
-        })
-      }else{
-        this.iconos[fase] = 'visibility_off'
-        document.getElementById(fase.concat("Ojo")).className = 'boton-ojito-select';
-        this.fasesEliminadas.push(fase);
-      }
-
-      this.outproyect_bar=[];
-      this.proyect_active.forEach(element => {
-        let analisis = this.getAnalisisBarras(element);
-        this.outproyect_bar.push(analisis);
-      })
-      this.fasesEliminadas.forEach(value => {
-        this.outproyect_bar.forEach((proyecto, index)=> {
-          let indicadores = Object.keys(proyecto.Datos);
-          indicadores.forEach(element => {
-            delete this.outproyect_bar[index].Datos[element][value];
-          })
-        })
-      })
       this.iniciaBarras();
+    }else{
+      this.TablaResultados();
     }
   }
 
@@ -737,29 +738,37 @@ export class CompararComponent implements OnInit {
     });
     auxL.forEach((ciclo,index) => {
       let auxdata = {};
-      let auximpactos =[]
+      let auximpactos =[];
       auxdata["ciclo de vida"]=ciclo;
-      this.outproyect_bar.forEach((element)=>{
-        Object.keys(element.Datos).forEach(impacto => {
-          let auxNombreImpacto = impacto.replace(/\n/g,'');
-          let resultado = element.Datos[impacto][ciclo];
-          let resultadoExponencial = resultado.toExponential(2);
-          if(!auximpactos.includes(auxNombreImpacto)){
-            auximpactos.push(auxNombreImpacto);
-            auxdata[auxNombreImpacto] = resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            auxtotal[element.id][auxNombreImpacto] += resultado
-          }else{
-            flagMasProyectos = true;
-            let last = auxdata[auxNombreImpacto].toString()
-            auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
-            auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat(resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
-            auxtotal[element.id][auxNombreImpacto] += resultado
-          }
-        });
-      })
-      auximpactos =[];
-      aux=[...aux, {data:auxdata,
-        color: aux_color[index]}];
+      let flagCiclo = true;
+      this.fasesEliminadas.forEach(cicloEliminado=>{
+        if(ciclo === cicloEliminado){
+          flagCiclo = false;
+        }
+      });
+      if(flagCiclo){
+        this.outproyect_bar.forEach((element)=>{
+          Object.keys(element.Datos).forEach(impacto => {
+            let auxNombreImpacto = impacto.replace(/\n/g,'');
+            let resultado = element.Datos[impacto][ciclo];
+            let resultadoExponencial = resultado.toExponential(2);
+            if(!auximpactos.includes(auxNombreImpacto)){
+              auximpactos.push(auxNombreImpacto);
+              auxdata[auxNombreImpacto] = resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              auxtotal[element.id][auxNombreImpacto] += resultado
+            }else{
+              flagMasProyectos = true;
+              let last = auxdata[auxNombreImpacto].toString()
+              auxdata[auxNombreImpacto] = last.concat('\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0')
+              auxdata[auxNombreImpacto] = auxdata[auxNombreImpacto].concat(resultadoExponencial.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+              auxtotal[element.id][auxNombreImpacto] += resultado
+            }
+          });
+        })
+        auximpactos =[];
+        aux=[...aux, {data:auxdata,
+          color: aux_color[index]}];
+      }
       if(ciclo === "FinDeVida"){
         auxdata = {}
         Object.keys(auxtotal).forEach((element, indexproyectos) => {
@@ -779,7 +788,7 @@ export class CompararComponent implements OnInit {
             })
           }
         });
-        auxdata["ciclo de vida"]="total";
+        auxdata["ciclo de vida"]="Total";
         aux=[...aux, {data:auxdata,
         color: aux_color[index+1]}];
       }
@@ -1406,6 +1415,8 @@ export class CompararComponent implements OnInit {
         let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
         let colorhelp = auxColor[this.colorGraficaDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
         let cambioR= colorhelp[1];
+        let cambioG= colorhelp[2];
+        let cambioB= colorhelp[3];
         if(auxdatos.length == 0){
           this.flagMaterialesDispercion = false
           this.flagSinMaterialesDispercion = true
@@ -1426,8 +1437,14 @@ export class CompararComponent implements OnInit {
                       //Sección para determinar el color en la tabla con relación a la gráfica
                       let auxrgbcolor='rgb(';
                       if(ii <= 2){
-                        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(colorhelp[2]).concat(',').concat(colorhelp[3]).concat(')');
-                        cambioR = (Number(cambioR) + 50).toString();
+                        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(cambioG).concat(',').concat(cambioB).concat(')');
+                        if((255 - cambioR) >= 40){
+                          cambioR = (Number(cambioR) + 40).toString();
+                        }else if((cambioG - 40) >= 0){
+                          cambioG = (Number(cambioG) - 40).toString();
+                        }else{
+                          cambioB = (Number(cambioB) + 40).toString();
+                        }
                       }else{
                         auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(colorhelp[2]).concat(',').concat(colorhelp[3]).concat(')');
                       }

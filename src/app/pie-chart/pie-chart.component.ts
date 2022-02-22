@@ -82,6 +82,7 @@ export class PieChartComponent implements OnInit {
   elemento_seleccionado=' ';
   showlast=false;
   subetapas=[];
+  totales=[];
 
   constructor() { }
 
@@ -175,12 +176,20 @@ export class PieChartComponent implements OnInit {
       let ColorDesplegado = [];
       let help = auxColor[this.colorDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
       let cambioR= help[1];
+      let cambioG= help[2];
+      let cambioB= help[3];
       auxdatos.forEach((element, index) =>{
         if(index <= 2){
           aux.push(((element/suma)*100).toFixed(2));
           let auxrgbcolor='rgb(';
-          auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-          cambioR = (Number(cambioR) + 50).toString();
+          auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(cambioG).concat(',').concat(cambioB).concat(')');
+          if((255 - cambioR) >= 40){
+            cambioR = (Number(cambioR) + 40).toString();
+          }else if((cambioG - 40) >= 0){
+            cambioG = (Number(cambioG) - 40).toString();
+          }else{
+            cambioB = (Number(cambioB) + 40).toString();
+          }
           ColorDesplegado.push(auxrgbcolor);
         }else{
           sumaOtros = sumaOtros+element;
@@ -189,8 +198,14 @@ export class PieChartComponent implements OnInit {
       if(auxdatos.length>3){
         aux.push(((sumaOtros/suma)*100).toFixed(2));
         let auxrgbcolor='rgb(';
-        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(help[2]).concat(',').concat(help[3]).concat(')');
-        cambioR = (Number(cambioR) + 50).toString();
+        auxrgbcolor = auxrgbcolor.concat(cambioR.toString()).concat(',').concat(cambioG).concat(',').concat(cambioB).concat(')');
+        if((255 - cambioR) >= 40){
+          cambioR = (Number(cambioR) + 40).toString();
+        }else if((cambioG - 40) >= 0){
+          cambioG = (Number(cambioG) - 40).toString();
+        }else{
+          cambioB = (Number(cambioB) + 40).toString();
+        }
         ColorDesplegado.push(auxrgbcolor);
       }
       auxdata = [{
@@ -214,6 +229,7 @@ export class PieChartComponent implements OnInit {
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
                 auxSuma =  auxSuma + auxdatos[marcador];
               });
+              this.totales.push(auxSuma.toExponential(2).toString().concat(this.findUnidad()));
               Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
                 let abreviacion = marcador.concat(" - ");
                 let auxnamelabel = abreviacion.concat(this.findSubetapa(marcador)).concat(" : ");
