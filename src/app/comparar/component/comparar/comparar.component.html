@@ -147,13 +147,15 @@
             <p>
               {{impactoSeleccionadoElementoConstructivo}}
             </p>
-            <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
-              <div id="{{idsIconosElementos[item.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
-                <button class="button-elemento-seleccionado color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="graficabar(item.id)"> 
-                  {{item.name_section}}</button>
-                  <button id="{{idsIconosElementos[item.id]['idOJO']}}" class="button-icono color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="AjusteGraficaElementosContructivos(item.id)">
-                    <mat-icon>{{iconosElementosConstrucivos[item.id]['icono']}}</mat-icon>
-                  </button>
+            <div *ngIf="cargaElementos">
+              <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
+                <div id="{{idsIconosElementos[item.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
+                  <button class="button-elemento-seleccionado color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="graficabar(item.id)"> 
+                    {{item.name_section}}</button>
+                    <button id="{{idsIconosElementos[item.id]['idOJO']}}" class="button-icono color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="AjusteGraficaElementosContructivos(item.id)">
+                      <mat-icon>{{iconosElementosConstrucivos[item.id]['icono']}}</mat-icon>
+                    </button>
+                </div>
               </div>
             </div>
           </div>

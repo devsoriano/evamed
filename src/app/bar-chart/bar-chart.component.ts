@@ -30,6 +30,7 @@ export class BarChartComponent implements OnInit {
   @Input() bandera_enfoqueColumna:boolean;
   @Input() elementoConstructivo:String;
   @Input() impactoAmbiental:any;
+  @Input() impactos:any;
 
   private colores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89'};
   private coloresBWGraph2Nuevo = ['rgb(90, 16, 2,0.5)','rgb(144, 37, 17,0.5)', 'rgb(190, 50, 24,0.5)', 'rgb(235, 63, 32,0.5)','rgb(235, 87, 32,0.5)','rgb(235, 118, 32,0.5)','rgb(235, 173, 32,0.5)','rgb(235, 196, 32,0.5)','rgb(235, 219, 32,0.5)','rgb(204, 235, 32,0.5)','rgb(118, 235, 32,0.5)']
@@ -165,7 +166,15 @@ export class BarChartComponent implements OnInit {
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
           if (!this.barChartLabels.includes(indicador)){
-            this.barChartLabels = [...this.barChartLabels, indicador];
+            let auxAbr=""
+            this.impactos.forEach(impacto => {
+              let auxNameImpacto = this.ajustarNombre(impacto['name_complete_potential_type']);
+              if(indicador === auxNameImpacto){
+                auxAbr = impacto['name_potential_type']
+              }
+            });
+            let auxIndicador = indicador.concat('\n(',auxAbr,')');
+            this.barChartLabels = [...this.barChartLabels, auxIndicador];
           }
           proyecto.Datos[indicador].total = 0;
           proyecto.Datos[indicador].total = Object.values(proyecto.Datos[indicador]).reduce((a: any, b: any) => a + b, 0);
@@ -285,15 +294,16 @@ export class BarChartComponent implements OnInit {
       this.inputProyects.forEach(proyecto => {
         const auxDatos = { Producción : [], Construccion : [], Uso : [], FinDeVida : []};
         this.barChartLabels.forEach(indicador => {
+          let auxIndicador = this.reajusteNombre(indicador.toString())
           Object.keys(auxDatos).forEach(etapa => {
             const indicadores = Object.keys(proyecto.Datos);
-            if (!indicadores.includes(indicador.toString()) || !Object.keys(proyecto.Datos[indicador.toString()]).includes(etapa)){
+            if (!indicadores.includes(auxIndicador.toString()) || !Object.keys(proyecto.Datos[auxIndicador.toString()]).includes(etapa)){
               auxDatos[etapa] = [...auxDatos[etapa], 0];
             }else{
               auxDatos[etapa] = [...auxDatos[etapa],
               this.porcentaje?
-              (proyecto.Datos[indicador.toString()][etapa ]*100 /proyecto.Datos[indicador.toString()].total ).toFixed(2):
-              proyecto.Datos[indicador.toString()][etapa].toExponential(2)
+              (proyecto.Datos[auxIndicador.toString()][etapa ]*100 /proyecto.Datos[auxIndicador.toString()].total ).toFixed(2):
+              proyecto.Datos[auxIndicador.toString()][etapa].toExponential(2)
             ];
           }
         });
@@ -325,6 +335,21 @@ export class BarChartComponent implements OnInit {
         }
       }
     }
+  }
+
+  reajusteNombre(name: String){
+    let help = name;
+    let aux=name;
+    let flag = true;
+    for(var _i = (help.length-1); _i>=0; _i--){
+      if(flag){
+        aux = aux.slice(0,_i)
+      }
+      if(help[_i] ==='\n'){
+        flag = false;
+      }
+    }
+    return aux;
   }
 
   // configurcion de estilo (Titulos de proyectos)
@@ -513,19 +538,20 @@ export class BarChartComponent implements OnInit {
           });
           this.chartDir.update();
         }
+      this.lastClick = seleccion.label;
       }else{
         this.barChartData.forEach( (datos , index) => {
           let color = new Array(datos.data.length);
-
+          
           color.fill(this.coloresBW[ datos.label ]);
           color[seleccion.index] = this.colores[ datos.label ];
-
+          
           this.barChartData[index].backgroundColor = color;
           this.barChartData[index].hoverBackgroundColor = color;
         });
         this.chartDir.update();
+        this.lastClick = seleccion.label;
       }
-      this.lastClick = seleccion.label;
       this.showMe=false;
     } else {
       if(this.Bandera_bar){
@@ -541,7 +567,12 @@ export class BarChartComponent implements OnInit {
       let aux = {'niveles':this.auxElementos,'seleccion':this.lastClick,'color':this.auxColor,'selec':selec}
       this.ClickEvent.emit(aux);
     }else{
-      this.lastClickEvent.emit(this.lastClick);
+      if(this.lastClick !== null){
+        let auxLast = this.lastClick.slice(0,-1)
+        this.lastClickEvent.emit(auxLast);
+      }else{
+        this.lastClickEvent.emit(this.lastClick);
+      }
     }
   }
 
@@ -673,4 +704,30 @@ export class BarChartComponent implements OnInit {
   public onChartClick(e: any): void {
   }
 
+  ajustarNombre(name: string) {
+    let help = name;
+    let spacios=0;
+    let numC=0;
+    let maxlinea=0;
+    for (let i of help){
+      if(i===' '){
+        spacios=spacios+1;
+        if(spacios==1 && maxlinea >= 9){
+          help = [help.slice(0, numC), '\n', help.slice(numC)].join('');
+          spacios=0;
+          maxlinea = 0;
+          numC=numC+1;
+        }
+        if(spacios==2){
+          help = [help.slice(0, numC), '\n', help.slice(numC)].join('');
+          spacios=0;
+          numC=numC+1;
+        }
+      }
+      maxlinea=maxlinea+1;
+      numC=numC+1;
+    }
+    
+    return help
+  }
 }

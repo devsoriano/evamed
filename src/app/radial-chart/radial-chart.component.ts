@@ -12,6 +12,7 @@ export class RadialChartComponent implements OnInit {
   @Input() inputProyect:any;
   @Input() showMe: boolean;
   @Input() id:string;
+  @Input() impactos:any;
   subtitulo: string;
 
 
@@ -44,7 +45,7 @@ export class RadialChartComponent implements OnInit {
     },
     scale:{
       pointLabels: {
-        fontSize:7,
+        fontSize:12,
       },
       ticks:{
         fontSize:7,
@@ -72,7 +73,15 @@ export class RadialChartComponent implements OnInit {
         if (indicador === ID){
           Object.keys(proyecto.Datos[indicador]).forEach(element => {
             if (!this.radarChartLabels.includes(element)) {
-              this.radarChartLabels = [...this.radarChartLabels, element];
+              let auxAbr=""
+              this.impactos.forEach(impacto => {
+                let auxNameImpacto = this.ajustarNombre(impacto['name_complete_potential_type']);
+                if(element === auxNameImpacto){
+                  auxAbr = impacto['name_potential_type']
+                }
+              });
+              //this.radarChartLabels = [...this.radarChartLabels, element];
+              this.radarChartLabels = [...this.radarChartLabels, auxAbr];
             }
           });
         }
@@ -133,6 +142,33 @@ export class RadialChartComponent implements OnInit {
       auxdatos=[];
     });
 
+  }
+
+  ajustarNombre(name: string) {
+    let help = name;
+    let spacios=0;
+    let numC=0;
+    let maxlinea=0;
+    for (let i of help){
+      if(i===' '){
+        spacios=spacios+1;
+        if(spacios==1 && maxlinea >= 9){
+          help = [help.slice(0, numC), '\n', help.slice(numC)].join('');
+          spacios=0;
+          maxlinea = 0;
+          numC=numC+1;
+        }
+        if(spacios==2){
+          help = [help.slice(0, numC), '\n', help.slice(numC)].join('');
+          spacios=0;
+          numC=numC+1;
+        }
+      }
+      maxlinea=maxlinea+1;
+      numC=numC+1;
+    }
+    
+    return help
   }
 
 }
