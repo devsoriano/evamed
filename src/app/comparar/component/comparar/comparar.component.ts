@@ -139,6 +139,7 @@ export class CompararComponent implements OnInit {
   iconosElementosConstrucivos = {};
   proyectosMostrados =[];
   idsIconosElementos = {};
+  cargaElementos = false;
   imgSeleccionadaElemento = ' ';
   nombreProyectoElegidoSeleccionadoElementos = ' ';
   elementoSeleccionadoMostrado=' ';
@@ -409,6 +410,7 @@ export class CompararComponent implements OnInit {
       grafica.instance.Columna_seleccionada = this.selector;
       grafica.instance.banera_enfoqueSerie_externo = this.bandera_serie_Seleccionada;
       grafica.instance.serie_input = this.serie_Seleccionada;
+      grafica.instance.impactos = this.potentialTypesList;
       grafica.instance.lastClickEvent.subscribe(e => this.receiveSelector(e));
     }
   }
@@ -451,6 +453,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.inputProyect = this.outproyect_radar;
     grafica.instance.showMe = this.showVar_1;
     grafica.instance.id = this.ID;
+    grafica.instance.impactos = this.potentialTypesList
   }
   iniciaPie(){
     this.containerGraficas.clear();
@@ -677,8 +680,32 @@ export class CompararComponent implements OnInit {
       'conversionList':this.conversionList
     };
 
-    let auxDatos = this.calculosSegunaSeccion.operacionesPorMaterialesElementosConstructivos(idProyecto,DatosCalculos);
-    analisisProyectos['Datos']= auxDatos;
+    let auxData = {};
+    let auxDatosDos=this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
+    Object.keys(auxDatosDos['materiales']).forEach(impactoAmbiental => {
+      auxData[impactoAmbiental]={}
+      let seccionesCreadas = [];
+      let materialSeccion={}
+      Object.keys(auxDatosDos['materiales'][impactoAmbiental]).forEach(cicloVida => {
+        Object.keys(auxDatosDos['materiales'][impactoAmbiental][cicloVida]).forEach(subEtapa => {
+          Object.keys(auxDatosDos['materiales'][impactoAmbiental][cicloVida][subEtapa]).forEach(seccion => {
+            if(!seccionesCreadas.includes(seccion)){
+              auxData[impactoAmbiental][seccion]={};
+              materialSeccion[seccion]=[]
+              seccionesCreadas.push(seccion);
+            }
+            Object.keys(auxDatosDos['materiales'][impactoAmbiental][cicloVida][subEtapa][seccion]).forEach(material => {
+              if(!materialSeccion[seccion].includes(material)){
+                auxData[impactoAmbiental][seccion][material]=0;
+                materialSeccion[seccion].push(material)
+              }
+              auxData[impactoAmbiental][seccion][material] += auxDatosDos['materiales'][impactoAmbiental][cicloVida][subEtapa][seccion][material];
+            });
+          });
+        })
+      })
+    });
+    analisisProyectos['Datos']= auxData;
     return analisisProyectos;
   }
 
@@ -1381,6 +1408,7 @@ export class CompararComponent implements OnInit {
   iniciarTabaDispercion(){
     this.infoTablaDispercion = [];
     //'color-'no', 'material', 'porcentaje', 'numero'
+    //console.log(this.outproyect_pie_bar_elementos)
     this.outproyect_pie_bar_elementos.forEach(element => {
       if(element['id'] == this.idProyectoSeleccionadoImagen){
         let auxhelp = [];
@@ -1411,6 +1439,7 @@ export class CompararComponent implements OnInit {
             })
           }
         });
+        auxdatos=auxdatos.reverse()
         let num=0;
         let auxColor={'#5A1002':'rgb(90,16,2)','#902511':'rgb(144,37,17)','#BE3218':'rgb(190,50,24)','#EB3F20':'rgb(235,63,32)','#EB5720':'rgb(235,87,32)','#EB7620':'rgb(235,118,32)', '#EB9520':'rgb(235,149,32)','#EBC420':'rgb(235,196,32)', '#EBDB20':'rgb(235,219,32)', '#CCEB20':'rgb(204,235,32)', '#76EB20':'rgb(118,235,32)'};
         let colorhelp = auxColor[this.colorGraficaDispercion].match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
@@ -1714,6 +1743,7 @@ export class CompararComponent implements OnInit {
       this.idsIconosElementos[element.id.toString()]['idOJO']='ojo'.concat(element.id.toString());
       this.idsIconosElementos[element.id.toString()]['idTEXTO']='texto'.concat(element.id.toString());
     });
+    this.cargaElementos = true;
   }
 
   cambioEstadoTercerSección(cambio){
