@@ -183,6 +183,10 @@ export class UsageStageComponent implements OnInit {
       if (schemaFilter.length === 0) {
         this.router.navigateByUrl('materials-stage');
       } else {
+        localStorage.setItem(
+          'idProyectoConstrucción',
+          this.projectId.toString()
+        );
         this.router.navigateByUrl('material-stage-update');
       }
     });
@@ -197,6 +201,10 @@ export class UsageStageComponent implements OnInit {
       if (schemaFilter.length === 0) {
         this.router.navigateByUrl('construction-stage');
       } else {
+        localStorage.setItem(
+          'idProyectoConstrucción',
+          this.projectId.toString()
+        );
         this.router.navigateByUrl('construction-stage-update');
       }
     });
@@ -215,6 +223,10 @@ export class UsageStageComponent implements OnInit {
       if (schemaFilter.length === 0) {
         this.router.navigateByUrl('end-life-stage');
       } else {
+        localStorage.setItem(
+          'idProyectoConstrucción',
+          this.projectId.toString()
+        );
         this.router.navigateByUrl('update-end-life');
       }
     });
