@@ -372,7 +372,8 @@ export class UsageStageUpdateComponent implements OnInit {
   goToMaterialStage() {
     this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
       const schemaFilter = msp.filter(
-        (schema) => schema.project_id === this.projectId
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
       );
 
       if (schemaFilter.length === 0) {
@@ -386,8 +387,10 @@ export class UsageStageUpdateComponent implements OnInit {
   goToConstructionStage() {
     this.materialsService.getConstructionStage().subscribe((cse) => {
       const schemaFilter = cse.filter(
-        (schema) => schema.project_id === this.projectId
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
       );
+      console.log(schemaFilter);
 
       if (schemaFilter.length === 0) {
         this.router.navigateByUrl('construction-stage');
@@ -404,7 +407,8 @@ export class UsageStageUpdateComponent implements OnInit {
   goToEndLife() {
     this.materialsService.getEDCP().subscribe((edcp) => {
       const schemaFilter = edcp.filter(
-        (schema) => schema.project_id === this.projectId
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
       );
 
       if (schemaFilter.length === 0) {

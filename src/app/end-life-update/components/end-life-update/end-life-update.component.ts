@@ -224,16 +224,12 @@ export class EndLifeUpdateComponent implements OnInit {
   goToMaterialStage() {
     this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
       const schemaFilter = msp.filter(
-        (schema) => schema.project_id === this.projectId
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
       );
-
       if (schemaFilter.length === 0) {
         this.router.navigateByUrl('materials-stage');
       } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
         this.router.navigateByUrl('material-stage-update');
       }
     });
@@ -242,16 +238,14 @@ export class EndLifeUpdateComponent implements OnInit {
   goToConstructionStage() {
     this.materialsService.getConstructionStage().subscribe((cse) => {
       const schemaFilter = cse.filter(
-        (schema) => schema.project_id === this.projectId
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
       );
+      console.log(schemaFilter);
 
       if (schemaFilter.length === 0) {
         this.router.navigateByUrl('construction-stage');
       } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
         this.router.navigateByUrl('construction-stage-update');
       }
     });
@@ -260,16 +254,13 @@ export class EndLifeUpdateComponent implements OnInit {
   goToUsageStage() {
     this.materialsService.getACR().subscribe((acr) => {
       const schemaFilter = acr.filter(
-        (schema) => schema.project_id === this.projectId
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
       );
 
       if (schemaFilter.length === 0) {
         this.router.navigateByUrl('usage-stage');
       } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
         this.router.navigateByUrl('usage-stage-update');
       }
     });
