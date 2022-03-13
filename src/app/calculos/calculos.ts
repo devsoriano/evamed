@@ -45,7 +45,6 @@ export class Calculos {
   ) {}
 
   OperacionesDeFase(idProyecto,info) {
-    
     this.projectsList = info.projectsList;
     this.materialList = info.materialList;
     this.materialSchemeDataList = info.materialSchemeDataList;
@@ -66,6 +65,7 @@ export class Calculos {
     this.conversionList =  info.conversionList;
     let Datos = {};
     let schemeProyect = null;
+    let errorCalculos = false;
 
     schemeProyect = this.materialSchemeProyectList.filter(
       (msp) => msp['project_id'] == idProyecto
@@ -298,11 +298,15 @@ export class Calculos {
           ECDPs.forEach((ECDP) => {
             let energia = this.SIDList.filter(
               (sid) =>
-                sid['sourceInformarion_id'] == ECDP['source_information_id'] &&
-                sid['potential_type_id'] == impacto['id']
-            );
-            resultado_impacto =
-              resultado_impacto + ECDP['quantity'] * energia[0]['value'];
+              sid['sourceInformarion_id'] == ECDP['source_information_id'] &&
+              sid['potential_type_id'] == impacto['id']
+              );
+            if(energia.length>0){
+              resultado_impacto =
+                resultado_impacto + ECDP['quantity'] * energia[0]['value'];
+            }else{
+              errorCalculos = true;
+            }
           });
         }
         Datos[nameImpacto]['FinDeVida']['C1'] = resultado_impacto;
@@ -316,7 +320,7 @@ export class Calculos {
       }
       impacto_ban = true;
     });
-    return Datos;
+    return [Datos, errorCalculos];
   }
 
   ValoresProcentaje(data,ignorar) {

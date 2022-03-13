@@ -159,6 +159,10 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
     }
     &:nth-child(2) {
       width: 293px;
+      .text-error{
+        margin-left: 48px;
+        margin-right: 10px;
+      }
     }
     &:nth-child(3) {
       width: 231px;
@@ -194,6 +198,7 @@ mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
         p{
           padding-left: 90px;
         }
+
       }
       &:nth-child(3) {
         padding-top: 1px;

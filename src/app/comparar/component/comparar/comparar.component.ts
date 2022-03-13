@@ -523,7 +523,8 @@ export class CompararComponent implements OnInit {
     };
 
     //Datos[impacto][fase]
-    let auxDatos = this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
+    let auxdata =this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
+    let auxDatos = auxdata[0]
     Object.keys(auxDatos).forEach(impacto => {
       analisisProyectos.Datos[impacto] = {}
       Object.keys(auxDatos[impacto]).forEach(fase => {
@@ -575,7 +576,8 @@ export class CompararComponent implements OnInit {
     };
 
     //Datos[Fase][impacto]
-    let auxDatos = this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
+    let auxdata =this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
+    let auxDatos = auxdata[0]
     let auxFases=[]
     Object.keys(auxDatos).forEach(impacto =>{
       Object.keys(auxDatos[impacto]).forEach(fase =>{
@@ -628,7 +630,8 @@ export class CompararComponent implements OnInit {
       'conversionList':this.conversionList
     };
     //Datos[impacto][fase][subetapa]
-    let auxDatos = this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
+    let auxdata =this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
+    let auxDatos = auxdata[0]
     Object.keys(auxDatos).forEach(impacto => {
       let impacto_ambiental = impacto.replace(/\n/g, " ");
       analisisProyectos.Datos[impacto_ambiental] = {}

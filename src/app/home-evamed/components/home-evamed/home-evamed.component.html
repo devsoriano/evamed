@@ -106,7 +106,9 @@
                       <h2>Consumo energético total <br>requerido anualmente</h2>
                       <div *ngFor="let data of serchUseData(project.id)">
                         <div *ngIf="data.source === 'electric'">
-                          <span class="dot" [ngStyle]="{'background-color': '#767676'}"></span>Mix eléctrico {{data.quantity}} Kwh</div>
+                          <span class="dot" [ngStyle]="{'background-color': '#767676'}"></span>
+                          Mix eléctrico {{data.quantity}} Kwh
+                        </div>
                         <div *ngIf="data.source === 'fuel'">
                           <span class="dot" [ngStyle]="{'background-color': '#DFDFDF'}"></span>Combustible: {{data.quantity}} Kwh</div>
                         <div *ngIf="data.source === 'panels'">
@@ -238,6 +240,9 @@
                       </canvas>
                   </div>
                 </div>
+                <p *ngIf="auxDataProjectList[i].errorCalculos" class="text-error">
+                  Existe un herror en los calculos por falta de datos
+                </p>
               </div>
               <div>
                 <button mat-stroked-button class="Detalle reporte">Generar reporte</button>
@@ -269,7 +274,7 @@
                   <div class="texto-descripcion">
                     {{auxDataProjectList[i].descripcionCarbono}}
                   </div>
-                 </div>
+                </div>
                 <div class="canvas-container">
                   <canvas #MyChart='base-chart' #canvas baseChart
                       [datasets]="auxDataProjectList[i].dataGraficaCarbono['datos']"

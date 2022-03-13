@@ -322,11 +322,11 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList = [];
     this.projectsList.forEach((element) => {
       let calculosOperacionesDeFase = null;
-
-      calculosOperacionesDeFase = this.calculos.OperacionesDeFase(
+      let auxCalculos = this.calculos.OperacionesDeFase(
         element.id,
         this.DatosCalculos
       );
+      calculosOperacionesDeFase = auxCalculos[0];
 
       let auxDatos: Record<string, any> = {
         id: element.id,
@@ -399,6 +399,7 @@ export class HomeEvamedComponent implements OnInit {
         descripcionCarbono: this.calculos.determinarDescripcionCarbono(
           this.catologoOpcionesCarbono[0]
         ),
+        errorCalculos:auxCalculos[1]
       };
       this.auxDataProjectList.push(auxDatos);
     });
