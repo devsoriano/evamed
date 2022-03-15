@@ -44,7 +44,7 @@ export class AddMaterialComponent implements OnInit {
     if (this.addMaterialForm.valid) {
       const material = this.addMaterialForm.value;
       this.materialsService.addMaterial(material).subscribe((data) => {
-        console.log(data);
+        this.goToMaterialList();
       });
     }
   }
