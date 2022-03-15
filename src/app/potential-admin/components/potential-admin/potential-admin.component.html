@@ -4,6 +4,9 @@
   <button mat-button class="yellow-button" (click)="addPotential($event)">
     Agregar potencial
   </button>
+  <button  mat-raised-button color="primary" (click)="goToAdmin()">
+    Regresar a Administrador
+  </button>
 </div>
 
 <table mat-table [dataSource]="ListPotential" class="mat-elevation-z8">

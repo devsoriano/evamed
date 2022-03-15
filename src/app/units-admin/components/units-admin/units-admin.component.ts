@@ -4,6 +4,7 @@ import { AddUnitComponent } from '../add-unit/add-unit.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateUnitComponent } from '../update-unit/update-unit.component';
 import { DeleteUnitComponent } from '../delete-unit/delete-unit.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-units-admin',
@@ -17,7 +18,8 @@ export class UnitsAdminComponent implements OnInit {
 
   constructor(
     private materialsService: MaterialsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -26,6 +28,9 @@ export class UnitsAdminComponent implements OnInit {
     });
   }
 
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
+  }
   addUnit(event: Event) {
     event.preventDefault();
     const dialogRef = this.dialog.open(AddUnitComponent, {

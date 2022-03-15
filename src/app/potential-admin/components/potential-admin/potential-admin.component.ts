@@ -4,6 +4,7 @@ import { MaterialsService } from 'src/app/core/services/materials/materials.serv
 import { UpdatePotentialComponent } from '../update-potential/update-potential.component';
 import { DeletePotentialComponent } from '../delete-potential/delete-potential.component';
 import { AddPotentialComponent } from '../add-potential/add-potential.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-potential-admin',
@@ -23,8 +24,13 @@ export class PotentialAdminComponent implements OnInit {
 
   constructor(
     private materialsService: MaterialsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
+
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
+  }
 
   ngOnInit(): void {
     this.materialsService.getPotentialTypes().subscribe((data) => {

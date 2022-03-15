@@ -3,6 +3,7 @@ import { MaterialsService } from 'src/app/core/services/materials/materials.serv
 import { MatDialog } from '@angular/material/dialog';
 import { AddMachineryComponent } from '../add-machinery/add-machinery.component';
 import { DeleteMachineryComponent } from '../delete-machinery/delete-machinery.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-machinery-admin',
@@ -16,13 +17,18 @@ export class MachineryAdminComponent implements OnInit {
 
   constructor(
     private materialsService: MaterialsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.materialsService.getMachinery().subscribe((data) => {
       this.machineryList = data;
     });
+  }
+
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
   }
 
   addMachinery(event: Event) {

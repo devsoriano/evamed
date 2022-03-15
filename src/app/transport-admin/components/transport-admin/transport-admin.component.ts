@@ -3,6 +3,7 @@ import { MaterialsService } from 'src/app/core/services/materials/materials.serv
 import { MatDialog } from '@angular/material/dialog';
 import { AddTransportComponent } from '../add-transport/add-transport.component';
 import { DeleteTransportComponent } from '../delete-transport/delete-transport.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transport-admin',
@@ -16,13 +17,18 @@ export class TransportAdminComponent implements OnInit {
 
   constructor(
     private materialsService: MaterialsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.materialsService.getTransports().subscribe((data) => {
       this.transportList = data;
     });
+  }
+
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
   }
 
   addTransport(event: Event) {

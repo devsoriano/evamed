@@ -4,6 +4,9 @@
   <button mat-button class="yellow-button" (click)="addMachinery($event)">
     Agregar maquinaria
   </button>
+  <button  mat-raised-button color="primary" (click)="goToAdmin()">
+    Regresar a Administrador
+  </button>
 </div>
 
 <table mat-table [dataSource]="machineryList" class="mat-elevation-z8">

@@ -372,6 +372,17 @@
         Crear nuevo proyecto
       </button>
       </mat-card-actions>
+
+      <mat-card-actions  *ngIf="email === 'arqarvizup@gmail.com'">
+        <button
+          mat-button
+          class="yellow-button"
+          (click)="goToAdmin()"
+        >
+        Administrador 
+      </button>
+      
+    </mat-card-actions>
       <mat-card-actions class="content-logout-button">
         <button
           mat-button

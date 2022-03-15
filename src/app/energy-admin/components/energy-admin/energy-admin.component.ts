@@ -3,6 +3,7 @@ import { MaterialsService } from 'src/app/core/services/materials/materials.serv
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteEnergyComponent } from '../delete-energy/delete-energy.component';
 import { AddEnergyComponent } from '../add-energy/add-energy.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-energy-admin',
@@ -16,13 +17,18 @@ export class EnergyAdminComponent implements OnInit {
 
   constructor(
     private materialsService: MaterialsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.materialsService.getTypeEnergy().subscribe((data) => {
       this.energyList = data;
     });
+  }
+
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
   }
 
   addEnergy(event: Event) {
