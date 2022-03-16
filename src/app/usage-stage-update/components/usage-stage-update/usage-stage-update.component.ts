@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 import { MaterialsService } from 'src/app/core/services/materials/materials.service';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
 
 @Component({
@@ -47,7 +49,8 @@ export class UsageStageUpdateComponent implements OnInit {
     private materialsService: MaterialsService,
     private catalogsService: CatalogsService,
     private router: Router,
-    private electricitConsumptionService: ElectricitConsumptionService
+    private electricitConsumptionService: ElectricitConsumptionService,
+    public dialog: MatDialog
   ) {
     this.catalogsService.getEnergyUnits().subscribe((data) => {
       this.catalogoUnidadEnergia = data;
@@ -367,6 +370,15 @@ export class UsageStageUpdateComponent implements OnInit {
           });
       })
     );
+
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
+    });
   }
 
   goToMaterialStage() {

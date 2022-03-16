@@ -365,7 +365,6 @@ export class ConstructionStageUpdateComponent implements OnInit {
   }
 
   continueStep(event: Event) {
-    console.log('continuar!!!!');
     event.preventDefault();
     const dialogRef = this.dialog.open(IntermedialComponent, {
       width: '680px',
