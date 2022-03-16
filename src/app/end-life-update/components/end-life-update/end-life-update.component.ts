@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatListOption } from '@angular/material/list';
 import { Router } from '@angular/router';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 import { EndLifeService } from 'src/app/core/services/end-life/end-life.service';
 import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
 
 @Component({
   selector: 'app-end-life-update',
@@ -30,7 +32,8 @@ export class EndLifeUpdateComponent implements OnInit {
     private catalogsService: CatalogsService,
     private endLifeService: EndLifeService,
     private materialsService: MaterialsService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.catalogsService.getSourceInformation().subscribe((data) => {
       const fuentes = [];
@@ -268,5 +271,18 @@ export class EndLifeUpdateComponent implements OnInit {
 
   goToEndLife() {
     this.router.navigateByUrl('end-life-stage');
+  }
+
+  continueStep(event: Event) {
+    console.log('continuar!!!!');
+    event.preventDefault();
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
+    });
   }
 }
