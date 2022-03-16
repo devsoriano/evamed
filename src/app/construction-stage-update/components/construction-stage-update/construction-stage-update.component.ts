@@ -6,6 +6,8 @@ import { CatalogsService } from './../../../core/services/catalogs/catalogs.serv
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 import { MaterialsService } from 'src/app/core/services/materials/materials.service';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-construction-stage-update',
@@ -41,7 +43,8 @@ export class ConstructionStageUpdateComponent implements OnInit {
     private catalogsService: CatalogsService,
     private projectsService: ProjectsService,
     private constructionStageService: ConstructionStageService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.catalogsService.getSourceInformation().subscribe((data) => {
       const fuentes = [];
@@ -358,6 +361,19 @@ export class ConstructionStageUpdateComponent implements OnInit {
       } else {
         this.router.navigateByUrl('update-end-life');
       }
+    });
+  }
+
+  continueStep(event: Event) {
+    console.log('continuar!!!!');
+    event.preventDefault();
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
     });
   }
 }

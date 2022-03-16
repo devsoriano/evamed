@@ -271,7 +271,11 @@
 
 <!--Section continue-->
 <div class="section-continue">
-  <button mat-button class="yellow-button" (click)="saveStepTwo()">
-    Continuar
+  <button
+    mat-button
+    class="yellow-button custom-continue"
+    (click)="continueStep($event)"
+  >
+    Ir a etapa de Uso
   </button>
 </div>

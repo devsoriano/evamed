@@ -24,17 +24,16 @@ export class IntermedialComponent implements OnInit {
 
   continueStep(event: Event) {
     event.preventDefault();
-    this.materialsService.getConstructionStage().subscribe((cse) => {
-      const schemaFilter = cse.filter(
+    this.materialsService.getACR().subscribe((acr) => {
+      const schemaFilter = acr.filter(
         (schema) =>
           schema.project_id == localStorage.getItem('idProyectoConstrucción')
       );
-      console.log(schemaFilter);
 
       if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('construction-stage');
+        this.router.navigateByUrl('usage-stage');
       } else {
-        this.router.navigateByUrl('construction-stage-update');
+        this.router.navigateByUrl('usage-stage-update');
       }
     });
     this.onNoClick();
