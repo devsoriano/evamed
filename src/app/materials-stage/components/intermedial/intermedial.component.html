@@ -1,0 +1,16 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    ¿Desea continuar a etapa de construcción?
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-content>
+  <p>Asegurese de guardar los datos si así lo requiere</p>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="continueStep($event)">Etapa de construcción</button>
+</div>
