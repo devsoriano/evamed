@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddDataBaseComponent } from '../add-data-base/add-data-base.component';
 import { UpdateDataBaseComponent } from '../update-data-base/update-data-base.component';
 import { DeleteDataBaseComponent } from '../delete-data-base/delete-data-base.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-data-base-admin',
@@ -17,13 +18,18 @@ export class DataBaseAdminComponent implements OnInit {
 
   constructor(
     private materialsService: MaterialsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.materialsService.getDbMaterials().subscribe((data) => {
       this.dataBases = data;
     });
+  }
+
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
   }
 
   addDBMaterials(event: Event) {

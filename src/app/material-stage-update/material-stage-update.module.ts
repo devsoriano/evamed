@@ -5,9 +5,10 @@ import { MaterialStageUpdateComponent } from './components/material-stage-update
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
+import { IntermedialComponent } from './components/intermedial/intermedial.component';
 
 @NgModule({
-  declarations: [MaterialStageUpdateComponent],
+  declarations: [MaterialStageUpdateComponent, IntermedialComponent],
   imports: [
     CommonModule,
     MaterialStageUpdateRoutingModule,
@@ -16,5 +17,7 @@ import { MaterialModule } from './../material/material.module';
     MaterialModule,
     ReactiveFormsModule,
   ],
+  exports: [MaterialStageUpdateComponent, IntermedialComponent],
+  entryComponents: [IntermedialComponent],
 })
 export class MaterialStageUpdateModule {}

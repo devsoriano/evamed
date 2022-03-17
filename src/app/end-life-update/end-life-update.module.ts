@@ -6,9 +6,10 @@ import { EndLifeUpdateComponent } from './components/end-life-update/end-life-up
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
+import { IntermedialComponent } from './components/intermedial/intermedial.component';
 
 @NgModule({
-  declarations: [EndLifeUpdateComponent],
+  declarations: [EndLifeUpdateComponent, IntermedialComponent],
   imports: [
     CommonModule,
     EndLifeUpdateRoutingModule,
@@ -16,5 +17,7 @@ import { MaterialModule } from './../material/material.module';
     FormsModule,
     MaterialModule,
   ],
+  exports: [EndLifeUpdateComponent, IntermedialComponent],
+  entryComponents: [IntermedialComponent],
 })
 export class EndLifeUpdateModule {}

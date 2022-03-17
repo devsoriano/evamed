@@ -50,6 +50,7 @@ export class HomeEvamedComponent implements OnInit {
   countProjectList: number;
   user: string;
   sector: string;
+  email: string;
   nameProject: string;
   tagProject: string;
   sections: any;
@@ -231,6 +232,8 @@ export class HomeEvamedComponent implements OnInit {
       .subscribe((data) => {
         this.user = data[0].name;
         this.sector = data[0].institution;
+        this.email = data[0].email;
+        console.log(data);
         localStorage.setItem('email-id', data[0].id);
         this.projectsList = [];
         this.cargaDatosCalculo = false;
@@ -414,6 +417,10 @@ export class HomeEvamedComponent implements OnInit {
     this.auth.logout().then(() => {
       this.router.navigate(['/auth/login']);
     });
+  }
+
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
   }
 
   serchSections(projectId) {

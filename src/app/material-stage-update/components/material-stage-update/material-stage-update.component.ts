@@ -8,6 +8,8 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AnalisisService } from 'src/app/core/services/analisis/analisis.service';
+import { MatDialog } from '@angular/material/dialog';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
 
 export interface Material {
   id: number;
@@ -77,7 +79,8 @@ export class MaterialStageUpdateComponent implements OnInit {
     private projectsService: ProjectsService,
     private catalogsService: CatalogsService,
     private analisis: AnalisisService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.materialsService.getMaterials().subscribe((data) => {
       this.materialsList = data;
@@ -645,6 +648,19 @@ export class MaterialStageUpdateComponent implements OnInit {
       } else {
         this.router.navigateByUrl('update-end-life');
       }
+    });
+  }
+
+  continueStep(event: Event) {
+    console.log('continuar!!!!');
+    event.preventDefault();
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
     });
   }
 }

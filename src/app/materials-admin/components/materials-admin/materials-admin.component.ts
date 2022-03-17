@@ -72,6 +72,10 @@ export class MaterialsAdminComponent implements OnInit {
     this.router.navigateByUrl('admin-materials/add');
   }
 
+  goToAdmin() {
+    this.router.navigateByUrl('admin');
+  }
+
   deleteMaterial(id) {
     this.materialsService.deleteMaterial(id).subscribe(() => {
       this.materialsService.getMaterials().subscribe((data) => {

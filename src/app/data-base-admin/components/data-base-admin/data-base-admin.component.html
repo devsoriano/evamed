@@ -4,6 +4,9 @@
   <button mat-button class="yellow-button" (click)="addDBMaterials($event)">
     Agregar base de datos
   </button>
+  <button  mat-raised-button color="primary" (click)="goToAdmin()">
+    Regresar a Administrador
+  </button>
 </div>
 
 <table mat-table [dataSource]="dataBases" class="mat-elevation-z8">

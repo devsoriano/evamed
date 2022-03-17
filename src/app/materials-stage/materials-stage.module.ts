@@ -7,12 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
 import { AddConstructiveElementComponent } from './components/add-constructive-element/add-constructive-element.component';
 import { AddConstructiveSystemComponent } from './components/add-constructive-system/add-constructive-system.component';
+import { IntermedialComponent } from './components/intermedial/intermedial.component';
 
 @NgModule({
   declarations: [
     MaterialsStageComponent,
     AddConstructiveElementComponent,
-    AddConstructiveSystemComponent
+    AddConstructiveSystemComponent,
+    IntermedialComponent
   ],
   imports: [
     CommonModule,
