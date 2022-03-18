@@ -233,7 +233,6 @@ export class HomeEvamedComponent implements OnInit {
         this.user = data[0].name;
         this.sector = data[0].institution;
         this.email = data[0].email;
-        console.log(data);
         localStorage.setItem('email-id', data[0].id);
         this.projectsList = [];
         this.cargaDatosCalculo = false;

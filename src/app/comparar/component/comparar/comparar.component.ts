@@ -169,13 +169,7 @@ export class CompararComponent implements OnInit {
   flagSinMaterialesDispercion = false;
   estadoTercerSeccion={};
   unidadImpactoAmientalTabla="";
-  checkboxes: any[] = [
-    { name: 'cb1', value: 'cb1', checked: false },
-    { name: 'cb2', value: 'cb2', checked: true },
-    { name: 'cb3', value: 'cb3', checked: false },
-    { name: 'cb4', value: 'cb4', checked: false },
-    { name: 'cb5', value: 'cb5', checked: false },
-  ]
+  idsImpactosAmbientales = {};
 
   // vars analisis
   idProyectoActivo: number;
@@ -254,7 +248,9 @@ export class CompararComponent implements OnInit {
       this.materialSchemeDataList = materialSchemeData;
       this.materialSchemeProyectList = materialSchemeProyect;
       this.potentialTypesList = potentialTypes;
-      this.catologoImpactoAmbiental = this.calculos.FiltradoDeImpactos(potentialTypes);
+      let aux = this.calculos.FiltradoDeImpactos(potentialTypes);
+      this.catologoImpactoAmbiental = aux;
+      this.llenarIdsBotonesImpactos(aux)
       this.selectedValue = this.catologoImpactoAmbiental[0]['name_complete_potential_type'];
       this.impactoAmbientalSeleccionado=this.calculos.ajustarNombre(this.catologoImpactoAmbiental[0]['name_complete_potential_type'])
       this.standarsList = standards;
@@ -286,6 +282,18 @@ export class CompararComponent implements OnInit {
   //Regreso a la página de inicio
   returnHome(){
     this.router.navigateByUrl('home-evamed');
+  }
+
+  //ids Necesarios para modificar en html
+  llenarIdsBotonesImpactos(catalogo){
+    this.idsImpactosAmbientales = {'idsCiclo':[],'idsElementos':[]};
+    catalogo.forEach(impacto => {
+      let auxIDCiclo = impacto['id'].toString().concat("LineaImpactoCiclo");
+      let auxIDElementos = impacto['id'].toString().concat("LineaImpactoElememtos");
+      this.idsImpactosAmbientales['idsCiclo'].push(auxIDCiclo);
+      this.idsImpactosAmbientales['idsElementos'].push(auxIDElementos);
+      //this.idsImpactosAmbientales['respuesta'].push(impacto['id'])
+    })
   }
 
   //eliminar fase de ciclo de visa y redistribución;
@@ -1139,12 +1147,31 @@ export class CompararComponent implements OnInit {
         document.getElementById(this.ID).className = 'boton-principal';
         this.ID = ' ';
       }
+      this.catologoImpactoAmbiental.forEach(impacto => {
+        let auxID = impacto['id'].toString().concat("LineaImpactoCiclo");
+        let elementosflag = document.getElementById(auxID)
+        if(elementosflag != null){
+          elementosflag.className = 'dot';
+        }
+      })
     }else{
       this.bandera=1;
       this.hover = false;
       if (this.ID != ' ') {
         document.getElementById(this.ID).className = 'boton-principal';
       }
+      this.catologoImpactoAmbiental.forEach(impacto => {
+        let auxnameI = impacto['name_complete_potential_type'].replace(/\s/g,'');
+        let auxnameIS = aux.replace(/\s/g,'');
+        if(auxnameIS === auxnameI){
+          let auxID = impacto['id'].toString().concat("LineaImpactoCiclo");
+          document.getElementById(auxID).className = 'linea-select';
+        }else{
+          let auxID = impacto['id'].toString().concat("LineaImpactoCiclo");
+          document.getElementById(auxID).className = 'dot';
+        }
+      })
+      //catologoImpactoAmbiental
       this.ID = ' ';
     }
     this.containerGraficas.clear();
@@ -1583,12 +1610,30 @@ export class CompararComponent implements OnInit {
       }else{
         aux = $event['seleccion'];
       }
+      this.catologoImpactoAmbiental.forEach(impacto => {
+        let auxnameI = impacto['name_complete_potential_type'].replace(/\s/g,'');
+        let auxnameIS = aux.replace(/\s/g,'');
+        if(auxnameIS === auxnameI){
+          let auxID = impacto['id'].toString().concat("LineaImpactoElememtos");
+          document.getElementById(auxID).className = 'linea-select';
+        }else{
+          let auxID = impacto['id'].toString().concat("LineaImpactoElememtos");
+          document.getElementById(auxID).className = 'dot';
+        }
+      })
       let auxnombre=this.calculos.ajustarNombre(aux);
       this.nivelesExistententesElementosConstructivos=$event['niveles'][auxnombre];
       this.coloresExistententesElementosConstructivos=$event['color'];
       this.graficabar(aux);
       this.asignarColorGraficaDispercion();
     }else{
+      this.catologoImpactoAmbiental.forEach(impacto => {
+        let auxID = impacto['id'].toString().concat("LineaImpactoElememtos");
+        let elementosflag = document.getElementById(auxID)
+        if(elementosflag != null){
+          elementosflag.className = 'dot';
+        }
+      })
       this.graficabar(null);
     }
 

@@ -62,6 +62,9 @@
             <ng-template #barContainer>
 
             </ng-template>
+            <div class="indicadores">
+              <span *ngFor="let impacto of catologoImpactoAmbiental ; let iImpacto = index" class="dot" id="{{idsImpactosAmbientales['idsCiclo'][iImpacto]}}"></span>
+            </div>
           </div>
           <div *ngIf="resultdosTabla" class="tabla">
             <table class="Tabla-Datos" mat-table [dataSource]="DatosTabla" multiTemplateDataRows>
@@ -141,6 +144,9 @@
           <div class="div-second-tab">
             <ng-template #barGraphDos>
             </ng-template>
+            <div class="indicadores">
+              <span *ngFor="let impacto of catologoImpactoAmbiental ; let iImpacto = index" class="dot" id="{{idsImpactosAmbientales['idsElementos'][iImpacto]}}"></span>
+            </div>
             <p>
               Elementos constructivos  
             </p>
