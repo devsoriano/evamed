@@ -6,6 +6,7 @@ import { AnalisisService } from './../../../core/services/analisis/analisis.serv
 import { UpdateDataSchemeComponent } from '../update-data-scheme/update-data-scheme.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDataSchemeComponent } from '../add-data-scheme/add-data-scheme.component';
+import { DeleteDataSchemeComponent } from '../delete-data-scheme/delete-data-scheme.component';
 
 @Component({
   selector: 'app-update-material',
@@ -92,7 +93,7 @@ export class UpdateMaterialComponent implements OnInit {
     this.form = this.formBuilder.group({
       name_material: [null, Validators.required],
       database_from: [null, Validators.required],
-      description: [null, Validators.required],
+      description: [null],
       unit_id: [null, Validators.required],
     });
   }
@@ -114,20 +115,19 @@ export class UpdateMaterialComponent implements OnInit {
     this.router.navigateByUrl('admin-materials');
   }
 
-  goToAddScheme() {
-    const dialogRef = this.dialog.open(AddDataSchemeComponent, {
+  deleteSchema(event: Event, id: number) {
+    event.preventDefault();
+    const potentialSelected = this.ListSchemeData.filter(
+      (data) => data.id === id
+    );
+    const dialogRef = this.dialog.open(DeleteDataSchemeComponent, {
       width: '680px',
-      data: { material_id: this.id },
+      data: potentialSelected,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       this.ngOnInit();
     });
-  }
-
-  deleteSchema(id: number) {
-    console.log('Delete...');
-    console.log(id);
   }
 
   getPotential(id: number) {
@@ -152,13 +152,28 @@ export class UpdateMaterialComponent implements OnInit {
     return unit[0].name_unit;
   }
 
-  openModalSchema(elem) {
+  openModalSchema(event: Event, elem) {
+    event.preventDefault();
     const dialogRef = this.dialog.open(UpdateDataSchemeComponent, {
       width: '680px',
       data: { ...elem },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit();
+    });
+  }
+
+  goToAddScheme(event: Event) {
+    event.preventDefault();
+    console.log('entra a goToAddScheme');
+    const dialogRef = this.dialog.open(AddDataSchemeComponent, {
+      width: '680px',
+      data: { material_id: this.id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('entra a este proceso');
       this.ngOnInit();
     });
   }

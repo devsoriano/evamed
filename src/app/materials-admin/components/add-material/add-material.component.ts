@@ -35,7 +35,7 @@ export class AddMaterialComponent implements OnInit {
     this.addMaterialForm = this.fb.group({
       name_material: [null, Validators.required],
       database_from: [null, Validators.required],
-      description: [null, Validators.required],
+      description: [null],
       unit_id: [null, Validators.required],
     });
   }

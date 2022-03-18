@@ -11,6 +11,8 @@ import { UpdateMaterialComponent } from './components/update-material/update-mat
 import { ChartsModule } from 'ng2-charts';
 import { UpdateDataSchemeComponent } from './components/update-data-scheme/update-data-scheme.component';
 import { AddDataSchemeComponent } from './components/add-data-scheme/add-data-scheme.component';
+import { DeleteMaterialComponent } from './components/delete-material/delete-material.component';
+import { DeleteDataSchemeComponent } from './components/delete-data-scheme/delete-data-scheme.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { AddDataSchemeComponent } from './components/add-data-scheme/add-data-sc
     UpdateMaterialComponent,
     UpdateDataSchemeComponent,
     AddDataSchemeComponent,
+    DeleteMaterialComponent,
+    DeleteDataSchemeComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +39,14 @@ import { AddDataSchemeComponent } from './components/add-data-scheme/add-data-sc
     UpdateMaterialComponent,
     UpdateDataSchemeComponent,
     AddDataSchemeComponent,
+    DeleteMaterialComponent,
+    DeleteDataSchemeComponent,
   ],
-  entryComponents: [UpdateDataSchemeComponent, AddDataSchemeComponent],
+  entryComponents: [
+    UpdateDataSchemeComponent,
+    AddDataSchemeComponent,
+    DeleteMaterialComponent,
+    DeleteDataSchemeComponent,
+  ],
 })
 export class MaterialsAdminModule {}

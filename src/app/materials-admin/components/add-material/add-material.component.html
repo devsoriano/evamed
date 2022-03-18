@@ -36,9 +36,6 @@
         <div class="Col">
           <mat-form-field  appearance="outline" >
             <textarea matInput placeholder="Descripción" formControlName="description"></textarea>
-            <mat-error *ngIf="addMaterialForm.controls['description'].hasError('required')">
-              Descripción es <strong>requerido</strong>
-            </mat-error>
           </mat-form-field>
         </div>
       </div>

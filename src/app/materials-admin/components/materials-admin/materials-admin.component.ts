@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
+import { DeleteMaterialComponent } from '../delete-material/delete-material.component';
 
 export interface Material {
   id: number;
@@ -53,8 +55,11 @@ export class MaterialsAdminComponent implements OnInit {
 
   constructor(
     private router: Router,
+    public dialog: MatDialog,
     private materialsService: MaterialsService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.materialsService.getMaterials().subscribe((data) => {
       this.materialList = data;
       this.inmutableList = data;
@@ -66,8 +71,6 @@ export class MaterialsAdminComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
-
   goToAddMaterial() {
     this.router.navigateByUrl('admin-materials/add');
   }
@@ -76,11 +79,16 @@ export class MaterialsAdminComponent implements OnInit {
     this.router.navigateByUrl('admin');
   }
 
-  deleteMaterial(id) {
-    this.materialsService.deleteMaterial(id).subscribe(() => {
-      this.materialsService.getMaterials().subscribe((data) => {
-        this.materialList = data;
-      });
+  deleteMaterial(event: Event, id, name_material) {
+    event.preventDefault();
+
+    const dialogRef = this.dialog.open(DeleteMaterialComponent, {
+      width: '680px',
+      data: { id, name_material },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ngOnInit();
     });
   }
 
