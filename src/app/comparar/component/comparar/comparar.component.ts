@@ -170,6 +170,7 @@ export class CompararComponent implements OnInit {
   estadoTercerSeccion={};
   unidadImpactoAmientalTabla="";
   idsImpactosAmbientales = {};
+  basesDatos={'EDPs':true,'EPic':false,'MEX':false}
 
   // vars analisis
   idProyectoActivo: number;
@@ -313,7 +314,8 @@ export class CompararComponent implements OnInit {
     }
     this.outproyect_bar=[];
     this.proyect_active.forEach(element => {
-      let analisis = this.getAnalisisBarras(element);
+      let data = this.llamarCalculos(element)
+      let analisis = this.getAnalisisBarras(element,data);
       this.outproyect_bar.push(analisis);
     })
     this.fasesEliminadas.forEach(value => {
@@ -347,9 +349,12 @@ export class CompararComponent implements OnInit {
     if(this.proyect_active.length >1){
       this.banderaAjusteElememtos = true;
     }
-    let analisis = this.getAnalisisBarras(id);
-    let analisisRad = this.getAnalisisRadial(id);
-    let analisisPie = this.getAnalisisPie(id);
+
+    let data = this.llamarCalculos(id)
+
+    let analisis = this.getAnalisisBarras(id,data);
+    let analisisRad = this.getAnalisisRadial(id,data);
+    let analisisPie = this.getAnalisisPie(id,data);
     let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
     let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
     let analisisPieTres = this.getAnalisisElementos(id);
@@ -501,16 +506,9 @@ export class CompararComponent implements OnInit {
     return aux;
   }
 
-  getAnalisisBarras(idProyecto){
-
-    //Creación de espacio para guardar los datos del proyecto
-    let analisisProyectos : Record<string,any> = {
-      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
-      id: idProyecto,
-      Datos: {}
-    };
-
-    let DatosCalculos = { 'TEList':this.TEList,
+  llamarCalculos(idProyecto){
+    let DatosCalculos = { 
+      'TEList':this.TEList,
       'projectsList':this.projectsList,
       'materialList':this.materialList,
       'materialSchemeDataList':this.materialSchemeDataList,
@@ -530,9 +528,21 @@ export class CompararComponent implements OnInit {
       'conversionList':this.conversionList
     };
 
-    //Datos[impacto][fase]
-    let auxdata =this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
+    let auxdata =this.calculos.OperacionesDeFase(idProyecto,DatosCalculos,this.basesDatos)
     let auxDatos = auxdata[0]
+    return auxDatos
+  }
+
+  getAnalisisBarras(idProyecto,data){
+
+    //Creación de espacio para guardar los datos del proyecto
+    let analisisProyectos : Record<string,any> = {
+      Nombre: this.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
+      id: idProyecto,
+      Datos: {}
+    };
+
+    let auxDatos = data
     Object.keys(auxDatos).forEach(impacto => {
       analisisProyectos.Datos[impacto] = {}
       Object.keys(auxDatos[impacto]).forEach(fase => {
@@ -555,37 +565,14 @@ export class CompararComponent implements OnInit {
   }
 
 
-  getAnalisisRadial(idProyecto){
+  getAnalisisRadial(idProyecto,data){
     let analisisProyectos : Record<string,any> = {
       Nombre: this.calculos.projectsList.filter( p => p['id'] == idProyecto)[0]['name_project'],
       id: idProyecto,
       Datos: {}
     };
 
-    let DatosCalculos = { 
-      'TEList':this.TEList,
-      'projectsList':this.projectsList,
-      'materialList':this.materialList,
-      'materialSchemeDataList':this.materialSchemeDataList,
-      'materialSchemeProyectList':this.materialSchemeProyectList,
-      'potentialTypesList':this.potentialTypesList,
-      'standarsList':this.standarsList,
-      'CSEList':this.CSEList,
-      'SIDList':this.SIDList,
-      'SIList':this.SIList,
-      'ACRList':this.ACRList,
-      'ECDList':this.ECDList,
-      'TEDList':this.TEDList,
-      'ULList':this.ULList,
-      'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList,
-      'PTList':this.PTList,
-      'conversionList':this.conversionList
-    };
-
-    //Datos[Fase][impacto]
-    let auxdata =this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
-    let auxDatos = auxdata[0]
+    let auxDatos = data
     let auxFases=[]
     Object.keys(auxDatos).forEach(impacto =>{
       Object.keys(auxDatos[impacto]).forEach(fase =>{
@@ -611,35 +598,14 @@ export class CompararComponent implements OnInit {
     return analisisProyectos;
   }
 
-  getAnalisisPie(idProyecto){
+  getAnalisisPie(idProyecto,data){
     let analisisProyectos: Record<string, any> = {
       Nombre: this.calculos.projectsList.filter(p => p['id'] == idProyecto)[0]['name_project'],
       id: idProyecto,
       Datos: {}
     };
 
-    let DatosCalculos = { 'TEList':this.TEList,
-      'projectsList':this.projectsList,
-      'materialList':this.materialList,
-      'materialSchemeDataList':this.materialSchemeDataList,
-      'materialSchemeProyectList':this.materialSchemeProyectList,
-      'potentialTypesList':this.potentialTypesList,
-      'standarsList':this.standarsList,
-      'CSEList':this.CSEList,
-      'SIDList':this.SIDList,
-      'SIList':this.SIList,
-      'ACRList':this.ACRList,
-      'ECDList':this.ECDList,
-      'TEDList':this.TEDList,
-      'ULList':this.ULList,
-      'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList,
-      'PTList':this.PTList,
-      'conversionList':this.conversionList
-    };
-    //Datos[impacto][fase][subetapa]
-    let auxdata =this.calculos.OperacionesDeFase(idProyecto,DatosCalculos)
-    let auxDatos = auxdata[0]
+    let auxDatos = data
     Object.keys(auxDatos).forEach(impacto => {
       let impacto_ambiental = impacto.replace(/\n/g, " ");
       analisisProyectos.Datos[impacto_ambiental] = {}
@@ -732,9 +698,11 @@ export class CompararComponent implements OnInit {
         this.bandera_por_metro = false
       }
 
-      let analisis = this.getAnalisisBarras(id);
-      let analisisRad = this.getAnalisisRadial(id);
-      let analisisPie = this.getAnalisisPie(id);
+      let data = this.llamarCalculos(id)
+      
+      let analisis = this.getAnalisisBarras(id,data);
+      let analisisRad = this.getAnalisisRadial(id,data);
+      let analisisPie = this.getAnalisisPie(id,data);
       
       this.outproyect_bar.push(analisis);
       this.outproyect_radar.push(analisisRad);
@@ -862,6 +830,34 @@ export class CompararComponent implements OnInit {
     this.resultdosTabla = false;
     this.resultdosGraficos = true;
     this.iniciaBarras();
+  }
+
+  ajusteUsoBaseDatos(){
+    console.log(this.basesDatos)
+    this.outproyect_bar = [];
+    this.outproyect_pie = [];
+    this.outproyect_radar = [];
+    this.fasesEliminadas = [];
+    this.proyect_active.forEach(id => {
+      let data = this.llamarCalculos(id)
+      
+      let analisis = this.getAnalisisBarras(id,data);
+      let analisisRad = this.getAnalisisRadial(id,data);
+      let analisisPie = this.getAnalisisPie(id,data);
+      
+      this.outproyect_bar.push(analisis);
+      this.outproyect_radar.push(analisisRad);
+      this.outproyect_pie.push(analisisPie);
+    });
+    
+    if(this.resultdosGraficos){
+      this.containerGraficas.clear();
+      this.receiveSelector(null);
+      this.ID = ' ';
+      this.iniciaBarras()
+    }else{
+      this.TablaResultados()
+    }
   }
 
   //controlar la activación de elementos en la interacción con los tipos de resultados

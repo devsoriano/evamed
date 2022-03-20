@@ -5,6 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatSelectModule } from '@angular/material/select';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { CompararRoutingModule } from './comparar-routing.module';
 import { CompararComponent } from './component/comparar/comparar.component';
@@ -42,6 +43,7 @@ import { GraficasTercerSeccionComponent } from './component/graficas-tercer-secc
     MatSelectModule,
     ScrollingModule,
     MatCheckboxModule,
+    MatSlideToggleModule
   ],
   exports: [
     CompararComponent,

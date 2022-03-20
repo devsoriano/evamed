@@ -69,6 +69,7 @@ export class HomeEvamedComponent implements OnInit {
   //para calculos
   DatosCalculos: any;
   cargaDatosCalculo = false;
+  basesDatos={'EDPs':true,'EPic':false,'MEX':false}
   //---
   auxDatosGraficaUso = [];
   public doughnutChartType = 'doughnut';
@@ -326,7 +327,7 @@ export class HomeEvamedComponent implements OnInit {
       let calculosOperacionesDeFase = null;
       let auxCalculos = this.calculos.OperacionesDeFase(
         element.id,
-        this.DatosCalculos
+        this.DatosCalculos,this.basesDatos
       );
       calculosOperacionesDeFase = auxCalculos[0];
 
