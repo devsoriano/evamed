@@ -77,6 +77,16 @@ export class MaterialsService {
     );
   }
 
+  deleteMaterialSchemeData(id: number) {
+    return this.http
+      .delete(`${environment.api_material_scheme_data}${id}/`)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
   updateMaterial(id: string, changes) {
     return this.http.put(`${environment.api_materials}${id}/`, changes).pipe(
       tap((data) => {

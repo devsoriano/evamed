@@ -1,5 +1,3 @@
-
-
 .mat-master {
   width: 940px;
 }
@@ -11,26 +9,9 @@
   margin: auto;
   width: 810px;
   height: auto;
-  .dot {
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #ffffff;
-  }
-  .linea-select{
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #e3c500;
-  }
-  .indicadores{
-    display: flex;
-    justify-content: space-between;
-    margin-left: 32px;
-  }
 }
 
-.tabla{
+.tabla {
   padding: 10px;
 }
 
@@ -66,8 +47,8 @@
 .sectionOne {
   color: #92be00;
   padding: 0px;
-  
-  a.return-proyecto{
+
+  a.return-proyecto {
     font-size: 12px;
   }
 
@@ -109,12 +90,11 @@
       padding: 0px;
     }
   }
-
 }
 .button-graph {
   display: inline-block;
   margin-right: 10px;
-  .card.datos{
+  .card.datos {
     height: auto;
   }
   .card {
@@ -167,9 +147,8 @@ ng-template {
       width: 47px !important;
       height: 32px !important;
     }
-    
   }
-  
+
   mat-button-toggle {
     flex: 1 1 100%;
     box-sizing: border-box;
@@ -177,7 +156,6 @@ ng-template {
     flex-direction: row;
     display: flex;
   }
-  
 }
 
 .secondary-text {
@@ -191,7 +169,6 @@ ng-template {
 .div-secondary-graph {
   display: inline-grid;
   grid-template-columns: 161px auto;
-
 
   p {
     letter-spacing: 0px;
@@ -272,19 +249,19 @@ p.text-duplicados {
   > div {
     &:nth-child(1) {
       width: 240px;
-      p{
+      p {
         padding-left: 20px;
       }
     }
     &:nth-child(2) {
       width: 393px;
-      p{
+      p {
         padding-left: 50px;
       }
     }
     &:nth-child(3) {
       width: 350px;
-      p{
+      p {
         padding-left: 50px;
       }
       ul {
@@ -296,7 +273,7 @@ p.text-duplicados {
       li {
         display: flex;
         padding-bottom: 5px;
-      }    
+      }
       .button-info {
         border-radius: 10px 0px 0px 10px;
         width: 99px;
@@ -304,7 +281,7 @@ p.text-duplicados {
         background: #efefef;
         border: 0px;
       }
-    
+
       .button-info-select {
         border-radius: 10px 0px 0px 10px;
         width: 102px;
@@ -331,7 +308,7 @@ p.text-duplicados {
         border: 0px;
         padding: 1px;
       }
-    
+
       .some-text {
         float: left;
         text-align: left;
@@ -353,7 +330,7 @@ p.text-duplicados {
     color: #707070;
     opacity: 1;
   }
-  
+
   .select-impacto-ambiental {
     width: 221px;
     height: 37px;
@@ -367,7 +344,7 @@ p.text-duplicados {
   }
 }
 
-.boton-ojito-select{
+.boton-ojito-select {
   border-radius: 50%;
   padding: 0px;
   border: none;
@@ -381,14 +358,14 @@ p.text-duplicados {
   }
 }
 
-.boton-select{
+.boton-select {
   width: 117px;
   height: 39px;
   margin-left: 8px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   box-shadow: 0px 3px 6px #00000029;
   border-radius: 5px;
-  border-color: #FFFFFF;
+  border-color: #ffffff;
 }
 
 .div-second-tab {
@@ -402,56 +379,38 @@ p.text-duplicados {
     margin-top: 35px;
   }
 
-  .dot {
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #ffffff;
-  }
-  .linea-select{
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #e3c500;
-  }
-  .indicadores{
-    display: flex;
-    justify-content: space-between;
-    margin-left: 32px;
-  }
-
   .botones-elementos-contructivos {
-    display:inline-flex;
+    display: inline-flex;
     justify-content: space-between;
-    .espacio-sin-selecciomar{
+    .espacio-sin-selecciomar {
       //padding-top: 4px;
       width: 144px;
       height: 34px;
-      background: #EFEFEF;
+      background: #efefef;
       border-radius: 4px;
       font-size: 15px;
       display: flex;
       align-items: center;
       margin: 5px;
       border: 0;
-      .color-texto{
+      .color-texto {
         color: #767676;
       }
     }
 
-    .espacio-seleccionado{
+    .espacio-seleccionado {
       //padding-top: 4px;
       width: 144px;
       height: 34px;
-      background: #FFFFFF;
+      background: #ffffff;
       border-radius: 4px;
       font-size: 15px;
       display: flex;
       align-items: center;
       //margin: 5px;
-      border: 1px solid #EDC903;
+      border: 1px solid #edc903;
       box-shadow: 0px 3px 6px #00000029;
-      .color-texto{
+      .color-texto {
         color: #343434;
       }
     }
@@ -467,7 +426,7 @@ p.text-duplicados {
       //margin: 5px;
       border: 0;
     }
-    .button-icono{
+    .button-icono {
       width: 34px;
       height: 34px;
       background: none;
@@ -485,7 +444,7 @@ p.text-duplicados {
         align-items: center;
       }
     }
-    .button-icono-seleccionado{
+    .button-icono-seleccionado {
       width: 34px;
       height: 34px;
       background: none;
@@ -512,7 +471,7 @@ p.text-duplicados {
   margin-left: 52px;
   margin-bottom: 50px;
   position: relative;
-  button{
+  button {
     width: 144px;
     height: auto;
     overflow-wrap: break-word;
@@ -547,15 +506,15 @@ p.text-duplicados {
   margin-top: 50px;
   margin-left: 52px;
   margin-bottom: 40px;
-  button{
+  button {
     width: 144px;
-    height:auto;
+    height: auto;
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
     font-size: 13px;
     margin: 5px;
-    border: 1px solid #EDC903;
+    border: 1px solid #edc903;
     border-radius: 11px;
     box-shadow: 0px 3px 6px #00000029;
   }
@@ -571,10 +530,9 @@ p.text-duplicados {
   }*/
 }
 
-
 .last-div-section-two {
   display: inline-block;
-  .button-graph{
+  .button-graph {
     display: flex;
     justify-content: space-between;
     margin: 10px;
@@ -590,7 +548,7 @@ p.text-duplicados {
       margin: 2px;
     }
   }
-  .seccion{
+  .seccion {
     display: flex;
     > div {
       &:nth-child(1) {
@@ -602,14 +560,14 @@ p.text-duplicados {
     }
   }
 
-  .circulo-color-tabla{
+  .circulo-color-tabla {
     height: 24px;
     width: 29px;
     border-radius: 50%;
     padding-top: 7px;
   }
 
-  .graficas-dispercion{
+  .graficas-dispercion {
     width: 300px;
   }
 
@@ -624,7 +582,7 @@ p.text-duplicados {
     width: 32px;
     padding-right: 24px;
     text-align: center;
-    color: #767676;
+    color: #aca8a8;
   }
 
   .mat-column-porcentaje {
@@ -632,7 +590,7 @@ p.text-duplicados {
     padding-right: 12px;
     padding-left: 12px;
     text-align: center;
-    color: #767676;
+    color: #aca8a8;
   }
 
   .mat-column-numero {
@@ -640,13 +598,12 @@ p.text-duplicados {
     padding-right: 6px;
     padding-left: 6px;
     text-align: center;
-    color: #767676;
+    color: #aca8a8;
   }
 
-  .mat-column-material{
-    color: #767676;
+  .mat-column-material {
+    color: #aca8a8;
   }
-  
 }
 
 seccion-ciclo {
@@ -696,7 +653,7 @@ mat-select {
 .example-margin {
   margin: 0 10px;
 }
-::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+::ng-deep .mat-checkbox-checked .mat-checkbox-background,
 .mat-checkbox-indeterminate .mat-checkbox-background {
   background-color: #a8d024 !important;
 }

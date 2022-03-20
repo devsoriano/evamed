@@ -48,6 +48,7 @@ export class AddDataSchemeComponent implements OnInit {
     public dialogRef: MatDialogRef<AddDataSchemeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
+    console.log('entra a este proceso!!!!!');
     this.material_id = data.material_id;
     this.buildForm();
     this.materialsService.getUnits().subscribe((data) => {
@@ -63,11 +64,13 @@ export class AddDataSchemeComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onNoClick(): void {
+  onNoClick() {
+    console.log('entra al onNoClick');
     this.dialogRef.close(this.data);
   }
 
   private buildForm() {
+    console.log('entra al build form');
     this.form = this.formBuilder.group({
       potential_type_id: [null, Validators.required],
       value: [null, Validators.required],
@@ -75,6 +78,7 @@ export class AddDataSchemeComponent implements OnInit {
   }
 
   addScheme(event) {
+    console.log('addScheme');
     event.preventDefault();
     if (this.form.valid) {
       const material = this.form.value;
@@ -93,6 +97,7 @@ export class AddDataSchemeComponent implements OnInit {
   }
 
   potentialSelected(potentialId) {
+    console.log('entra al potentialSelected');
     const potentialData = this.ListPotential.filter(
       (data) => data.id === potentialId
     );

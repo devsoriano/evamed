@@ -14,7 +14,7 @@ import { IntermedialComponent } from './components/intermedial/intermedial.compo
     MaterialsStageComponent,
     AddConstructiveElementComponent,
     AddConstructiveSystemComponent,
-    IntermedialComponent
+    IntermedialComponent,
   ],
   imports: [
     CommonModule,
@@ -22,15 +22,12 @@ import { IntermedialComponent } from './components/intermedial/intermedial.compo
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
   ],
-  exports: [
-    AddConstructiveElementComponent,
-    AddConstructiveSystemComponent
-  ],
+  exports: [AddConstructiveElementComponent, AddConstructiveSystemComponent],
   entryComponents: [
     AddConstructiveElementComponent,
-    AddConstructiveSystemComponent
-  ]
+    AddConstructiveSystemComponent,
+  ],
 })
-export class MaterialsStageModule { }
+export class MaterialsStageModule {}

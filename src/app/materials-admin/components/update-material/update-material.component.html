@@ -36,9 +36,6 @@
         <div class="Col">
           <mat-form-field  appearance="outline" >
             <textarea matInput placeholder="Descripción" formControlName="description"></textarea>
-            <mat-error *ngIf="form.controls['description'].hasError('required')">
-              Descripción es <strong>requerido</strong>
-            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -64,7 +61,7 @@
       <button
       mat-raised-button
         color="primary"
-        (click)="goToAddScheme()"
+        (click)="goToAddScheme($event)"
       >
         Agregar impactos ambientales
       </button>
@@ -110,10 +107,10 @@
           <td mat-cell *matCellDef="let element"> 
             <a 
               mat-raised-button 
-              (click)="openModalSchema(element)"
+              (click)="openModalSchema($event, element)"
             >Editar
           </a>
-            <button mat-raised-button color="warn" (click)="deleteSchema(element.id)">Eliminar</button>
+            <button mat-raised-button color="warn" (click)="deleteSchema($event, element.id)">Eliminar</button>
           </td>
         </ng-container>
 

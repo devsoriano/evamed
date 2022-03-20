@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DemoComponent } from './demo.component';
+import { DeleteDataSchemeComponent } from './delete-data-scheme.component';
 
-describe('DemoComponent', () => {
-  let component: DemoComponent;
-  let fixture: ComponentFixture<DemoComponent>;
+describe('DeleteDataSchemeComponent', () => {
+  let component: DeleteDataSchemeComponent;
+  let fixture: ComponentFixture<DeleteDataSchemeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DemoComponent ]
+      declarations: [ DeleteDataSchemeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DemoComponent);
+    fixture = TestBed.createComponent(DeleteDataSchemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
