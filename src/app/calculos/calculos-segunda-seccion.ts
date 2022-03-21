@@ -37,7 +37,7 @@ export class CalculosSegundaSeccion {
     'Terrestrial ecotoxicity',
   ];
 
-  OperacionesDeFasePorElementoConstructivo(idProyecto,info) {
+  OperacionesDeFasePorElementoConstructivo(idProyecto,info,BD) {
     
     this.projectsList = info.projectsList;
     this.materialList = info.materialList;
@@ -89,7 +89,7 @@ export class CalculosSegundaSeccion {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
               let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
-              if(baseDatosMaterial[0]['database_from']==='EPDs'){
+              if(BD[baseDatosMaterial[0]['database_from']]){
                 let materiales_subetapa = this.materialSchemeDataList.filter(
                   (msd) =>
                     msd['material_id'] == ps['material_id'] &&
@@ -112,6 +112,10 @@ export class CalculosSegundaSeccion {
                   });
                 }
               }
+              /*
+              if(baseDatosMaterial[0]['database_from']==='EPDs'){
+              }
+               */
             });
           }
         });
@@ -208,7 +212,7 @@ export class CalculosSegundaSeccion {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
               let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
-              if(baseDatosMaterial[0]['database_from']==='EPDs'){
+              if(BD[baseDatosMaterial[0]['database_from']]){
                 let materiales_subetapa = this.materialSchemeDataList.filter(
                   (msd) =>
                     msd['material_id'] == ps['material_id'] &&
@@ -235,6 +239,10 @@ export class CalculosSegundaSeccion {
                   });
                 }
               }
+              /**
+               if(baseDatosMaterial[0]['database_from']==='EPDs'){
+               }
+               */
             });
           }
         });

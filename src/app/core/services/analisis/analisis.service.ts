@@ -173,4 +173,12 @@ export class AnalisisService {
       })
     );
   }
+
+  getDB() {
+    return this.http.get<any>(environment.api_db_material).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
 }

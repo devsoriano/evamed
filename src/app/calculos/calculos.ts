@@ -45,7 +45,7 @@ export class Calculos {
   ) {}
 
   OperacionesDeFase(idProyecto,info,BD) {
-    console.log(BD)
+    //console.log(BD)
     this.projectsList = info.projectsList;
     this.materialList = info.materialList;
     this.materialSchemeDataList = info.materialSchemeDataList;
@@ -100,9 +100,29 @@ export class Calculos {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
               let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
+              //console.log(BD[baseDatosMaterial[0]['database_from']],baseDatosMaterial[0]['database_from'])
+              if(BD[baseDatosMaterial[0]['database_from']]){
+                let materiales_subetapa = this.materialSchemeDataList.filter(
+                  (msd) =>
+                    msd['material_id'] == ps['material_id'] &&
+                    msd['standard_id'] == subetapa &&
+                    msd['potential_type_id'] == impacto['id']
+                );
+                if (materiales_subetapa.length > 0) {
+                  banderaMaterialEP = false;
+                  materiales_subetapa.forEach((material, index) => {
+                    resultado_impacto =
+                      resultado_impacto +
+                      materiales_subetapa[index]['value'] * ps['quantity'];
+                  });
+                } else {
+                  banderaMaterialEP = true;
+                }
+              }
+              /*
               if(baseDatosMaterial[0]['database_from']==='EPDs'){
                 if(BD['EDPs']){
-                  console.log("Se toma en cuenta 1EPDS")
+                  //console.log("Se toma en cuenta 1EPDS")
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
                       msd['material_id'] == ps['material_id'] &&
@@ -122,7 +142,7 @@ export class Calculos {
                 }
               }else if(baseDatosMaterial[0]['database_from']==='EPiC'){
                 if(BD['EPic']){
-                  console.log("Se toma en cuenta 1 EPiC")
+                  //console.log("Se toma en cuenta 1 EPiC")
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
                       msd['material_id'] == ps['material_id'] &&
@@ -164,6 +184,7 @@ export class Calculos {
               }else{
                 console.log("OTRA BASE")
               }
+               */
             });
           }
           Datos[nameImpacto]['Producción'][subproceso] = resultado_impacto;
@@ -265,9 +286,35 @@ export class Calculos {
           if (schemeProyect.length > 0) {
             schemeProyect.forEach((ps, num) => {
               let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
+              if(BD[baseDatosMaterial[0]['database_from']]){
+                let materiales_subetapa = this.materialSchemeDataList.filter(
+                  (msd) =>
+                    msd['material_id'] == ps['material_id'] &&
+                    msd['standard_id'] == subetapa &&
+                    msd['potential_type_id'] == impacto['id']
+                );
+                if (materiales_subetapa.length > 0) {
+                  materiales_subetapa.forEach((material, index) => {
+                    let auxValorProduccionTransporte = 0;
+                    if(auxMaterialesTransporte.includes(ps['material_id'])){
+                      if(!auxMaterialesYaSumados.includes(ps['material_id'])){
+                        auxValorProduccionTransporte += sumaParaReempazos[ps['material_id']];
+                        auxMaterialesYaSumados.push(ps['material_id']);
+                      }
+                    }
+                    //en resultado impacto faltaría sumar lo del transporte y lo de producción
+                    resultado_impacto =
+                      resultado_impacto +
+                      ((materiales_subetapa[index]['value'] *
+                        ps['quantity']) + auxValorProduccionTransporte)*
+                        ps['replaces'];
+                  });
+                }
+              }
+              /*
               if(baseDatosMaterial[0]['database_from']==='EPDs'){
                 if(BD['EDPs']){
-                  console.log("Se toma en cuenta 1EPDS B4")
+                  //console.log("Se toma en cuenta 1EPDS B4")
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
                       msd['material_id'] == ps['material_id'] &&
@@ -294,7 +341,7 @@ export class Calculos {
                 }
               }else if(baseDatosMaterial[0]['database_from']==='EPiC'){
                 if(BD['EPic']){
-                  console.log("Se toma en cuenta 1 EPiC")
+                  //console.log("Se toma en cuenta 1 EPiC")
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
                       msd['material_id'] == ps['material_id'] &&
@@ -349,6 +396,7 @@ export class Calculos {
               }else{
                 console.log("OTRA BASE")
               }
+               */
             });
           }
         });

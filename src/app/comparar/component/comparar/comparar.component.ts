@@ -11,6 +11,7 @@ import { MaterialsService } from './../../../core/services/materials/materials.s
 import { AnalisisService } from './../../../core/services/analisis/analisis.service';
 import { concat, forkJoin, observable } from 'rxjs';
 import { Router } from '@angular/router';
+import {FormControl} from '@angular/forms';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { Calculos } from '../../../calculos/calculos'
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
@@ -119,6 +120,7 @@ export class CompararComponent implements OnInit {
   sectionList: [];
   materiales:[];
   PTList:[];
+  DBList=[];
   conversionList:[];
   click_anterior:'Ninguno';
   labelPosition: 'porcentaje' | 'numero' = 'porcentaje';
@@ -170,7 +172,9 @@ export class CompararComponent implements OnInit {
   estadoTercerSeccion={};
   unidadImpactoAmientalTabla="";
   idsImpactosAmbientales = {};
-  basesDatos={'EDPs':true,'EPic':false,'MEX':false}
+  //basesDatos={'EDPs':true,'EPic':false,'MEX':false}
+  basesDatos={}
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
   // vars analisis
   idProyectoActivo: number;
@@ -223,7 +227,8 @@ export class CompararComponent implements OnInit {
       this.analisis.getSectionsList(),
       this.analisis.getMaterials(),
       this.analisis.getPotentialTransport(),
-      this.analisis.getConversion()
+      this.analisis.getConversion(),
+      this.analisis.getDB()
     ])
     .subscribe(([
       TE,
@@ -243,7 +248,8 @@ export class CompararComponent implements OnInit {
       sectionsList,
       materiales,
       PT,
-      conversions
+      conversions,
+      DB
     ]) => {
       this.materialList = materialData;
       this.materialSchemeDataList = materialSchemeData;
@@ -269,6 +275,7 @@ export class CompararComponent implements OnInit {
       this.PTList = PT;
       this.conversionList = conversions;
       this.botones_elementos_constructivos = sectionsList;
+      this.BDInicio(DB)
       this.llenarIdsBotones(sectionsList);
       this.idProyectoActivo = parseInt(sessionStorage.getItem('projectID'));
       this.columnsToDisplay = this.calculos.ImpactosSeleccionados(this.potentialTypesList);
@@ -295,6 +302,16 @@ export class CompararComponent implements OnInit {
       this.idsImpactosAmbientales['idsElementos'].push(auxIDElementos);
       //this.idsImpactosAmbientales['respuesta'].push(impacto['id'])
     })
+  }
+
+  //inicio de Base de datos que se consideran para los calculos
+  BDInicio(listaBD){
+    this.DBList = [];
+    this.basesDatos = {};
+    listaBD.forEach(element => {
+      this.DBList.push(element['name'])
+      this.basesDatos[element['name']] = false;
+    });
   }
 
   //eliminar fase de ciclo de visa y redistribución;
@@ -480,8 +497,7 @@ export class CompararComponent implements OnInit {
     grafica.instance.unidades = this.potentialTypesList;
   }
 
-  getAnalisisElementos(idProyecto){
-
+  llamarCalculosTercerSeccion(idProyecto){
     let DatosCalculos = { 
       'TEList':this.TEList,
       'projectsList':this.projectsList,
@@ -502,8 +518,12 @@ export class CompararComponent implements OnInit {
       'PTList':this.PTList,
       'conversionList':this.conversionList
     };
-    let aux = this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
+    let aux = this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos,this.basesDatos);
     return aux;
+  }
+
+  getAnalisisElementos(idProyecto){
+    return this.llamarCalculosTercerSeccion(idProyecto)
   }
 
   llamarCalculos(idProyecto){
@@ -635,30 +655,8 @@ export class CompararComponent implements OnInit {
       id: idProyecto,
       Datos: {}
     };
-
-    let DatosCalculos = { 
-      'TEList':this.TEList,
-      'projectsList':this.projectsList,
-      'materialList':this.materialList,
-      'materialSchemeDataList':this.materialSchemeDataList,
-      'materialSchemeProyectList':this.materialSchemeProyectList,
-      'potentialTypesList':this.potentialTypesList,
-      'standarsList':this.standarsList,
-      'CSEList':this.CSEList,
-      'SIDList':this.SIDList,
-      'SIList':this.SIList,
-      'ACRList':this.ACRList,
-      'ECDList':this.ECDList,
-      'TEDList':this.TEDList,
-      'ULList':this.ULList,
-      'ECDPList':this.ECDPList,
-      'sectionList':this.sectionList,
-      'PTList':this.PTList,
-      'conversionList':this.conversionList
-    };
-
-    let auxData = {};
-    let auxDatosDos=this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos);
+     let auxData = {};
+     let auxDatosDos=this.llamarCalculosTercerSeccion(idProyecto)
     Object.keys(auxDatosDos['materiales']).forEach(impactoAmbiental => {
       auxData[impactoAmbiental]={}
       let seccionesCreadas = [];
@@ -832,22 +830,51 @@ export class CompararComponent implements OnInit {
     this.iniciaBarras();
   }
 
-  ajusteUsoBaseDatos(){
-    console.log(this.basesDatos)
+  ajusteUsoBaseDatos(seleccion){
+    Object.keys(this.basesDatos).forEach(bd =>{
+      let flag=false;
+      seleccion.forEach(bdSelect => {
+        if(bdSelect===bd){
+          flag = true;
+        }
+      });
+      this.basesDatos[bd] = flag;
+    });
     this.outproyect_bar = [];
     this.outproyect_pie = [];
     this.outproyect_radar = [];
     this.fasesEliminadas = [];
+    this.outproyect_bar_elementos = [];
+    this.outproyect_pie_bar_elementos = [];
+    this.proyectosMostrados_elementos = [];
+    this.estadoTercerSeccion = {};
+    
     this.proyect_active.forEach(id => {
       let data = this.llamarCalculos(id)
       
       let analisis = this.getAnalisisBarras(id,data);
       let analisisRad = this.getAnalisisRadial(id,data);
       let analisisPie = this.getAnalisisPie(id,data);
+      let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
+      let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
+      let analisisPieTres = this.getAnalisisElementos(id);
       
       this.outproyect_bar.push(analisis);
       this.outproyect_radar.push(analisisRad);
       this.outproyect_pie.push(analisisPie);
+      this.outproyect_bar_elementos.push(analisisBarDos);
+      this.outproyect_pie_bar_elementos.push(analisisPieBarDos);
+      this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
+        idproyecto: id,
+        nombre:analisis.Nombre,
+        data:analisisPieTres,
+      }];
+      this.estadoTercerSeccion[id] = {
+        'agruparProduccion':false,
+        'cicloSeleccionado':" ",
+        'flagPie':true,
+        'fragBar':false
+      }
     });
     
     if(this.resultdosGraficos){
@@ -858,6 +885,21 @@ export class CompararComponent implements OnInit {
     }else{
       this.TablaResultados()
     }
+    if(this.Impactos_Elementos){
+      this.iniciaBarrasSeccionDos();
+      if(this.imgSeleccionadaElemento!=' '){
+        this.DispercionAP(this.imgSeleccionadaElemento,' ');
+      }
+      Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+        if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+          document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+        }
+      })
+    }
+    if(this.Elementos_constructivos){
+      this.iniciarSeccionTres();
+    }
+
   }
 
   //controlar la activación de elementos en la interacción con los tipos de resultados
@@ -913,7 +955,7 @@ export class CompararComponent implements OnInit {
       'conversionList':this.conversionList
     };
 
-    let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivo(idProyecto,DatosCalculos);
+    let auxDatos = this.calculosSegunaSeccion.OperacionesDeFasePorElementoConstructivo(idProyecto,DatosCalculos,this.basesDatos);
     this.AjustarElementosMostrados(auxDatos);
     this.AjustarElementosMostradosElemntos(auxDatos);
     analisisProyectos['Datos']= auxDatos;

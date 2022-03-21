@@ -39,9 +39,14 @@
 }
 
 .bases-datos{
-  mat-slide-toggle {
-    margin: 8px 0;
-    display: block;
+  display: flex;
+  justify-content: space-between;
+  p.text-duplicados {
+    font-size: 12px;
+    letter-spacing: 0px;
+    padding-top: 21px;
+    color: #767676;
+    opacity: 1;
   }
 }
 .sectionOne {
@@ -216,14 +221,6 @@ ng-template {
     align-items: center;
     margin-top: 0.1px;
   }
-}
-
-p.text-duplicados {
-  font-size: 12px;
-  letter-spacing: 0px;
-  padding-top: 21px;
-  color: #767676;
-  opacity: 1;
 }
 
 .uno {

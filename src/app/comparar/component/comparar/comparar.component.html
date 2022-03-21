@@ -6,7 +6,15 @@
     <a class="return-proyecto">regresar a proyectos</a>
     <br><a class="tittle-proyect">{{proyecto.nombre}}</a>
   </div>
-  <p class="text-duplicados">Duplicados</p>
+  <div class="bases-datos">
+    <p class="text-duplicados">Duplicados</p>
+    <div>
+      <p class="text-duplicados">Bases de Datos consideradas</p>
+      <mat-select multiple (selectionChange)="ajusteUsoBaseDatos($event.value)">
+        <mat-option *ngFor="let topping of DBList" [value]="topping">{{topping}}</mat-option>
+      </mat-select>
+    </div>
+  </div>
   <div class="div-proyectos-mostrados">
     <div>
       <button mat-button class="menu-proyectos" [matMenuTriggerFor]="menu">Selecciona una opción a visualizar
@@ -120,28 +128,6 @@
               <ng-template #GraficasEspecificas>
 
               </ng-template>
-            </div>
-            <div>
-              <div  class="button-graph">
-                <mat-card class="card datos">
-                  Para el proyecto {{proyecto.nombre}} <br>
-                  no se tomaron en cuenta {{proyecto.num_epic}} de materiales EPIC
-                </mat-card>
-              </div>
-              <div>
-                <div *ngFor="let item of proyect;let i = index" class="button-graph">
-                  <mat-card *ngIf="item.card" class="card datos">
-                    Para el proyecto {{item.Nombre}} <br>
-                    no se tomaron en cuenta {{item.num_epic}} de materiales EPIC
-                  </mat-card>
-                </div>
-                <div class="bases-datos">
-                  Bases de datos consideradas
-                  <mat-slide-toggle [(ngModel)]="basesDatos['EDPs']" (change)="ajusteUsoBaseDatos()" >EDPs</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="basesDatos['EPic']" (change)="ajusteUsoBaseDatos()">EPiC</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="basesDatos['MEX']" (change)="ajusteUsoBaseDatos()">MEXICANIUH</mat-slide-toggle>
-                </div>
-              </div>
             </div>
           </div>
         </mat-tab>
