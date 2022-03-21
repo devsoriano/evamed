@@ -258,6 +258,12 @@
                     </div>
                   </li>
                 </ul>
+                <div>
+                  <p>Bases de Datos consideradas</p>
+                  <mat-select multiple (selectionChange)="ajusteUsoBaseDatos($event.value,i)">
+                    <mat-option *ngFor="let topping of auxDataProjectList[i].DBList" [value]="topping">{{topping}}</mat-option>
+                  </mat-select>
+                </div>
               </div>
             </div>
             <div *ngIf="auxDataProjectList[i]['graficasCarbonoOResultados']['carbono']" class="graficas-huella-carbono">

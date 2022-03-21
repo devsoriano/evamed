@@ -69,7 +69,6 @@ export class HomeEvamedComponent implements OnInit {
   //para calculos
   DatosCalculos: any;
   cargaDatosCalculo = false;
-  basesDatos={'EDPs':true,'EPic':false,'MEX':false}
   //---
   auxDatosGraficaUso = [];
   public doughnutChartType = 'doughnut';
@@ -322,12 +321,19 @@ export class HomeEvamedComponent implements OnInit {
       PTList: await this.analisis.getPotentialTransport().toPromise(),
       conversionList: await this.analisis.getConversion().toPromise(),
     };
+    let listaBD = await this.analisis.getDB().toPromise();
+    let auxBD = [];
+    let auxbases = {};
+    listaBD.forEach(element => {
+      auxBD.push(element['name'])
+      auxbases[element['name']] = false
+    });
     this.auxDataProjectList = [];
     this.projectsList.forEach((element) => {
       let calculosOperacionesDeFase = null;
       let auxCalculos = this.calculos.OperacionesDeFase(
         element.id,
-        this.DatosCalculos,this.basesDatos
+        this.DatosCalculos,auxbases
       );
       calculosOperacionesDeFase = auxCalculos[0];
 
@@ -402,7 +408,9 @@ export class HomeEvamedComponent implements OnInit {
         descripcionCarbono: this.calculos.determinarDescripcionCarbono(
           this.catologoOpcionesCarbono[0]
         ),
-        errorCalculos:auxCalculos[1]
+        errorCalculos:auxCalculos[1],
+        DBList:auxBD,
+        basesDatos:auxbases
       };
       this.auxDataProjectList.push(auxDatos);
     });
@@ -1082,6 +1090,51 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[i].TipoGraficaActiva['Pie'] = false;
       this.auxDataProjectList[i].TipoGraficaActiva['Bar'] = true;
     }
+  }
+
+  ajusteUsoBaseDatos(seleccion,project){
+    Object.keys(this.auxDataProjectList[project]['basesDatos']).forEach(bd =>{
+      let flag=false;
+      seleccion.forEach(bdSelect => {
+        if(bdSelect===bd){
+          flag = true;
+        }
+      });
+      this.auxDataProjectList[project]['basesDatos'][bd] = flag;
+    });
+    let auxCalculos = this.calculos.OperacionesDeFase(
+      this.auxDataProjectList[project]['id'],
+      this.DatosCalculos,this.auxDataProjectList[project]['basesDatos']
+    );
+    let calculosOperacionesDeFase =  auxCalculos[0]
+    let valorPorcentaje = this.calculos.ValoresProcentaje(
+      calculosOperacionesDeFase,
+      this.auxDataProjectList[project].etapasIgnoradas
+    );
+    let valorPorcentajeS = this.calculos.ValoresProcentajeSubeapa(
+      calculosOperacionesDeFase,
+      this.auxDataProjectList[project].etapasIgnoradas
+    );
+    this.auxDataProjectList[project]['datos'] = calculosOperacionesDeFase;
+    this.auxDataProjectList[project]['porcentajeSubepata'] = valorPorcentajeS;
+    this.auxDataProjectList[project]['porcentaje'] = valorPorcentaje;
+    this.auxDataProjectList[project]['dataGraficaBar'] = this.cargarDataBar(
+      valorPorcentajeS,
+      this.auxDataProjectList[project]['impactoSelect'],
+      this.auxDataProjectList[project].etapasIgnoradas
+    );
+    this.auxDataProjectList[project].dataGraficaPie = this.cargaDataPie(
+      valorPorcentajeS,
+      this.auxDataProjectList[project].impactoSelect,
+      this.auxDataProjectList[project].etapasIgnoradas
+    );
+    this.auxDataProjectList[project]['valorCarbono'] = this.calculos
+    .determinaValorCarbono(calculosOperacionesDeFase)
+    .toExponential(2);
+    this.auxDataProjectList[project]['flagsCarbono'] = this.calculos.buscarValosCarbono(
+      calculosOperacionesDeFase,
+      this.auxDataProjectList[project].opcionCarbonoSeleccionada
+    )
   }
 
   openDialogANP() {
