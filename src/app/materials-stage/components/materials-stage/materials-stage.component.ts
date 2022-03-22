@@ -474,7 +474,7 @@ export class MaterialsStageComponent implements OnInit {
       this.contentData[parseInt(key, 10) + 1].map((data) => {
         value.map((sc) => {
           if (data.Sistema_constructivo === sc) {
-            if (data.Origen === 'Modelo de Revit') {
+            if (data.Origen === 'Opciones EVAMED') {
               let materialToSearch = data.Material;
 
               if (data.name_material_db !== undefined) {
