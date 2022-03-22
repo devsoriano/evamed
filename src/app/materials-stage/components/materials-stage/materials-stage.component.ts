@@ -494,7 +494,7 @@ export class MaterialsStageComponent implements OnInit {
                           provider_distance: 0,
                           material_id: materialData.id,
                           project_id: projectId,
-                          origin_id: 1,
+                          origin_id: 2,
                           section_id: parseInt(key, 10) + 1,
                           value: null,
                           distance_init:
