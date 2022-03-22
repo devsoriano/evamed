@@ -59,7 +59,7 @@ export class UsageStageComponent implements OnInit {
       const tipoEnergiaElectrica = [];
       const tipoEnergiaCombustible = [];
       data.map((tipo) => {
-        if (
+        /*if (
           tipo.name_type_energy ===
             'Energía eléctrica, Bajo voltaje (MX)-ECOINVENT3' ||
           tipo.name_type_energy ===
@@ -73,14 +73,16 @@ export class UsageStageComponent implements OnInit {
           tipo.name_type_energy ===
             'Energía eléctrica, Bajo voltaje (MX)-MEXICANIUH'
         ) {
-          tipoEnergiaElectrica.push(tipo);
-        }
+        tipoEnergiaElectrica.push(tipo);
+        }*/
 
         if (
           tipo.name_type_energy ===
           'Calefacción doméstica con gas natural (GLO)'
         ) {
           tipoEnergiaCombustible.push(tipo);
+        } else {
+          tipoEnergiaElectrica.push(tipo);
         }
       });
 
