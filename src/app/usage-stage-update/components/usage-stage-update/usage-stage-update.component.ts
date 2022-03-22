@@ -70,7 +70,7 @@ export class UsageStageUpdateComponent implements OnInit {
           tipo.name_type_energy ===
             'Energía eléctrica, Alto voltaje (MX)-MEXICANIUH' ||
           tipo.name_type_energy ===
-            'Energía eléctrica, Alto voltaje (MX)-MEXICANIUH' ||
+            'Energía eléctrica, Medio voltaje (MX)-MEXICANIUH' ||
           tipo.name_type_energy ===
             'Energía eléctrica, Bajo voltaje (MX)-MEXICANIUH'
         ) {
