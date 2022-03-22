@@ -60,9 +60,18 @@ export class UsageStageComponent implements OnInit {
       const tipoEnergiaCombustible = [];
       data.map((tipo) => {
         if (
-          tipo.name_type_energy === 'Energía eléctrica, Medio voltaje (MX)' ||
-          tipo.name_type_energy === 'Energía eléctrica, Alto voltaje (MX)' ||
-          tipo.name_type_energy === 'Energía eléctrica, Bajo voltaje (MX)'
+          tipo.name_type_energy ===
+            'Energía eléctrica, Bajo voltaje (MX)-ECOINVENT3' ||
+          tipo.name_type_energy ===
+            'Energía eléctrica, Alto voltaje (MX)-ECOINVENT3' ||
+          tipo.name_type_energy ===
+            'Energía eléctrica, Medio voltaje (MX)-ECOINVENT3' ||
+          tipo.name_type_energy ===
+            'Energía eléctrica, Alto voltaje (MX)-MEXICANIUH' ||
+          tipo.name_type_energy ===
+            'Energía eléctrica, Alto voltaje (MX)-MEXICANIUH' ||
+          tipo.name_type_energy ===
+            'Energía eléctrica, Bajo voltaje (MX)-MEXICANIUH'
         ) {
           tipoEnergiaElectrica.push(tipo);
         }
