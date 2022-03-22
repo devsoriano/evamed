@@ -6,6 +6,12 @@
         "etapa":"Producción"
     },
     {
+        "nombre_subeatapa": "Suma exacta",
+        "abreviacion": "A1-A3",
+        "color": "#1DF28E",
+        "etapa":"Producción"
+    },
+    {
         "nombre_subeatapa":"Transporte",
         "abreviacion":"A2",
         "color":"#319F6B",

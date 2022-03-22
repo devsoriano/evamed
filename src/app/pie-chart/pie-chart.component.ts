@@ -123,7 +123,11 @@ export class PieChartComponent implements OnInit {
 
   findSubetapa(etapa) {
     let aux = this.subetapas_list.filter((s) => s['abreviacion'] == etapa);
-    return aux[0].nombre_subeatapa;
+    if(aux.length>0){
+      return aux[0].nombre_subeatapa;
+    }else{
+      return 'suma exacta'
+    }
   }
 
   findUnidad(){
