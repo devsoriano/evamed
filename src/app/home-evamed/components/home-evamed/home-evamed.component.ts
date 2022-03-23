@@ -329,7 +329,7 @@ export class HomeEvamedComponent implements OnInit {
       auxbases[element['name']] = false
     });
     this.auxDataProjectList = [];
-    this.projectsList.forEach((element) => {
+    this.projectsList.forEach((element,n) => {
       let calculosOperacionesDeFase = null;
       let auxCalculos = this.calculos.OperacionesDeFase(
         element.id,
@@ -382,7 +382,8 @@ export class HomeEvamedComponent implements OnInit {
           this.calculos.ajustarNombre(
             this.catologoImpactoAmbiental[0]['name_complete_potential_type']
           ),
-          []
+          [],
+          element.id
         ),
         dataGraficaPie: this.cargaDataPie(
           this.calculos.ValoresProcentajeSubeapa(calculosOperacionesDeFase, []),
@@ -827,7 +828,8 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList[indexRecivido].dataGraficaBar = this.cargarDataBar(
       this.auxDataProjectList[indexRecivido].porcentajeSubepata,
       this.auxDataProjectList[indexRecivido].impactoSelect,
-      this.auxDataProjectList[indexRecivido].etapasIgnoradas
+      this.auxDataProjectList[indexRecivido].etapasIgnoradas,
+      this.auxDataProjectList[indexRecivido].id
     );
   }
 
@@ -869,7 +871,8 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   selectEtapa(etapa, i, id) {
-    let auxSubetapas = this.calculos.findSubetapas(etapa);
+    let auxSubetapas = this.calculos.findSubetapas(etapa,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id);
+    console.log(auxSubetapas)
     this.auxDataProjectList[i].subetasMostrada = auxSubetapas;
     if (this.auxDataProjectList[i].etapaSeleccionada === etapa) {
       let auxid = etapa.concat('TextInfo'.concat(String(id)));
@@ -915,7 +918,7 @@ export class HomeEvamedComponent implements OnInit {
     }
   }
 
-  cargarDataBar(data, impactoU, etapasI) {
+  cargarDataBar(data, impactoU, etapasI,id) {
     let auxColor = [];
     let aux = [];
     let auxl: Label[] = [];
@@ -934,8 +937,8 @@ export class HomeEvamedComponent implements OnInit {
             }
           });
           if (banderaEtapa) {
-            if (this.calculos.findSubetapas(ciclo).length > maxsubetapas)
-              maxsubetapas = this.calculos.findSubetapas(ciclo).length;
+            if (this.calculos.findSubetapas(ciclo,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id).length > maxsubetapas)
+              maxsubetapas = this.calculos.findSubetapas(ciclo,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id).length;
           }
           banderaEtapa = true;
         });
@@ -1077,7 +1080,8 @@ export class HomeEvamedComponent implements OnInit {
         this.auxDataProjectList[i].etapasIgnoradas
       ),
       this.auxDataProjectList[i].impactoSelect,
-      this.auxDataProjectList[i].etapasIgnoradas
+      this.auxDataProjectList[i].etapasIgnoradas,
+      this.auxDataProjectList[i].id
     );
   }
 
@@ -1121,7 +1125,8 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList[project]['dataGraficaBar'] = this.cargarDataBar(
       valorPorcentajeS,
       this.auxDataProjectList[project]['impactoSelect'],
-      this.auxDataProjectList[project].etapasIgnoradas
+      this.auxDataProjectList[project].etapasIgnoradas,
+      this.auxDataProjectList[project].id
     );
     this.auxDataProjectList[project].dataGraficaPie = this.cargaDataPie(
       valorPorcentajeS,

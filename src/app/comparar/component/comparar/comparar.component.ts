@@ -519,6 +519,7 @@ export class CompararComponent implements OnInit {
       'conversionList':this.conversionList
     };
     let aux = this.calculosTercerSeccion.OperacionesDeFasePorElementoConstructivoCicloVida(idProyecto,DatosCalculos,this.basesDatos);
+    //console.log(aux)
     return aux;
   }
 

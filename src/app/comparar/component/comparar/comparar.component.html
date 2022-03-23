@@ -10,7 +10,10 @@
     <p class="text-duplicados">Duplicados</p>
     <div>
       <p class="text-duplicados">Bases de Datos consideradas</p>
-      <mat-select multiple (selectionChange)="ajusteUsoBaseDatos($event.value)">
+      <!--
+        <mat-select multiple (selectionChange)="ajusteUsoBaseDatos($event.value)">
+      -->
+      <mat-select multiple>
         <mat-option *ngFor="let topping of DBList" [value]="topping">{{topping}}</mat-option>
       </mat-select>
     </div>
