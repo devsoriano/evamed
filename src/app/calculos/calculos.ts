@@ -913,12 +913,19 @@ export class Calculos {
     return regreso
   }
 
-  determinaValorCarbono(data){
+  determinaValorCarbono(data,projectL,idP,UFL){
     let impacto = this.ajustarNombre("Calentamiento Global");
     let res = 0;
     Object.keys(data[impacto]["Uso"]).forEach(subetapa =>{
       res += data[impacto]["Uso"][subetapa]
     })
+    let superficieConstruida = 0;
+    superficieConstruida=projectL.filter( p => p['id'] == idP)[0]['living_area']
+    let auxidUse=projectL.filter( p => p['id'] == idP)[0]['useful_life_id']
+    let useLife= Number(UFL.filter( p => p['id'] == auxidUse)[0]['name_useful_life'])
+    //useful_life_id
+    res = res/superficieConstruida
+    res = res / useLife
     return res;
   }
 
@@ -932,9 +939,9 @@ export class Calculos {
     return aux
   }
 
-  buscarValosCarbono(data,opcion){
+  buscarValosCarbono(data,opcion,projectL,idP,UFL){
     let aux = {}
-    let valorCarbono = this.determinaValorCarbono(data);
+    let valorCarbono = this.determinaValorCarbono(data,projectL,idP,UFL);
     this.catalogoEscalasCarbono.forEach(element => {
       if(element.nombre_caso === opcion){
         for (var _i = 1; _i < 8; _i++) {

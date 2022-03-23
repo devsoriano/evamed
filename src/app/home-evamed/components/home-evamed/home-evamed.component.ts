@@ -400,11 +400,17 @@ export class HomeEvamedComponent implements OnInit {
           this.catologoOpcionesCarbono[0]
         ),
         valorCarbono: this.calculos
-          .determinaValorCarbono(calculosOperacionesDeFase)
+          .determinaValorCarbono(calculosOperacionesDeFase,
+            this.DatosCalculos.projectsList,
+            element.id,
+            this.DatosCalculos.ULList)
           .toExponential(2),
         flagsCarbono: this.calculos.buscarValosCarbono(
           calculosOperacionesDeFase,
-          this.catologoOpcionesCarbono[0]
+          this.catologoOpcionesCarbono[0],
+          this.DatosCalculos.projectsList,
+          element.id,
+          this.DatosCalculos.ULList
         ),
         descripcionCarbono: this.calculos.determinarDescripcionCarbono(
           this.catologoOpcionesCarbono[0]
@@ -839,7 +845,10 @@ export class HomeEvamedComponent implements OnInit {
     this.auxDataProjectList[indexRecivido].flagsCarbono =
       this.calculos.buscarValosCarbono(
         this.auxDataProjectList[indexRecivido].datos,
-        opcion
+        opcion,
+        this.DatosCalculos.projectsList,
+        this.auxDataProjectList[indexRecivido].id,
+        this.DatosCalculos.ULList
       );
     this.auxDataProjectList[indexRecivido].descripcionCarbono =
       this.calculos.determinarDescripcionCarbono(opcion);
@@ -1133,13 +1142,16 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[project].impactoSelect,
       this.auxDataProjectList[project].etapasIgnoradas
     );
-    this.auxDataProjectList[project]['valorCarbono'] = this.calculos
-    .determinaValorCarbono(calculosOperacionesDeFase)
-    .toExponential(2);
-    this.auxDataProjectList[project]['flagsCarbono'] = this.calculos.buscarValosCarbono(
-      calculosOperacionesDeFase,
-      this.auxDataProjectList[project].opcionCarbonoSeleccionada
-    )
+    /** 
+     * 
+     this.auxDataProjectList[project]['valorCarbono'] = this.calculos
+     .determinaValorCarbono(calculosOperacionesDeFase)
+     .toExponential(2);
+     this.auxDataProjectList[project]['flagsCarbono'] = this.calculos.buscarValosCarbono(
+       calculosOperacionesDeFase,
+       this.auxDataProjectList[project].opcionCarbonoSeleccionada
+     )
+    */
   }
 
   openDialogANP() {
