@@ -832,39 +832,39 @@ export class Calculos {
     return sub[0]['color'];
   }
 
-  findSubetapas(etapa,materialSP,materialL,idP) {
+  findSubetapas(etapa,materialSP,materialL,idP,impactoS,TList) {
+    let auxIDImpacto = TList.filter((bs)=> bs['name_complete_potential_type']==impactoS)[0]['id'];
+    let auxReturn =[]
+    let aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A1');
+    auxReturn.push(aux[0])
+    aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A2');
+    auxReturn.push(aux[0])
+    aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A3');
+    auxReturn.push(aux[0])
     if(etapa === 'Producción'){
       let  schemeProyect = materialSP.filter(
         (msp) => msp['project_id'] == idP
         );
         if (schemeProyect.length > 0) {
-        console.log(etapa,'III')
-        schemeProyect.forEach(ps => {
+          schemeProyect.forEach(ps => {
           let baseDatosMaterial = materialL.filter((bs)=> bs['id']==ps['material_id']);
           if(baseDatosMaterial[0]['database_from']==='EPiC'){
             let materiales_subetapa = this.materialSchemeDataList.filter(
               (msd) =>
               msd['material_id'] == ps['material_id'] &&
               msd['standard_id'] == 1 &&
-              msd['potential_type_id'] == 3
+              msd['potential_type_id'] == auxIDImpacto
               );
             if (materiales_subetapa.length > 0) {
-              return this.subetapas_list.filter((s) => s['etapa'] == etapa);
+             auxReturn = this.subetapas_list.filter((s) => s['etapa'] == etapa);
             }
-          }else{
-            let auxReturn =[]
-            let aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A1');
-            auxReturn.push(aux[0])
-            aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A2');
-            auxReturn.push(aux[0])
-            aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A3');
-            auxReturn.push(aux[0])
-            return auxReturn;
           }
         });
       }
+    }else{
+      auxReturn = this.subetapas_list.filter((s) => s['etapa'] == etapa);
     }
-    return this.subetapas_list.filter((s) => s['etapa'] == etapa);
+    return auxReturn
   }
 
   llenarGraficaCarbono(opcion){

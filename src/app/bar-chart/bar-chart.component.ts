@@ -291,6 +291,7 @@ export class BarChartComponent implements OnInit {
         });
       });
     }else{
+      datos = []
       this.inputProyects.forEach(proyecto => {
         const auxDatos = { Producción : [], Construccion : [], Uso : [], FinDeVida : []};
         this.barChartLabels.forEach(indicador => {
@@ -308,7 +309,7 @@ export class BarChartComponent implements OnInit {
           }
         });
       });
-
+      console.log(auxDatos)
       Object.keys(auxDatos).forEach(etapa => {
         datos = [...datos,
           {

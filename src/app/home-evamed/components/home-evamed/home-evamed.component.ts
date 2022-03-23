@@ -383,7 +383,8 @@ export class HomeEvamedComponent implements OnInit {
             this.catologoImpactoAmbiental[0]['name_complete_potential_type']
           ),
           [],
-          element.id
+          element.id,
+          this.catologoImpactoAmbiental[0]['name_complete_potential_type']
         ),
         dataGraficaPie: this.cargaDataPie(
           this.calculos.ValoresProcentajeSubeapa(calculosOperacionesDeFase, []),
@@ -835,8 +836,17 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[indexRecivido].porcentajeSubepata,
       this.auxDataProjectList[indexRecivido].impactoSelect,
       this.auxDataProjectList[indexRecivido].etapasIgnoradas,
-      this.auxDataProjectList[indexRecivido].id
+      this.auxDataProjectList[indexRecivido].id,
+      this.auxDataProjectList[indexRecivido].impactoCompleteSelect
     );
+    if(this.auxDataProjectList[indexRecivido].etapaSeleccionada != 'Ninguna'){
+      this.auxDataProjectList[indexRecivido].subetasMostrada = this.calculos.findSubetapas(this.auxDataProjectList[indexRecivido].etapaSeleccionada,
+        this.DatosCalculos['materialSchemeProyectList'],
+        this.DatosCalculos['materialList'],
+        this.auxDataProjectList[indexRecivido].id,
+        this.auxDataProjectList[indexRecivido].impactoCompleteSelect,
+        this.DatosCalculos.potentialTypesList);
+    }
   }
 
   selectOpcionCarbono(opcion, indexRecivido) {
@@ -880,8 +890,7 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   selectEtapa(etapa, i, id) {
-    let auxSubetapas = this.calculos.findSubetapas(etapa,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id);
-    console.log(auxSubetapas)
+    let auxSubetapas = this.calculos.findSubetapas(etapa,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id,this.auxDataProjectList[i].impactoCompleteSelect,this.DatosCalculos.potentialTypesList);
     this.auxDataProjectList[i].subetasMostrada = auxSubetapas;
     if (this.auxDataProjectList[i].etapaSeleccionada === etapa) {
       let auxid = etapa.concat('TextInfo'.concat(String(id)));
@@ -927,7 +936,7 @@ export class HomeEvamedComponent implements OnInit {
     }
   }
 
-  cargarDataBar(data, impactoU, etapasI,id) {
+  cargarDataBar(data, impactoU, etapasI,id,impactS) {
     let auxColor = [];
     let aux = [];
     let auxl: Label[] = [];
@@ -946,8 +955,8 @@ export class HomeEvamedComponent implements OnInit {
             }
           });
           if (banderaEtapa) {
-            if (this.calculos.findSubetapas(ciclo,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id).length > maxsubetapas)
-              maxsubetapas = this.calculos.findSubetapas(ciclo,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id).length;
+            if (this.calculos.findSubetapas(ciclo,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id,impactS,this.DatosCalculos.potentialTypesList).length > maxsubetapas)
+              maxsubetapas = this.calculos.findSubetapas(ciclo,this.DatosCalculos['materialSchemeProyectList'],this.DatosCalculos['materialList'],id,impactS,this.DatosCalculos.potentialTypesList).length;
           }
           banderaEtapa = true;
         });
@@ -1090,7 +1099,8 @@ export class HomeEvamedComponent implements OnInit {
       ),
       this.auxDataProjectList[i].impactoSelect,
       this.auxDataProjectList[i].etapasIgnoradas,
-      this.auxDataProjectList[i].id
+      this.auxDataProjectList[i].id,
+      this.auxDataProjectList[i].impactoCompleteSelect
     );
   }
 
@@ -1135,7 +1145,8 @@ export class HomeEvamedComponent implements OnInit {
       valorPorcentajeS,
       this.auxDataProjectList[project]['impactoSelect'],
       this.auxDataProjectList[project].etapasIgnoradas,
-      this.auxDataProjectList[project].id
+      this.auxDataProjectList[project].id,
+      this.auxDataProjectList[project].impactoCompleteSelect
     );
     this.auxDataProjectList[project].dataGraficaPie = this.cargaDataPie(
       valorPorcentajeS,
