@@ -96,7 +96,7 @@ export class BarChartComponent implements OnInit {
     this.iniciaIndicadores();
     this.iniciaDatos();
     this.ajustaEjeY();
-    console.log("Bar");
+    //console.log("Bar");
   }
 
   ngAfterViewInit() {
@@ -165,15 +165,15 @@ export class BarChartComponent implements OnInit {
     }else{
       this.inputProyects.forEach(proyecto => {
         Object.keys(proyecto.Datos).forEach(indicador => {
-          if (!this.barChartLabels.includes(indicador)){
-            let auxAbr=""
+          let auxAbr=""
             this.impactos.forEach(impacto => {
               let auxNameImpacto = this.ajustarNombre(impacto['name_complete_potential_type']);
               if(indicador === auxNameImpacto){
                 auxAbr = impacto['name_potential_type']
               }
             });
-            let auxIndicador = indicador.concat('\n(',auxAbr,')');
+          let auxIndicador = indicador.concat('\n(',auxAbr,')');
+          if (!this.barChartLabels.includes(auxIndicador)){
             this.barChartLabels = [...this.barChartLabels, auxIndicador];
           }
           proyecto.Datos[indicador].total = 0;
@@ -309,7 +309,7 @@ export class BarChartComponent implements OnInit {
           }
         });
       });
-      console.log(auxDatos)
+      //console.log(auxDatos)
       Object.keys(auxDatos).forEach(etapa => {
         datos = [...datos,
           {

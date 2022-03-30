@@ -9,6 +9,23 @@
   margin: auto;
   width: 810px;
   height: auto;
+  .dot {
+    height: 2px;
+    width: 65px;
+    margin: auto;
+    background-color: #ffffff;
+  }
+  .linea-select{
+    height: 2px;
+    width: 65px;
+    margin: auto;
+    background-color: #e3c500;
+  }
+  .indicadores{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 32px;
+  }
 }
 
 .tabla {
@@ -374,6 +391,23 @@ ng-template {
     opacity: 1;
     font-size: 15px;
     margin-top: 35px;
+  }
+  .dot {
+    height: 2px;
+    width: 65px;
+    margin: auto;
+    background-color: #ffffff;
+  }
+  .linea-select{
+    height: 2px;
+    width: 65px;
+    margin: auto;
+    background-color: #e3c500;
+  }
+  .indicadores{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 32px;
   }
 
   .botones-elementos-contructivos {
