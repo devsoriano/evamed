@@ -128,19 +128,14 @@ export class UsageStageComponent implements OnInit {
   }
 
   saveStepThree() {
-    console.log('save step three');
-    console.log(this.cantidad);
-    console.log(this.projectId);
-    console.log(this.unidad);
-    this.electricitConsumptionService
+    const ECP = this.electricitConsumptionService
       .addACR({
         quantity: this.cantidad,
         project_id: this.projectId,
         unit_id: this.unidad,
       })
-      .subscribe((data) => {
-        console.log('success!!!!!!');
-        this.electricitConsumptionService
+      .subscribe(async (data) => {
+        await this.electricitConsumptionService
           .addECD({
             quantity: this.cantidadCombustible,
             percentage: this.porcentajeCombustible,
@@ -153,8 +148,7 @@ export class UsageStageComponent implements OnInit {
             console.log('combustible!!!!!');
             console.log(data);
           });
-        console.log('success!!!!!!');
-        this.electricitConsumptionService
+        await this.electricitConsumptionService
           .addECD({
             quantity: this.cantidadMixElectrico,
             percentage: this.porcentajeMixElectrico,
@@ -167,8 +161,7 @@ export class UsageStageComponent implements OnInit {
             console.log('Mix electrico');
             console.log(data);
           });
-        console.log('success!!!!!!');
-        this.electricitConsumptionService
+        await this.electricitConsumptionService
           .addECD({
             quantity: this.cantidadPanelesFotovoltaicos,
             percentage: this.porcentajePanelesFotovoltaicos,
@@ -181,8 +174,8 @@ export class UsageStageComponent implements OnInit {
             console.log('paneles fotovoltaicos');
             console.log(data);
           });
+        await this.router.navigateByUrl('end-life-stage');
       });
-    this.router.navigateByUrl('end-life-stage');
   }
 
   goToMaterialStage() {
