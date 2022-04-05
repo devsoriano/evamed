@@ -832,6 +832,9 @@ export class CompararComponent implements OnInit {
   }
 
   ajusteUsoBaseDatos(seleccion){
+    this.outproyect_bar = [];
+    this.outproyect_pie = [];
+    this.outproyect_radar = [];
     Object.keys(this.basesDatos).forEach(bd =>{
       let flag=false;
       seleccion.forEach(bdSelect => {
@@ -841,65 +844,92 @@ export class CompararComponent implements OnInit {
       });
       this.basesDatos[bd] = flag;
     });
-    this.outproyect_bar = [];
-    this.outproyect_pie = [];
-    this.outproyect_radar = [];
-    this.fasesEliminadas = [];
-    this.outproyect_bar_elementos = [];
-    this.outproyect_pie_bar_elementos = [];
-    this.proyectosMostrados_elementos = [];
-    this.estadoTercerSeccion = {};
-    
     this.proyect_active.forEach(id => {
       let data = this.llamarCalculos(id)
-      
+      console.log(data)
       let analisis = this.getAnalisisBarras(id,data);
       let analisisRad = this.getAnalisisRadial(id,data);
       let analisisPie = this.getAnalisisPie(id,data);
-      let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
-      let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
-      let analisisPieTres = this.getAnalisisElementos(id);
       
       this.outproyect_bar.push(analisis);
       this.outproyect_radar.push(analisisRad);
       this.outproyect_pie.push(analisisPie);
-      this.outproyect_bar_elementos.push(analisisBarDos);
-      this.outproyect_pie_bar_elementos.push(analisisPieBarDos);
-      this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
-        idproyecto: id,
-        nombre:analisis.Nombre,
-        data:analisisPieTres,
-      }];
-      this.estadoTercerSeccion[id] = {
-        'agruparProduccion':false,
-        'cicloSeleccionado':" ",
-        'flagPie':true,
-        'fragBar':false
-      }
     });
-    
-    if(this.resultdosGraficos){
-      this.containerGraficas.clear();
-      this.receiveSelector(null);
-      this.ID = ' ';
-      this.iniciaBarras()
-    }else{
-      this.TablaResultados()
-    }
-    if(this.Impactos_Elementos){
-      this.iniciaBarrasSeccionDos();
-      if(this.imgSeleccionadaElemento!=' '){
-        this.DispercionAP(this.imgSeleccionadaElemento,' ');
+    //console.log(this.outproyect_bar)
+    //Se reinicia la sección 1
+    if(this.Impactos_ambientales){
+      if(this.resultdosGraficos){
+        this.containerGraficas.clear();
+        this.receiveSelector(null);
+        this.ID = ' ';
+        this.iniciaBarras()
       }
-      Object.keys(this.iconosElementosConstrucivos).forEach(element => {
-        if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
-          document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
-        }
-      })
+      else{
+        this.TablaResultados();
+      }
     }
-    if(this.Elementos_constructivos){
-      this.iniciarSeccionTres();
-    }
+    /**
+
+     this.outproyect_bar = [];
+     this.outproyect_pie = [];
+     this.outproyect_radar = [];
+     this.fasesEliminadas = [];
+     this.outproyect_bar_elementos = [];
+     this.outproyect_pie_bar_elementos = [];
+     this.proyectosMostrados_elementos = [];
+     this.estadoTercerSeccion = {};
+     
+     this.proyect_active.forEach(id => {
+       let data = this.llamarCalculos(id)
+       
+       let analisis = this.getAnalisisBarras(id,data);
+       let analisisRad = this.getAnalisisRadial(id,data);
+       let analisisPie = this.getAnalisisPie(id,data);
+       let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
+       let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
+       let analisisPieTres = this.getAnalisisElementos(id);
+       
+       this.outproyect_bar.push(analisis);
+       this.outproyect_radar.push(analisisRad);
+       this.outproyect_pie.push(analisisPie);
+       this.outproyect_bar_elementos.push(analisisBarDos);
+       this.outproyect_pie_bar_elementos.push(analisisPieBarDos);
+       this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
+         idproyecto: id,
+         nombre:analisis.Nombre,
+         data:analisisPieTres,
+       }];
+       this.estadoTercerSeccion[id] = {
+         'agruparProduccion':false,
+         'cicloSeleccionado':" ",
+         'flagPie':true,
+         'fragBar':false
+       }
+     });
+     
+     if(this.resultdosGraficos){
+       this.containerGraficas.clear();
+       this.receiveSelector(null);
+       this.ID = ' ';
+       this.iniciaBarras()
+     }else{
+       this.TablaResultados()
+     }
+     if(this.Impactos_Elementos){
+       this.iniciaBarrasSeccionDos();
+       if(this.imgSeleccionadaElemento!=' '){
+         this.DispercionAP(this.imgSeleccionadaElemento,' ');
+       }
+       Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+         if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+           document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+         }
+       })
+     }
+     if(this.Elementos_constructivos){
+       this.iniciarSeccionTres();
+     }
+     */
 
   }
 
