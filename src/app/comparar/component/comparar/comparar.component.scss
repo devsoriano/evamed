@@ -9,23 +9,6 @@
   margin: auto;
   width: 810px;
   height: auto;
-  .dot {
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #ffffff;
-  }
-  .linea-select{
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #e3c500;
-  }
-  .indicadores{
-    display: flex;
-    justify-content: space-between;
-    margin-left: 32px;
-  }
 }
 
 .tabla {
@@ -55,17 +38,6 @@
   }
 }
 
-.bases-datos{
-  display: flex;
-  justify-content: space-between;
-  p.text-duplicados {
-    font-size: 12px;
-    letter-spacing: 0px;
-    padding-top: 21px;
-    color: #767676;
-    opacity: 1;
-  }
-}
 .sectionOne {
   color: #92be00;
   padding: 0px;
@@ -240,6 +212,14 @@ ng-template {
   }
 }
 
+p.text-duplicados {
+  font-size: 12px;
+  letter-spacing: 0px;
+  padding-top: 21px;
+  color: #767676;
+  opacity: 1;
+}
+
 .uno {
   background: #4dbe89;
 }
@@ -391,23 +371,6 @@ ng-template {
     opacity: 1;
     font-size: 15px;
     margin-top: 35px;
-  }
-  .dot {
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #ffffff;
-  }
-  .linea-select{
-    height: 2px;
-    width: 65px;
-    margin: auto;
-    background-color: #e3c500;
-  }
-  .indicadores{
-    display: flex;
-    justify-content: space-between;
-    margin-left: 32px;
   }
 
   .botones-elementos-contructivos {
