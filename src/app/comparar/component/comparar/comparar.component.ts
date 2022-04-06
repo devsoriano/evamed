@@ -34,7 +34,7 @@ import { UserService } from 'src/app/core/services/user/user.service';
 @Component({
   selector: 'app-comparar',
   templateUrl: './comparar.component.html',
-  styleUrls: ['./comparar.component.scss'],
+  styleUrls: ['./comparar.component.scss', './styleSU.scss', './styleSD.scss','./styleST.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
