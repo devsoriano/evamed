@@ -318,78 +318,77 @@ export class UsageStageUpdateComponent implements OnInit {
     }
   }
 
-  saveStepThree() {
+  async saveStepThree() {
     console.log('entra al proceso de edición');
     console.log(this.globalData[0].id);
     console.log(this.ECD_IDS);
+    await this.ECD_IDS.map(async (item) => {
+      await this.electricitConsumptionService
+        .deleteECD(item)
+        .subscribe((data) => {
+          console.log('Delete ECD----------');
+          console.log(data);
+        });
+    });
 
-    this.ECD_IDS.map((item) =>
-      this.electricitConsumptionService.deleteECD(item).subscribe((data) => {
-        this.electricitConsumptionService
-          .deleteACR(this.globalData[0].id)
-          .subscribe((data) => {
-            this.electricitConsumptionService
-              .addACR({
-                quantity: this.cantidad,
-                project_id: localStorage.getItem('idProyectoConstrucción'),
-                unit_id: this.unidad,
-              })
-              .subscribe((data) => {
-                console.log('success!!!!!!');
-                this.electricitConsumptionService
-                  .addECD({
-                    quantity: this.cantidadCombustible,
-                    percentage: this.porcentajeCombustible,
-                    annual_consumption_required_id: data.id,
-                    unit_id: this.unidadCombustible,
-                    type: this.tipoCombustible,
-                    source: 'fuel',
-                  })
-                  .subscribe((data) => {
-                    console.log('combustible!!!!!');
-                    console.log(data);
-                  });
-                console.log('success!!!!!!');
-                this.electricitConsumptionService
-                  .addECD({
-                    quantity: this.cantidadMixElectrico,
-                    percentage: this.porcentajeMixElectrico,
-                    annual_consumption_required_id: data.id,
-                    unit_id: this.unidadMixElectrico,
-                    type: this.tipoMixElectrico,
-                    source: 'electric',
-                  })
-                  .subscribe((data) => {
-                    console.log('Mix electrico');
-                    console.log(data);
-                  });
-                console.log('success!!!!!!');
-                this.electricitConsumptionService
-                  .addECD({
-                    quantity: this.cantidadPanelesFotovoltaicos,
-                    percentage: this.porcentajePanelesFotovoltaicos,
-                    annual_consumption_required_id: data.id,
-                    unit_id: this.unidadPanelesFotovoltaicos,
-                    type: null,
-                    source: 'panels',
-                  })
-                  .subscribe((data) => {
-                    console.log('paneles fotovoltaicos');
-                    console.log(data);
-                  });
-              });
-          });
+    await this.electricitConsumptionService
+      .deleteACR(this.globalData[0].id)
+      .subscribe((data) => {
+        console.log('Delete ACR-----------');
+        console.log(data);
+      });
+
+    await this.electricitConsumptionService
+      .addACR({
+        quantity: this.cantidad,
+        project_id: localStorage.getItem('idProyectoConstrucción'),
+        unit_id: this.unidad,
       })
-    );
+      .subscribe(async (data) => {
+        console.log('Nuevo ACR asociado');
 
-    const dialogRef = this.dialog.open(IntermedialComponent, {
-      width: '680px',
-      data: {},
-    });
+        await this.electricitConsumptionService
+          .addECD({
+            quantity: this.cantidadCombustible,
+            percentage: this.porcentajeCombustible,
+            annual_consumption_required_id: data.id,
+            unit_id: this.unidadCombustible,
+            type: this.tipoCombustible,
+            source: 'fuel',
+          })
+          .subscribe((data) => {
+            console.log('Nuevo ECD Combustible!!!!!');
+            console.log(data);
+          });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // this.ngOnInit();
-    });
+        await this.electricitConsumptionService
+          .addECD({
+            quantity: this.cantidadMixElectrico,
+            percentage: this.porcentajeMixElectrico,
+            annual_consumption_required_id: data.id,
+            unit_id: this.unidadMixElectrico,
+            type: this.tipoMixElectrico,
+            source: 'electric',
+          })
+          .subscribe((data) => {
+            console.log('Nuevo ECD Mix electrico!!!!!!!!!!!!');
+            console.log(data);
+          });
+
+        await this.electricitConsumptionService
+          .addECD({
+            quantity: this.cantidadPanelesFotovoltaicos,
+            percentage: this.porcentajePanelesFotovoltaicos,
+            annual_consumption_required_id: data.id,
+            unit_id: this.unidadPanelesFotovoltaicos,
+            type: null,
+            source: 'panels',
+          })
+          .subscribe((data) => {
+            console.log('Nuevo ECD paneles fotovoltaicos');
+            console.log(data);
+          });
+      });
   }
 
   goToMaterialStage() {

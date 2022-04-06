@@ -76,12 +76,6 @@ const routes: Routes = [
           import('./comparar/comparar.module').then((m) => m.CompararModule),
       },
       {
-        path: 'acerca-de',
-        canActivate: [AdminGuard],
-        loadChildren: () =>
-          import('./acerca-de/acerca-de.module').then((m) => m.AcercaDeModule),
-      },
-      {
         path: 'material-stage-update',
         canActivate: [AdminGuard],
         loadChildren: () =>
