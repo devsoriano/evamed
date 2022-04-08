@@ -7,6 +7,9 @@ import { MatListOption } from '@angular/material/list';
 import 'rxjs/add/operator/filter';
 import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 
+import { MatDialog } from '@angular/material/dialog';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
+
 @Component({
   selector: 'app-end-life-stage',
   templateUrl: './end-life-stage.component.html',
@@ -32,12 +35,14 @@ export class EndLifeStageComponent implements OnInit {
   catalogoFuentes: any;
   catalogoUnidadEnergia: [];
   selectedSheet: any;
+  endSave: boolean = false;
 
   constructor(
     private router: Router,
     private endLifeService: EndLifeService,
     private catalogsService: CatalogsService,
-    private materialsService: MaterialsService
+    private materialsService: MaterialsService,
+    public dialog: MatDialog
   ) {
     this.catalogsService.getSourceInformation().subscribe((data) => {
       const fuentes = [];
@@ -171,10 +176,10 @@ export class EndLifeStageComponent implements OnInit {
     }
   }
 
-  saveStepFour() {
+  async saveStepFour() {
     console.log('confirm step 4');
     try {
-      Object.entries(this.EC).forEach(([key, ec]) => {
+      await Object.entries(this.EC).forEach(([key, ec]) => {
         let ecAny: any;
         ecAny = ec;
         ecAny.map((data) => {
@@ -196,7 +201,24 @@ export class EndLifeStageComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+
+    await this.showModal();
     // this.router.navigateByUrl('/');
+  }
+
+  showModal() {
+    console.log('enter show modal');
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
+
+      this.endSave = true;
+      console.log(this.endSave);
+    });
   }
 
   goToMaterialStage() {

@@ -5,9 +5,10 @@ import { EndLifeStageComponent } from './components/end-life-stage/end-life-stag
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
+import { IntermedialComponent } from './components/intermedial/intermedial.component';
 
 @NgModule({
-  declarations: [EndLifeStageComponent],
+  declarations: [EndLifeStageComponent, IntermedialComponent],
   imports: [
     CommonModule,
     EndLifeStageRoutingModule,
@@ -15,5 +16,7 @@ import { MaterialModule } from './../material/material.module';
     FormsModule,
     MaterialModule,
   ],
+  exports: [IntermedialComponent],
+  entryComponents: [IntermedialComponent],
 })
 export class EndLifeStageModule {}
