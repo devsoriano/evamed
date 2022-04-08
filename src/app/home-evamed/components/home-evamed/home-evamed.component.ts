@@ -1162,17 +1162,20 @@ export class HomeEvamedComponent implements OnInit {
         this.auxDataProjectList[project].impactoCompleteSelect,
         this.auxDataProjectList[project].datos);
     }
-    /** 
-     this.auxDataProjectList[project]['valorCarbono'] = this.calculos
-     .determinaValorCarbono(calculosOperacionesDeFase)
-     .toExponential(2);
-     this.auxDataProjectList[project]['flagsCarbono'] = this.calculos.buscarValosCarbono(
-       calculosOperacionesDeFase,
-       this.auxDataProjectList[project].opcionCarbonoSeleccionada
-     )
-     console.log(calculosOperacionesDeFase)
-     * 
-    */
+    this.auxDataProjectList[project]['valorCarbono'] = this.calculos
+    .determinaValorCarbono(calculosOperacionesDeFase,
+      this.DatosCalculos.projectsList,
+      this.auxDataProjectList[project].id,
+      this.DatosCalculos.ULList)
+    .toExponential(2);
+
+    this.auxDataProjectList[project]['flagsCarbono'] = this.calculos.buscarValosCarbono(
+      calculosOperacionesDeFase,
+      this.auxDataProjectList[project].opcionCarbonoSeleccionada,
+      this.DatosCalculos.projectsList,
+      this.auxDataProjectList[project].id,
+      this.DatosCalculos.ULList
+    )
   }
 
   openDialogANP() {
