@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { CatalogsService } from 'src/app/core/services/catalogs/catalogs.service';
 import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-usage-stage',
@@ -38,12 +40,14 @@ export class UsageStageComponent implements OnInit {
   catalogoUnidadEnergia: any;
   catalogoTipoEnergiaElectrica: any;
   catalogoTipoEnergiaCombustible: any;
+  endSave: boolean = false;
 
   constructor(
     private materialsService: MaterialsService,
     private catalogsService: CatalogsService,
     private router: Router,
-    private electricitConsumptionService: ElectricitConsumptionService
+    private electricitConsumptionService: ElectricitConsumptionService,
+    public dialog: MatDialog
   ) {
     this.catalogsService.getEnergyUnits().subscribe((data) => {
       let catalogoUnidades = [];
@@ -127,8 +131,8 @@ export class UsageStageComponent implements OnInit {
       (porcentajePanelesFotovoltaicos * this.cantidad) / 100;
   }
 
-  saveStepThree() {
-    const ECP = this.electricitConsumptionService
+  async saveStepThree() {
+    await this.electricitConsumptionService
       .addACR({
         quantity: this.cantidad,
         project_id: this.projectId,
@@ -176,6 +180,22 @@ export class UsageStageComponent implements OnInit {
           });
         await this.router.navigateByUrl('end-life-stage');
       });
+
+    await this.showModal();
+  }
+
+  showModal() {
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
+
+      this.endSave = true;
+      console.log(this.endSave);
+    });
   }
 
   goToMaterialStage() {
