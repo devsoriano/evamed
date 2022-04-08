@@ -11,6 +11,7 @@ import { AddConstructiveElementComponent } from '../add-constructive-element/add
 import { AddConstructiveSystemComponent } from '../add-constructive-system/add-constructive-system.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AnalisisService } from 'src/app/core/services/analisis/analisis.service';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
 
 export interface Material {
   id: number;
@@ -79,6 +80,7 @@ export class MaterialsStageComponent implements OnInit {
   filteredOptions: Observable<Material[]>;
 
   displayedColumns: string[] = ['Standard', 'Potencial', 'Valor', 'Unidad'];
+  endSave: boolean = false;
 
   constructor(
     private materialsService: MaterialsService,
@@ -389,11 +391,11 @@ export class MaterialsStageComponent implements OnInit {
     // console.log(this.selectedMaterial);
   }
 
-  saveStepOne() {
+  async saveStepOne() {
     const projectId = this.projectId;
 
     // Save Modelo Revit and Usuario
-    Object.entries(this.SOR).forEach(([key, value]) => {
+    await Object.entries(this.SOR).forEach(([key, value]) => {
       this.contentData[parseInt(key, 10) + 1].map((data) => {
         value.map((sc) => {
           if (data.Sistema_constructivo === sc) {
@@ -470,7 +472,7 @@ export class MaterialsStageComponent implements OnInit {
     });
 
     // Save Dynamo
-    Object.entries(this.SOD).forEach(([key, value]) => {
+    await Object.entries(this.SOD).forEach(([key, value]) => {
       this.contentData[parseInt(key, 10) + 1].map((data) => {
         value.map((sc) => {
           if (data.Sistema_constructivo === sc) {
@@ -541,6 +543,22 @@ export class MaterialsStageComponent implements OnInit {
           }
         });
       });
+    });
+
+    await this.showModal();
+  }
+
+  showModal() {
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
+
+      this.endSave = true;
+      console.log(this.endSave);
     });
   }
 
