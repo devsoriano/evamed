@@ -420,6 +420,7 @@ export class Calculos {
       });
       Object.keys(data[element]).forEach((etapa) => {
         flag = true;
+        let auxsumET = 0;
         ignorar.forEach(element => {
           if(element == etapa)
             flag=false
@@ -432,12 +433,17 @@ export class Calculos {
               auxsumetapa[element][etapa]['num'] + data[element][etapa][subetapa];
           });
         }
+        auxsumET =  auxsumetapa[element][etapa]['num'];
         auxsumetapa[element][etapa]['num'] =
-          auxsumetapa[element][etapa]['num'].toExponential(2);
-        auxsumetapa[element][etapa]['porcentaje'] = (
-          (auxsumetapa[element][etapa]['num'] / auxsumimpacto) *
-          100
-        ).toFixed(2);
+        auxsumetapa[element][etapa]['num'].toExponential(2);
+        if(auxsumimpacto != 0){
+          auxsumetapa[element][etapa]['porcentaje'] = (
+            (auxsumET / auxsumimpacto) *
+            100
+          ).toFixed(2);
+        }else{
+          auxsumetapa[element][etapa]['porcentaje'] = 0
+        }
       });
     });
 
@@ -476,10 +482,14 @@ export class Calculos {
           }else{
             auxsumetapa[element][etapa][subetapa]['num'] = 0;
           }
-          auxsumetapa[element][etapa][subetapa]['porcentaje'] = (
-            (auxsumetapa[element][etapa][subetapa]['num'] / auxsumimpacto) *
-            100
-          ).toFixed(1);
+          if(auxsumimpacto != 0){
+            auxsumetapa[element][etapa][subetapa]['porcentaje'] = (
+              (auxsumetapa[element][etapa][subetapa]['num'] / auxsumimpacto) *
+              100
+            ).toFixed(1);
+          }else{
+            auxsumetapa[element][etapa][subetapa]['porcentaje'] = 0
+          }
         });
         flag=true
       });
@@ -571,57 +581,22 @@ export class Calculos {
     return sub[0]['color'];
   }
 
-  findSubetapas(etapa,materialSP,materialL,idP,impactoS,TList,BD) {
-    let auxIDImpacto = TList.filter((bs)=> bs['name_complete_potential_type']==impactoS)[0]['id'];
+  findSubetapas(etapa,impactoS,porcentajesMostrados) {
     let auxReturn =[]
-    let flagBD = false;
-    
-    if(etapa === 'Producción'){
-      let  schemeProyect = materialSP.filter(
-        (msp) => msp['project_id'] == idP
-        );
-        if (schemeProyect.length > 0) {
-          schemeProyect.forEach(ps => {
-          let baseDatosMaterial = materialL.filter((bs)=> bs['id']==ps['material_id']);
-          if(BD[baseDatosMaterial[0]['database_from']]){
-            let materiales_subetapa = this.materialSchemeDataList.filter(
-              (msd) =>
-              msd['material_id'] == ps['material_id'] &&
-              msd['standard_id'] == 2 &&
-              msd['potential_type_id'] == auxIDImpacto
-              );
-            if (materiales_subetapa.length > 0) {
-              flagBD = false;
-            }else{
-              let materiales_subetapa = this.materialSchemeDataList.filter(
-                (msd) =>
-                msd['material_id'] == ps['material_id'] &&
-                msd['standard_id'] == 1 &&
-                msd['potential_type_id'] == auxIDImpacto
-                );
-              if (materiales_subetapa.length > 0) {
-                flagBD = true;
-                //auxReturn = this.subetapas_list.filter((s) => s['etapa'] == etapa);
-              }
-
-            }
+    Object.keys(porcentajesMostrados).forEach(impacto => {
+      let auxIDImpacto = this.ajustarNombre(impactoS)
+      if(impacto === auxIDImpacto){
+        Object.keys(porcentajesMostrados[impacto]).forEach(ciclo =>{
+          if(ciclo ===etapa){
+            Object.keys(porcentajesMostrados[impacto][ciclo]).forEach(subEtapa =>{
+              let aux =  this.subetapas_list.filter((s) => s['abreviacion'] == subEtapa);
+              auxReturn.push(aux[0])
+            })
           }
-        });
+        })
       }
-      if(flagBD){
-        auxReturn = this.subetapas_list.filter((s) => s['etapa'] == etapa);
-      }else{
-        let aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A1');
-              auxReturn.push(aux[0])
-              aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A2');
-              auxReturn.push(aux[0])
-              aux =  this.subetapas_list.filter((s) => s['abreviacion'] == 'A3');
-              auxReturn.push(aux[0])
-      }
-    }else{
-      auxReturn = this.subetapas_list.filter((s) => s['etapa'] == etapa);
-    }
-    return auxReturn
+    })
+    return auxReturn;
   }
 
   llenarGraficaCarbono(opcion){
