@@ -24,10 +24,15 @@ import { IntermedialComponent } from './components/intermedial/intermedial.compo
     ReactiveFormsModule,
     MaterialModule,
   ],
-  exports: [AddConstructiveElementComponent, AddConstructiveSystemComponent],
+  exports: [
+    AddConstructiveElementComponent,
+    AddConstructiveSystemComponent,
+    IntermedialComponent,
+  ],
   entryComponents: [
     AddConstructiveElementComponent,
     AddConstructiveSystemComponent,
+    IntermedialComponent,
   ],
 })
 export class MaterialsStageModule {}

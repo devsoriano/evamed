@@ -18,12 +18,13 @@ export class IntermedialComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onNoClick(): void {
+  onNoClick() {
     this.dialogRef.close(this.data);
   }
 
   continueStep(event: Event) {
     event.preventDefault();
+    //
     this.onNoClick();
   }
 }
