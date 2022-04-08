@@ -5,6 +5,8 @@ import { MatAccordion } from '@angular/material/expansion';
 import { CatalogsService } from './../../../core/services/catalogs/catalogs.service';
 import { ConstructionStageService } from 'src/app/core/services/construction-stage/construction-stage.service';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
+import { MatDialog } from '@angular/material/dialog';
+import { IntermedialComponent } from '../intermedial/intermedial.component';
 
 @Component({
   selector: 'app-construction-stage',
@@ -32,12 +34,14 @@ export class ConstructionStageComponent implements OnInit {
   AC: any;
   DG: any;
   selectedSheet: any;
+  endSave: boolean = false;
 
   constructor(
     private materialsService: MaterialsService,
     private catalogsService: CatalogsService,
     private constructionStageService: ConstructionStageService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.catalogsService.getSourceInformation().subscribe((data) => {
       // this.catalogoFuentes = data;
@@ -195,9 +199,9 @@ export class ConstructionStageComponent implements OnInit {
 
   onNgModelChange(event) {}
 
-  saveStepTwo() {
+  async saveStepTwo() {
     try {
-      Object.entries(this.EC).forEach(([key, ec]) => {
+      await Object.entries(this.EC).forEach(([key, ec]) => {
         let ecAny: any;
         ecAny = ec;
         ecAny.map((data) => {
@@ -223,7 +227,7 @@ export class ConstructionStageComponent implements OnInit {
     }
 
     try {
-      Object.entries(this.AC).forEach(([key, ec]) => {
+      await Object.entries(this.AC).forEach(([key, ec]) => {
         let ecAny: any;
         ecAny = ec;
         ecAny.map((data) => {
@@ -249,7 +253,7 @@ export class ConstructionStageComponent implements OnInit {
     }
 
     try {
-      Object.entries(this.DG).forEach(([key, ec]) => {
+      await Object.entries(this.DG).forEach(([key, ec]) => {
         let ecAny: any;
         ecAny = ec;
         ecAny.map((data) => {
@@ -274,7 +278,23 @@ export class ConstructionStageComponent implements OnInit {
       console.log(error);
     }
 
-    this.router.navigateByUrl('usage-stage');
+    await this.showModal();
+    // this.router.navigateByUrl('usage-stage');
+  }
+
+  showModal() {
+    console.log('enter show modal');
+    const dialogRef = this.dialog.open(IntermedialComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.ngOnInit();
+
+      this.endSave = true;
+      console.log(this.endSave);
+    });
   }
 
   goToMaterialStage() {

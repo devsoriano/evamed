@@ -5,17 +5,18 @@ import { ConstructionStageComponent } from './components/construction-stage/cons
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
+import { IntermedialComponent } from './components/intermedial/intermedial.component';
 
 @NgModule({
-  declarations: [
-    ConstructionStageComponent
-  ],
+  declarations: [ConstructionStageComponent, IntermedialComponent],
   imports: [
     CommonModule,
     ConstructionStageRoutingModule,
     SharedModule,
     FormsModule,
     MaterialModule,
-  ]
+  ],
+  exports: [IntermedialComponent],
+  entryComponents: [IntermedialComponent],
 })
-export class ConstructionStageModule { }
+export class ConstructionStageModule {}
