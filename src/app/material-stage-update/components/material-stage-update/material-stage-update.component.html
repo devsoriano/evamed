@@ -381,7 +381,7 @@
                 {{ material.value.name_material }}
               </div>
               <div class="col-cantidad">
-                {{ material.value.quantity }}
+                {{ material.value.quantity  | number: '1.2-2'  }}
               </div>
               <div class="col-unidad">
                 {{ material.value.Unidad }}

@@ -275,6 +275,14 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.listData2.map((item) => console.log(item));
   }
 
+  trunc(x, posiciones = 0) {
+    var s = x.toString();
+    var l = s.length;
+    var decimalLength = s.indexOf('.') + 1;
+    var numStr = s.substr(0, decimalLength + posiciones);
+    return Number(numStr);
+  }
+
   showMaterials(event, sc, origin) {
     event.stopPropagation();
     this.selectedMaterial = false;
@@ -303,7 +311,7 @@ export class MaterialStageUpdateComponent implements OnInit {
                   console.log(item);
                   prevData['comercial_name'] = item.comercial_name;
                   prevData['name_material'] = materialData.name_material;
-                  prevData['quantity'] = item.quantity;
+                  prevData['quantity'] = this.trunc(item.quantity, 2);
                   prevData['origin_id'] = item.origin_id;
                   prevData['material_id'] = item.material_id;
                   prevData['reemplazos'] = item.replaces;
@@ -339,7 +347,7 @@ export class MaterialStageUpdateComponent implements OnInit {
                 if (item.material_id === materialData.id) {
                   prevData['comercial_name'] = item.comercial_name;
                   prevData['name_material'] = materialData.name_material;
-                  prevData['quantity'] = item.quantity;
+                  prevData['quantity'] = this.trunc(item.quantity, 2);
                   prevData['origin_id'] = item.origin_id;
                   prevData['material_id'] = item.material_id;
                   prevData['reemplazos'] = item.replaces;
