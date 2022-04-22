@@ -114,19 +114,19 @@ export class UsageStageUpdateComponent implements OnInit {
       data.map((item) => {
         if (item.annual_consumption_required_id === this.CAID) {
           if (item.source === 'electric') {
-            this.cantidadMixElectrico = item.quantity;
+            this.cantidadMixElectrico = this.trunc(item.quantity, 2);
             this.porcentajeMixElectrico = item.percentage;
             this.unidadMixElectrico = item.unit_id;
             this.tipoMixElectrico = item.type;
           }
           if (item.source === 'fuel') {
-            this.cantidadCombustible = item.quantity;
+            this.cantidadCombustible = this.trunc(item.quantity, 2);
             this.porcentajeCombustible = item.percentage;
             this.unidadCombustible = item.unit_id;
             this.tipoCombustible = item.type;
           }
           if (item.source === 'panels') {
-            this.cantidadPanelesFotovoltaicos = item.quantity;
+            this.cantidadPanelesFotovoltaicos = this.trunc(item.quantity, 2);
             this.porcentajePanelesFotovoltaicos = item.percentage;
             this.unidadPanelesFotovoltaicos = item.unit_id;
           }
@@ -424,6 +424,14 @@ export class UsageStageUpdateComponent implements OnInit {
 
   goToUsageStage() {
     this.router.navigateByUrl('usage-stage');
+  }
+
+  trunc(x, positions = 0) {
+    var s = x.toString();
+    var l = s.length;
+    var decimalLength = s.indexOf('.') + 1;
+    var numStr = s.substr(0, decimalLength + positions);
+    return Number(numStr);
   }
 
   goToEndLife() {

@@ -133,6 +133,15 @@ export class ConstructionStageUpdateComponent implements OnInit {
       this.IMGP[i].src = array[i];
     }
   }
+
+  trunc(x, posiciones = 0) {
+    var s = x.toString();
+    var l = s.length;
+    var decimalLength = s.indexOf('.') + 1;
+    var numStr = s.substr(0, decimalLength + posiciones);
+    return Number(numStr);
+  }
+
   onGroupsChange(options: MatListOption[]) {
     let selectedSheet;
     // map these MatListOptions to their values
@@ -151,7 +160,7 @@ export class ConstructionStageUpdateComponent implements OnInit {
         switch (item.constructive_process_id) {
           case 1:
             prevData['id'] = item.id;
-            prevData['cantidad'] = item.quantity;
+            prevData['cantidad'] = this.trunc(item.quantity);
             prevData['fuente'] = item.source_information_id;
             prevData['energy_unit_id'] = item.energy_unit_id;
             getDataEC.push(prevData);
