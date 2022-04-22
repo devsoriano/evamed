@@ -74,6 +74,7 @@ export class CalculosTercerSeccion {
       if (impacto_ban) {
         nameImpacto = impacto['name_complete_potential_type'];
         nameImpacto = this.ajustarNombre(nameImpacto);
+        console.log(nameImpacto)
         Datos[nameImpacto]={};
         DatosMateriales[nameImpacto]={};
         Datos[nameImpacto]['Producción'] = {'A1':{},'A2':{},'A3':{}};
@@ -174,7 +175,7 @@ export class CalculosTercerSeccion {
             });
           }
         });
-        //console.log(DatosMateriales[nameImpacto])
+        console.log(DatosMateriales[nameImpacto])
         //A4 Transporte
         elementoscreados=[];
         if (schemeProyect.length > 0) {
