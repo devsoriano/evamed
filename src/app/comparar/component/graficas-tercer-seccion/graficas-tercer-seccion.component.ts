@@ -126,6 +126,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
   AjusteDatos(){
     this.inputProyect.forEach(proyecto => { 
       let aux = {};
+      let auxData = proyecto.data['materiales'][this.impactoAmbientalMostrado.toString()];
       aux['id']=proyecto.idproyecto;
       aux['nombre']=proyecto.nombre;
       aux['CicloGraficaPie']=this.EstadoSeccion[aux['id']]['flagPie'];
@@ -170,7 +171,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux['nombreSeccionMostrado'] = ' ';
       aux['idsIconosElementos']=this.llenarIdsBotones(this.Secciones,proyecto.idproyecto);
       aux['coloresBotonesElementos']=this.llenarColoresBotonesElementos(this.Secciones,aux['Coloreslementos']['colores'],aux['Coloreslementos']['orden'])
-      let botonesCiclo = this.llenarBotonesCiclo(aux['flagAgruparProduccion'],aux['id']);
+      let botonesCiclo = this.llenarBotonesCiclo(aux['flagAgruparProduccion'],aux['id'],aux['DatosMateriales']);
       aux['botonesCiclo'] = botonesCiclo['botones']
       aux['ids_RespuestasBotones'] = botonesCiclo
       this.InfoMostrada.push(aux);
@@ -208,12 +209,14 @@ export class GraficasTercerSeccionComponent implements OnInit {
     });
   }
 
-  llenarBotonesCiclo(agrupar,idP){
+  llenarBotonesCiclo(agrupar,idP,data){
     let botones = {'idsBotones' : {},'botones':[], 'respuesta':{},'colores':{}}
+    console.log(data)
     if(agrupar){
       //Todas las subetapas
       let auxBotones = ['A1','A2','A3', 'A4', 'B4']
       let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+      
       auxBotones.forEach(element => {
         let bandera = true;
         this.FasesEliminadas.forEach(etapaElimanada => {
@@ -1168,7 +1171,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
         this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=" "
         this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
         this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosCicloVida'],this.InfoMostrada[index]['flagAgruparProduccion'])
-        let botonesCiclo = this.llenarBotonesCiclo(this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['id']);
+        let botonesCiclo = this.llenarBotonesCiclo(this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['id'],this.InfoMostrada[index]['DatosMateriales']);
         this.InfoMostrada[index]['botonesCiclo'] = botonesCiclo['botones']
         this.InfoMostrada[index]['ids_RespuestasBotones'] = botonesCiclo
 

@@ -960,6 +960,12 @@ export class CompararComponent implements OnInit {
     this.outproyect_bar = [];
     this.outproyect_pie = [];
     this.outproyect_radar = [];
+    this.outproyect_bar_elementos = [];
+    this.iconosElementosConstrucivos = {};
+    this.outproyect_pie_bar_elementos = [];
+    this.proyectosMostrados_elementos = [];
+    this.estadoTercerSeccion = {};
+
     Object.keys(this.basesDatos).forEach(bd =>{
       let flag=false;
       seleccion.forEach(bdSelect => {
@@ -971,16 +977,37 @@ export class CompararComponent implements OnInit {
     });
     this.proyect_active.forEach(id => {
       let data = this.llamarCalculos(id)
-      console.log(data)
       let analisis = this.getAnalisisBarras(id,data);
       let analisisRad = this.getAnalisisRadial(id,data);
       let analisisPie = this.getAnalisisPie(id,data);
+      let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
+      let analisisPieTres = this.getAnalisisElementos(id);
       
+      //sección uno
       this.outproyect_bar.push(analisis);
       this.outproyect_radar.push(analisisRad);
       this.outproyect_pie.push(analisisPie);
+      //sección dos
+      let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
+      this.outproyect_bar_elementos.push(analisisBarDos);
+      //sección tres
+      this.outproyect_pie_bar_elementos.push(analisisPieBarDos);
+      this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
+        idproyecto: id,
+        nombre:analisis.Nombre,
+        data:analisisPieTres,
+      }];
+      this.estadoTercerSeccion[id] = {
+        'agruparProduccion':false,
+        'cicloSeleccionado':" ",
+        'flagPie':true,
+        'fragBar':false
+      }
+      /**
+       * 
+       */
+      //console.log(analisisPieBarDos)
     });
-    //console.log(this.outproyect_bar)
     //Se reinicia la sección 1
     if(this.Impactos_ambientales){
       if(this.resultdosGraficos){
@@ -993,6 +1020,20 @@ export class CompararComponent implements OnInit {
         this.TablaResultados();
       }
     }
+    if(this.Impactos_Elementos){
+      this.iniciaBarrasSeccionDos();
+      if(this.imgSeleccionadaElemento!=' '){
+        this.DispercionAP(this.imgSeleccionadaElemento,' ');
+      }
+      Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+        if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+          document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+        }
+      })
+    }
+    if(this.Elementos_constructivos){
+      this.iniciarSeccionTres();
+    }
     /**
 
      this.outproyect_bar = [];
@@ -1000,6 +1041,7 @@ export class CompararComponent implements OnInit {
      this.outproyect_radar = [];
      this.fasesEliminadas = [];
      this.outproyect_bar_elementos = [];
+
      this.outproyect_pie_bar_elementos = [];
      this.proyectosMostrados_elementos = [];
      this.estadoTercerSeccion = {};
@@ -1120,6 +1162,7 @@ export class CompararComponent implements OnInit {
         this.basesDatos
       );
     this.AjustarElementosMostrados(auxDatos);
+    //console.log(this.iconosElementosConstrucivos)
     this.AjustarElementosMostradosElemntos(auxDatos);
     analisisProyectos['Datos'] = auxDatos;
     return analisisProyectos;
@@ -1139,13 +1182,12 @@ export class CompararComponent implements OnInit {
         //Aqui falta de que en caso de que se otro proyecto y tenga más o menos elementos que no cause problemas y se activen o desactiven bien los botones
         let flag = false;
         let auxidelemento: String = element['id'];
-        let auximpacto = this.calculosSegunaSeccion.ajustarNombre(
-          this.potentialTypesList[0]['name_complete_potential_type']
-        );
-        Object.keys(auxDatos[auximpacto]).forEach((idelemento) => {
-          if (idelemento == auxidelemento.toString()) {
-            flag = true;
-          }
+        Object.keys(auxDatos).forEach((impacto) => {
+          Object.keys(auxDatos[impacto]).forEach((idelemento) => {
+            if (idelemento == auxidelemento.toString()) {
+              flag = true;
+            }
+          });
         });
         if (flag) {
           this.iconosElementosConstrucivos[auxidelemento.toString()] = {};
