@@ -102,13 +102,7 @@ export class Calculos {
             schemeProyect.forEach((ps, num) => {
               let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
               if(BD[baseDatosMaterial[0]['database_from']]){
-                let materiales_subetapa = this.materialSchemeDataList.filter(
-                  (msd) =>
-                  msd['material_id'] == ps['material_id'] &&
-                  msd['standard_id'] == 2 &&
-                  msd['potential_type_id'] == impacto['id']
-                  );
-                if (materiales_subetapa.length > 0) {
+                if(baseDatosMaterial[0]['database_from'] != 'EPiC'){
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
                     msd['material_id'] == ps['material_id'] &&
@@ -123,7 +117,6 @@ export class Calculos {
                         materiales_subetapa[index]['value'] * ps['quantity'];
                     });
                   }
-                  //Datos[nameImpacto]['Producción'][subproceso] = resultado_impacto;
                 }else{
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
@@ -202,39 +195,14 @@ export class Calculos {
               peso = conversion_val[0]['value'];
             }
             if(BD[baseDatosMaterial[0]['database_from']]){
-              let materiales_subetapa = this.materialSchemeDataList.filter(
-                (msd) =>
-                  msd['material_id'] == ps['material_id'] &&
-                  msd['standard_id'] == 2 &&
-                  msd['potential_type_id'] == impacto['id']
-              );
-              if (materiales_subetapa.length > 0) {
-                if(!auxMaterialesTransporte.includes(ps['material_id'])){
-                  sumaParaReempazos[ps['material_id']]=0;
-                  auxMaterialesTransporte.push(ps['material_id']);
-                }
-                resultado_impacto =
-                  resultado_impacto +
-                  peso * ps['quantity'] * (nacional + internacional);
-                  sumaParaReempazos[ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
-              }else{
-                let materiales_subetapa = this.materialSchemeDataList.filter(
-                  (msd) =>
-                    msd['material_id'] == ps['material_id'] &&
-                    msd['standard_id'] == 1 &&
-                    msd['potential_type_id'] == impacto['id']
-                );
-                if (materiales_subetapa.length > 0) {
-                  if(!auxMaterialesTransporte.includes(ps['material_id'])){
-                    sumaParaReempazos[ps['material_id']]=0;
-                    auxMaterialesTransporte.push(ps['material_id']);
-                  }
-                  resultado_impacto =
-                    resultado_impacto +
-                    peso * ps['quantity'] * (nacional + internacional);
-                sumaParaReempazos[ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
-                }
+              if(!auxMaterialesTransporte.includes(ps['material_id'])){
+                sumaParaReempazos[ps['material_id']]=0;
+                auxMaterialesTransporte.push(ps['material_id']);
               }
+              resultado_impacto =
+                resultado_impacto +
+                peso * ps['quantity'] * (nacional + internacional);
+              sumaParaReempazos[ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
             }
           });
         }
@@ -269,13 +237,7 @@ export class Calculos {
             schemeProyect.forEach((ps, num) => {
               let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
               if(BD[baseDatosMaterial[0]['database_from']]){
-                let materiales_subetapa = this.materialSchemeDataList.filter(
-                  (msd) =>
-                    msd['material_id'] == ps['material_id'] &&
-                    msd['standard_id'] == 2 &&
-                    msd['potential_type_id'] == impacto['id']
-                );
-                if (materiales_subetapa.length > 0) {
+                if(baseDatosMaterial[0]['database_from'] != 'EPiC'){
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
                       msd['material_id'] == ps['material_id'] &&
