@@ -72,21 +72,21 @@ export class RadialChartComponent implements OnInit {
       Object.keys(proyecto.Datos).forEach(indicador => {
         if (indicador === ID){
           Object.keys(proyecto.Datos[indicador]).forEach(element => {
-            if (!this.radarChartLabels.includes(element)) {
-              let auxAbr=""
-              this.impactos.forEach(impacto => {
-                let auxNameImpacto = this.ajustarNombre(impacto['name_complete_potential_type']);
-                if(element === auxNameImpacto){
-                  auxAbr = impacto['name_potential_type']
-                }
-              });
-              //this.radarChartLabels = [...this.radarChartLabels, element];
+            let auxAbr=""
+            this.impactos.forEach(impacto => {
+              let auxNameImpacto = this.ajustarNombre(impacto['name_complete_potential_type']);
+              if(element === auxNameImpacto){
+                auxAbr = impacto['name_potential_type']
+              }
+            });
+            if (!this.radarChartLabels.includes(auxAbr)) {
               this.radarChartLabels = [...this.radarChartLabels, auxAbr];
             }
           });
         }
       });
     });
+    //console.log(this.radarChartLabels)
   }
 
   cargarDatos(ID:string){

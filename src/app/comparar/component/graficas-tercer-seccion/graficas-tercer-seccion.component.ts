@@ -211,7 +211,6 @@ export class GraficasTercerSeccionComponent implements OnInit {
 
   llenarBotonesCiclo(agrupar,idP,data){
     let botones = {'idsBotones' : {},'botones':[], 'respuesta':{},'colores':{}}
-    console.log(data)
     if(agrupar){
       //Todas las subetapas
       let auxBotones = ['A1','A2','A3', 'A4', 'B4']
