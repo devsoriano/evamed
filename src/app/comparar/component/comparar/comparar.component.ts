@@ -981,6 +981,7 @@ export class CompararComponent implements OnInit {
     this.outproyect_pie_bar_elementos = [];
     this.proyectosMostrados_elementos = [];
     this.estadoTercerSeccion = {};
+    this.elementosConstructivosMostradosElementos={};
 
     Object.keys(this.basesDatos).forEach(bd =>{
       let flag=false;

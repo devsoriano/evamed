@@ -26,9 +26,9 @@ export class GraficasTercerSeccionComponent implements OnInit {
   botones_elementos_constructivos=[];
   elementoContructivoSelecionado = " ";
   unidadImpactoAmiental = "";
-  private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#707070',B4 : '#8F5091', A4: '#148A93', A1 : '#4DBE89', A2 : '#319F6B', A3:'#368460'};
-  private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)',B4 : 'rgba(143, 80, 145, 0.2)', A4: 'rgba(20, 138, 147, 0.2)', A1 : 'rgba(77, 190, 137, 0.2)', A2 : 'rgba(49, 159, 107, 0.2)', A3:'rgba(54, 132, 96, 0.2)'};
-  private CicloColoresRGB = {Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)',B4 : 'rgb(143, 80, 145)', A4: 'rgb(20, 138, 147)', A1 : 'rgb(77, 190, 137)', A2 : 'rgb(49, 159, 107)', A3:'rgb(54, 132, 96)'};
+  private CicloColores = { FinDeVida: '#DEA961', Uso : '#8F5091', Construccion: '#148A93', Producción : '#4DBE89', General : '#707070',B4 : '#8F5091', A4: '#148A93', A1 : '#4DBE89', A2 : '#319F6B', A3:'#368460','A1-A3':'#1DF28E'};
+  private CicloColoresBW = {Producción : 'rgba(77,190,137,0.2)', Construccion : 'rgba(20,136,147,0.2)', Uso : 'rgba(143,80,145,0.2)',B4 : 'rgba(143, 80, 145, 0.2)', A4: 'rgba(20, 138, 147, 0.2)', A1 : 'rgba(77, 190, 137, 0.2)', A2 : 'rgba(49, 159, 107, 0.2)', A3:'rgba(54, 132, 96, 0.2)','A1-A3':'rgba(29, 242, 142, 0.2)'};
+  private CicloColoresRGB = {Uso : 'rgb(143, 80, 145)', Construccion: 'rgb(20, 138, 147)', Producción : 'rgb(77, 190, 137)',B4 : 'rgb(143, 80, 145)', A4: 'rgb(20, 138, 147)', A1 : 'rgb(77, 190, 137)', A2 : 'rgb(49, 159, 107)', A3:'rgb(54, 132, 96)','A1-A3':'rgb(29, 242, 142)'};
   public displayedColumnsDispercion: string[] = ['no', 'material', 'porcentaje', 'numero'];
   public doughnutChartType = 'doughnut';
   public pieChartOptions = {
@@ -138,21 +138,45 @@ export class GraficasTercerSeccionComponent implements OnInit {
       aux['DatosMateriales'] = proyecto.data['materiales'][this.impactoAmbientalMostrado.toString()];
       aux['DispercionElementos'] = proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()];
       if(this.FaseSeleccionada!=' ' || this.EstadoSeccion[aux['id']]['cicloSeleccionado'] != ' '){
+        let flagExisteSub = false;
         let seleccion = " ";
         if(this.FaseSeleccionada!=' '){
           seleccion = this.FaseSeleccionada.toString();
+          flagExisteSub = true;
         }else{
           seleccion = this.EstadoSeccion[aux['id']]['cicloSeleccionado'];
+          Object.keys(auxData).forEach(E =>{
+            if(seleccion === E){
+              flagExisteSub = true;
+            }else{
+              Object.keys(auxData[E]).forEach(subE => {
+                if(seleccion === subE){
+                  flagExisteSub = true;
+                }
+              })
+            }
+          })
         }
-        aux['CicloSeleccionado'] = seleccion
-        aux['Coloreslementos'] = this.ColoresElementos(aux['DispercionElementos'],seleccion,aux['flagAgruparProduccion']);
-        aux['DatosElementosConstructivos']=this.GraficaElementosContructivos(aux['Coloreslementos']['valores'],aux['Coloreslementos']['colores']);
-        aux['ElementosConstructivosGrafica']=true;
-        aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion']," ");
-        let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion'],aux['Coloreslementos']);
-        aux['DataGraficaMateriales']=auxgrafica['grafica'];
-        aux['labelsMateriales'] = auxgrafica['labels'];
-        aux['iconosElementosConstrucivos']=this.AjustarElementosMostrados(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],seleccion.toString(),aux['flagAgruparProduccion'])
+        if(!flagExisteSub){
+          aux['CicloSeleccionado'] = ' ';
+          aux['DatosElementosConstructivos']=[];
+          aux['iconosElementosConstrucivos']={};
+          aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'],"",0,aux['flagAgruparProduccion']," ");
+          let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'],"","General",0,aux['flagAgruparProduccion'],"");
+          aux['DataGraficaMateriales']=auxgrafica['grafica'];
+          aux['labelsMateriales'] = auxgrafica['labels'];
+          aux['Coloreslementos'] = {};
+        }else{
+          aux['CicloSeleccionado'] = seleccion
+          aux['Coloreslementos'] = this.ColoresElementos(aux['DispercionElementos'],seleccion,aux['flagAgruparProduccion']);
+          aux['DatosElementosConstructivos']=this.GraficaElementosContructivos(aux['Coloreslementos']['valores'],aux['Coloreslementos']['colores']);
+          aux['ElementosConstructivosGrafica']=true;
+          aux['infoTabla'] = this.IniciarTablaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion']," ");
+          let auxgrafica = this.IniciarGraficaMateriales(aux['DatosMateriales'], aux['CicloSeleccionado'], aux['CicloSeleccionado'],1,aux['flagAgruparProduccion'],aux['Coloreslementos']);
+          aux['DataGraficaMateriales']=auxgrafica['grafica'];
+          aux['labelsMateriales'] = auxgrafica['labels'];
+          aux['iconosElementosConstrucivos']=this.AjustarElementosMostrados(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],seleccion.toString(),aux['flagAgruparProduccion'])
+        }
       }else{
         aux['DatosElementosConstructivos']=[];
         aux['CicloSeleccionado'] = ' '
@@ -163,8 +187,8 @@ export class GraficasTercerSeccionComponent implements OnInit {
         aux['labelsMateriales'] = auxgrafica['labels'];
         aux['Coloreslementos'] = {};
       }
-      aux['DatosCicloVida']=this.GraficaCicloVida(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado'],aux['flagAgruparProduccion']);
-      aux['LabelsCicloVida'] = this.graficaCicloVidaBar(aux['DatosCicloVida'],aux['flagAgruparProduccion'])
+      aux['DatosCicloVida']=this.GraficaCicloVida(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado'],aux['flagAgruparProduccion'],auxData);
+      aux['LabelsCicloVida'] = this.graficaCicloVidaBar(aux['DatosMateriales'],aux['flagAgruparProduccion'])
       aux['LabelsElementos'] = this.EncontrarLabelsElementos(proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()],aux['CicloSeleccionado'])
       aux['CicloVida'] = proyecto.data['Calculos'][this.impactoAmbientalMostrado.toString()];
       aux['ElementoConstructivoSeleccionado'] = ' ';
@@ -191,11 +215,23 @@ export class GraficasTercerSeccionComponent implements OnInit {
     });
     return final_unit
   }
+
+  encontrarSubetapas(data){
+    let aux = {}
+    Object.keys(data).forEach(Etapa =>{
+      aux[Etapa]=[]
+      Object.keys(data[Etapa]).forEach(SubE => {
+        aux[Etapa].push(SubE)
+      })
+    })
+    return aux
+  }
   
   actualizarEstado(){
-    let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+    //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
     let etapas=['Producción','Construccion','Uso']
     this.InfoMostrada.forEach((proyecto,index) => {
+      let auxSubetapas = this.encontrarSubetapas(this.InfoMostrada[index]['DatosMateriales'])
       if(this.InfoMostrada[index]['CicloSeleccionado'] != ' '){
         let ciclo = this.InfoMostrada[index]['CicloSeleccionado']
         if(this.InfoMostrada[index]['flagAgruparProduccion'] && etapas.includes(ciclo)){
@@ -214,8 +250,19 @@ export class GraficasTercerSeccionComponent implements OnInit {
     if(agrupar){
       //Todas las subetapas
       let auxBotones = ['A1','A2','A3', 'A4', 'B4']
-      let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
-      
+      let auxBotonesEtapa = {}
+      let auxA1A3 = false;
+      Object.keys(data.Producción).forEach(subE => {
+        if(subE === 'A1-A3'){
+          auxA1A3 = true;
+        }
+      });
+      if(auxA1A3){
+        auxBotones = ['A1','A2','A3','A1-A3', 'A4', 'B4'];
+        auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción','A1-A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+      }else{
+        auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+      }
       auxBotones.forEach(element => {
         let bandera = true;
         this.FasesEliminadas.forEach(etapaElimanada => {
@@ -295,6 +342,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let cambioB= help[3];
     let auxValores={};
     let suma =0;
+    let auxSubetapas=this.encontrarSubetapas(data);
     Object.keys(data).forEach(fase =>{
       if(ciclo===fase || flagAgrupar){
         Object.keys(data[fase]).forEach(subetapa =>{
@@ -303,7 +351,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
             if(subetapa == ciclo){
               flagSubetapa = true;
             }else{
-              let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+              //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
               Object.keys(auxSubetapas).forEach(auxetapa=>{
                 if(auxetapa === ciclo){
                   auxSubetapas[ciclo].forEach(auxsub => {
@@ -338,7 +386,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
             if(subetapa == ciclo){
               flagSubetapa = true;
             }else{
-              let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+              //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
               Object.keys(auxSubetapas).forEach(auxetapa=>{
                 if(auxetapa === ciclo){
                   auxSubetapas[ciclo].forEach(auxsub => {
@@ -393,7 +441,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     return resultado;
   }
 
-  GraficaCicloVida(data,flagColor,flagAgrupar){
+  GraficaCicloVida(data,flagColor,flagAgrupar,dataProyecto){
     let aux = [];
     let auxdata = [];
     let auxcolor = [];
@@ -444,7 +492,8 @@ export class GraficasTercerSeccionComponent implements OnInit {
       auxdata.push(((Data[etapa]/suma)*100).toFixed(2))
     })
     if(flagColor != ' '){
-      let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+      let auxSubetapas = this.encontrarSubetapas(dataProyecto)
+      //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
       let etapas=['Producción','Construccion','Uso']
       if(flagAgrupar && etapas.includes(flagColor)){
         Object.keys(auxSubetapas).forEach(auxEt =>{
@@ -486,7 +535,19 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let aux = []
     if(flagAgrupar){
       let auxBotones = ['A1','A2','A3', 'A4', 'B4']
-      let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+      let auxBotonesEtapa = {}
+      let auxA1A3 = false;
+      Object.keys(data.Producción).forEach(subE => {
+        if(subE === 'A1-A3'){
+          auxA1A3 = true;
+        }
+      });
+      if(auxA1A3){
+        auxBotones = ['A1','A2','A3','A1-A3', 'A4', 'B4'];
+        auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción','A1-A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+      }else{
+        auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+      }
       auxBotones.forEach(element => {
         let bandera = true;
         this.FasesEliminadas.forEach(etapaElimanada => {
@@ -549,8 +610,8 @@ export class GraficasTercerSeccionComponent implements OnInit {
           document.getElementById(this.InfoMostrada[index]['id'].toString().concat(ciclo.concat('botonC'))).className = 'espacio-sin-selecciomar';
           this.InfoMostrada[index]['CicloSeleccionado']=' ';
           resultado = ' ';
-          this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
-          this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosCicloVida'],this.InfoMostrada[index]['flagAgruparProduccion'])
+          this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['DatosMateriales']);
+          this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['flagAgruparProduccion'])
           this.InfoMostrada[index]['ElementosConstructivosGrafica'] = false;
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'],"",0,this.InfoMostrada[index]['flagAgruparProduccion']," ");
           let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'],"","General",0,this.InfoMostrada[index]['flagAgruparProduccion'],"");
@@ -562,7 +623,8 @@ export class GraficasTercerSeccionComponent implements OnInit {
             document.getElementById(this.InfoMostrada[index]['id'].toString().concat(ciclo.concat('botonC'))).className = 'espacio-seleccionado';
           }else{
             let etapas=['Producción','Construccion','Uso'];
-            let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']};
+            let auxSubetapas = this.encontrarSubetapas(this.InfoMostrada[index]['DatosMateriales']);
+            //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']};
             let auxCiclo = this.InfoMostrada[index]['CicloSeleccionado'];
             if(this.InfoMostrada[index]['flagAgruparProduccion']  && etapas.includes(auxCiclo)){
               auxSubetapas[auxCiclo].forEach(auxC => {
@@ -578,7 +640,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
             }
           }
           if(this.InfoMostrada[index]['ElementoConstructivoSeleccionado'] != " "){
-            document.getElementById(this.InfoMostrada[index]['id'].toString().concat('texto'.concat(this.InfoMostrada[index]['ElementoConstructivoSeleccionado'].toString()))).className = 'espacio-sin-selecciomar';
+            let elementoDom=document.getElementById(this.InfoMostrada[index]['id'].toString().concat('texto'.concat(this.InfoMostrada[index]['ElementoConstructivoSeleccionado'].toString())));
+            if(elementoDom!=null){
+              document.getElementById(this.InfoMostrada[index]['id'].toString().concat('texto'.concat(this.InfoMostrada[index]['ElementoConstructivoSeleccionado'].toString()))).className = 'espacio-sin-selecciomar';
+            }
             this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=" "
           }
           this.InfoMostrada[index]['CicloSeleccionado']=ciclo;
@@ -586,8 +651,8 @@ export class GraficasTercerSeccionComponent implements OnInit {
           this.InfoMostrada[index]['Coloreslementos'] = this.ColoresElementos(this.InfoMostrada[index]['DispercionElementos'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
           this.InfoMostrada[index]['iconosElementosConstrucivos']=this.AjustarElementosMostrados(this.InfoMostrada[index]['DispercionElementos'],ciclo,this.InfoMostrada[index]['flagAgruparProduccion'])
           this.InfoMostrada[index]['DatosElementosConstructivos']=this.GraficaElementosContructivos(this.InfoMostrada[index]['Coloreslementos']['valores'],this.InfoMostrada[index]['Coloreslementos']['colores']);
-          this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
-          this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosCicloVida'],this.InfoMostrada[index]['flagAgruparProduccion'])
+          this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['DatosMateriales']);
+          this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['flagAgruparProduccion'])
           this.InfoMostrada[index]['ElementosConstructivosGrafica'] = true;
           this.InfoMostrada[index]['infoTabla'] = this.IniciarTablaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion']," ");
           let auxgrafica = this.IniciarGraficaMateriales(this.InfoMostrada[index]['DatosMateriales'], this.InfoMostrada[index]['CicloSeleccionado'], this.InfoMostrada[index]['CicloSeleccionado'],1,this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['Coloreslementos']);
@@ -713,6 +778,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let suma=0;
     let materialesExistentes = []
     let auxmateriales = {}
+    let auxSubetapas = this.encontrarSubetapas(data);
     Object.keys(data).forEach(elemento =>{
       if(filtro == 0){
         //Sin seleccionar algun filtro
@@ -754,7 +820,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
               if(subetapa == elementoSeleccionado){
                 flagSubetapa = true;
               }else{
-                let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+                //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
                 Object.keys(auxSubetapas).forEach(auxetapa=>{
                   if(auxetapa === elementoSeleccionado){
                     auxSubetapas[auxetapa].forEach(auxSub => {
@@ -800,7 +866,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
               if(subetapa == color){
                 flagSubetapa = true;
               }else{
-                let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+                //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
                 Object.keys(auxSubetapas).forEach(auxetapa=>{
                   if(auxetapa === color){
                     auxSubetapas[auxetapa].forEach(auxsub => {
@@ -881,6 +947,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
     let auxidsMateriales = []
     let materialesExistentes = []
     let auxmateriales = {}
+    let auxSubetapas = this.encontrarSubetapas(data);
     Object.keys(data).forEach(elemento =>{
       if(filtro == 0){
         //Sin seleccionar algun filtro
@@ -922,7 +989,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
               if(subetapa == elementoSeleccionado){
                 flagSubetapa = true;
               }else{
-                let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+                //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
                 Object.keys(auxSubetapas).forEach(auxetapa=>{
                   if(auxetapa === elementoSeleccionado){
                     auxSubetapas[auxetapa].forEach(auxSub => {
@@ -967,7 +1034,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
               if(subetapa == ciclo){
                 flagSubetapa = true;
               }else{
-                let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+                //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
                 Object.keys(auxSubetapas).forEach(auxetapa=>{
                   if(auxetapa === ciclo){
                     auxSubetapas[auxetapa].forEach(auxsub => {
@@ -1078,6 +1145,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
 
   AjustarElementosMostrados(auxDatos,ciclo,flagAgrupar){
     let iconos = {}
+    let auxSubetapas = this.encontrarSubetapas(auxDatos);
     this.Secciones.forEach(element =>{
       let flag = false
       let auxidelemento : String = element['id'];
@@ -1089,7 +1157,7 @@ export class GraficasTercerSeccionComponent implements OnInit {
             if(subetapas == ciclo){
               flagSubetapa = true;
             }else{
-              let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
+              //let auxSubetapas={'Producción':['A1','A2','A3'],'Construccion':['A4'],'Uso':['B4']}
               Object.keys(auxSubetapas).forEach(auxetapa=>{
                 if(auxetapa === ciclo){
                   auxSubetapas[ciclo].forEach(auxsub => {
@@ -1150,7 +1218,19 @@ export class GraficasTercerSeccionComponent implements OnInit {
           if(this.InfoMostrada[index]['flagAgruparProduccion']){
             document.getElementById(this.InfoMostrada[index]['id'].toString().concat(this.InfoMostrada[index]['CicloSeleccionado'].concat('botonC'))).className = 'espacio-sin-selecciomar';
           }else{
-            let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+            //let auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+            let auxBotonesEtapa = {}
+            let auxA1A3 = false;
+            Object.keys(this.InfoMostrada[index]['DatosMateriales']['Producción']).forEach(subE => {
+              if(subE === 'A1-A3'){
+                auxA1A3 = true;
+              }
+            });
+            if(auxA1A3){
+              auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción','A1-A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+            }else{
+              auxBotonesEtapa = {'A1':'Producción','A2':'Producción','A3':'Producción', 'A4':'Construccion', 'B4':'Uso'}
+            }
             Object.keys(auxBotonesEtapa).forEach(element => {
               if(auxBotonesEtapa[element] === this.InfoMostrada[index]['CicloSeleccionado']){
                 document.getElementById(this.InfoMostrada[index]['id'].toString().concat(element.concat('botonC'))).className = 'espacio-sin-selecciomar';
@@ -1168,8 +1248,8 @@ export class GraficasTercerSeccionComponent implements OnInit {
           this.InfoMostrada[index]['Coloreslementos'] = {};
         }
         this.InfoMostrada[index]['ElementoConstructivoSeleccionado']=" "
-        this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion']);
-        this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosCicloVida'],this.InfoMostrada[index]['flagAgruparProduccion'])
+        this.InfoMostrada[index]['DatosCicloVida']=this.GraficaCicloVida(this.InfoMostrada[index]['CicloVida'],this.InfoMostrada[index]['CicloSeleccionado'],this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['DatosMateriales']);
+        this.InfoMostrada[index]['LabelsCicloVida'] = this.graficaCicloVidaBar(this.InfoMostrada[index]['DatosMateriales'],this.InfoMostrada[index]['flagAgruparProduccion'])
         let botonesCiclo = this.llenarBotonesCiclo(this.InfoMostrada[index]['flagAgruparProduccion'],this.InfoMostrada[index]['id'],this.InfoMostrada[index]['DatosMateriales']);
         this.InfoMostrada[index]['botonesCiclo'] = botonesCiclo['botones']
         this.InfoMostrada[index]['ids_RespuestasBotones'] = botonesCiclo
