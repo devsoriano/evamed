@@ -344,7 +344,13 @@ export class MaterialStageUpdateComponent implements OnInit {
             .searchMaterial(item.material_id)
             .subscribe((material) => {
               material.map((materialData) => {
-                if (item.material_id === materialData.id) {
+                if (
+                  item.material_id === materialData.id &&
+                  item.section_id === this.indexSheet + 1
+                ) {
+                  console.log('Material Data');
+                  // console.log(materialData);
+                  console.log(item);
                   prevData['comercial_name'] = item.comercial_name;
                   prevData['name_material'] = materialData.name_material;
                   prevData['quantity'] = this.trunc(item.quantity, 2);
@@ -508,6 +514,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   showDetailEPD(event, material) {
+    console.log('Show------------------------------');
     event.stopPropagation();
     this.showEPD = true;
     this.dataMaterialSelected.name = material.name_material;
@@ -515,8 +522,10 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.dataMaterialSelected.description =
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
     this.analisis.getMaterialSchemeData().subscribe((msds) => {
-      const msd = msds.filter((msd) => msd.material_id === material.id);
-      console.log(msd);
+      let msd = msds.filter((msd) => msd.material_id === material.id);
+      msd = msd.sort((a, b) => {
+        return a.potential_type_id - b.potential_type_id;
+      });
       this.dataMaterialSelected.msd = msd;
     });
   }

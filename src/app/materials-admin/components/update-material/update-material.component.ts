@@ -81,7 +81,7 @@ export class UpdateMaterialComponent implements OnInit {
             );
 
             this.ListSchemeData = ListSchemeData.sort((a, b) => {
-              a.standard > b.standard ? 1 : -1;
+              return a.potential_type_id - b.potential_type_id;
             });
           });
         });
