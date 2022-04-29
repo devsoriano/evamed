@@ -593,6 +593,7 @@ export class MaterialStageUpdateComponent implements OnInit {
 
   showDetailMaterial(event, material) {
     event.stopPropagation();
+    this.showListEPIC = false;
     this.showMaterial = true;
     this.dataMaterialSelected.name = material.name_material;
     this.dataMaterialSelected.description =
@@ -600,6 +601,17 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.dataMaterialSelected.registrationNumber = 'S-P-01927';
     this.dataMaterialSelected.publicationDate = '202-04-01';
     this.dataMaterialSelected.utilLife = '2025-04-01';
+
+    this.analisis.getMaterialSchemeData().subscribe((msds) => {
+      let msd = msds.filter((msd) => msd.material_id === material.id);
+      msd = msd.sort((a, b) => {
+        if (a.potential_type_id === b.potential_type_id) {
+          return a.standard_id - b.standard_id;
+        }
+        return a.potential_type_id > b.potential_type_id ? 1 : -1;
+      });
+      this.dataMaterialSelected.msd = msd;
+    });
   }
 
   showEPIC() {

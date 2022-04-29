@@ -917,6 +917,186 @@
                       <p class="description">
                         {{ dataMaterialSelected.description }}
                       </p>
+                      <table
+                      mat-table
+                      [dataSource]="this.dataMaterialSelected.msd"
+                      class="mat-elevation-z8 data-info"
+                    >
+                      <ng-container matColumnDef="Standard">
+                        <th mat-header-cell *matHeaderCellDef>Impacto</th>
+                        <td mat-cell *matCellDef="let element">
+                          <ng-container *ngIf="element.standard_id === 1">
+                            A1 - A3
+                          </ng-container>
+                          <ng-container *ngIf="element.standard_id === 2">
+                            A1
+                          </ng-container>
+                          <ng-container *ngIf="element.standard_id === 3">
+                            A2
+                          </ng-container>
+                          <ng-container *ngIf="element.standard_id === 4">
+                            A3
+                          </ng-container>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Potencial">
+                        <th mat-header-cell *matHeaderCellDef>
+                          Categoría de impacto ambiental
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                          <ng-container
+                            *ngIf="element.potential_type_id === 1"
+                          >
+                            Agotamiento de Recursos Abióticos Minerales
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 2"
+                          >
+                            Agotamiento de Recursos Abióticos Fósiles
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 3"
+                          >
+                            Calentamiento Global
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 4"
+                          >
+                            Agotamiento de la Capa de Ozono
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 5"
+                          >
+                            Oxidación Fotoquímica
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 6"
+                          >
+                            Acidificación
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 7"
+                          >
+                            Eutrofización
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 8"
+                          >
+                            Escasez de agua
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 9"
+                          >
+                            Formación de Ozono Troposférico
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 10"
+                          >
+                            Agotamiento de recursos energéticos no renovables
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 11"
+                          >
+                            Human toxicity
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 12"
+                          >
+                            Fresh water aquatic ecotox
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 13"
+                          >
+                            Marine aquatic ecotoxicity
+                          </ng-container>
+                          <ng-container
+                            *ngIf="element.potential_type_id === 14"
+                          >
+                            Terrestrial ecotoxicity
+                          </ng-container>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Valor">
+                        <th mat-header-cell *matHeaderCellDef>Potencial</th>
+                        <td mat-cell *matCellDef="let element">
+                          {{ element.value | slice: 0:9 }}
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Unidad">
+                        <th mat-header-cell *matHeaderCellDef>Unidad</th>
+                        <td mat-cell *matCellDef="let element">
+                          <ng-container *ngIf="element.unit_id === 1">
+                            Pz
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 2">
+                            Kg
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 3">
+                            m³
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 4">
+                            Ton
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 5">
+                            m²
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 6">
+                            kg SB eq
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 7">
+                            m
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 8">
+                            m3 eq
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 9">
+                            kg CFC-11 eq
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 10">
+                            kg Nox, kg O3, o kg etano
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 11">
+                            kg C2H4
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 12">
+                            MJ
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 13">
+                            kg N eq
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 14">
+                            kg SO2 eq
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 15">
+                            Pza
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 16">
+                            kg PO4 eq
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 17">
+                            kg PO2 eq"
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 18">
+                            kg 1,4-DB eq
+                          </ng-container>
+                          <ng-container *ngIf="element.unit_id === 19">
+                            kg
+                          </ng-container>
+                        </td>
+                      </ng-container>
+
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumns"
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumns"
+                      ></tr>
+                    </table>
                     </div>
                   </mat-tab>
                 </mat-tab-group>
