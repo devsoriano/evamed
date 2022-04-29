@@ -239,7 +239,10 @@ export class GraficasTercerSeccionComponent implements OnInit {
             document.getElementById(this.InfoMostrada[index]['id'].toString().concat(auxC.concat('botonC'))).className = 'espacio-seleccionado';
           });
         }else{
-          document.getElementById(this.InfoMostrada[index]['id'].toString().concat(ciclo.concat('botonC'))).className = 'espacio-seleccionado';
+          let elementoDom = document.getElementById(this.InfoMostrada[index]['id'].toString().concat(ciclo.concat('botonC')));
+          if(elementoDom != null){
+            elementoDom.className = 'espacio-seleccionado';
+          }
         }
       }
     });

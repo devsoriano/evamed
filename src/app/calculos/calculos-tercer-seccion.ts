@@ -204,24 +204,54 @@ export class CalculosTercerSeccion {
             }
             if(BD[baseDatosMaterial[0]['database_from']]){
               let auxres = peso * ps['quantity'] * (nacional + internacional)
-              if(auxres != 0){
-                if(!elementoscreados.includes(ps['section_id'])){
-                  elementoscreados.push(ps['section_id']);
-                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
-                  DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
-                  sumaParaReempazos[ps['section_id']]={};
-                  auxMaterialesYaSumados[ps['section_id']] = [];
-                  auxMaterialesTransporte[ps['section_id']] = [];
+              if(baseDatosMaterial[0]['database_from'] != 'EPiC'){
+                if(auxres != 0){
+                  if(!elementoscreados.includes(ps['section_id'])){
+                    elementoscreados.push(ps['section_id']);
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
+                    DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
+                    sumaParaReempazos[ps['section_id']]={};
+                    auxMaterialesYaSumados[ps['section_id']] = [];
+                    auxMaterialesTransporte[ps['section_id']] = [];
+                  }
+                  if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
+                    sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
+                    auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+                  }
+                  sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
+                  DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
+                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
+                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
+                  auxres;
                 }
-                if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
-                  sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
-                  auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+              }else{
+                let materiales_subetapa = this.materialSchemeDataList.filter(
+                  (msd) =>
+                  msd['material_id'] == ps['material_id'] &&
+                  msd['standard_id'] == 1 &&
+                  msd['potential_type_id'] == impacto['id']
+                  );
+                if (materiales_subetapa.length > 0) {
+                  if(auxres != 0){
+                    if(!elementoscreados.includes(ps['section_id'])){
+                      elementoscreados.push(ps['section_id']);
+                      Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
+                      DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
+                      sumaParaReempazos[ps['section_id']]={};
+                      auxMaterialesYaSumados[ps['section_id']] = [];
+                      auxMaterialesTransporte[ps['section_id']] = [];
+                    }
+                    if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
+                      sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
+                      auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+                    }
+                    sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
+                    DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
+                    auxres;
+                  }
                 }
-                sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
-                DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
-                Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
-                Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
-                auxres;
               }
             }
           });
