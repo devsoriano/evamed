@@ -657,7 +657,10 @@ export class MaterialsStageComponent implements OnInit {
     this.analisis.getMaterialSchemeData().subscribe((msds) => {
       let msd = msds.filter((msd) => msd.material_id === material.id);
       msd = msd.sort((a, b) => {
-        return a.potential_type_id - b.potential_type_id;
+        if (a.potential_type_id === b.potential_type_id) {
+          return a.standard_id - b.standard_id;
+        }
+        return a.potential_type_id > b.potential_type_id ? 1 : -1;
       });
       this.dataMaterialSelected.msd = msd;
     });
