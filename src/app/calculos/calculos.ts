@@ -195,14 +195,33 @@ export class Calculos {
               peso = conversion_val[0]['value'];
             }
             if(BD[baseDatosMaterial[0]['database_from']]){
-              if(!auxMaterialesTransporte.includes(ps['material_id'])){
-                sumaParaReempazos[ps['material_id']]=0;
-                auxMaterialesTransporte.push(ps['material_id']);
+              if(baseDatosMaterial[0]['database_from'] != 'EPiC'){
+                if(!auxMaterialesTransporte.includes(ps['material_id'])){
+                  sumaParaReempazos[ps['material_id']]=0;
+                  auxMaterialesTransporte.push(ps['material_id']);
+                }
+                resultado_impacto =
+                  resultado_impacto +
+                  peso * ps['quantity'] * (nacional + internacional);
+                sumaParaReempazos[ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
+              }else{
+                let materiales_subetapa = this.materialSchemeDataList.filter(
+                  (msd) =>
+                  msd['material_id'] == ps['material_id'] &&
+                  msd['standard_id'] == 1 &&
+                  msd['potential_type_id'] == impacto['id']
+                  );
+                if (materiales_subetapa.length > 0) {
+                  if(!auxMaterialesTransporte.includes(ps['material_id'])){
+                    sumaParaReempazos[ps['material_id']]=0;
+                    auxMaterialesTransporte.push(ps['material_id']);
+                  }
+                  resultado_impacto =
+                    resultado_impacto +
+                    peso * ps['quantity'] * (nacional + internacional);
+                  sumaParaReempazos[ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
+                }
               }
-              resultado_impacto =
-                resultado_impacto +
-                peso * ps['quantity'] * (nacional + internacional);
-              sumaParaReempazos[ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
             }
           });
         }

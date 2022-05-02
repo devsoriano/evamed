@@ -38,7 +38,7 @@
     </div>
   </div>
   <mat-card class="mat-master">
-      <mat-tab-group mat-stretch-tabs class="container-principal-tab" (selectedIndexChange)="show($event)">
+      <mat-tab-group mat-stretch-tabs class="container-principal-tab" (selectedIndexChange)="show($event)" (animationDone)="finShow()">
         <mat-tab>
           <ng-template mat-tab-label>
             Impactos ambientales<br>por etapas de ciclo de vida

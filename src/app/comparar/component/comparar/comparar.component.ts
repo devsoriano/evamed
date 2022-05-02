@@ -397,10 +397,6 @@ export class CompararComponent implements OnInit {
     this.proyect_active.push(id);
     this.idsImgEdificios.push(id.toString().concat('imagen'));
 
-    if (this.ID != ' ') {
-      document.getElementById(this.ID).className = 'boton-principal';
-    }
-
     if (this.proyect_active.length > 1) {
       this.banderaAjusteElememtos = true;
     }
@@ -436,13 +432,37 @@ export class CompararComponent implements OnInit {
     this.outproyect_pie.push(analisisPie);
     this.outproyect_bar_elementos.push(analisisBarDos);
     this.outproyect_pie_bar_elementos.push(analisisPieBarDos);
+
+    if(this.Impactos_ambientales){
+      //elementos de la dección 1
+      if (this.ID != ' ') {
+        document.getElementById(this.ID).className = 'boton-principal';
+      }
+    }
     if (this.resultdosTabla) {
       this.TablaResultados();
     } else {
       this.iniciaBarras();
     }
     if (this.Impactos_Elementos) {
+      //elementos de la sección 2
       this.iniciaBarrasSeccionDos();
+      if(this.imgSeleccionadaElemento!=' '){
+        this.DispercionAP(this.imgSeleccionadaElemento,' ');
+      }
+      Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+        if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+          document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+        }
+      })
+      this.catologoImpactoAmbiental.forEach((impacto) => {
+        let auxID = impacto['id'].toString().concat('LineaImpactoElememtos');
+        let elementosflag = document.getElementById(auxID);
+        if (elementosflag != null) {
+          elementosflag.className = 'dot';
+        }
+      });
+      this.graficabar(null);
     }
     this.containerGraficas.clear();
     this.receiveSelector(null);
@@ -462,6 +482,7 @@ export class CompararComponent implements OnInit {
       flagPie: true,
       fragBar: false,
     };
+    
     if (this.Elementos_constructivos) {
       this.iniciarSeccionTres();
     }
@@ -965,6 +986,7 @@ export class CompararComponent implements OnInit {
     this.outproyect_pie_bar_elementos = [];
     this.proyectosMostrados_elementos = [];
     this.estadoTercerSeccion = {};
+    this.elementosConstructivosMostradosElementos={};
 
     Object.keys(this.basesDatos).forEach(bd =>{
       let flag=false;
@@ -1003,10 +1025,6 @@ export class CompararComponent implements OnInit {
         'flagPie':true,
         'fragBar':false
       }
-      /**
-       * 
-       */
-      //console.log(analisisPieBarDos)
     });
     //Se reinicia la sección 1
     if(this.Impactos_ambientales){
@@ -1014,12 +1032,15 @@ export class CompararComponent implements OnInit {
         this.containerGraficas.clear();
         this.receiveSelector(null);
         this.ID = ' ';
-        this.iniciaBarras()
-      }
-      else{
-        this.TablaResultados();
       }
     }
+    if(this.resultdosGraficos){
+      this.iniciaBarras()
+    }
+    else{
+      this.TablaResultados();
+    }
+    //se reinicia la sección 2
     if(this.Impactos_Elementos){
       this.iniciaBarrasSeccionDos();
       if(this.imgSeleccionadaElemento!=' '){
@@ -1030,74 +1051,62 @@ export class CompararComponent implements OnInit {
           document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
         }
       })
+      this.catologoImpactoAmbiental.forEach((impacto) => {
+        let auxID = impacto['id'].toString().concat('LineaImpactoElememtos');
+        let elementosflag = document.getElementById(auxID);
+        if (elementosflag != null) {
+          elementosflag.className = 'dot';
+        }
+      });
+      this.graficabar(null);
     }
+    //se reinicia la sección tres
     if(this.Elementos_constructivos){
       this.iniciarSeccionTres();
     }
-    /**
 
-     this.outproyect_bar = [];
-     this.outproyect_pie = [];
-     this.outproyect_radar = [];
-     this.fasesEliminadas = [];
-     this.outproyect_bar_elementos = [];
+  }
 
-     this.outproyect_pie_bar_elementos = [];
-     this.proyectosMostrados_elementos = [];
-     this.estadoTercerSeccion = {};
-     
-     this.proyect_active.forEach(id => {
-       let data = this.llamarCalculos(id)
-       
-       let analisis = this.getAnalisisBarras(id,data);
-       let analisisRad = this.getAnalisisRadial(id,data);
-       let analisisPie = this.getAnalisisPie(id,data);
-       let analisisBarDos = this.getAnalisisBarrasElementosConstructivos(id);
-       let analisisPieBarDos = this.getAnalisisPieBarSegunaSeccion(id);
-       let analisisPieTres = this.getAnalisisElementos(id);
-       
-       this.outproyect_bar.push(analisis);
-       this.outproyect_radar.push(analisisRad);
-       this.outproyect_pie.push(analisisPie);
-       this.outproyect_bar_elementos.push(analisisBarDos);
-       this.outproyect_pie_bar_elementos.push(analisisPieBarDos);
-       this.proyectosMostrados_elementos = [...this.proyectosMostrados_elementos, {
-         idproyecto: id,
-         nombre:analisis.Nombre,
-         data:analisisPieTres,
-       }];
-       this.estadoTercerSeccion[id] = {
-         'agruparProduccion':false,
-         'cicloSeleccionado':" ",
-         'flagPie':true,
-         'fragBar':false
-       }
-     });
-     
-     if(this.resultdosGraficos){
-       this.containerGraficas.clear();
-       this.receiveSelector(null);
-       this.ID = ' ';
-       this.iniciaBarras()
-     }else{
-       this.TablaResultados()
-     }
-     if(this.Impactos_Elementos){
-       this.iniciaBarrasSeccionDos();
-       if(this.imgSeleccionadaElemento!=' '){
-         this.DispercionAP(this.imgSeleccionadaElemento,' ');
-       }
-       Object.keys(this.iconosElementosConstrucivos).forEach(element => {
-         if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
-           document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
-         }
-       })
-     }
-     if(this.Elementos_constructivos){
-       this.iniciarSeccionTres();
-     }
-     */
-
+  //termino de cambio de sección
+  finShow(){
+    if(this.Impactos_ambientales){
+      let auxEtapas = ['Producción','Construccion','Uso','FinDeVida']
+      if(this.ID === ' '){
+        auxEtapas.forEach(etapa =>{
+          document.getElementById(etapa).className = 'boton-principal';
+        })
+      }
+      if(this.selector==null){
+        this.catologoImpactoAmbiental.forEach((impacto) => {
+          let auxID = impacto['id'].toString().concat('LineaImpactoCiclo');
+          let elementosflag = document.getElementById(auxID);
+          if (elementosflag != null) {
+            elementosflag.className = 'dot';
+          }
+        });
+        this.containerGraficas.clear();
+      }
+    }
+    if(this.Impactos_Elementos){
+      // this.impactoSeleccionadoElementoConstructivo != ' ' &&
+      //this.elementoContructivoSelecionado != ' '
+      if(this.imgSeleccionadaElemento === ' '){
+        this.idsImgEdificios.forEach(img=>{
+          document.getElementById(img).className = 'img-edificio';
+        })
+      }
+      if(this.impactoSeleccionadoElementoConstructivo === ' '){
+        //this.show_Dispercion = false;
+        this.catologoImpactoAmbiental.forEach((impacto) => {
+          let auxID = impacto['id'].toString().concat('LineaImpactoElememtos');
+          let elementosflag = document.getElementById(auxID);
+          if (elementosflag != null) {
+            elementosflag.className = 'dot';
+          }
+        });
+        this.graficabar(null);
+      }
+    }
   }
 
   //controlar la activación de elementos en la interacción con los tipos de resultados
@@ -1170,9 +1179,12 @@ export class CompararComponent implements OnInit {
 
   AjustarElementosMostrados(auxDatos) {
     if (this.elementoContructivoSelecionado != ' ') {
-      document.getElementById(
+      let elementoDom = document.getElementById(
         'texto'.concat(this.elementoContructivoSelecionado)
-      ).className = 'espacio-sin-selecciomar';
+      );
+      if(elementoDom != null){
+        elementoDom.className = 'espacio-sin-selecciomar';
+      }
     }
     this.impactoSeleccionadoElementoConstructivo = ' ';
     this.impactoSeleccionadoElementoConstructivoGrafica = null;
@@ -1350,10 +1362,13 @@ export class CompararComponent implements OnInit {
         this.proyect[index].card = false;
       }
     });
+    this.proyect_active.forEach((element, index) => {
+      if(element === ID){
+        this.idsImgEdificios.splice(index,1);
+      }
+    });
     this.proyect_active = this.proyect_active.filter((item) => item != ID);
-    this.idsImgEdificios = this.idsImgEdificios.filter(
-      (item) => item.toString().concat('imagen') != ID
-    );
+
     this.proyectosMostrados = this.proyectosMostrados.filter(
       ({ id }) => id != ID
     );
@@ -1402,6 +1417,8 @@ export class CompararComponent implements OnInit {
         document.getElementById(this.ID).className = 'boton-principal';
       }
     }
+    this.ID = ' ';
+    this.selector=null;
     if (this.Impactos_Elementos) {
       this.iniciaBarrasSeccionDos();
       if (this.imgSeleccionadaElemento != ' ') {
@@ -1411,12 +1428,29 @@ export class CompararComponent implements OnInit {
         document.getElementById(
           'texto'.concat(this.elementoContructivoSelecionado)
         ).className = 'espacio-sin-selecciomar';
-        this.elementoContructivoSelecionado = ' ';
       }
+      this.catologoImpactoAmbiental.forEach((impacto) => {
+        let auxID = impacto['id'].toString().concat('LineaImpactoElememtos');
+        let elementosflag = document.getElementById(auxID);
+        if (elementosflag != null) {
+          elementosflag.className = 'dot';
+        }
+      });
+      this.graficabar(null);
     }
+    this.elementoContructivoSelecionado = ' ';
+    this.imgSeleccionadaElemento = ' ';
     if (this.Elementos_constructivos) {
       this.iniciarSeccionTres();
     }
+    Object.keys(this.estadoTercerSeccion).forEach(pr =>{
+      this.estadoTercerSeccion[pr] = {
+        'agruparProduccion':false,
+        'cicloSeleccionado':" ",
+        'flagPie':true,
+        'fragBar':false
+      };
+    })
   }
 
   //interacción con la gráfca de bar
@@ -1445,7 +1479,10 @@ export class CompararComponent implements OnInit {
       this.bandera = 0;
       this.hover = true;
       if (this.ID != ' ') {
-        document.getElementById(this.ID).className = 'boton-principal';
+        let IDDom = document.getElementById(this.ID);
+        if(IDDom != null){
+          IDDom.className = 'boton-principal';
+        }
         this.ID = ' ';
       }
       this.catologoImpactoAmbiental.forEach((impacto) => {
@@ -1834,87 +1871,88 @@ export class CompararComponent implements OnInit {
           '#CCEB20': 'rgb(204,235,32)',
           '#76EB20': 'rgb(118,235,32)',
         };
-        let colorhelp = auxColor[this.colorGraficaDispercion].match(
-          /rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/
-        );
-        let cambioR = colorhelp[1];
-        let cambioG = colorhelp[2];
-        let cambioB = colorhelp[3];
         if (auxdatos.length == 0) {
           this.flagMaterialesDispercion = false;
           this.flagSinMaterialesDispercion = true;
         } else {
+          let colorhelp = auxColor[this.colorGraficaDispercion].match(
+            /rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/
+          );
+          let cambioR = colorhelp[1];
+          let cambioG = colorhelp[2];
+          let cambioB = colorhelp[3];
+          auxdatos.forEach((lugar, ii) => {
+            Object.keys(element.Datos).forEach((impacto) => {
+              let auxNombre = this.calculosSegunaSeccion.ajustarNombre(
+                this.impactoSeleccionadoElementoConstructivo
+              );
+              if (impacto === auxNombre) {
+                this.unidadImpactoAmientalTabla = impacto;
+                Object.keys(element.Datos[impacto]).forEach((elementoC) => {
+                  if (elementoC == this.elementoContructivoSelecionado) {
+                    Object.keys(element.Datos[impacto][elementoC]).forEach(
+                      (material, index) => {
+                        let aux = {};
+                        if (
+                          lugar == element.Datos[impacto][elementoC][material]
+                        ) {
+                          //Sección para determinar el color en la tabla con relación a la gráfica
+                          let auxrgbcolor = 'rgb(';
+                          if (ii <= 2) {
+                            auxrgbcolor = auxrgbcolor
+                              .concat(cambioR.toString())
+                              .concat(',')
+                              .concat(cambioG)
+                              .concat(',')
+                              .concat(cambioB)
+                              .concat(')');
+                            if (255 - cambioR >= 40) {
+                              cambioR = (Number(cambioR) + 40).toString();
+                            } else if (cambioG - 40 >= 0) {
+                              cambioG = (Number(cambioG) - 40).toString();
+                            } else {
+                              cambioB = (Number(cambioB) + 40).toString();
+                            }
+                          } else {
+                            auxrgbcolor = auxrgbcolor
+                              .concat(cambioR.toString())
+                              .concat(',')
+                              .concat(colorhelp[2])
+                              .concat(',')
+                              .concat(colorhelp[3])
+                              .concat(')');
+                          }
+                          aux['color'] = auxrgbcolor;
+                          let helpMaterial = this.materiales.filter(
+                            ({ id }) => id == material
+                          );
+                          num = num + 1;
+                          aux['no'] = num;
+                          aux['material'] = helpMaterial[0]['name_material'];
+                          aux['porcentaje'] = (
+                            (element.Datos[impacto][elementoC][material] / suma) *
+                            100
+                          ).toFixed(2);
+                          aux['numero'] =
+                            element.Datos[impacto][elementoC][
+                              material
+                            ].toExponential(2);
+                          this.infoTablaDispercion.push(aux);
+                        }
+                      }
+                    );
+                  }
+                });
+              }
+            });
+          });    
           this.flagMaterialesDispercion = true;
           this.flagSinMaterialesDispercion = false;
         }
-        auxdatos.forEach((lugar, ii) => {
-          Object.keys(element.Datos).forEach((impacto) => {
-            let auxNombre = this.calculosSegunaSeccion.ajustarNombre(
-              this.impactoSeleccionadoElementoConstructivo
-            );
-            if (impacto === auxNombre) {
-              this.unidadImpactoAmientalTabla = impacto;
-              Object.keys(element.Datos[impacto]).forEach((elementoC) => {
-                if (elementoC == this.elementoContructivoSelecionado) {
-                  Object.keys(element.Datos[impacto][elementoC]).forEach(
-                    (material, index) => {
-                      let aux = {};
-                      if (
-                        lugar == element.Datos[impacto][elementoC][material]
-                      ) {
-                        //Sección para determinar el color en la tabla con relación a la gráfica
-                        let auxrgbcolor = 'rgb(';
-                        if (ii <= 2) {
-                          auxrgbcolor = auxrgbcolor
-                            .concat(cambioR.toString())
-                            .concat(',')
-                            .concat(cambioG)
-                            .concat(',')
-                            .concat(cambioB)
-                            .concat(')');
-                          if (255 - cambioR >= 40) {
-                            cambioR = (Number(cambioR) + 40).toString();
-                          } else if (cambioG - 40 >= 0) {
-                            cambioG = (Number(cambioG) - 40).toString();
-                          } else {
-                            cambioB = (Number(cambioB) + 40).toString();
-                          }
-                        } else {
-                          auxrgbcolor = auxrgbcolor
-                            .concat(cambioR.toString())
-                            .concat(',')
-                            .concat(colorhelp[2])
-                            .concat(',')
-                            .concat(colorhelp[3])
-                            .concat(')');
-                        }
-                        aux['color'] = auxrgbcolor;
-                        let helpMaterial = this.materiales.filter(
-                          ({ id }) => id == material
-                        );
-                        num = num + 1;
-                        aux['no'] = num;
-                        aux['material'] = helpMaterial[0]['name_material'];
-                        aux['porcentaje'] = (
-                          (element.Datos[impacto][elementoC][material] / suma) *
-                          100
-                        ).toFixed(2);
-                        aux['numero'] =
-                          element.Datos[impacto][elementoC][
-                            material
-                          ].toExponential(2);
-                        this.infoTablaDispercion.push(aux);
-                      }
-                    }
-                  );
-                }
-              });
-            }
-          });
-        });
       }
     });
     if (this.flagMaterialesDispercion) {
+
       this.unidadImpactoAmientalTabla = this.findUnidad(
         this.unidadImpactoAmientalTabla
       );
@@ -2112,6 +2150,13 @@ export class CompararComponent implements OnInit {
           this.elementoContructivoSelecionado = ' ';
           this.impactoSeleccionadoElementoConstructivo = ' ';
           this.impactoSeleccionadoElementoConstructivoGrafica = null;
+          this.catologoImpactoAmbiental.forEach((impacto) => {
+            let auxID = impacto['id'].toString().concat('LineaImpactoElememtos');
+            let elementosflag = document.getElementById(auxID);
+            if (elementosflag != null) {
+              elementosflag.className = 'dot';
+            }
+          });
           this.iniciaBarrasSeccionDos();
           if (this.imgSeleccionadaElemento != ' ') {
             //Quitar la selección dela imagen seleccionado y que se desactiven las graficas de las potencias de impactos
@@ -2143,8 +2188,15 @@ export class CompararComponent implements OnInit {
           document.getElementById(this.imgSeleccionadaElemento).className =
             'img-edificio';
           this.imgSeleccionadaElemento = ' ';
-          this.show_Dispercion = false;
         }
+        this.show_Dispercion = false;
+        this.catologoImpactoAmbiental.forEach((impacto) => {
+          let auxID = impacto['id'].toString().concat('LineaImpactoElememtos');
+          let elementosflag = document.getElementById(auxID);
+          if (elementosflag != null) {
+            elementosflag.className = 'dot';
+          }
+        });
       } else {
         //seleccionar un impacto ambiental
         if (this.impactoSeleccionadoElementoConstructivo === ' ') {
@@ -2221,6 +2273,22 @@ export class CompararComponent implements OnInit {
       });
     });
     this.iniciaBarrasSeccionDos();
+    if(this.imgSeleccionadaElemento!=' '){
+      this.DispercionAP(this.imgSeleccionadaElemento,' ');
+    }
+    Object.keys(this.iconosElementosConstrucivos).forEach(element => {
+      if(this.iconosElementosConstrucivos[element]['habilitado'] === false){
+        document.getElementById(this.idsIconosElementos[element]['idTEXTO']).className = 'espacio-sin-selecciomar';
+      }
+    })
+    this.catologoImpactoAmbiental.forEach((impacto) => {
+      let auxID = impacto['id'].toString().concat('LineaImpactoElememtos');
+      let elementosflag = document.getElementById(auxID);
+      if (elementosflag != null) {
+        elementosflag.className = 'dot';
+      }
+    });
+    this.graficabar(null);
   }
 
   llenarIdsBotones(elementos) {

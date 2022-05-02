@@ -26,6 +26,7 @@ export class PieChartComponent implements OnInit {
   @Output() ClickEvent = new EventEmitter<any>();
 
   subetapas_list: any = subetapasInfo;
+  idSubetapas = {}
 
   private colores: any[] = [
     ['#2E9A67', '#4DBE89', '#60E3A6', '#1f8253'],
@@ -224,6 +225,8 @@ export class PieChartComponent implements OnInit {
 
       }else{
         this.inputProyect.forEach((proyecto,numProyect) => {
+          //let auxid = proyecto.id
+          this.idSubetapas[numProyect] = {}
           aux=proyecto.Datos[indicador];
           Object.keys(auxlabel).forEach(element => {
             if (auxlabel[element]===ID) {
@@ -238,6 +241,7 @@ export class PieChartComponent implements OnInit {
                 let abreviacion = marcador.concat(" - ");
                 let auxnamelabel = abreviacion.concat(this.findSubetapa(marcador)).concat(" : ");
                 auxnamelabel = auxnamelabel.concat((auxdatos[marcador]).toExponential(2).toString());
+                this.idSubetapas[numProyect][index]=marcador.concat(numProyect)
                 auxdataLabel = [...auxdataLabel, auxnamelabel.concat(this.findUnidad())];
                 datos = [...datos, ((auxdatos[marcador] / auxSuma)*100).toFixed(2).toString()];
               });
@@ -254,7 +258,6 @@ export class PieChartComponent implements OnInit {
           datos=[];
           auxdataLabel = [];
         });
-
       }
 
     }else{
@@ -304,16 +307,27 @@ export class PieChartComponent implements OnInit {
   }
 
   DeleteSubetapa(subetapa,id){
-    let subselect=(subetapa[0].concat(subetapa[1]))
+    let flag = true;
+    let aux = '';
+    for(let i of subetapa){
+      if(i===' '){
+        flag=false
+      }
+      if(flag){
+        aux= aux.concat(i);
+      }
+    }
+    let subselect=aux
+    let idS = aux.concat(id)
     if(this.subetapas[id].eliminadas.includes(subselect)){
       this.subetapas[id].eliminadas.forEach((datos,index) => {
         if (datos === subselect){
-          document.getElementById(subetapa).className = 'quitartachado';
+          document.getElementById(idS).className = 'quitartachado';
           this.subetapas[id].eliminadas.splice(index, 1)
         }
       })
     }else{
-      document.getElementById(subetapa).className = 'tachar';
+      document.getElementById(idS).className = 'tachar';
       this.subetapas[id].eliminadas.push(subselect)
     }
     this.RedistribucionGrafica(this.id, this.indicador);
@@ -342,10 +356,12 @@ export class PieChartComponent implements OnInit {
               }
             });
             if(flag){
+              //console.log(marcador,auxSuma,auxdatos[marcador])
               auxSuma =  auxSuma + auxdatos[marcador];
             }
             flag=true;
           });
+          this.totales[numProyect] = auxSuma.toExponential(2).toString().concat(this.findUnidad());
           Object.keys(aux[auxlabel[element]]).forEach((marcador,index) => {
             this.subetapas[numProyect].eliminadas.forEach(element => {
               if (element==marcador){

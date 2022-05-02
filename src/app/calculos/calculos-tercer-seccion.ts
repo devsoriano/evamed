@@ -74,7 +74,6 @@ export class CalculosTercerSeccion {
       if (impacto_ban) {
         nameImpacto = impacto['name_complete_potential_type'];
         nameImpacto = this.ajustarNombre(nameImpacto);
-        console.log(nameImpacto)
         Datos[nameImpacto]={};
         DatosMateriales[nameImpacto]={};
         Datos[nameImpacto]['Producción'] = {'A1':{},'A2':{},'A3':{}};
@@ -98,6 +97,7 @@ export class CalculosTercerSeccion {
               let baseDatosMaterial = this.materialList.filter((bs)=> bs['id']==ps['material_id']);
               if(BD[baseDatosMaterial[0]['database_from']]){
                 if(baseDatosMaterial[0]['database_from']==='EPiC'){
+                  let elementoscreadosA1A3=[];
                   let materiales_subetapa = this.materialSchemeDataList.filter(
                     (msd) =>
                       msd['material_id'] == ps['material_id'] &&
@@ -116,36 +116,19 @@ export class CalculosTercerSeccion {
                         DatosMateriales[nameImpacto]['Producción']['A1-A3']={}
                       }
                       materiales_subetapa.forEach((material, index) => {
-                        if(!elementoscreados.includes(ps['section_id'])){
-                          elementoscreados.push(ps['section_id']);
-                          Datos[nameImpacto]['Producción'][auxSub][ps['section_id']]=0;
-                          DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']]={};
+                        if(!elementoscreadosA1A3.includes(ps['section_id'])){
+                          elementoscreadosA1A3.push(ps['section_id']);
+                          Datos[nameImpacto]['Producción']['A1-A3'][ps['section_id']]=0;
+                          DatosMateriales[nameImpacto]['Producción']['A1-A3'][ps['section_id']]={};
                           sumaParaReempazos[ps['section_id']]={};
                           auxMaterialesYaSumados[ps['section_id']] = [];
                           auxMaterialesTransporte[ps['section_id']] = [];
                         }
                         let auxres = materiales_subetapa[index]['value'] * ps['quantity'];
-                        DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']][ps['material_id']]=auxres;
-                        Datos[nameImpacto]['Producción'][auxSub][ps['section_id']] = Datos[nameImpacto]['Producción'][auxSub][ps['section_id']] + auxres;
+                        DatosMateriales[nameImpacto]['Producción']['A1-A3'][ps['section_id']][ps['material_id']]=auxres;
+                        Datos[nameImpacto]['Producción']['A1-A3'][ps['section_id']] = Datos[nameImpacto]['Producción']['A1-A3'][ps['section_id']] + auxres;
                         //console.log(ps['material_id'],DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']][ps['material_id']],"res",auxres)
                     });
-                      /**
-                       * 
-                       materiales_subetapa.forEach((material, index) => {
-                         if(!elementoscreados.includes(ps['section_id'])){
-                           elementoscreados.push(ps['section_id']);
-                           Datos[nameImpacto]['Producción']['A1-A3'][ps['section_id']]=0;
-                           DatosMateriales[nameImpacto]['Producción']['A1-A3'][ps['section_id']]={};
-                           sumaParaReempazos[ps['section_id']]={};
-                           auxMaterialesYaSumados[ps['section_id']] = [];
-                           auxMaterialesTransporte[ps['section_id']] = [];
-                         }
-                         let auxres = materiales_subetapa[index]['value'] * ps['quantity'];
-                         DatosMateriales[nameImpacto]['Producción']['A1-A3'][ps['section_id']][ps['material_id']]=auxres;
-                         Datos[nameImpacto]['Producción']['A1-A3'][ps['section_id']] = Datos[nameImpacto]['Producción']['A1-A3'][ps['section_id']] + auxres;
-                         //console.log(ps['material_id'],DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']][ps['material_id']],"res",auxres)
-                     });
-                       */
                   } 
                 }else{
                   let materiales_subetapa = this.materialSchemeDataList.filter(
@@ -165,6 +148,7 @@ export class CalculosTercerSeccion {
                           auxMaterialesTransporte[ps['section_id']] = [];
                         }
                         let auxres = materiales_subetapa[index]['value'] * ps['quantity'];
+                        //console.log(DatosMateriales[nameImpacto]['Producción'][auxSub])
                         DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']][ps['material_id']]=auxres;
                         Datos[nameImpacto]['Producción'][auxSub][ps['section_id']] = Datos[nameImpacto]['Producción'][auxSub][ps['section_id']] + auxres;
                         //console.log(ps['material_id'],DatosMateriales[nameImpacto]['Producción'][auxSub][ps['section_id']][ps['material_id']],"res",auxres)
@@ -175,7 +159,7 @@ export class CalculosTercerSeccion {
             });
           }
         });
-        console.log(DatosMateriales[nameImpacto])
+        //console.log(DatosMateriales[nameImpacto])
         //A4 Transporte
         elementoscreados=[];
         if (schemeProyect.length > 0) {
@@ -220,24 +204,54 @@ export class CalculosTercerSeccion {
             }
             if(BD[baseDatosMaterial[0]['database_from']]){
               let auxres = peso * ps['quantity'] * (nacional + internacional)
-              if(auxres != 0){
-                if(!elementoscreados.includes(ps['section_id'])){
-                  elementoscreados.push(ps['section_id']);
-                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
-                  DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
-                  sumaParaReempazos[ps['section_id']]={};
-                  auxMaterialesYaSumados[ps['section_id']] = [];
-                  auxMaterialesTransporte[ps['section_id']] = [];
+              if(baseDatosMaterial[0]['database_from'] != 'EPiC'){
+                if(auxres != 0){
+                  if(!elementoscreados.includes(ps['section_id'])){
+                    elementoscreados.push(ps['section_id']);
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
+                    DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
+                    sumaParaReempazos[ps['section_id']]={};
+                    auxMaterialesYaSumados[ps['section_id']] = [];
+                    auxMaterialesTransporte[ps['section_id']] = [];
+                  }
+                  if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
+                    sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
+                    auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+                  }
+                  sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
+                  DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
+                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
+                  Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
+                  auxres;
                 }
-                if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
-                  sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
-                  auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+              }else{
+                let materiales_subetapa = this.materialSchemeDataList.filter(
+                  (msd) =>
+                  msd['material_id'] == ps['material_id'] &&
+                  msd['standard_id'] == 1 &&
+                  msd['potential_type_id'] == impacto['id']
+                  );
+                if (materiales_subetapa.length > 0) {
+                  if(auxres != 0){
+                    if(!elementoscreados.includes(ps['section_id'])){
+                      elementoscreados.push(ps['section_id']);
+                      Datos[nameImpacto]['Construccion']['A4'][ps['section_id']]=0;
+                      DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']] = {};
+                      sumaParaReempazos[ps['section_id']]={};
+                      auxMaterialesYaSumados[ps['section_id']] = [];
+                      auxMaterialesTransporte[ps['section_id']] = [];
+                    }
+                    if(!auxMaterialesTransporte[ps['section_id']].includes(ps['material_id'])){
+                      sumaParaReempazos[ps['section_id']][ps['material_id']]=0;
+                      auxMaterialesTransporte[ps['section_id']].push(ps['material_id']);
+                    }
+                    sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
+                    DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
+                    Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
+                    auxres;
+                  }
                 }
-                sumaParaReempazos[ps['section_id']][ps['material_id']] +=  peso * ps['quantity'] * (nacional + internacional);
-                DatosMateriales[nameImpacto]['Construccion']['A4'][ps['section_id']][ps['material_id']]=auxres;
-                Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] =
-                Datos[nameImpacto]['Construccion']['A4'][ps['section_id']] +
-                auxres;
               }
             }
           });
