@@ -1,15 +1,15 @@
 <mat-card>
   <mat-card-title>Administradores disponibles</mat-card-title>
   <mat-card-actions align="end" class="listado">
-    <a href="./admin-materials">Materiales</a>
-    <a href="./admin-transports">Transportes</a>
-    <a href="./admin-machinery">Maquinaria</a>
-    <a href="./admin-energy">Tipo de energía</a>
+    <a (click)="goToMaterials()">Materiales</a>
+    <a (click)="goToTransports()">Transportes</a>
+    <a (click)="goToMachinery()">Maquinaria</a>
+    <a (click)="goToEnergy()">Tipo de energía</a>
     <hr>
-    <a href="./admin-units">Unidades</a>
-    <a href="./admin-db-materials">Bases de datos</a>
-    <a href="./admin-potential">Potencial de impacto ambiental</a>
+    <a (click)="goToUnits()">Unidades</a>
+    <a (click)="goToDBMaterials()">Bases de datos</a>
+    <a (click)="goToPotentials()">Potencial de impacto ambiental</a>
     <hr>
-    <a href="./" class="red">Regresar al Home</a>
+    <a (click)="goToHome()" class="red">Regresar al Home</a>
   </mat-card-actions>
 </mat-card>

@@ -10,4 +10,36 @@ export class PrincipalAdminComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
+
+  goToMaterials() {
+    this.router.navigateByUrl('/admin-materials');
+  }
+
+  goToTransports() {
+    this.router.navigateByUrl('/admin-transports');
+  }
+
+  goToMachinery() {
+    this.router.navigateByUrl('/admin-machinery');
+  }
+
+  goToEnergy() {
+    this.router.navigateByUrl('/admin-energy');
+  }
+
+  goToUnits() {
+    this.router.navigateByUrl('/admin-units');
+  }
+
+  goToDBMaterials() {
+    this.router.navigateByUrl('/admin-db-materials');
+  }
+
+  goToPotentials() {
+    this.router.navigateByUrl('/admin-potential');
+  }
+
+  goToHome() {
+    this.router.navigateByUrl('/');
+  }
 }
