@@ -159,10 +159,21 @@
               </div>
             </div>
           </div>
-          <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
-            <button (click)="DispercionAP(idsImgEdificios[i],item.id)">{{item.Nombre}}</button>
+          <div class="espacio-img">
+            <div class="complemento-edificio" *ngFor="let item of outproyect_bar; let i = index">
+              <p>{{item.Nombre}}</p>
+              <button (click)="DispercionAP(idsImgEdificios[i],item.id)" id="{{idsImgEdificios[i]}}" class="edificio-individual">
+              </button>
+            </div>
+            <div class="child">
+              <ng-template #imgEdificio>
+              </ng-template>
+            </div>
           </div>
           <!--
+             <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
+              <button (click)="DispercionAP(idsImgEdificios[i],item.id)">{{item.Nombre}}</button>
+            </div>
             <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
               <a (click)="DispercionAP(idsImgEdificios[i],item.id)">
                 <p>{{item.Nombre}}</p>

@@ -13,6 +13,8 @@ import { BarChartSimpleComponent } from 'src/app/bar-chart-simple/bar-chart-simp
 import { BarChartComponent } from 'src/app/bar-chart/bar-chart.component';
 import { PieChartComponent } from 'src/app/pie-chart/pie-chart.component';
 import { RadialChartComponent } from 'src/app/radial-chart/radial-chart.component';
+import { ImageEdificioComponent } from '../../../image-edificio/image-edificio.component';
+
 import { GraficasTercerSeccionComponent } from '../../component/graficas-tercer-seccion/graficas-tercer-seccion.component';
 import { ProjectsService } from './../../../core/services/projects/projects.service';
 import { MaterialsService } from './../../../core/services/materials/materials.service';
@@ -30,6 +32,7 @@ import { Calculos } from '../../../calculos/calculos';
 import { CalculosSegundaSeccion } from 'src/app/calculos/calculos-segunda-seccion';
 import { CalculosTercerSeccion } from 'src/app/calculos/calculos-tercer-seccion';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { createThis } from 'typescript';
 
 @Component({
   selector: 'app-comparar',
@@ -53,6 +56,7 @@ import { UserService } from 'src/app/core/services/user/user.service';
     PieChartComponent,
     BarChartSimpleComponent,
     GraficasTercerSeccionComponent,
+    ImageEdificioComponent
   ],
 })
 export class CompararComponent implements OnInit {
@@ -61,6 +65,7 @@ export class CompararComponent implements OnInit {
   pieChart = PieChartComponent;
   barChartSimpleComponent = BarChartSimpleComponent;
   graficasTercerSeccionComponent = GraficasTercerSeccionComponent;
+  ImgEdificioComponent = ImageEdificioComponent;
 
   @ViewChild('barContainer', { read: ViewContainerRef })
   container: ViewContainerRef;
@@ -76,6 +81,8 @@ export class CompararComponent implements OnInit {
   containerElementosCiclo: ViewContainerRef;
   @ViewChild('dispercionImpactoConteiner', { read: ViewContainerRef })
   containerDispercionImpacto: ViewContainerRef;
+  @ViewChild('imgEdificio', { read: ViewContainerRef })
+  containerImgEdificio: ViewContainerRef;
 
   @ViewChildren(BarChartComponent)
   childBar: QueryList<BarChartComponent>;
@@ -511,6 +518,24 @@ export class CompararComponent implements OnInit {
       grafica.instance.impactos = this.potentialTypesList;
       grafica.instance.lastClickEvent.subscribe((e) => this.receiveSelector(e));
     }
+  }
+
+  iniciarImgEdificio(){
+    this.containerImgEdificio.clear();
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      this.ImgEdificioComponent,
+    )
+    const imgEdificioC = this.containerImgEdificio.createComponent(componentFactory);
+    imgEdificioC.instance.inputPtoyect = this.coloresExistententesElementosConstructivos;
+    imgEdificioC.instance.elementoSeleccionado = this.elementoContructivoSelecionado;
+    imgEdificioC.instance.niveles = this.nivelesExistententesElementosConstructivos;
+    imgEdificioC.instance.idImg = this.idsImgEdificios[0];
+    imgEdificioC.instance.idP = this.proyect_active[0];
+    imgEdificioC.instance.impactoSeleccionado = this.impactoSeleccionadoElementoConstructivoGrafica;
+    imgEdificioC.instance.seleccion.subscribe((e) => this.recepcionAP(e));
+    //const imfEdificioCDOS = this.containerImgEdificio.createComponent(componentFactory);
+    //imfEdificioCDOS.instance.inputPtoyect = 2;
+
   }
 
   //creación de gráfica de barras para la sección de impactos ambientales por
@@ -1092,7 +1117,7 @@ export class CompararComponent implements OnInit {
       //this.elementoContructivoSelecionado != ' '
       if(this.imgSeleccionadaElemento === ' '){
         this.idsImgEdificios.forEach(img=>{
-          document.getElementById(img).className = 'img-edificio';
+          document.getElementById(img).className = 'edificio-individual';
         })
       }
       if(this.impactoSeleccionadoElementoConstructivo === ' '){
@@ -1123,6 +1148,7 @@ export class CompararComponent implements OnInit {
       this.Elementos_constructivos = false;
       this.bandera_graph_bar = true;
       this.iniciaBarrasSeccionDos();
+      this.iniciarImgEdificio();
     } else {
       this.Impactos_ambientales = false;
       this.Impactos_Elementos = false;
@@ -1735,6 +1761,10 @@ export class CompararComponent implements OnInit {
     });
   }
 
+  recepcionAP($event){
+    this.DispercionAP($event[0],$event[1])
+  }
+
   DispercionAP(item, proyectoID) {
     let flagMostrarInfo = false;
     if (item != null) {
@@ -1746,7 +1776,7 @@ export class CompararComponent implements OnInit {
           this.show_Dispercion = true;
           this.imgSeleccionadaElemento = item;
           this.idProyectoSeleccionadoImagen = proyectoID;
-          document.getElementById(item).className = 'img-edificio-seleccionado';
+          document.getElementById(item).className = 'edificio-individual-seleccionado';
           flagMostrarInfo = true;
           this.proyectosMostrados_elementos.forEach((element) => {
             if (element.idproyecto == proyectoID) {
@@ -1760,9 +1790,9 @@ export class CompararComponent implements OnInit {
         } else {
           if (item != this.imgSeleccionadaElemento) {
             document.getElementById(this.imgSeleccionadaElemento).className =
-              'img-edificio';
+              'edificio-individual';
             document.getElementById(item).className =
-              'img-edificio-seleccionado';
+              'edificio-individual-seleccionado';
             this.imgSeleccionadaElemento = item.toString();
             this.idProyectoSeleccionadoImagen = proyectoID;
             flagMostrarInfo = true;
@@ -1778,7 +1808,7 @@ export class CompararComponent implements OnInit {
             this.elementoSeleccionadoMostrado = elemento[0]['name_section'];
           } else {
             this.show_Dispercion = false;
-            document.getElementById(item).className = 'img-edificio';
+            document.getElementById(item).className = 'edificio-individual';
             this.nombreProyectoElegidoSeleccionadoElementos = ' ';
             this.imgSeleccionadaElemento = ' ';
             this.idProyectoSeleccionadoImagen = ' ';
@@ -2238,6 +2268,7 @@ export class CompararComponent implements OnInit {
       this.elementoSeleccionadoMostrado = elemento[0]['name_section'];
       this.DispercionAP(null, this.idProyectoSeleccionadoImagen);
     }
+    this.iniciarImgEdificio();
   }
 
   AjusteGraficaElementosContructivos(item) {

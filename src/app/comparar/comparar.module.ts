@@ -19,6 +19,7 @@ import { BarChartComponent } from '../bar-chart/bar-chart.component';
 import { BarChartSimpleComponent } from '../bar-chart-simple/bar-chart-simple.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { GraficasTercerSeccionComponent } from './component/graficas-tercer-seccion/graficas-tercer-seccion.component';
+import { ImageEdificioComponent } from '../image-edificio/image-edificio.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { GraficasTercerSeccionComponent } from './component/graficas-tercer-secc
     BarChartComponent,
     BarChartSimpleComponent,
     GraficasTercerSeccionComponent,
+    ImageEdificioComponent,
   ],
   imports: [
     CommonModule,

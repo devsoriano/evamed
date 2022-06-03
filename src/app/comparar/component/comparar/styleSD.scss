@@ -50,7 +50,7 @@
         //padding-top: 4px;
         width: 144px;
         height: 34px;
-        background: #ffffff;
+        background: #ffffff; 
         border-radius: 4px;
         font-size: 15px;
         display: flex;
@@ -113,11 +113,56 @@
     }
 }
 
+.espacio-img{
+  display: flex;
+  width: auto;
+  height: 277px;
+  margin: 10px;
+  background-color: red;
+  .edificio-individual{
+    height: 205px;
+    width: 300px;
+    background-color: #EDEDED;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    font-size: 13px;
+    margin: 5px;
+    border: 0;
+  }
+  .edificio-individual-seleccionado{
+    height: 205px;
+    width: 300px;
+    background: #ffffff; 
+    border-radius: 4px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    border: 1px solid #edc903;
+    box-shadow: 0px 3px 6px #00000029;
+  }
+  .complemento-edificio{
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 10px;
+    background-color: yellow;
+  }
+
+  .child{
+    display: flex;
+    position: absolute;
+    margin-top: 48px;
+    padding-left: 16px;
+  }
+}
+
 .img-edificio {
     display: inline-block;
-    margin-top: 40px;
-    margin-left: 52px;
-    margin-bottom: 50px;
+    //margin-top: 40px;
+    //margin-left: 52px;
+    //margin-bottom: 50px;
     position: relative;
     button {
       width: 144px;
@@ -129,15 +174,7 @@
       margin: 5px;
       border: 0;
     }
-    /*img {
-      margin: 0px;
-      padding: 0px;
-      border: 0;
-      border-radius: 11px;
-      opacity: 0.5;
-      width: 295px;
-      height: 232px;
-    }
+    /*
     .cuadro-color{
       margin: 0px;
       padding: 0px;
