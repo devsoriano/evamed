@@ -3,7 +3,7 @@
     <div class="background-custom">
       <section class="part-side">
         <div class="container-title-standard">
-          <img src="assets/images/Logo.png" class="img-logo"/>
+          <img src="assets/images/Logo.png" class="img-logo" />
         </div>
         <div class="context-evamed">
           <div class="title-context-login">
@@ -32,13 +32,8 @@
             Correo electrónico
           </div>
           <div>
-            <input
-              class="input-context-login"
-              placeholder="Coloca aquí tu correo electrónico"
-              formControlName="email"
-              matInput 
-              type="email"
-            >
+            <input class="input-context-login" placeholder="Coloca aquí tu correo electrónico" formControlName="email"
+              matInput type="email">
           </div>
         </div>
         <div class="container-label-input">
@@ -46,22 +41,12 @@
             Contraseña
           </div>
           <div>
-            <input
-              class="input-context-login"
-              placeholder="Coloca aquí tu contraseña"
-              formControlName="password"
-              matInput 
-              type="password"
-            >
+            <input class="input-context-login" placeholder="Coloca aquí tu contraseña" formControlName="password"
+              matInput type="password">
           </div>
         </div>
         <div class="container-label-button">
-          <button
-            [disabled]="form.invalid"
-            mat-raised-button
-            type="submit"
-            class="yellow-button-login"
-          >
+          <button [disabled]="form.invalid" mat-raised-button type="submit" class="yellow-button-login">
             Accede aquí
           </button>
         </div>
@@ -74,7 +59,7 @@
           </p>
         </div>
         <div class="container-label-button-second">
-          <a href="/auth/register" class="redirect-get-password">Regístrate aquí</a>
+          <a (click)="register()" class="redirect-get-password">Regístrate aquí</a>
         </div>
       </form>
       <div class="logos-ibero">
@@ -86,11 +71,11 @@
           550304-2123
         </div>
         <div class="cr">
-          2020 Copyright <br/>
+          2020 Copyright <br />
           hola@proyecto.com
         </div>
         <div class="ap">
-          Aviso de privacidad <br/>
+          Aviso de privacidad <br />
           Términos y condiciones
         </div>
       </div>

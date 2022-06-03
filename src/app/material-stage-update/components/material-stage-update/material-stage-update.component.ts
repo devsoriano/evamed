@@ -67,6 +67,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   showListEPIC: boolean;
   EPiC: any;
   mexicaniuh: any;
+  description_material_selected: any
 
   myControl = new FormControl();
   options: Material[];
@@ -433,7 +434,7 @@ export class MaterialStageUpdateComponent implements OnInit {
                   'Update data-----------------------------------------------'
                 );
                 console.log(data);
-                location.reload();
+                this.ngOnInit();
               });
           }
         });
@@ -519,8 +520,8 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.showEPD = true;
     this.dataMaterialSelected.name = material.name_material;
     this.dataMaterialSelected.id = material.id;
-    this.dataMaterialSelected.description =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.dataMaterialSelected.description = material.decription;
+    this.dataMaterialSelected.AllData = material;
     this.analisis.getMaterialSchemeData().subscribe((msds) => {
       let msd = msds.filter((msd) => msd.material_id === material.id);
       msd = msd.sort((a, b) => {
@@ -596,8 +597,7 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.showListEPIC = false;
     this.showMaterial = true;
     this.dataMaterialSelected.name = material.name_material;
-    this.dataMaterialSelected.description =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.dataMaterialSelected.description = material.description;
     this.dataMaterialSelected.registrationNumber = 'S-P-01927';
     this.dataMaterialSelected.publicationDate = '202-04-01';
     this.dataMaterialSelected.utilLife = '2025-04-01';

@@ -24,6 +24,14 @@ export class UserService {
     );
   }
 
+  getUsers() {
+    return this.http.get<any>(environment.api_users).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
   searchUser( email ) {
     return this.http.get<any>(
       environment.api_users + '?search=' + email,

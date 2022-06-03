@@ -156,6 +156,14 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'admin-others',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./others-admin/others-admin.module').then(
+            (m) => m.OthersAdminModule
+          ),
+      },
+      {
         path: 'admin',
         canActivate: [AdminGuard],
         loadChildren: () =>

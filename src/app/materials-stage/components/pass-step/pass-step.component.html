@@ -1,0 +1,12 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Los datos no se guardaran, ¿está seguro de cambiar de etapa?
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="continueStep($event)" >Aceptar</button>
+</div>

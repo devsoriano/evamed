@@ -39,6 +39,10 @@ export class PrincipalAdminComponent implements OnInit {
     this.router.navigateByUrl('/admin-potential');
   }
 
+  goToUsers() {
+    this.router.navigateByUrl('/admin-others');
+  }
+
   goToHome() {
     this.router.navigateByUrl('/');
   }
