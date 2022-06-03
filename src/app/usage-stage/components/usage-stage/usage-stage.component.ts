@@ -5,6 +5,7 @@ import { MaterialsService } from 'src/app/core/services/materials/materials.serv
 import { ElectricitConsumptionService } from './../../../core/services/electricity-consumption/electricit-consumption.service';
 import { IntermedialComponent } from '../intermedial/intermedial.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PassStepComponent } from '../pass-step/pass-step.component';
 
 @Component({
   selector: 'app-usage-stage',
@@ -199,59 +200,87 @@ export class UsageStageComponent implements OnInit {
   }
 
   goToMaterialStage() {
-    this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
-      const schemaFilter = msp.filter(
-        (schema) => schema.project_id === this.projectId
-      );
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('materials-stage');
-      } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
-        this.router.navigateByUrl('material-stage-update');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+          const schemaFilter = msp.filter(
+            (schema) => schema.project_id === this.projectId
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('materials-stage');
+          } else {
+            localStorage.setItem(
+              'idProyectoConstrucción',
+              this.projectId.toString()
+            );
+            this.router.navigateByUrl('material-stage-update');
+          }
+        });
       }
     });
   }
 
   goToConstructionStage() {
-    this.materialsService.getConstructionStage().subscribe((cse) => {
-      const schemaFilter = cse.filter(
-        (schema) => schema.project_id === this.projectId
-      );
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('construction-stage');
-      } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
-        this.router.navigateByUrl('construction-stage-update');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getConstructionStage().subscribe((cse) => {
+          const schemaFilter = cse.filter(
+            (schema) => schema.project_id === this.projectId
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('construction-stage');
+          } else {
+            localStorage.setItem(
+              'idProyectoConstrucción',
+              this.projectId.toString()
+            );
+            this.router.navigateByUrl('construction-stage-update');
+          }
+        });
       }
     });
   }
+
 
   goToUsageStage() {
     this.router.navigateByUrl('usage-stage');
   }
 
   goToEndLife() {
-    this.materialsService.getEDCP().subscribe((edcp) => {
-      const schemaFilter = edcp.filter(
-        (schema) => schema.project_id === this.projectId
-      );
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('end-life-stage');
-      } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
-        this.router.navigateByUrl('update-end-life');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getEDCP().subscribe((edcp) => {
+          const schemaFilter = edcp.filter(
+            (schema) => schema.project_id === this.projectId
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('end-life-stage');
+          } else {
+            localStorage.setItem(
+              'idProyectoConstrucción',
+              this.projectId.toString()
+            );
+            this.router.navigateByUrl('update-end-life');
+          }
+        });
       }
     });
   }

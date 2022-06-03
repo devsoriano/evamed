@@ -7,9 +7,10 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
 import { IntermedialComponent } from './components/intermedial/intermedial.component';
+import { PassStepComponent } from './components/pass-step/pass-step.component';
 
 @NgModule({
-  declarations: [EndLifeUpdateComponent, IntermedialComponent],
+  declarations: [EndLifeUpdateComponent, IntermedialComponent, PassStepComponent],
   imports: [
     CommonModule,
     EndLifeUpdateRoutingModule,
@@ -17,7 +18,7 @@ import { IntermedialComponent } from './components/intermedial/intermedial.compo
     FormsModule,
     MaterialModule,
   ],
-  exports: [EndLifeUpdateComponent, IntermedialComponent],
-  entryComponents: [IntermedialComponent],
+  exports: [EndLifeUpdateComponent, IntermedialComponent, PassStepComponent],
+  entryComponents: [IntermedialComponent, PassStepComponent],
 })
 export class EndLifeUpdateModule {}

@@ -7,6 +7,7 @@ import { EndLifeService } from 'src/app/core/services/end-life/end-life.service'
 import { MaterialsService } from 'src/app/core/services/materials/materials.service';
 import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 import { IntermedialComponent } from '../intermedial/intermedial.component';
+import { PassStepComponent } from '../pass-step/pass-step.component';
 
 @Component({
   selector: 'app-end-life-update',
@@ -225,48 +226,76 @@ export class EndLifeUpdateComponent implements OnInit {
   saveStepFour() {}
 
   goToMaterialStage() {
-    this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
-      const schemaFilter = msp.filter(
-        (schema) =>
-          schema.project_id == localStorage.getItem('idProyectoConstrucción')
-      );
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('materials-stage');
-      } else {
-        this.router.navigateByUrl('material-stage-update');
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+          const schemaFilter = msp.filter(
+            (schema) =>
+              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+          );
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('materials-stage');
+          } else {
+            this.router.navigateByUrl('material-stage-update');
+          }
+        });
       }
     });
   }
 
   goToConstructionStage() {
-    this.materialsService.getConstructionStage().subscribe((cse) => {
-      const schemaFilter = cse.filter(
-        (schema) =>
-          schema.project_id == localStorage.getItem('idProyectoConstrucción')
-      );
-      console.log(schemaFilter);
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('construction-stage');
-      } else {
-        this.router.navigateByUrl('construction-stage-update');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getConstructionStage().subscribe((cse) => {
+          const schemaFilter = cse.filter(
+            (schema) =>
+              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+          );
+          console.log(schemaFilter);
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('construction-stage');
+          } else {
+            this.router.navigateByUrl('construction-stage-update');
+          }
+        });
       }
     });
   }
 
   goToUsageStage() {
-    this.materialsService.getACR().subscribe((acr) => {
-      const schemaFilter = acr.filter(
-        (schema) =>
-          schema.project_id == localStorage.getItem('idProyectoConstrucción')
-      );
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('usage-stage');
-      } else {
-        this.router.navigateByUrl('usage-stage-update');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getACR().subscribe((acr) => {
+          const schemaFilter = acr.filter(
+            (schema) =>
+              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('usage-stage');
+          } else {
+            this.router.navigateByUrl('usage-stage-update');
+          }
+        });
       }
     });
+
   }
 
   goToEndLife() {

@@ -8,6 +8,7 @@ import { MaterialModule } from './../material/material.module';
 import { AddConstructiveElementComponent } from './components/add-constructive-element/add-constructive-element.component';
 import { AddConstructiveSystemComponent } from './components/add-constructive-system/add-constructive-system.component';
 import { IntermedialComponent } from './components/intermedial/intermedial.component';
+import { PassStepComponent } from './components/pass-step/pass-step.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { IntermedialComponent } from './components/intermedial/intermedial.compo
     AddConstructiveElementComponent,
     AddConstructiveSystemComponent,
     IntermedialComponent,
+    PassStepComponent
   ],
   imports: [
     CommonModule,
@@ -28,11 +30,13 @@ import { IntermedialComponent } from './components/intermedial/intermedial.compo
     AddConstructiveElementComponent,
     AddConstructiveSystemComponent,
     IntermedialComponent,
+    PassStepComponent
   ],
   entryComponents: [
     AddConstructiveElementComponent,
     AddConstructiveSystemComponent,
     IntermedialComponent,
+    PassStepComponent
   ],
 })
 export class MaterialsStageModule {}

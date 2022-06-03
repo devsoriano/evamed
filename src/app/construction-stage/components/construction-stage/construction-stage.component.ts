@@ -7,6 +7,7 @@ import { ConstructionStageService } from 'src/app/core/services/construction-sta
 import { MaterialsService } from './../../../core/services/materials/materials.service';
 import { MatDialog } from '@angular/material/dialog';
 import { IntermedialComponent } from '../intermedial/intermedial.component';
+import { PassStepComponent } from '../pass-step/pass-step.component';
 
 @Component({
   selector: 'app-construction-stage',
@@ -283,7 +284,6 @@ export class ConstructionStageComponent implements OnInit {
   }
 
   showModal() {
-    console.log('enter show modal');
     const dialogRef = this.dialog.open(IntermedialComponent, {
       width: '680px',
       data: {},
@@ -298,19 +298,28 @@ export class ConstructionStageComponent implements OnInit {
   }
 
   goToMaterialStage() {
-    this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
-      const schemaFilter = msp.filter(
-        (schema) => schema.project_id === this.projectId
-      );
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('materials-stage');
-      } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
-        this.router.navigateByUrl('material-stage-update');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
+          const schemaFilter = msp.filter(
+            (schema) => schema.project_id === this.projectId
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('materials-stage');
+          } else {
+            localStorage.setItem(
+              'idProyectoConstrucción',
+              this.projectId.toString()
+            );
+            this.router.navigateByUrl('material-stage-update');
+          }
+        });
       }
     });
   }
@@ -319,39 +328,59 @@ export class ConstructionStageComponent implements OnInit {
     this.router.navigateByUrl('construction-stage');
   }
 
-  goToUsageStage() {
-    this.materialsService.getACR().subscribe((acr) => {
-      const schemaFilter = acr.filter(
-        (schema) => schema.project_id === this.projectId
-      );
+  
+  goToUsageStage() { 
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('usage-stage');
-      } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
-        this.router.navigateByUrl('usage-stage-update');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getACR().subscribe((acr) => {
+          const schemaFilter = acr.filter(
+            (schema) => schema.project_id === this.projectId
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('usage-stage');
+          } else {
+            localStorage.setItem(
+              'idProyectoConstrucción',
+              this.projectId.toString()
+            );
+            this.router.navigateByUrl('usage-stage-update');
+          }
+        });
       }
     });
   }
 
   goToEndLife() {
-    this.materialsService.getEDCP().subscribe((edcp) => {
-      const schemaFilter = edcp.filter(
-        (schema) => schema.project_id === this.projectId
-      );
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
 
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('end-life-stage');
-      } else {
-        localStorage.setItem(
-          'idProyectoConstrucción',
-          this.projectId.toString()
-        );
-        this.router.navigateByUrl('update-end-life');
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getEDCP().subscribe((edcp) => {
+          const schemaFilter = edcp.filter(
+            (schema) => schema.project_id === this.projectId
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('end-life-stage');
+          } else {
+            localStorage.setItem(
+              'idProyectoConstrucción',
+              this.projectId.toString()
+            );
+            this.router.navigateByUrl('update-end-life');
+          }
+        });
       }
     });
   }
+
 }
