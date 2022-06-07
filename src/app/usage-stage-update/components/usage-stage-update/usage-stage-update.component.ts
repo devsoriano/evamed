@@ -104,7 +104,7 @@ export class UsageStageUpdateComponent implements OnInit {
       });
       this.globalData = globalData;
       this.projectId = globalData[0].project_id;
-      this.nameProject = 'Genérico';
+      this.nameProject = globalData[0].name;
       this.cantidad = globalData[0].quantity;
       this.unidad = globalData[0].unit_id;
       this.CAID = globalData[0].id;

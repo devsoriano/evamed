@@ -230,6 +230,9 @@ export class EndLifeStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if(result.save) {
+          this.saveStepFour();
+        }
         this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
           const schemaFilter = msp.filter(
             (schema) => schema.project_id === this.projectId
@@ -257,6 +260,9 @@ export class EndLifeStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if(result.save) {
+          this.saveStepFour();
+        }
         this.materialsService.getConstructionStage().subscribe((cse) => {
           const schemaFilter = cse.filter(
             (schema) => schema.project_id === this.projectId
@@ -284,6 +290,9 @@ export class EndLifeStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if(result.save) {
+          this.saveStepFour();
+        }
         this.materialsService.getACR().subscribe((acr) => {
           const schemaFilter = acr.filter(
             (schema) => schema.project_id === this.projectId
@@ -305,5 +314,10 @@ export class EndLifeStageComponent implements OnInit {
 
   goToEndLife() {
     this.router.navigateByUrl('end-life-stage');
+  }
+
+  continue() {
+    this.saveStepFour();
+    this.router.navigateByUrl('/home-evamed');
   }
 }

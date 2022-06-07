@@ -279,22 +279,8 @@ export class ConstructionStageComponent implements OnInit {
       console.log(error);
     }
 
-    await this.showModal();
+    //await this.showModal();
     // this.router.navigateByUrl('usage-stage');
-  }
-
-  showModal() {
-    const dialogRef = this.dialog.open(IntermedialComponent, {
-      width: '680px',
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      // this.ngOnInit();
-
-      this.endSave = true;
-      console.log(this.endSave);
-    });
   }
 
   goToMaterialStage() {
@@ -305,6 +291,9 @@ export class ConstructionStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if(result.save) {
+          this.saveStepTwo();
+        }
         this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
           const schemaFilter = msp.filter(
             (schema) => schema.project_id === this.projectId
@@ -337,6 +326,9 @@ export class ConstructionStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if(result.save) {
+          this.saveStepTwo();
+        }
         this.materialsService.getACR().subscribe((acr) => {
           const schemaFilter = acr.filter(
             (schema) => schema.project_id === this.projectId
@@ -364,6 +356,9 @@ export class ConstructionStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if(result.save) {
+          this.saveStepTwo();
+        }
         this.materialsService.getEDCP().subscribe((edcp) => {
           const schemaFilter = edcp.filter(
             (schema) => schema.project_id === this.projectId
@@ -379,6 +374,25 @@ export class ConstructionStageComponent implements OnInit {
             this.router.navigateByUrl('update-end-life');
           }
         });
+      }
+    });
+  } 
+
+  continue() {
+    this.saveStepTwo();
+    this.materialsService.getACR().subscribe((acr) => {
+      const schemaFilter = acr.filter(
+        (schema) => schema.project_id === this.projectId
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('usage-stage');
+      } else {
+        localStorage.setItem(
+          'idProyectoConstrucción',
+          this.projectId.toString()
+        );
+        this.router.navigateByUrl('usage-stage-update');
       }
     });
   }

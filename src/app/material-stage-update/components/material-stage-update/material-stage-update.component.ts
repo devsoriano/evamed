@@ -711,16 +711,19 @@ export class MaterialStageUpdateComponent implements OnInit {
     });
   }
 
-  continueStep(event: Event) {
-    console.log('continuar!!!!');
-    event.preventDefault();
-    const dialogRef = this.dialog.open(IntermedialComponent, {
-      width: '680px',
-      data: {},
-    });
+  continue() {
+    this.materialsService.getConstructionStage().subscribe((cse) => {
+      const schemaFilter = cse.filter(
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
+      );
+      console.log(schemaFilter);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // this.ngOnInit();
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('construction-stage');
+      } else {
+        this.router.navigateByUrl('construction-stage-update');
+      }
     });
   }
 }
