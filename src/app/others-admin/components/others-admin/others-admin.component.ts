@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./others-admin.component.scss']
 })
 export class OthersAdminComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'institution', 'sector', 'country'];
+  displayedColumns: string[] = ['id', 'email', 'name', 'institution', 'sector', 'country'];
 
   users: any;
 
