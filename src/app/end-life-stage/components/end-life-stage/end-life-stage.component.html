@@ -1,6 +1,7 @@
 <nav class="nav-redirect">
   <h2 class="proyecto-title">{{nameProject}}</h2>
-  <a href="/" class="a-redirect"> < Regresar a proyectos </a>
+  <a href="/" class="a-redirect">
+    < Regresar a proyectos </a>
 </nav>
 <!--Principal container-->
 <div class="principal-container container-total">
@@ -51,16 +52,9 @@
         <img *ngSwitchDefault src="../../../../assets/map/12.jpg" class="image-element" alt="" />
       </div>
       <div class="list-elements">
-        <mat-selection-list
-          #sheets
-          [multiple]="false"
-          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)"
-        >
-          <mat-list-option
-            *ngFor="let sheet of sheetNames"
-            [value]="sheet"
-            class="item-yellow-extend"
-          >
+        <mat-selection-list #sheets [multiple]="false"
+          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)">
+          <mat-list-option *ngFor="let sheet of sheetNames" [value]="sheet" class="item-yellow-extend">
             {{sheet}}
           </mat-list-option>
         </mat-selection-list>
@@ -78,7 +72,7 @@
               </label>
               <mat-form-field appearance="outline">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                <mat-select [(ngModel)]="data.fuente" name="fuente{{i}}">
                   <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
                     {{fuente.name_source_information}}
                   </mat-option>
@@ -90,13 +84,7 @@
                 Cantidad
               </label>
               <mat-form-field>
-                <input
-                  class="input-general"
-                  [(ngModel)]="data.cantidad"
-                  name="cantidad_{{i}}"
-                  matInput
-                  type="number"
-                >
+                <input class="input-general" [(ngModel)]="data.cantidad" name="cantidad_{{i}}" matInput type="number">
               </mat-form-field>
             </div>
             <div class="Col col-small-space">
@@ -105,7 +93,7 @@
               </label>
               <mat-form-field appearance="outline">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                <mat-select [(ngModel)]="data.unidad" name="fuente{{i}}">
                   <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
                     {{unidad.name_energy_unit}}
                   </mat-option>
@@ -114,11 +102,7 @@
             </div>
             <div class="Col col-small-space">
               <div *ngIf="i!=0">
-                <button
-                  mat-button
-                  class="button-remove"
-                  (click)="removeFormEC(i)"
-                >
+                <button mat-button class="button-remove" (click)="removeFormEC(i)">
                   <mat-icon>remove_circle</mat-icon>
                 </button>
               </div>
@@ -126,19 +110,13 @@
           </div>
         </div>
         <!--Actions-->
-        <button
-          mat-button
-          (click)="addFormEC()"
-        >
+        <button mat-button (click)="addFormEC()">
           <mat-icon>add_circle</mat-icon>
         </button>
-        
-      <button
-      mat-button
-      (click)="onSaveEC()"
-    >
-      <mat-icon>save</mat-icon>
-    </button>
+
+        <button mat-button (click)="onSaveEC()">
+          <mat-icon>save</mat-icon>
+        </button>
       </div>
     </section>
   </section>
@@ -146,11 +124,7 @@
 
 <!--Section continue-->
 <div class="section-continue">
-  <button
-    mat-button
-    class="yellow-button"
-    (click)="saveStepFour()"
-  >
+  <button mat-button class="yellow-button" (click)="continue()">
     Guardar etapa
   </button>
 </div>

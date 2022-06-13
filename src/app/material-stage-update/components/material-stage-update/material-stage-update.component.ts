@@ -10,6 +10,7 @@ import { map, startWith } from 'rxjs/operators';
 import { AnalisisService } from 'src/app/core/services/analisis/analisis.service';
 import { MatDialog } from '@angular/material/dialog';
 import { IntermedialComponent } from '../intermedial/intermedial.component';
+import { PassStepComponent } from '../pass-step/pass-step.component';
 
 export interface Material {
   id: number;
@@ -67,6 +68,7 @@ export class MaterialStageUpdateComponent implements OnInit {
   showListEPIC: boolean;
   EPiC: any;
   mexicaniuh: any;
+  description_material_selected: any
 
   myControl = new FormControl();
   options: Material[];
@@ -433,7 +435,7 @@ export class MaterialStageUpdateComponent implements OnInit {
                   'Update data-----------------------------------------------'
                 );
                 console.log(data);
-                location.reload();
+                this.ngOnInit();
               });
           }
         });
@@ -519,8 +521,8 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.showEPD = true;
     this.dataMaterialSelected.name = material.name_material;
     this.dataMaterialSelected.id = material.id;
-    this.dataMaterialSelected.description =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.dataMaterialSelected.description = material.decription;
+    this.dataMaterialSelected.AllData = material;
     this.analisis.getMaterialSchemeData().subscribe((msds) => {
       let msd = msds.filter((msd) => msd.material_id === material.id);
       msd = msd.sort((a, b) => {
@@ -596,8 +598,7 @@ export class MaterialStageUpdateComponent implements OnInit {
     this.showListEPIC = false;
     this.showMaterial = true;
     this.dataMaterialSelected.name = material.name_material;
-    this.dataMaterialSelected.description =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries";
+    this.dataMaterialSelected.description = material.description;
     this.dataMaterialSelected.registrationNumber = 'S-P-01927';
     this.dataMaterialSelected.publicationDate = '202-04-01';
     this.dataMaterialSelected.utilLife = '2025-04-01';
@@ -638,6 +639,79 @@ export class MaterialStageUpdateComponent implements OnInit {
   }
 
   goToConstructionStage() {
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getConstructionStage().subscribe((cse) => {
+          const schemaFilter = cse.filter(
+            (schema) =>
+              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+          );
+          console.log(schemaFilter);
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('construction-stage');
+          } else {
+            this.router.navigateByUrl('construction-stage-update');
+          }
+        });
+      }
+    });
+  }
+
+  goToUsageStage() {
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getACR().subscribe((acr) => {
+          const schemaFilter = acr.filter(
+            (schema) =>
+              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('usage-stage');
+          } else {
+            this.router.navigateByUrl('usage-stage-update');
+          }
+        });
+      }
+    });
+  }
+
+  goToEndLife() {
+    const dialogRef = this.dialog.open(PassStepComponent, {
+      width: '680px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.continue) {
+        this.materialsService.getEDCP().subscribe((edcp) => {
+          const schemaFilter = edcp.filter(
+            (schema) =>
+              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+          );
+    
+          if (schemaFilter.length === 0) {
+            this.router.navigateByUrl('end-life-stage');
+          } else {
+            this.router.navigateByUrl('update-end-life');
+          }
+        });
+      }
+    });
+  }
+
+  continue() {
     this.materialsService.getConstructionStage().subscribe((cse) => {
       const schemaFilter = cse.filter(
         (schema) =>
@@ -650,49 +724,6 @@ export class MaterialStageUpdateComponent implements OnInit {
       } else {
         this.router.navigateByUrl('construction-stage-update');
       }
-    });
-  }
-
-  goToUsageStage() {
-    this.materialsService.getACR().subscribe((acr) => {
-      const schemaFilter = acr.filter(
-        (schema) =>
-          schema.project_id == localStorage.getItem('idProyectoConstrucción')
-      );
-
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('usage-stage');
-      } else {
-        this.router.navigateByUrl('usage-stage-update');
-      }
-    });
-  }
-
-  goToEndLife() {
-    this.materialsService.getEDCP().subscribe((edcp) => {
-      const schemaFilter = edcp.filter(
-        (schema) =>
-          schema.project_id == localStorage.getItem('idProyectoConstrucción')
-      );
-
-      if (schemaFilter.length === 0) {
-        this.router.navigateByUrl('end-life-stage');
-      } else {
-        this.router.navigateByUrl('update-end-life');
-      }
-    });
-  }
-
-  continueStep(event: Event) {
-    console.log('continuar!!!!');
-    event.preventDefault();
-    const dialogRef = this.dialog.open(IntermedialComponent, {
-      width: '680px',
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      // this.ngOnInit();
     });
   }
 }

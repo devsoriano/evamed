@@ -109,12 +109,8 @@ p.p-instrucciones {
   border-bottom-right-radius: 0;
 }
 
-.mdl-stepper-horizontal-alternative
-  .mdl-stepper-step:first-child
-  .mdl-stepper-bar-left,
-.mdl-stepper-horizontal-alternative
-  .mdl-stepper-step:last-child
-  .mdl-stepper-bar-right {
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child .mdl-stepper-bar-right {
   display: none;
 }
 
@@ -168,32 +164,28 @@ p.p-instrucciones {
 
 /**Custom stepper**/
 div.step-one-selected div.mdl-stepper-circle {
-  background: url("./../../../../assets/images/Etapas/Produccion.png") no-repeat
-    50% 50%;
+  background: url("./../../../../assets/images/Etapas/Produccion.png") no-repeat 50% 50%;
   width: 60px !important;
   height: 60px !important;
 }
 
 div.step-two div.mdl-stepper-circle {
   background-color: #cbcbcb !important;
-  background: url("./../../../../assets/images/Etapas/Construcción_.png")
-    no-repeat 50% 50%;
+  background: url("./../../../../assets/images/Etapas/Construcción_.png") no-repeat 50% 50%;
   width: 60px !important;
   height: 60px !important;
 }
 
 div.step-three div.mdl-stepper-circle {
   background-color: #cbcbcb !important;
-  background: url("./../../../../assets/images/Etapas/Uso_.png") no-repeat 50%
-    50%;
+  background: url("./../../../../assets/images/Etapas/Uso_.png") no-repeat 50% 50%;
   width: 60px !important;
   height: 60px !important;
 }
 
 div.step-four div.mdl-stepper-circle {
   background-color: #cbcbcb !important;
-  background: url("./../../../../assets/images/Etapas/fin.png") no-repeat 50%
-    50%;
+  background: url("./../../../../assets/images/Etapas/fin.png") no-repeat 50% 50%;
   width: 60px !important;
   height: 60px !important;
 }
@@ -262,6 +254,9 @@ div.step-four div.mdl-stepper-circle {
   font-size: 14px;
   cursor: pointer;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .conditional-section {
@@ -278,7 +273,7 @@ div.step-four div.mdl-stepper-circle {
 }
 
 .item-by-list {
-  &:hover + .container-options {
+  &:hover+.container-options {
     display: block;
   }
 }
@@ -299,6 +294,7 @@ span.title {
   font-weight: 600;
   font-size: 14px;
 }
+
 .subtitle {
   font-weight: 600;
   font-size: 14px;

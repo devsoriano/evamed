@@ -39,7 +39,12 @@ export class RegisterComponent implements OnInit {
       const value = this.form.value;
 
       if ( value.password === value.password2 ) {
-        this.user.addUser(value).subscribe(data => {});
+        console.log('register');
+        console.log(value);
+        this.user.addUser(value).subscribe(data => {
+          console.log('register data');
+          console.log(data);
+        });
         this.authService.createUser(value.email, value.password).then(() => {
           this.authService.verifyEmail();
           alert("Registro correcto");
@@ -68,4 +73,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  login() {
+    this.router.navigate(['/auth/login']);
+  }
 }

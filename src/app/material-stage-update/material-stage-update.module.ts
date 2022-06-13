@@ -6,9 +6,10 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
 import { IntermedialComponent } from './components/intermedial/intermedial.component';
+import { PassStepComponent } from './components/pass-step/pass-step.component';
 
 @NgModule({
-  declarations: [MaterialStageUpdateComponent, IntermedialComponent],
+  declarations: [MaterialStageUpdateComponent, IntermedialComponent, PassStepComponent],
   imports: [
     CommonModule,
     MaterialStageUpdateRoutingModule,
@@ -17,7 +18,7 @@ import { IntermedialComponent } from './components/intermedial/intermedial.compo
     MaterialModule,
     ReactiveFormsModule,
   ],
-  exports: [MaterialStageUpdateComponent, IntermedialComponent],
-  entryComponents: [IntermedialComponent],
+  exports: [MaterialStageUpdateComponent, IntermedialComponent, PassStepComponent],
+  entryComponents: [IntermedialComponent, PassStepComponent],
 })
 export class MaterialStageUpdateModule {}
