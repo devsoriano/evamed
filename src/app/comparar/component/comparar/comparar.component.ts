@@ -197,6 +197,7 @@ export class CompararComponent implements OnInit {
   banderaAjusteElememtos = false;
   catologoImpactoAmbiental = [];
   elementosConstructivosMostradosElementos = {};
+  elementosConstructivosMostradosElementosPorProyecto = {};
   cicloVidaSeleccionadoElemento = ' ';
   flagMaterialesDispercion = true;
   flagSinMaterialesDispercion = false;
@@ -525,14 +526,30 @@ export class CompararComponent implements OnInit {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       this.ImgEdificioComponent,
     )
-    const imgEdificioC = this.containerImgEdificio.createComponent(componentFactory);
-    imgEdificioC.instance.inputPtoyect = this.coloresExistententesElementosConstructivos;
-    imgEdificioC.instance.elementoSeleccionado = this.elementoContructivoSelecionado;
-    imgEdificioC.instance.niveles = this.nivelesExistententesElementosConstructivos;
-    imgEdificioC.instance.idImg = this.idsImgEdificios[0];
-    imgEdificioC.instance.idP = this.proyect_active[0];
-    imgEdificioC.instance.impactoSeleccionado = this.impactoSeleccionadoElementoConstructivoGrafica;
-    imgEdificioC.instance.seleccion.subscribe((e) => this.recepcionAP(e));
+    let containers = {}
+    this.proyect_active.forEach((proyecto, index) => {
+      //console.log(this.elementosConstructivosMostradosElementosPorProyecto[proyecto]);
+      let auxN = 'imgEdificio'.concat(proyecto);
+      containers[auxN] = this.containerImgEdificio.createComponent(componentFactory);
+      containers[auxN].instance.inputPtoyect = this.coloresExistententesElementosConstructivos;
+      containers[auxN].instance.elementoSeleccionado = this.elementoContructivoSelecionado;
+      containers[auxN].instance.niveles = this.nivelesExistententesElementosConstructivos;
+      containers[auxN].instance.idImg = this.idsImgEdificios[index];
+      containers[auxN].instance.idP = this.proyect_active[index];
+      containers[auxN].instance.impactoSeleccionado = this.impactoSeleccionadoElementoConstructivoGrafica;
+      containers[auxN].instance.nivelesProyect = this.elementosConstructivosMostradosElementosPorProyecto[proyecto];
+      containers[auxN].instance.seleccion.subscribe((e) => this.recepcionAP(e));
+    })
+    /**
+     const imgEdificioC = this.containerImgEdificio.createComponent(componentFactory);
+     imgEdificioC.instance.inputPtoyect = this.coloresExistententesElementosConstructivos;
+     imgEdificioC.instance.elementoSeleccionado = this.elementoContructivoSelecionado;
+     imgEdificioC.instance.niveles = this.nivelesExistententesElementosConstructivos;
+     imgEdificioC.instance.idImg = this.idsImgEdificios[0];
+     imgEdificioC.instance.idP = this.proyect_active[0];
+     imgEdificioC.instance.impactoSeleccionado = this.impactoSeleccionadoElementoConstructivoGrafica;
+     imgEdificioC.instance.seleccion.subscribe((e) => this.recepcionAP(e));
+     */
     //const imfEdificioCDOS = this.containerImgEdificio.createComponent(componentFactory);
     //imfEdificioCDOS.instance.inputPtoyect = 2;
 
@@ -2097,6 +2114,7 @@ export class CompararComponent implements OnInit {
         }
       });
       let auxnombre = this.calculos.ajustarNombre(aux);
+      this.elementosConstructivosMostradosElementosPorProyecto = $event['nivelesProyectos'];
       this.nivelesExistententesElementosConstructivos =
         $event['niveles'][auxnombre];
       this.coloresExistententesElementosConstructivos = $event['color'];

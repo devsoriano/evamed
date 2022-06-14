@@ -25,7 +25,9 @@ export class ImageEdificioComponent implements OnInit {
   @Input() elementoSeleccionado : String;
   @Input() impactoSeleccionado : String;
   @Input() niveles:any;
+  @Input() nivelesProyect:any;
   @Output() seleccion= new EventEmitter<any>();
+  nivelesLocal = [];
 
   elementosList = {
     1:'Cimentacion',
@@ -40,8 +42,8 @@ export class ImageEdificioComponent implements OnInit {
     10:'Losas',
   }
 
-  canvasw=280;
-  canvash=200;
+  canvasw=300;
+  canvash=205;
   elementoCambio = "";
   canvas1: any;
   canvas2: any;
@@ -88,7 +90,10 @@ export class ImageEdificioComponent implements OnInit {
   imageName9= "../assets/images/elementos-individuales/9_solo.png";
 
   ngAfterViewInit(){
-
+    if(this.impactoSeleccionado != null){
+      let auximpacto = this.impactoSeleccionado['index'];
+      this.nivelesLocal = this.nivelesProyect[auximpacto.toString()];
+    }
     this.canvas5 = this.canvasTecho.nativeElement;
     this.ctx5 = this.canvas5.getContext('2d');
 
@@ -217,7 +222,7 @@ export class ImageEdificioComponent implements OnInit {
     this.edificioSinSeleccion();
     if(this.elementoSeleccionado!=" " && this.impactoSeleccionado != null){
       let colorResaltado = ""
-      this.niveles.forEach((nivel,index) =>{
+      this.nivelesLocal.forEach((nivel,index) =>{
         if(nivel == Number(this.elementoSeleccionado)){
           colorResaltado = this.inputPtoyect[index]
         }
@@ -227,7 +232,6 @@ export class ImageEdificioComponent implements OnInit {
       this.edificioUnElemento("#17202A");
     }else if(this.elementoSeleccionado===" " && this.impactoSeleccionado != null){
       this.edificioVariosElementos();
-      console.log("sin elemento con impacto ");
     }
   }
 
@@ -279,7 +283,7 @@ export class ImageEdificioComponent implements OnInit {
         'flag' : false
       }
     })
-    this.niveles.forEach((nivel,index) =>{
+    this.nivelesLocal.forEach((nivel,index) =>{
       data[nivel]['flag'] = true;
       data[nivel]['color'] = this.inputPtoyect[index];
     });
