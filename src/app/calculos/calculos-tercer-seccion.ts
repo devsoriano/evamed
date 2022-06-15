@@ -281,7 +281,10 @@ export class CalculosTercerSeccion {
                           DatosMateriales[nameImpacto]['Uso']['B4'][ps['section_id']]={};
                         }
                         if(!auxMaterialesYaSumados[ps['section_id']].includes(ps['material_id'])){
-                          auxValorProduccionTransporte += sumaParaReempazos[ps['section_id']][ps['material_id']];
+                          let auxSumaParaReemplazo = sumaParaReempazos[ps['section_id']][ps['material_id']];
+                          if(auxSumaParaReemplazo != undefined){
+                            auxValorProduccionTransporte += auxSumaParaReemplazo;
+                          }
                           auxMaterialesYaSumados[ps['section_id']].push(ps['material_id']);
                         }
                         let auxres = ((materiales_subetapa[index]['value'] * ps['quantity'])+auxValorProduccionTransporte) * ps['replaces']
@@ -306,7 +309,10 @@ export class CalculosTercerSeccion {
                           DatosMateriales[nameImpacto]['Uso']['B4'][ps['section_id']]={};
                         }
                         if(!auxMaterialesYaSumados[ps['section_id']].includes(ps['material_id'])){
-                          auxValorProduccionTransporte += sumaParaReempazos[ps['section_id']][ps['material_id']];
+                          let auxSumaParaReemplazo = sumaParaReempazos[ps['section_id']][ps['material_id']];
+                          if(auxSumaParaReemplazo != undefined){
+                            auxValorProduccionTransporte += auxSumaParaReemplazo;
+                          }
                           auxMaterialesYaSumados[ps['section_id']].push(ps['material_id']);
                         }
                         let auxres = ((materiales_subetapa[index]['value'] * ps['quantity'])+auxValorProduccionTransporte) * ps['replaces']
@@ -326,7 +332,6 @@ export class CalculosTercerSeccion {
     });
 
     let resultado={'materiales':DatosMateriales,'Calculos':Datos}
-    //console.log(DatosMateriales)
     return resultado;
   }
 

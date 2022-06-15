@@ -284,8 +284,10 @@ export class ImageEdificioComponent implements OnInit {
       }
     })
     this.nivelesLocal.forEach((nivel,index) =>{
-      data[nivel]['flag'] = true;
-      data[nivel]['color'] = this.inputPtoyect[index];
+      if(nivel<=10){
+        data[nivel]['flag'] = true;
+        data[nivel]['color'] = this.inputPtoyect[index];
+      }
     });
 
     if(data[1]['flag']){
