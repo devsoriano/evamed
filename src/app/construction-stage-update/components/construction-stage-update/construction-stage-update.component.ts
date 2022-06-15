@@ -249,13 +249,13 @@ export class ConstructionStageUpdateComponent implements OnInit {
       if (this.indexSheet === parseInt(key)) {
         ecAny.map((data) => {
           console.log(data);
-          /*if (data.id !== undefined) {
+          if (data.id !== undefined) {
             this.constructionStageService
               .deleteConstructiveSystemElement(data.id)
               .subscribe(() => {
                 console.log(`Se eliminó ${data.id}`);
               });
-          }*/
+          }
           try {
             this.constructionStageService
               .addConstructiveSistemElement({

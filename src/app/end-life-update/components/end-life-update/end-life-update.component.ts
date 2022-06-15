@@ -198,11 +198,11 @@ export class EndLifeUpdateComponent implements OnInit {
       ecAny = ec;
       if (this.indexSheet === parseInt(key)) {
         ecAny.map((data) => {
-          /*if (data.id !== undefined) {
+          if (data.id !== undefined) {
             this.endLifeService.deleteECDP(data.id).subscribe(() => {
               console.log(`Se eliminó ${data.id}`);
             });
-          }*/
+          }
           try {
             this.endLifeService
               .addECDP({
