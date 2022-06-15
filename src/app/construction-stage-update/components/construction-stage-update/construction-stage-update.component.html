@@ -102,19 +102,19 @@
                   Unidad
                 </label>
                 <mat-form-field appearance="outline">
-                <mat-label>Seleccione una opción</mat-label>
+                  <mat-label>Seleccione una opción</mat-label>
                   <mat-select  [(ngModel)]="data.unidad" style="display:none" name="fuente{{i}}">
                     <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
                     </mat-option>
                   </mat-select>
                   <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
-                      {{unidad.name_energy_unit}}
-                    </mat-option>
+                    {{unidad.name_energy_unit}}
+                  </mat-option>
                 </mat-form-field>
               </div>
               <div class="Col col-small-space">
                 <div *ngIf="i!=0">
-                  <button mat-button class="button-remove" (click)="removeFormEC(i)">
+                  <button mat-button class="button-remove" (click)="removeFormEC(i, data.id)">
                     <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>
@@ -178,7 +178,7 @@
               </div>
               <div class="Col col-small-space">
                 <div *ngIf="i!=0">
-                  <button mat-button class="button-remove" (click)="removeFormAC(i)">
+                  <button mat-button class="button-remove" (click)="removeFormAC(i,data.id)">
                     <mat-icon>remove_circle</mat-icon>
                   </button>
                 </div>

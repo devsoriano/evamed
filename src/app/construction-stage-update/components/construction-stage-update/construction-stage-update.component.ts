@@ -208,8 +208,14 @@ export class ConstructionStageUpdateComponent implements OnInit {
     this.dataArrayEC.push([]);
   }
 
-  removeFormEC(i) {
-    this.dataArrayEC.splice(i);
+  removeFormEC(i, id) {
+    this.constructionStageService
+      .deleteConstructiveSystemElement(id)
+      .subscribe(() => {
+        console.log(`Se eliminó ${id}`);
+      });
+
+    this.dataArrayEC.splice(i, i);
   }
 
   onSaveECNatural() {
@@ -235,19 +241,21 @@ export class ConstructionStageUpdateComponent implements OnInit {
       }
     }
 
+    console.log('entra al proceso de OnSaveEC!!!!!!!!!!!!!!!!!!!!!!');
+
     Object.entries(this.EC).forEach(([key, ec]) => {
       let ecAny: any;
       ecAny = ec;
       if (this.indexSheet === parseInt(key)) {
         ecAny.map((data) => {
           console.log(data);
-          if (data.id !== undefined) {
+          /*if (data.id !== undefined) {
             this.constructionStageService
               .deleteConstructiveSystemElement(data.id)
               .subscribe(() => {
                 console.log(`Se eliminó ${data.id}`);
               });
-          }
+          }*/
           try {
             this.constructionStageService
               .addConstructiveSistemElement({
@@ -281,7 +289,12 @@ export class ConstructionStageUpdateComponent implements OnInit {
     this.dataArrayAC.push([]);
   }
 
-  removeFormAC(i) {
+  removeFormAC(i, id) {
+    this.constructionStageService
+      .deleteConstructiveSystemElement(id)
+      .subscribe(() => {
+        console.log(`Se eliminó ${id}`);
+      });
     this.dataArrayAC.splice(i);
   }
 
@@ -337,7 +350,8 @@ export class ConstructionStageUpdateComponent implements OnInit {
         this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
           const schemaFilter = msp.filter(
             (schema) =>
-              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+              schema.project_id ==
+              localStorage.getItem('idProyectoConstrucción')
           );
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('materials-stage');
@@ -364,9 +378,10 @@ export class ConstructionStageUpdateComponent implements OnInit {
         this.materialsService.getACR().subscribe((acr) => {
           const schemaFilter = acr.filter(
             (schema) =>
-              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+              schema.project_id ==
+              localStorage.getItem('idProyectoConstrucción')
           );
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('usage-stage');
           } else {
@@ -388,9 +403,10 @@ export class ConstructionStageUpdateComponent implements OnInit {
         this.materialsService.getEDCP().subscribe((edcp) => {
           const schemaFilter = edcp.filter(
             (schema) =>
-              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+              schema.project_id ==
+              localStorage.getItem('idProyectoConstrucción')
           );
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('end-life-stage');
           } else {
