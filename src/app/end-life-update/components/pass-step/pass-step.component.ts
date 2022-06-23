@@ -19,9 +19,9 @@ export class PassStepComponent implements OnInit {
     this.dialogRef.close(this.data);
   }
 
-  continueStep(event: Event) {
+  continueOnly(event: Event) {
     event.preventDefault();
-    this.data.continue = true; 
+    this.data.continue = true;
     this.dialogRef.close(this.data);
   }
 }

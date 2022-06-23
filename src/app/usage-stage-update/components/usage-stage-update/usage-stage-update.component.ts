@@ -320,76 +320,75 @@ export class UsageStageUpdateComponent implements OnInit {
   }
 
   async saveStepThree() {
-    console.log('entra al proceso de edición');
-    console.log(this.globalData[0].id);
-    console.log(this.ECD_IDS);
-    await this.ECD_IDS.map(async (item) => {
-      await this.electricitConsumptionService
-        .deleteECD(item)
-        .subscribe((data) => {
-          console.log('Delete ECD----------');
-          console.log(data);
-        });
-    });
-
     await this.electricitConsumptionService
-      .deleteACR(this.globalData[0].id)
+      .updateACR(this.CAID.toString(), {
+        id: this.CAID,
+        quantity: this.cantidad,
+        unit_id: this.unidad,
+      })
       .subscribe((data) => {
-        console.log('Delete ACR-----------');
+        console.log('Se editó el ACR');
         console.log(data);
       });
 
-    await this.electricitConsumptionService
-      .addACR({
-        quantity: this.cantidad,
-        project_id: localStorage.getItem('idProyectoConstrucción'),
-        unit_id: this.unidad,
-      })
-      .subscribe(async (data) => {
-        console.log('Nuevo ACR asociado');
-
-        await this.electricitConsumptionService
-          .addECD({
-            quantity: this.cantidadCombustible,
-            percentage: this.porcentajeCombustible,
-            annual_consumption_required_id: data.id,
-            unit_id: this.unidadCombustible,
-            type: this.tipoCombustible,
-            source: 'fuel',
-          })
-          .subscribe((data) => {
-            console.log('Nuevo ECD Combustible!!!!!');
-            console.log(data);
-          });
-
-        await this.electricitConsumptionService
-          .addECD({
-            quantity: this.cantidadMixElectrico,
-            percentage: this.porcentajeMixElectrico,
-            annual_consumption_required_id: data.id,
-            unit_id: this.unidadMixElectrico,
-            type: this.tipoMixElectrico,
-            source: 'electric',
-          })
-          .subscribe((data) => {
-            console.log('Nuevo ECD Mix electrico!!!!!!!!!!!!');
-            console.log(data);
-          });
-
-        await this.electricitConsumptionService
-          .addECD({
-            quantity: this.cantidadPanelesFotovoltaicos,
-            percentage: this.porcentajePanelesFotovoltaicos,
-            annual_consumption_required_id: data.id,
-            unit_id: this.unidadPanelesFotovoltaicos,
-            type: null,
-            source: 'panels',
-          })
-          .subscribe((data) => {
-            console.log('Nuevo ECD paneles fotovoltaicos');
-            console.log(data);
-          });
+    await this.ECD_IDS.map((item) => {
+      this.electricitConsumptionService.getECDById(item).subscribe((data) => {
+        console.log(data);
+        if (data.source === 'fuel') {
+          this.electricitConsumptionService
+            .updateECD(data.id, {
+              quantity: this.cantidadCombustible,
+              percentage: this.porcentajeCombustible,
+              annual_consumption_required_id: this.CAID,
+              unit_id: this.unidadCombustible,
+              type: this.tipoCombustible,
+            })
+            .subscribe((data) => {
+              console.log('update fuel');
+              console.log(data);
+            });
+        } else if (data.source === 'electric') {
+          this.electricitConsumptionService
+            .updateECD(data.id, {
+              quantity: this.cantidadMixElectrico,
+              percentage: this.porcentajeMixElectrico,
+              annual_consumption_required_id: this.CAID,
+              unit_id: this.unidadMixElectrico,
+              type: this.tipoMixElectrico,
+            })
+            .subscribe((data) => {
+              console.log('update electric');
+              console.log(data);
+            });
+        } else if (data.source === 'panels') {
+          this.electricitConsumptionService
+            .updateECD(data.id, {
+              quantity: this.cantidadPanelesFotovoltaicos,
+              percentage: this.porcentajePanelesFotovoltaicos,
+              annual_consumption_required_id: this.CAID,
+              unit_id: this.unidadPanelesFotovoltaicos,
+              type: null,
+            })
+            .subscribe((data) => {
+              console.log('update panels');
+              console.log(data);
+            });
+        }
       });
+    });
+
+    await this.materialsService.getEDCP().subscribe((edcp) => {
+      const schemaFilter = edcp.filter(
+        (schema) =>
+          schema.project_id == localStorage.getItem('idProyectoConstrucción')
+      );
+
+      if (schemaFilter.length === 0) {
+        this.router.navigateByUrl('end-life-stage');
+      } else {
+        this.router.navigateByUrl('update-end-life');
+      }
+    });
   }
 
   goToMaterialStage() {
@@ -400,12 +399,16 @@ export class UsageStageUpdateComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if (result.save) {
+          this.saveStepThree();
+        }
         this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
           const schemaFilter = msp.filter(
             (schema) =>
-              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+              schema.project_id ==
+              localStorage.getItem('idProyectoConstrucción')
           );
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('materials-stage');
           } else {
@@ -424,13 +427,17 @@ export class UsageStageUpdateComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if (result.save) {
+          this.saveStepThree();
+        }
         this.materialsService.getConstructionStage().subscribe((cse) => {
           const schemaFilter = cse.filter(
             (schema) =>
-              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+              schema.project_id ==
+              localStorage.getItem('idProyectoConstrucción')
           );
           console.log(schemaFilter);
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('construction-stage');
           } else {
@@ -461,12 +468,16 @@ export class UsageStageUpdateComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
+        if (result.save) {
+          this.saveStepThree();
+        }
         this.materialsService.getEDCP().subscribe((edcp) => {
           const schemaFilter = edcp.filter(
             (schema) =>
-              schema.project_id == localStorage.getItem('idProyectoConstrucción')
+              schema.project_id ==
+              localStorage.getItem('idProyectoConstrucción')
           );
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('end-life-stage');
           } else {

@@ -70,4 +70,34 @@ export class ElectricitConsumptionService {
         })
       );
   }
+
+  updateACR(id: string, changes) {
+    return this.http
+      .put(`${environment.api_annual_consumption_required}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  updateECD(id: string, changes) {
+    return this.http
+      .put(`${environment.api_electricity_consumption_data}${id}/`, changes)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  getECDById(id: string) {
+    return this.http
+      .get<any>(`${environment.api_electricity_consumption_data}${id}/`)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
 }
