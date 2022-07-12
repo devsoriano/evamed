@@ -1,0 +1,302 @@
+<div>
+  <div class="sectionOne">
+    <button mat-icon-button (click)="returnHome()">
+      <mat-icon class="excepction">keyboard_arrow_left</mat-icon>
+    </button>
+    <a class="return-proyecto">regresar a proyectos</a>
+    <br><a class="tittle-proyect">{{proyecto.nombre}}</a>
+  </div>
+  <div class="bases-datos">
+    <p class="text-duplicados">Duplicados</p>
+    <div>
+      <p class="text-duplicados">Bases de Datos consideradas</p>
+      <mat-select multiple (selectionChange)="ajusteUsoBaseDatos($event.value)">
+        <mat-option *ngFor="let topping of DBList" [value]="topping">{{topping}}</mat-option>
+      </mat-select>
+    </div>
+  </div>
+  <div class="div-proyectos-mostrados">
+    <div>
+      <button mat-button class="menu-proyectos" [matMenuTriggerFor]="menu">Selecciona una opción a visualizar
+       <mat-icon>keyboard_arrow_down</mat-icon></button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item
+          *ngFor="let item of proyect"
+          (click)="iniciar_graficas(item.id)">
+          <span>{{item.Nombre}}</span>
+        </button>
+      </mat-menu>
+    </div>
+    <div>
+      <div *ngFor="let item of proyectosMostrados;let i = index" class="button-graph">
+        <mat-card class="card">
+          {{item.num}}
+          <button mat-icon-button (click)="quitarProyecto(item.id)"><mat-icon>highlight_off</mat-icon></button>
+          {{item.Nombre}}
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <mat-card class="mat-master">
+      <mat-tab-group mat-stretch-tabs class="container-principal-tab" (selectedIndexChange)="show($event)" (animationDone)="finShow()">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Impactos ambientales<br>por etapas de ciclo de vida
+          </ng-template>
+          <div class="div-impactos-ambientales">
+            <p>Impactos ambientales</p>
+            <div class="sub-container">
+              <div>
+                <mat-button-toggle-group>
+                  <mat-button-toggle class="button-impactos" (click)="TablaResultados()"><mat-icon class="icons-options">table_view</mat-icon></mat-button-toggle>
+                  <mat-button-toggle class="button-impactos" (click)="GraficasResultados()"><mat-icon class="icons-options">bar_chart</mat-icon></mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div>
+                <mat-button-toggle-group>
+                  <mat-button-toggle [disabled]="botones_grafica_activos" class="button-impactos" (click)="porcentaje(true,1)">%</mat-button-toggle>
+                  <mat-button-toggle [disabled]="botones_grafica_activos" class="button-impactos" (click)="porcentaje(false,1)">#</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div>
+                <mat-button-toggle-group>
+                  <mat-button-toggle class="button-impactos" (click) = "AjustePorMetro(1)"><mat-icon class="icons-options">border_all</mat-icon></mat-button-toggle>
+                  <mat-button-toggle class="button-impactos" (click) = "AjustePorMetro(0)"><mat-icon class="icons-options">branding_watermark</mat-icon></mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+          <div class="campo-grafica-bar" >
+            <ng-template #barContainer>
+
+            </ng-template>
+            <div class="indicadores">
+              <span *ngFor="let impacto of catologoImpactoAmbiental ; let iImpacto = index" class="dot" id="{{idsImpactosAmbientales['idsCiclo'][iImpacto]}}"></span>
+            </div>
+          </div>
+          <div *ngIf="resultdosTabla" class="tabla">
+            <table class="Tabla-Datos" mat-table [dataSource]="DatosTabla" multiTemplateDataRows>
+              <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+                <th mat-header-cell *matHeaderCellDef class="tittle-table">
+                  <span style="white-space: pre-line;">{{column}}</span>
+                </th>
+                <td mat-cell *matCellDef="let element" [style.color] = element.color>
+                  <p>{{element.data[column]}}</p></td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"></tr>
+            </table>
+          </div>
+          <div>
+            <p class="secondary-text">Dispersión de Impacto ambiental por fase de ciclo de vida</p>
+          </div>
+          <div class="div-secondary-graph">
+            <div>
+              <p>Selecciona una fase del ciclo de vida</p>
+              <ul>
+                <li>
+                  <button id="Producción" class="boton-principal" mat-stroked-button (click)="grafica('Producción')">
+                    Producción</button>
+                  <button id="ProducciónOjo" (click)="ajusteDeGraficaFASE('Producción')" class="boton-icono">
+                    <mat-icon class="uno">{{iconos['Producción']}}</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button id="Construccion"class="boton-principal" mat-stroked-button (click)="grafica('Construccion')">
+                    Construcción</button> 
+                    <button id="ConstruccionOjo" (click)="ajusteDeGraficaFASE('Construccion')" class="boton-icono">
+                      <mat-icon class="dos">{{iconos['Construccion']}}</mat-icon>
+                    </button>
+                </li>
+                <li>
+                  <button id="Uso" class="boton-principal" mat-stroked-button (click)="grafica('Uso')">
+                    Uso</button> 
+                  <button id="UsoOjo" (click)="ajusteDeGraficaFASE('Uso')" class="boton-icono">
+                    <mat-icon class="tres">{{iconos['Uso']}}</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button id="FinDeVida" class="boton-principal" mat-stroked-button (click)="grafica('FinDeVida')">
+                    Fin de vida</button>
+                  <button id="FinDeVidaOjo" (click)="ajusteDeGraficaFASE('FinDeVida')" class="boton-icono">
+                    <mat-icon class="cuatro">{{iconos['FinDeVida']}}</mat-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <ng-template #GraficasEspecificas>
+
+              </ng-template>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Impactos ambientales<br>por elementos constructivos
+          </ng-template>
+          <div class="div-second-tab">
+            <ng-template #barGraphDos>
+            </ng-template>
+            <div class="indicadores">
+              <span *ngFor="let impacto of catologoImpactoAmbiental ; let iImpacto = index" class="dot" id="{{idsImpactosAmbientales['idsElementos'][iImpacto]}}"></span>
+            </div>
+            <p>
+              Elementos constructivos  
+            </p>
+            <p>
+              {{impactoSeleccionadoElementoConstructivo}}
+            </p>
+            <div *ngIf="cargaElementos">
+              <div *ngFor="let item of botones_elementos_constructivos" class="botones-elementos-contructivos">
+                <div id="{{idsIconosElementos[item.id]['idTEXTO']}}" class="espacio-sin-selecciomar">
+                  <button class="button-elemento-seleccionado color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="graficabar(item.id)"> 
+                    {{item.name_section}}</button>
+                    <button id="{{idsIconosElementos[item.id]['idOJO']}}" class="button-icono color-texto" [disabled]="iconosElementosConstrucivos[item.id]['habilitado']" (click)="AjusteGraficaElementosContructivos(item.id)">
+                      <mat-icon>{{iconosElementosConstrucivos[item.id]['icono']}}</mat-icon>
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="espacio-img">
+            <div class="complemento-edificio" *ngFor="let item of outproyect_bar; let i = index">
+              <p>{{item.Nombre}}</p>
+              <button (click)="DispercionAP(idsImgEdificios[i],item.id)" id="{{idsImgEdificios[i]}}" class="edificio-individual">
+              </button>
+            </div>
+            <div class="child">
+              <ng-template #imgEdificio>
+              </ng-template>
+            </div>
+          </div>
+          <!--
+             <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
+              <button (click)="DispercionAP(idsImgEdificios[i],item.id)">{{item.Nombre}}</button>
+            </div>
+            <div id="{{idsImgEdificios[i]}}" class="img-edificio" *ngFor="let item of outproyect_bar; let i = index">
+              <a (click)="DispercionAP(idsImgEdificios[i],item.id)">
+                <p>{{item.Nombre}}</p>
+                <p>Visuaización de GWP por sistema constructivo</p>
+                <img src="../../../../assets/images/8.png">
+              </a>
+            </div>
+          -->
+          <div>
+            <div *ngIf="show_Dispercion" class="last-div-section-two">
+              <div>
+                <p> {{nombreProyectoElegidoSeleccionadoElementos}} </p>
+                <p> {{elementoSeleccionadoMostrado}} </p>
+                <p> Potenciales impactos ambientales de materiales de construcción </p>
+              </div>
+              <div *ngIf="flagSinMaterialesDispercion">
+                <p>Sin materiales en estos calculos</p>
+              </div>
+              <div class="seccion" *ngIf="flagMaterialesDispercion">
+                <div>
+                  <div class="button-graph">
+                    <mat-button-toggle-group>
+                         <mat-button-toggle (click)="cambioDeTipoGraficaDispercion(true)"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
+                         <mat-button-toggle (click)="cambioDeTipoGraficaDispercion(false)"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+                       </mat-button-toggle-group>
+                    <button>Exportar</button>
+                  </div>
+                  <ng-template #GraficasEspecificasDos>
+                  </ng-template>
+                </div>
+                <div>
+                  <p>Materiales</p>
+                  <table mat-table [dataSource]="infoTablaDispercion">
+                    <ng-container matColumnDef="no">
+                      <th mat-header-cell *matHeaderCellDef> No. </th>
+                      <td mat-cell *matCellDef="let element"> 
+                        <div class="circulo-color-tabla" [style.background-color] = element.color>{{element.no}}</div></td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="material">
+                      <th mat-header-cell *matHeaderCellDef> Material </th>
+                      <td mat-cell *matCellDef="let element"> {{element.material}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="porcentaje">
+                      <th mat-header-cell *matHeaderCellDef> % </th>
+                      <td mat-cell *matCellDef="let element"> {{element.porcentaje}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="numero">
+                      <th mat-header-cell *matHeaderCellDef> {{unidadImpactoAmientalTabla}}</th>
+                      <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsDispercion"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsDispercion;"></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Impactos ambientales<br>por materiales de construcción
+          </ng-template>
+          <div>
+            <div class="div-elementos-constructivos">
+              <div>
+                <p>Selecciona impacto ambiental</p>
+                <mat-select class="select-impacto-ambiental" [(ngModel)]="selectedValue" (selectionChange)="selectImpactoAmbiental()" required>
+                  <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
+                    {{impacto.name_complete_potential_type}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div>
+                <p>Elementos constructivos</p>
+                <section class="example-section">
+                  <section *ngFor="let item of botones_elementos_constructivos">
+                    <mat-checkbox class="example-margin" [(ngModel)]="elementosConstructivosMostradosElementos[item.id]['check']" (change)="elementoSeleccionadoElementos(item.id)" [disabled]="elementosConstructivosMostradosElementos[item.id]['habilitado']">{{elementosConstructivosMostradosElementos[item.id]['nombre']}}</mat-checkbox>
+                  </section>
+                </section>
+              </div>
+              <div>
+                <p>Fases del ciclo de vida</p>
+                <ul>
+                  <li> <button id="ProducciónTextoElemento" (click)="selectEtapa('Producción')" mat-stroked-button class="button-info">
+                     <div class="some-text">
+                     <a>Producción</a>
+                     <a> A1 - A3</a></div>
+                     </button>
+                     <button class='button-icon' (click)="eliminarEtapa('Producción')">
+                       <mat-icon class="uno">{{iconosCambioElementos['Producción']}}</mat-icon>
+                     </button>
+                  </li>
+                  <li> <button id="ConstruccionTextoElemento" (click)="selectEtapa('Construccion')" mat-stroked-button class="button-info">
+                     <div class="some-text">
+                     <a>A4 - Transporte</a>
+                     <a> de materiales </a></div>
+                     </button>
+                     <button class='button-icon' (click)="eliminarEtapa('Construccion')">
+                       <mat-icon class="dos">{{iconosCambioElementos['Construccion']}}</mat-icon>
+                     </button>
+                   </li>
+                </ul>
+                <ul>
+                 <li> <button id="UsoTextoElemento" (click)="selectEtapa('Uso')" mat-stroked-button class="button-info">
+                    <div class="some-text">
+                    <a>B4 - Reemplazos</a>
+                    <a> de materiales </a></div>
+                    </button>
+                    <button class='button-icon' (click)="eliminarEtapa('Uso')">
+                      <mat-icon class="tres">{{iconosCambioElementos['Uso']}}</mat-icon>
+                    </button>
+                  </li>
+               </ul>
+              </div>
+            </div>
+            <ng-template #barGraphTres>
+            </ng-template>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+  </mat-card>
+</div>

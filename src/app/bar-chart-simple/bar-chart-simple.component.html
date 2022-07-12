@@ -1,0 +1,25 @@
+<div *ngIf="showGr"  class="div-principal">
+  <div style="display: block">
+    <canvas #MyChart='base-chart' #canvas baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        (chartClick)='onChartClick($event)'
+        [chartType]="barChartType">
+    </canvas>
+  </div>
+</div>
+<div *ngIf="showlastGr"  class="div-principal">
+  <div style="display: block">
+    <canvas #MyChart='base-chart' #canvas baseChart
+        [datasets]="barChartDataSecond[0]"
+        [labels]="barChartLabelsSecond"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [chartType]="barChartType">
+    </canvas>
+  </div>
+</div>

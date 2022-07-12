@@ -5,15 +5,56 @@
         Tus proyectos
       </div>
       <div class="filter-options">
+        <mat-form-field appearance="outline" class="select-general">
+          <mat-label>Seleccione una opción</mat-label>
+          <mat-select  [(ngModel)]="filtroUsoSeleccionado" (selectionChange)="selectUse(filtroUsoSeleccionado)">
+            <mat-option *ngFor="let uso of filtroCatalogoUsos" [value]="uso.id">
+              {{uso.name_use}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
-    <mat-card *ngFor="let project of projectsList" class="card-project">
-      <div class="container-tag">
-        <div class="title-tag">
-          {{project.name_project}}
+    <div class="container-principal" *ngIf="countProjectList === 0">
+      <div class="btn-primer-producto" (click)="openDialogANP()">
+        <div class="plus">+</div>
+        <div class="message-plus">Crea tu primer proyecto</div>
+      </div>
+    </div>
+    <mat-card *ngFor="let project of projectsList; let i = index" class="card-project">
+      <div class="header-tag">
+        <div class="more-vert">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+          >
+            <mat-icon class="more-vert-custom">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" class="custom-menu">
+            <button mat-menu-item (click)="duplicateProject(project.id)" class="custom-item">
+              <span>Duplicar</span>
+            </button>
+            <button mat-menu-item (click)="renameProject(project.id)" class="custom-item">
+              <span>Renombrar</span>
+            </button>
+            <button mat-menu-item (click)="deleteProject(project.id)" class="custom-item">
+              <span>Eliminar</span>
+            </button>
+          </mat-menu>
         </div>
-        <div class="date-tag">
-          Noviembre 2019
+        <div class="container-tag">
+          <div class="title-tag">
+            {{project.name_project}}
+          </div>
+          <div class="date-tag">
+           <ng-template [ngIf]="project.use_id==1"><div>Habitacional</div></ng-template>
+            <ng-template [ngIf]="project.use_id==2"><div>Comercial</div></ng-template>
+            <ng-template [ngIf]="project.use_id==3"><div>Oficinas</div></ng-template>
+            <ng-template [ngIf]="project.use_id==4"><div>Industrial</div></ng-template>
+            <ng-template [ngIf]="project.use_id==5"><div>Educacional</div></ng-template>
+            <ng-template [ngIf]="project.use_id==6"><div>Hospitalario</div></ng-template>
+          </div>
         </div>
       </div>
       <mat-tab-group class="container-principal-tab">
@@ -21,224 +62,297 @@
           <div class="second-mat-tab-group">
             <mat-tab-group class="container-second-tab">
               <mat-tab label="Producción" class="label-second-tab">
-                <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
+                <section class="grid-container"  >
+                  <mat-card
+                    class="card-item-custom"
+                    *ngFor="let section of serchSections(project.id)"
+                    (click)="updateMaterial(project.id)"
+                    >
+                    <h2>{{section.name_section}}</h2>
+                    <ul class="listItems">
+                      <li *ngFor="let sc of serchSC(project.id, section.id)">{{sc}}</li>
                     </ul>
                   </mat-card>
                 </section>
               </mat-tab>
               <mat-tab label="Construcción" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
+                  <mat-card
+                    class="card-item-custom"
+                    *ngFor="let section of serchConstructiveSection(project.id)"
+                    (click)="updateConstruction(project.id)"
+                  >
+                    <h2>{{section.name_section}}</h2>
+                    <ul class="listItems">
+                      <li *ngFor="let sc of serchDetailConstruction(project.id, section.id)">
+                        {{sc.source_information}} <br />
+                        {{sc.quantity | number: '1.2-2' }} hrs
+                      </li>
                     </ul>
                   </mat-card>
                 </section>
               </mat-tab>
               <mat-tab label="Uso" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
+                  <div class="subseccion">
+                    <div>
+                      <canvas baseChart
+                      [datasets]="auxDatosGraficaUso[i]"
+                      [options]="pieChartOptions_elementos"
+                      [chartType]="pieChartType">
+                    </canvas>
+                  </div>
+                  <div>
+                      <h2>Consumo energético total <br>requerido anualmente</h2>
+                      <div *ngFor="let data of serchUseData(project.id)">
+                        <div *ngIf="data.source === 'electric'">
+                          <span class="dot" [ngStyle]="{'background-color': '#767676'}"></span>
+                          Red eléctrica nacional {{data.quantity  | number: '1.2-2' }} kWh
+                        </div>
+                        <div *ngIf="data.source === 'fuel'">
+                          <span class="dot" [ngStyle]="{'background-color': '#DFDFDF'}"></span>Combustible: {{data.quantity  | number: '1.2-2' }} kWh</div>
+                        <div *ngIf="data.source === 'panels'">
+                          <span class="dot" [ngStyle]="{'background-color': '#C3C3C3'}"></span>Paneles fotovoltaicos: {{data.quantity  | number: '1.2-2' }} kWh</div>
+                      </div>
+                      <button
+                          mat-button
+                          class="yellow-button-mini"
+                          (click)="updateUso(project.id)"
+                        >
+                          Editar
+                        </button>
+                    </div>
+                  </div>
                 </section>
               </mat-tab>
               <mat-tab label="Fin de vida" class="label-second-tab">
                 <section class="grid-container">
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
-                  </mat-card>
-                  <mat-card class="card-item-custom">
-                    <h2>Cimentación</h2>
-                    <ul>
-                      <li>Zapata aislada</li>
-                      <li>Zapata corrida</li>
-                      <li>Zapata aislada 2</li>
-                    </ul>
+                  <mat-card
+                    class="card-item-custom"
+                    *ngFor="let section of serchEndLifeSection(project.id)"
+                    (click)="updateEndLife(project.id)"
+                  >
+                    <h2>{{section.name_section}}</h2>
                   </mat-card>
                 </section>
               </mat-tab>
             </mat-tab-group>
           </div>
         </mat-tab>
-        <mat-tab label="Resultados" class="label-principal-tab"> 
-          <button
-            mat-button
-            class="yellow-button"
-            (click)="redirectResultados(project.id)"
-          > 
-            Resultados
-          </button>
+        <mat-tab label="Resultados" class="label-principal-tab">
+          <div *ngIf="cargaDatosCalculo">
+            <div class="mat-tab-resultados" *ngIf="auxDataProjectList[i]['graficasCarbonoOResultados']['resultados']">
+              <div>
+                <div class="seccionUno">
+                  <p>Selecciona impacto ambiental</p>
+                  <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].impactoCompleteSelect" (selectionChange)="selectImpactoAmbiental(auxDataProjectList[i].impactoCompleteSelect,i)" required>
+                    <mat-option *ngFor="let impacto of catologoImpactoAmbiental" [value]="impacto.name_complete_potential_type">
+                      {{impacto.name_complete_potential_type}}
+                    </mat-option>
+                  </mat-select>
+                  <p>Fases de ciclo de vida</p>
+                  <ul>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['Producción']}}" (click)="selectEtapa('Producción',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['Producción']}}">Producción</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['porcentaje']}}%
+                           / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Producción']['num']}}
+                            {{auxDataProjectList[i].unit_impacto}}</a></div>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('Producción',i)">
+                          <mat-icon class="uno">{{auxDataProjectList[i].iconosCambio['Producción']}}</mat-icon>
+                        </button>
+                     </li>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['Construccion']}}" (click)="selectEtapa('Construccion',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['Construccion']}}">Construcción</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['porcentaje']}}%
+                          / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Construccion']['num']}}
+                          {{auxDataProjectList[i].unit_impacto}}</a></div>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('Construccion',i)">
+                          <mat-icon class="dos">{{auxDataProjectList[i].iconosCambio['Construccion']}}</mat-icon>
+                        </button>
+                      </li>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['Uso']}}" (click)="selectEtapa('Uso',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['Uso']}}">Uso</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['porcentaje']}}%
+                          / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['Uso']['num']}}
+                          {{auxDataProjectList[i].unit_impacto}}</a></div>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('Uso',i)">
+                          <mat-icon class="tres">{{auxDataProjectList[i].iconosCambio['Uso']}}</mat-icon>
+                        </button>
+                      </li>
+                     <li> <button id="{{auxDataProjectList[i].idsBotones['FinDeVida']}}" (click)="selectEtapa('FinDeVida',i,auxDataProjectList[i].id)" mat-stroked-button class="button-info">
+                        <div class="some-text">
+                        <a id="{{auxDataProjectList[i].idsTextBotones['FinDeVida']}}">Fin de vida</a>
+                        <a> {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['porcentaje']}}%
+                          / {{auxDataProjectList[i].porcentaje[auxDataProjectList[i].impactoSelect]['FinDeVida']['num']}}
+                          {{auxDataProjectList[i].unit_impacto}}</a></div>
+                        </button>
+                        <button class='button-icon' (click)="eliminarEtapa('FinDeVida',i)">
+                          <mat-icon class="cuatro">{{auxDataProjectList[i].iconosCambio['FinDeVida']}}</mat-icon>
+                        </button>
+                      </li>
+                  </ul>
+                </div>
+                <div class="botones-finales">
+                  <button mat-stroked-button class="Detalle ver"
+                  (click)="redirectResultados(project.id)"
+                  >Ver detalle</button>
+                  <div *ngIf = "auxDataProjectList[i].mostrarOpcionCarbono">
+                    <button mat-stroked-button class="Detalle ver"
+                  (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)"
+                  >Ver referencia</button>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="button-graph">
+                  <mat-button-toggle-group>
+                       <mat-button-toggle (click)="cambioGrafica(i,'Pie')"><mat-icon>pie_chart</mat-icon></mat-button-toggle>
+                       <mat-button-toggle (click)="cambioGrafica(i,'Bar')"><mat-icon>bar_chart</mat-icon></mat-button-toggle>
+                     </mat-button-toggle-group>
+                  <button>Exportar</button>
+                </div>
+                <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Pie']">
+                  <div class="canvas-container seccionTres">
+                    <canvas #MyChart='base-chart' #canvas baseChart
+                                [datasets]="auxDataProjectList[i].dataGraficaPie"
+                                [chartType]="doughnutChartType"
+                                [options]="pieChartOptions"
+                                width="217px" height="292px">
+                    </canvas>
+                  </div>
+                </div>
+                <div *ngIf="auxDataProjectList[i].TipoGraficaActiva['Bar']">
+                  <div class="canvas-container seccionTres">
+                    <canvas #MyChart='base-chart' #canvas baseChart
+                        [datasets]="auxDataProjectList[i].dataGraficaBar['datos']"
+                        [labels]="auxDataProjectList[i].dataGraficaBar['labels']"
+                        [options]="barChartOptions"
+                        [legend]="barChartLegend"
+                        [plugins]="barChartPlugins"
+                        [chartType]="barChartType"
+                         height="305px">
+                      </canvas>
+                  </div>
+                </div>
+                <p *ngIf="auxDataProjectList[i].errorCalculos" class="text-error">
+                  Existe un herror en los calculos por falta de datos
+                </p>
+              </div>
+              <div>
+                <button mat-stroked-button class="Detalle reporte">Generar reporte</button>
+                <p>Dispersión de impactos por subetapa</p>
+                <ul class="mostrar-subetapas">
+                  <li *ngFor = "let subetapa of auxDataProjectList[i].subetasMostrada">
+                    <span class="dot" [ngStyle]="{'background-color': subetapa.color}"></span>
+                    <div class="text-subetapas" *ngIf = "auxDataProjectList[i].banderaEtapa">
+                      <a>{{subetapa.abreviacion}} - {{subetapa.nombre_subeatapa}}</a>
+                      <a>{{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['porcentaje']}}% /
+                        {{auxDataProjectList[i].porcentajeSubepata[auxDataProjectList[i].impactoSelect][auxDataProjectList[i].etapaSeleccionada][subetapa.abreviacion]['num']}}
+                        {{auxDataProjectList[i].unit_impacto}}</a>
+                    </div>
+                  </li>
+                </ul>
+                <div>
+                  <p>Bases de Datos consideradas</p>
+                  <mat-select multiple (selectionChange)="ajusteUsoBaseDatos($event.value,i)">
+                    <mat-option *ngFor="let topping of auxDataProjectList[i].DBList" [value]="topping">{{topping}}</mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="auxDataProjectList[i]['graficasCarbonoOResultados']['carbono']" class="graficas-huella-carbono">
+              <div class="titulo-carbono">
+                Huella de carbono fase uso
+              </div>
+              <div class="secciones">
+                <div>
+                  <mat-select class="select-impacto-ambiental" [(ngModel)]="auxDataProjectList[i].opcionCarbonoSeleccionada" (selectionChange)="selectOpcionCarbono(auxDataProjectList[i].opcionCarbonoSeleccionada,i)" required>
+                    <mat-option *ngFor="let opcion of catologoOpcionesCarbono" [value]="opcion">
+                      {{opcion}}
+                    </mat-option>
+                  </mat-select>
+                  <div class="texto-descripcion">
+                    {{auxDataProjectList[i].descripcionCarbono}}
+                  </div>
+                </div>
+                <div class="canvas-container">
+                  <canvas #MyChart='base-chart' #canvas baseChart
+                      [datasets]="auxDataProjectList[i].dataGraficaCarbono['datos']"
+                      [labels]="auxDataProjectList[i].dataGraficaCarbono['labels']"
+                      [options]="barChartHorizontalOptions"
+                      [legend]="barChartLegend"
+                      [plugins]="barChartPlugins"
+                      [chartType]="barChartHorizonatlType"
+                       height="305px">
+                    </canvas>
+                    <p>KgCO<sub>2</sub> / m<sup>2</sup>a</p>
+                </div>
+                <div>
+                  <div class="fle">
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_1']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_1']}"></span>
+                    <span class="texto-flecha" [ngStyle]="{'color': auxDataProjectList[i].flagsCarbono['valor_1']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div class="fle">
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_2']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_2']}"></span>
+                    <span class="texto-flecha" [ngStyle]="{'color': auxDataProjectList[i].flagsCarbono['valor_2']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div class="fle">
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_3']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_3']}"></span>
+                    <span class="texto-flecha" [ngStyle]="{'color': auxDataProjectList[i].flagsCarbono['valor_3']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div class="fle">
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_4']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_4']}"></span>
+                    <span class="texto-flecha" [ngStyle]="{'color': auxDataProjectList[i].flagsCarbono['valor_4']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div class="fle">
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_5']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_5']}"></span>
+                    <span class="texto-flecha" [ngStyle]="{'color': auxDataProjectList[i].flagsCarbono['valor_5']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div class="fle">
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_6']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_6']}"></span>
+                    <span class="texto-flecha" [ngStyle]="{'color': auxDataProjectList[i].flagsCarbono['valor_6']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                  <div class="fle">
+                    <span class="punta" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_7']}"></span>
+                    <span class="flecha" [ngStyle]="{'background-color': auxDataProjectList[i].flagsCarbono['valor_7']}"></span>
+                    <span class="texto-flecha" [ngStyle]="{'color': auxDataProjectList[i].flagsCarbono['valor_7']}">
+                      {{auxDataProjectList[i].valorCarbono}}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <button class="boton-carbono-verde"
+                      (click)="mostrarHuellaCarbono(auxDataProjectList[i].id,i)">
+                      Volver a<br>resultados
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </mat-tab>
       </mat-tab-group>
     </mat-card>
@@ -249,23 +363,15 @@
         <div mat-card-avatar class="profile-image"></div>
       </mat-card-header>
       <mat-card-content class="content-standard-card">
-        <strong class="label-name">Arq. Victor Arvizu Piña</strong>
+        <strong class="label-name">{{user}}</strong>
         <p class="label-profile">
-          Investigador
+          {{sector}}
         </p>
       </mat-card-content>
       <mat-card-content class="content-estadisticas">
         <div>
-          <div>12</div>
+          <div>{{countProjectList}}</div>
           <div>Proyectos</div>
-        </div>
-        <div>
-          <div>10</div>
-          <div>Acciones</div>
-        </div>
-        <div>
-          <div>2</div>
-          <div>Nivel</div>
         </div>
       </mat-card-content>
       <mat-card-actions>
@@ -273,12 +379,27 @@
           mat-button
           class="yellow-button"
           (click)="openDialogANP()"
-        > 
-        Crear nuevo proyecto 
+        >
+        Crear nuevo proyecto
       </button>
       </mat-card-actions>
+
+      <mat-card-actions  *ngIf="email === 'arqarvizup@gmail.com'">
+        <button
+          mat-button
+          class="yellow-button"
+          (click)="goToAdmin()"
+        >
+        Administrador 
+      </button>
+      
+    </mat-card-actions>
       <mat-card-actions class="content-logout-button">
-        <button mat-button class="melon-button" (click)="logout()">
+        <button
+          mat-button
+          class="melon-button"
+          (click)="logout()"
+        >
           Cerrar sesión
         </button>
       </mat-card-actions>

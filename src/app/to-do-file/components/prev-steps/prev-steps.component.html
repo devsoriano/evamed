@@ -1,0 +1,32 @@
+<!--Header modal-->
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Importación de materiales completada
+  </h1>
+</div>
+<!-- Close Header modal-->
+<!--Cuerpo de modal-->
+<div mat-dialog-content class="dialog-content">
+  <div class="info">
+    <div class="logo">
+      <mat-icon class="custom-icon">
+        check_circle
+      </mat-icon>
+    </div>
+    <div class="text">{{ConstructiveSystems}} Sistemas constructivos</div>
+    <div class="text">{{TotalMaterialsDB}} Materiales identificados</div>
+    <div class="text">{{TotalMaterialsDB - TotalExistDB}} Materiales no identificados</div>
+  </div>
+</div>
+<!-- Close Cuerpo de modal-->
+<!--Botonera-->
+<div mat-dialog-actions class="center">
+  <button
+    mat-button
+    (click)="goToSteps()" 
+    class="yellow-button alf"
+  >
+    Entendido
+  </button>
+</div>
+<!-- Close Botonera-->

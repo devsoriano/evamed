@@ -1,0 +1,16 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Los datos se han actualizado
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-content>
+  <p>¿Desea continuar a etapa de fin de vida?</p>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="continueStep($event)">Etapa de fin de vida</button>
+</div>

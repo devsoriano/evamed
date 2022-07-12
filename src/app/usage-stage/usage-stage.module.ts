@@ -5,15 +5,19 @@ import { UsageStageComponent } from './components/usage-stage/usage-stage.compon
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from './../material/material.module';
+import { IntermedialComponent } from './components/intermedial/intermedial.component';
+import { PassStepComponent } from './components/pass-step/pass-step.component';
 
 @NgModule({
-  declarations: [UsageStageComponent],
+  declarations: [UsageStageComponent, IntermedialComponent, PassStepComponent],
   imports: [
     CommonModule,
     UsageStageRoutingModule,
     SharedModule,
     FormsModule,
-    MaterialModule
-  ]
+    MaterialModule,
+  ],
+  exports: [IntermedialComponent, PassStepComponent],
+  entryComponents: [IntermedialComponent, PassStepComponent],
 })
-export class UsageStageModule { }
+export class UsageStageModule {}

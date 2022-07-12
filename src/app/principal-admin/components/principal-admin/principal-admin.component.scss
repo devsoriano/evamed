@@ -1,0 +1,20 @@
+.listado {
+  display: grid;
+
+  a {
+    margin: 12px 30px;
+    text-decoration: none;
+    color: #7fa20b;
+    font-size: 16px;
+    font-weight: 600;
+
+    &:hover {
+      color: #edc903;
+      cursor: pointer;
+    }
+  }
+}
+
+.red {
+  color: red !important;
+}

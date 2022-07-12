@@ -1,0 +1,801 @@
+<nav class="nav-redirect">
+  <h2 class="proyecto-title">{{ nameProject }}</h2>
+  <a href="/" class="a-redirect">
+    < Regresar a proyectos </a>
+</nav>
+<!--Principal container-->
+<div class="principal-container container-total">
+  <!--Navigation steps-->
+  <nav class="nav-steps">
+    <div class="mdl-stepper-horizontal-alternative">
+      <div class="mdl-stepper-step step-one-selected">
+        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-tag aux-yellow">Producción</div>
+        <div class="mdl-stepper-bar-left"></div>
+        <div class="mdl-stepper-bar-right"></div>
+      </div>
+      <div class="mdl-stepper-step step-two">
+        <div class="mdl-stepper-circle" (click)="goToConstructionStage()"></div>
+        <div class="mdl-stepper-tag">Construcción</div>
+        <div class="mdl-stepper-bar-left"></div>
+        <div class="mdl-stepper-bar-right"></div>
+      </div>
+      <div class="mdl-stepper-step step-three">
+        <div class="mdl-stepper-circle" (click)="goToUsageStage()"></div>
+        <div class="mdl-stepper-tag">Uso</div>
+        <div class="mdl-stepper-bar-left"></div>
+        <div class="mdl-stepper-bar-right"></div>
+      </div>
+      <div class="mdl-stepper-step step-four">
+        <div class="mdl-stepper-circle" (click)="goToEndLife()"></div>
+        <div class="mdl-stepper-tag">Fin de vida</div>
+        <div class="mdl-stepper-bar-left"></div>
+        <div class="mdl-stepper-bar-right"></div>
+      </div>
+    </div>
+  </nav>
+  <!--Container actions of step 2-->
+  <section class="container-actions">
+    <!--Section sheets-->
+    <section class="container-sheets">
+      <div class="tab-title-sections">
+        <p>Elementos</p>
+        <button mat-icon-button (click)="addElement()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <div class="container-image" [ngSwitch]="selectedSheet">
+        <img *ngSwitchCase="'Cimentación'" src="../../../../assets/map/2.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Muros interiores'" src="../../../../assets/map/8.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Muros exteriores'" src="../../../../assets/map/9.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Pisos'" src="../../../../assets/map/7.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Techos'" src="../../../../assets/map/5.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Entrepiso'" src="../../../../assets/map/7.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Estructura'" src="../../../../assets/map/11.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Puertas'" src="../../../../assets/map/6.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Ventanas'" src="../../../../assets/map/4.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Inst. especiales'" src="../../../../assets/map/13.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Otros'" src="../../../../assets/map/14.jpg" class="image-element" alt="" />
+        <img *ngSwitchDefault src="../../../../assets/map/12.jpg" class="image-element" alt="" />
+      </div>
+      <div class="list-elements">
+        <mat-selection-list #sheets [multiple]="false"
+          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)">
+          <mat-list-option *ngFor="let sheet of sheetNames" [value]="sheet" class="item-yellow-extend">
+            {{ sheet }}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+    </section>
+
+    <!--Section construction systems-->
+    <section class="container-systems">
+      <div class="tab-title-sections">
+        <p>Seleccione el sistema constructivo base a aplicar</p>
+        <button mat-icon-button>
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <mat-accordion *ngIf="indexSheet !== undefined">
+        <mat-expansion-panel (opened)="panelOpenFirst = true" (closed)="panelOpenFirst = false" [expanded]="true">
+          <!--List Revit or template-->
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Registrados en REVIT y/o Template EVAMED
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list #sistemas_constructivos [(ngModel)]="selectedOptionsRevit"
+            (ngModelChange)="onNgModelChangeRevit($event)">
+            <mat-list-option *ngFor="let sc of ListSCRevit" [value]="sc" [disableRipple]="true"
+              checkboxPosition="before" class="item-list-option" [selected]="true">
+              <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                ">
+                <div style="display: flex; align-items: center; width: 65.8%"
+                  (click)="showMaterials($event, sc, 'revit-user')" class="item-by-list">
+                  <div style="display: flex; flex-direction: column">
+                    {{ sc }}
+                  </div>
+                </div>
+                <div class="container-options">
+                  <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'revit-user')">
+                    <mat-icon class="custom-icon">restore_from_trash</mat-icon>
+                  </button>
+                  <button class="custom-button-icon" mat-icon-button
+                    (click)="restoreMaterial($event, sc, 'revit-user')">
+                    <mat-icon class="custom-icon">restore_page</mat-icon>
+                  </button>
+                  <button class="custom-button-icon" mat-icon-button
+                    (click)="duplicateMaterial($event, sc, 'revit-user')">
+                    <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion *ngIf="indexSheet !== undefined">
+        <mat-expansion-panel (opened)="panelOpenSecond = true" (closed)="panelOpenSecond = false" [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Opciones EVAMED </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-selection-list #sistemas_constructivos [(ngModel)]="selectedOptionsDynamo"
+            (ngModelChange)="onNgModelChangeDynamo($event)">
+            <mat-list-option *ngFor="let sc of ListSCDynamo" [value]="sc" [disableRipple]="true"
+              checkboxPosition="before" class="item-list-option" [selected]="true">
+              <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                ">
+                <div style="display: flex; align-items: center; width: 65.8%"
+                  (click)="showMaterials($event, sc, 'dynamo')" class="item-by-list">
+                  <div style="display: flex; flex-direction: column">
+                    {{ sc }}
+                  </div>
+                </div>
+                <div class="container-options">
+                  <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'dynamo')">
+                    <mat-icon class="custom-icon">restore_from_trash</mat-icon>
+                  </button>
+                  <button class="custom-button-icon" mat-icon-button (click)="restoreMaterial($event, sc, 'dynamo')">
+                    <mat-icon class="custom-icon">restore_page</mat-icon>
+                  </button>
+                  <button class="custom-button-icon" mat-icon-button (click)="duplicateMaterial($event, sc, 'dynamo')">
+                    <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion *ngIf="indexSheet !== undefined">
+        <mat-expansion-panel (opened)="panelOpenThird = true" (closed)="panelOpenThird = false" [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Creados por el usuario </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-selection-list #sistemas_constructivos [(ngModel)]="selectedOptionsUsuario"
+            (ngModelChange)="onNgModelChangeUser($event)">
+            <mat-list-option *ngFor="let sc of ListSCUsuario" [value]="sc" [disableRipple]="true"
+              checkboxPosition="before">
+              <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                ">
+                <div style="display: flex; align-items: center; width: 65.8%"
+                  (click)="showMaterials($event, sc, 'user')">
+                  <div style="display: flex; flex-direction: column">
+                    {{ sc }}
+                  </div>
+                </div>
+                <div>
+                  <button class="custom-button-icon" mat-icon-button (click)="removeMaterial($event, sc, 'user')">
+                    <mat-icon class="custom-icon">restore_from_trash</mat-icon>
+                  </button>
+                  <button class="custom-button-icon" mat-icon-button (click)="restoreMaterial($event, sc, 'user')">
+                    <mat-icon class="custom-icon">restore_page</mat-icon>
+                  </button>
+                  <button class="custom-button-icon" mat-icon-button (click)="duplicateMaterial($event, sc, 'user')">
+                    <mat-icon class="custom-icon">control_point_duplicate</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </section>
+
+    <!--Materials section-->
+    <section class="container-details">
+      <div class="tab-title-sections">
+        <p>Materiales</p>
+        <button mat-icon-button>
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+
+      <!--Contenedor de condicionales-->
+      <div class="conditional-section">
+        <!--Listado de materiales-->
+        <mat-selection-list #materials [multiple]="false" (selectionChange)="
+            onSelectedMaterial($event, materials.selectedOptions)
+          " *ngIf="selectedMaterial === false && showSearch === false">
+          <mat-list-option *ngFor="let material of listMateriales | keyvalue" [value]="material">
+            <div class="table-materials">
+              <div class="col-key">{{ material.value.key }}.</div>
+              <div class="col-material">
+                {{ material.value.name_material }}
+              </div>
+              <div class="col-cantidad">
+                {{ material.value.quantity | number: '1.2-2' }}
+              </div>
+              <div class="col-unidad">
+                {{ material.value.unit_text }}
+              </div>
+              <div class="col-icon">
+                <div class="col-unidad">
+                  <mat-icon class="custom-icon" style="color:#a8d024">check_circle</mat-icon>
+                </div>
+              </div>
+            </div>
+          </mat-list-option>
+        </mat-selection-list>
+
+        <!--Form material-->
+        <div class="container-details" *ngIf="selectedMaterial === true">
+          <!-- <a class="return" (click)="onReturnListMaterials()"> < </a> -->
+          <div class="header-form">
+            <span class="return" (click)="onReturnListMaterials()">
+              < </span>
+                <span class="title">Edición de material</span>
+          </div>
+          <div class="form-update-material">
+            <div class="Row">
+              <div class="Col">
+                <div class="label-general">Nombre comercial</div>
+                <div>
+                  <mat-form-field>
+                    <textarea class="input-general-renuew" [(ngModel)]="dataMaterialSelected.comercial_name" matInput
+                      type="text">
+                    </textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col select-middle">
+                <div class="label-general">Cantidad</div>
+                <div>
+                  <mat-form-field>
+                    <input class="input-general-renuew width-90" [(ngModel)]="dataMaterialSelected.quantity" matInput
+                      type="text" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">Unidad</div>
+                <div>
+                  <mat-form-field>
+                    <input class="input-general-renuew width-90" [(ngModel)]="dataMaterialSelected.unit_text" matInput
+                      type="text" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="label-general">Comentarios</div>
+                <div>
+                  <mat-form-field>
+                    <textarea class="input-general-renuew" [(ngModel)]="dataMaterialSelected.description_material"
+                      matInput type="text">
+                    </textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="subtitle">Transporte 1</div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col select-middle">
+                <div class="label-general">Tipo de transporte</div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select [(ngModel)]="dataMaterialSelected.transporte_1">
+                      <mat-option *ngFor="let transporte of catalogoTransportesLocal" [value]="transporte.id">
+                        {{ transporte.name_transport }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">distancia (KM)</div>
+                <div>
+                  <mat-form-field>
+                    <input class="input-general-renuew width-90" [(ngModel)]="dataMaterialSelected.distancia_1" matInput
+                      type="text" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="subtitle">Transporte 2</div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col select-middle">
+                <div class="label-general">Tipo de transporte</div>
+                <div>
+                  <mat-form-field appearance="outline" class="select-general">
+                    <mat-label>Seleccione una opción</mat-label>
+                    <mat-select [(ngModel)]="dataMaterialSelected.transporte_2">
+                      <mat-option *ngFor="let transporte of catalogoTransportesExtrangero" [value]="transporte.id">
+                        {{ transporte.name_transport }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">distancia (KM)</div>
+                <div>
+                  <mat-form-field>
+                    <input class="input-general-renuew width-90" [(ngModel)]="dataMaterialSelected.distancia_2" matInput
+                      type="text" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="subtitle">Tiempo de vida del material</div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col select-middle">
+                <div class="label-general">Tiempo de vida</div>
+                <div>
+                  <mat-form-field>
+                    <input class="input-general-renuew width-90" [(ngModel)]="dataMaterialSelected.vidaUtil"
+                      (ngModelChange)="
+                        changeReplaces(dataMaterialSelected.vidaUtil)
+                      " matInput type="text" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="Col select-middle">
+                <div class="label-general">Reemplazos</div>
+                <div>
+                  <mat-form-field>
+                    <input class="input-general-renuew width-90" [(ngModel)]="dataMaterialSelected.reemplazos" matInput
+                      (ngModelChange)="
+                        changeLifeTime(dataMaterialSelected.reemplazos)
+                      " type="text" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="subtitle">
+                  Fuente de información de impacto ambiental
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <div class="button-read" (click)="goToSearchInfo()">
+                  {{ dataMaterialSelected.materialSelectedDB }}
+                  <mat-icon>edit</mat-icon>
+                </div>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <button mat-button class="yellow-button custom-continue custom-update"
+                  (click)="updateMaterialSelected(this.dataMaterialSelected)">
+                  Actualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Form search -->
+        <div class="container-details" *ngIf="showSearch === true">
+          <div class="form-search">
+            <div class="Row">
+              <div class="Col">
+                <span class="return" (click)="returnMaterialData()">
+                  < </span>
+                    <h3>Realiza tu búsqueda</h3>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <form class="example-form">
+                  <mat-form-field class="example-full-width">
+                    <input class="input-general-renuew" type="text" matInput [formControl]="myControl"
+                      [matAutocomplete]="auto" [(ngModel)]="dataMaterialSelected.materialDB" />
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{ option.name_material }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </form>
+              </div>
+            </div>
+            <div class="Row">
+              <div class="Col">
+                <mat-tab-group mat-align-tabs="start">
+                  <mat-tab label="EPD's">
+                    <div *ngIf="!showEPD">
+                      <div *ngFor="let item of EPDS">
+                        <div (click)="showDetailEPD($event, item)" class="item-material">
+                          {{ item.name_material }}
+                          <img src="../../../../assets/logos/EPD.png" class="logoList" alt="" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="material-target" *ngIf="showEPD">
+                      <span class="return" (click)="returnListEpds()">
+                        < </span>
+                          <h2 class="title">{{ dataMaterialSelected.name }}</h2>
+                          <p>
+                            <button mat-button class="yellow-button custom-continue" (click)="
+                            onSelectMaterial($event, dataMaterialSelected.name)
+                          ">
+                              Seleccionar
+                            </button>
+                          </p>
+
+                          <p class="description">
+                            {{ dataMaterialSelected.AllData.description }}
+                          </p>
+
+                          <table mat-table [dataSource]="this.dataMaterialSelected.msd"
+                            class="mat-elevation-z8 data-info">
+                            <ng-container matColumnDef="Standard">
+                              <th mat-header-cell *matHeaderCellDef>Impacto</th>
+                              <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.standard_id === 1">
+                                  A1 - A3
+                                </ng-container>
+                                <ng-container *ngIf="element.standard_id === 2">
+                                  A1
+                                </ng-container>
+                                <ng-container *ngIf="element.standard_id === 3">
+                                  A2
+                                </ng-container>
+                                <ng-container *ngIf="element.standard_id === 4">
+                                  A3
+                                </ng-container>
+                              </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Potencial">
+                              <th mat-header-cell *matHeaderCellDef>
+                                Categoría de impacto ambiental
+                              </th>
+                              <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.potential_type_id === 1">
+                                  Agotamiento de Recursos Abióticos Minerales
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 2">
+                                  Agotamiento de Recursos Abióticos Fósiles
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 3">
+                                  Calentamiento Global
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 4">
+                                  Agotamiento de la Capa de Ozono
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 5">
+                                  Oxidación Fotoquímica
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 6">
+                                  Acidificación
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 7">
+                                  Eutrofización
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 8">
+                                  Escasez de agua
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 9">
+                                  Formación de Ozono Troposférico
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 10">
+                                  Agotamiento de recursos energéticos no renovables
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 11">
+                                  Human toxicity
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 12">
+                                  Fresh water aquatic ecotox
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 13">
+                                  Marine aquatic ecotoxicity
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 14">
+                                  Terrestrial ecotoxicity
+                                </ng-container>
+                              </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Valor">
+                              <th mat-header-cell *matHeaderCellDef>Potencial</th>
+                              <td mat-cell *matCellDef="let element">
+                                {{ element.value | slice: 0:9 }}
+                              </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Unidad">
+                              <th mat-header-cell *matHeaderCellDef>Unidad</th>
+                              <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.unit_id === 1">
+                                  Pz
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 2">
+                                  Kg
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 3">
+                                  m³
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 4">
+                                  Ton
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 5">
+                                  m²
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 6">
+                                  kg SB eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 7">
+                                  m
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 8">
+                                  m3 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 9">
+                                  kg CFC-11 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 10">
+                                  kg Nox, kg O3, o kg etano
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 11">
+                                  kg C2H4
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 12">
+                                  MJ
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 13">
+                                  kg N eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 14">
+                                  kg SO2 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 15">
+                                  Pza
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 16">
+                                  kg PO4 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 17">
+                                  kg PO2 eq"
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 18">
+                                  kg 1,4-DB eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 19">
+                                  kg
+                                </ng-container>
+                              </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                          </table>
+                    </div>
+                  </mat-tab>
+
+                  <mat-tab label="Base de datos">
+                    <div *ngIf="showListMaterials">
+                      <div class="item-material" (click)="showMexicanIuh()">
+                        mexicaniuh
+                      </div>
+                      <div class="item-material" (click)="showEPIC()">EPiC</div>
+                    </div>
+
+                    <div *ngIf="showListEPIC">
+                      <span class="return" (click)="returnDatabaseList()">
+                        < </span>
+                          <div *ngFor="let item of EPiC">
+                            <div (click)="showDetailMaterial($event, item)" class="item-material">
+                              {{ item.name_material }} -
+                              <span class="epic">EPiC</span>
+                            </div>
+                          </div>
+                    </div>
+
+                    <div *ngIf="showMexican && !showMaterial && !showListMaterials">
+                      <span class="return" (click)="returnDatabaseList()">
+                        < </span>
+                          <div *ngFor="let item of mexicaniuh">
+                            <div (click)="showDetailMaterial($event, item)" class="item-material">
+                              {{ item.name_material }} -
+                              <span class="epic">mexicaniuh</span>
+                            </div>
+                          </div>
+                    </div>
+
+                    <div class="material-target" *ngIf="showMaterial">
+                      <span class="return" (click)="returnListDB()">
+                        < </span>
+                          <h2 class="title">{{ dataMaterialSelected.name }}</h2>
+                          <button mat-button class="yellow-button custom-continue" (click)="
+                          onSelectMaterial($event, dataMaterialSelected.name)
+                        ">
+                            Seleccionar
+                          </button>
+                          <p class="description">
+                            {{ dataMaterialSelected.description }}
+                          </p>
+                          <table mat-table [dataSource]="this.dataMaterialSelected.msd"
+                            class="mat-elevation-z8 data-info">
+                            <ng-container matColumnDef="Standard">
+                              <th mat-header-cell *matHeaderCellDef>Impacto</th>
+                              <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.standard_id === 1">
+                                  A1 - A3
+                                </ng-container>
+                                <ng-container *ngIf="element.standard_id === 2">
+                                  A1
+                                </ng-container>
+                                <ng-container *ngIf="element.standard_id === 3">
+                                  A2
+                                </ng-container>
+                                <ng-container *ngIf="element.standard_id === 4">
+                                  A3
+                                </ng-container>
+                              </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Potencial">
+                              <th mat-header-cell *matHeaderCellDef>
+                                Categoría de impacto ambiental
+                              </th>
+                              <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.potential_type_id === 1">
+                                  Agotamiento de Recursos Abióticos Minerales
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 2">
+                                  Agotamiento de Recursos Abióticos Fósiles
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 3">
+                                  Calentamiento Global
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 4">
+                                  Agotamiento de la Capa de Ozono
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 5">
+                                  Oxidación Fotoquímica
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 6">
+                                  Acidificación
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 7">
+                                  Eutrofización
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 8">
+                                  Escasez de agua
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 9">
+                                  Formación de Ozono Troposférico
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 10">
+                                  Agotamiento de recursos energéticos no renovables
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 11">
+                                  Human toxicity
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 12">
+                                  Fresh water aquatic ecotox
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 13">
+                                  Marine aquatic ecotoxicity
+                                </ng-container>
+                                <ng-container *ngIf="element.potential_type_id === 14">
+                                  Terrestrial ecotoxicity
+                                </ng-container>
+                              </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Valor">
+                              <th mat-header-cell *matHeaderCellDef>Potencial</th>
+                              <td mat-cell *matCellDef="let element">
+                                {{ element.value | slice: 0:9 }}
+                              </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Unidad">
+                              <th mat-header-cell *matHeaderCellDef>Unidad</th>
+                              <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="element.unit_id === 1">
+                                  Pz
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 2">
+                                  Kg
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 3">
+                                  m³
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 4">
+                                  Ton
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 5">
+                                  m²
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 6">
+                                  kg SB eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 7">
+                                  m
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 8">
+                                  m3 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 9">
+                                  kg CFC-11 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 10">
+                                  kg Nox, kg O3, o kg etano
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 11">
+                                  kg C2H4
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 12">
+                                  MJ
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 13">
+                                  kg N eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 14">
+                                  kg SO2 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 15">
+                                  Pza
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 16">
+                                  kg PO4 eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 17">
+                                  kg PO2 eq"
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 18">
+                                  kg 1,4-DB eq
+                                </ng-container>
+                                <ng-container *ngIf="element.unit_id === 19">
+                                  kg
+                                </ng-container>
+                              </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                          </table>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+</div>
+
+<!--Section continue-->
+<div class="section-continue">
+  <button mat-button class="yellow-button custom-continue" (click)="continue()">
+    Continuar
+  </button>
+</div>

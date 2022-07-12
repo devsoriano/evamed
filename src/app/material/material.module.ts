@@ -18,7 +18,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { MatMenuModule} from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 @NgModule({
   declarations: [],
   imports: [
@@ -39,7 +41,10 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatGridListModule,
     MatDialogModule,
     MatExpansionModule,
-    MatTabsModule
+    MatTabsModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatButtonModule,
@@ -58,7 +63,10 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatGridListModule,
     MatDialogModule,
     MatExpansionModule,
-    MatTabsModule
+    MatTabsModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialModule { }

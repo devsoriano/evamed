@@ -1,0 +1,214 @@
+<!--Header modal-->
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Selecciona el tipo de evaluación a realizar
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+<!-- Close Header modal-->
+<!--Cuerpo de modal-->
+<div mat-dialog-content class="dialog-content">
+  <mat-radio-group
+    class="example-radio-group"
+    [(ngModel)]="data.optionSelected"
+  >
+    <mat-radio-button class="example-radio-button" *ngFor="let option of options" [value]="option">
+      {{option}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <div class="text-description" *ngIf="data.optionSelected === 'Huella de carbono'">
+    Considera las emisiones de CO2 de los procesos de
+    producción de los materiales. Es necesario contar con la cuantificación de
+    materiales de construcción.
+  </div>
+  <div class="text-description" *ngIf="data.optionSelected === 'Uso'">
+    Considera los potenciales impactos ambientales debido al consumo
+    energético durante el uso del edificio, como la climatización y la iluminación
+    artificial. Es necesario conocer la demanda energética anual (kWh).
+  </div>
+  <div class="text-description" *ngIf="data.optionSelected === 'Ciclo de vida'">
+    Considera los potenciales impactos ambientales durante todo el
+    ciclo de vida. Es necesario contar con la cuantificación de materiales de
+    construcción, medios de transporte utilizados, y su tiempo de vida útil. De igual
+    forma, es necesario conocer la demanda energética anual, y el tipo de maquinaría
+    utilizado durante la construcción y la eventual de-construcción del edificio.
+  </div>
+  <!--Stepper-->
+  <div class="mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-stepper-horizontal-alternative">
+        <div class="mdl-stepper-step step-one-selected">
+          <div [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
+          <div class="mdl-stepper-title" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'title-type-project-selected' : 'title-type-project'">
+            Etapa de producción
+          </div>
+          <div class="mdl-stepper-optional">
+            <table class="table-container">
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    A1
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Extracción y actividades previas a producción
+                </td>
+              </tr>
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    A2
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Transporte a la planta
+                </td>
+              </tr>
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    A3
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Manofactura
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+        <div class="mdl-stepper-step step-two">
+          <div [ngClass]="data.optionSelected === 'Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
+          <div class="mdl-stepper-title" [ngClass]="data.optionSelected === 'Ciclo de vida' ? 'title-type-project-selected': 'title-type-project'">
+            Etapa de construcción
+          </div>
+          <div class="mdl-stepper-optional">
+            <table class="table-container">
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected === 'Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    A4
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected === 'Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Transporte al sitio
+                </td>
+              </tr>
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected === 'Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    A5
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected === 'Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Instalación
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+        <div class="mdl-stepper-step step-three">
+          <div [ngClass]="data.optionSelected === 'Huella de carbono' ? 'mdl-stepper-circle-noSelected': 'mdl-stepper-circle'"></div>
+          <div class="mdl-stepper-title" [ngClass]="data.optionSelected === 'Huella de carbono' ? 'title-type-project' : 'title-type-project-selected'">
+            Etapa de uso
+          </div>
+          <div class="mdl-stepper-optional">
+            <table class="table-container">
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                    B4
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                  Reemplazo (Incluye producción, transporte y materiales)
+                </td>
+              </tr>
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                    B6
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                  Uso de energía operacional
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+        <div class="mdl-stepper-step step-four">
+          <div [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
+          <div class="mdl-stepper-title" [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'title-type-project-selected': 'title-type-project'">Etapa de fin de vida</div>
+          <div class="mdl-stepper-optional">
+            <table class="table-container">
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    C1
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Deconstrucción / demolición
+                </td>
+              </tr>
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    C2
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Transporte de sitio de procesamiento o disposición final de desechos
+                </td>
+              </tr>
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    C3
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Tratamiento de los desechos
+                </td>
+              </tr>
+              <tr>
+                <td class="td-title">
+                  <b [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                    C4
+                  </b>
+                </td>
+                <td class="td-text" [ngClass]="data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  Disposición final de desechos
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="mdl-stepper-bar-left"></div>
+          <div class="mdl-stepper-bar-right"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Close Stepper-->
+</div>
+<!-- Close Cuerpo de modal-->
+<!--Botonera-->
+<div mat-dialog-actions class="center">
+  <button
+    mat-button
+    [mat-dialog-close]="data"
+    class="yellow-button alf"
+  >
+    Continuar
+  </button>
+</div>
+<!-- Close Botonera-->

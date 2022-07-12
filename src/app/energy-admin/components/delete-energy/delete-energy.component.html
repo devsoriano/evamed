@@ -1,0 +1,16 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Eliminar tipo de energía
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-content>
+  <h1>¿Desea eliminar el tipo de energía {{data[0].name_type_energy}}?</h1>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="deleteEnergy($event, data[0].id)">Eliminar</button>
+</div>

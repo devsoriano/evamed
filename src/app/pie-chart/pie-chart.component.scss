@@ -1,0 +1,61 @@
+.graficas-especificas {
+  display: grid;
+  font-size: 12px;
+  grid-template-columns: repeat(1, 450px);
+  height: auto;
+}
+
+.mostrar-subetapas {
+  display: flex;
+  flex-direction: column;
+  li {
+    display: flex;
+    padding-bottom: 5px;
+  }
+  a{
+    width: 50px;
+  }
+  button{
+    border: none;
+    background: none;
+  }
+}
+
+.totales-text {
+  font-size: 14px;
+  padding-left: 34px;
+}
+
+.dot {
+  height: 19px;
+  width: 19px;
+  border-radius: 50%;
+  display: inline-flex;
+  margin-right: 10px;
+}
+
+.text-subetapas {
+  float: left;
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 0px;
+  color: #767676;
+  opacity: 1;
+}
+
+.tachar{
+  text-decoration: line-through;
+}
+
+.quitartachado{
+  text-decoration: none;
+}
+
+.graficas-especificas-seccionUno{
+  display: grid;
+  font-size: 12px;
+  grid-template-columns: repeat(2, 386px);
+  column-gap: 10px;
+  row-gap: 10px;
+  height: auto;
+}

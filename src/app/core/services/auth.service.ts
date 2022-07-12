@@ -3,8 +3,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { timeout, retry, catchError, switchMap, finalize, tap  } from 'rxjs/operators';
 import { TokenService } from './token.service';
-import { _throw } from 'rxjs/observable/throw';
 import { of } from 'rxjs';
+import { _throw } from 'rxjs/observable/throw';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,20 @@ export class AuthService {
   logout() {
     return this.af.auth.signOut();
   }
-
+  
+  // Recuperar contraseña
+  resetPassword(email): Promise<void> {
+     return this.af.auth.sendPasswordResetEmail(email);
+  }
+  
+  // Verificar correo
+  verifyEmail(): Promise<void> {
+     return this.af.auth.currentUser.sendEmailVerification();
+   }
+   // Verificar usuario
+   isEmailVerified() {
+     return this.af.auth.currentUser.emailVerified;
+   }
   hasUser() {
     return this.af.authState;
   }

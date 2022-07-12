@@ -3,19 +3,16 @@
     <div class="background-custom">
       <section class="part-side">
         <div class="container-title-standard">
-          <img src="assets/images/Logo.png" class="img-logo"/>
+          <img src="./../../../../assets/relevants/Logo EVAMED Final/Logo EVAMED Final/logo_white.png" class="img-logo" />
         </div>
         <div class="context-evamed">
           <div class="title-context-login">
             Bienvenido
           </div>
           <div class="text-context">
-            “Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
+            <strong>EVAEMED</strong> es una herramienta para ayudar a los actores interesados en el sector de la
+edificación, a tomar decisiones desde las primeras fases de diseño, para lograr edificios
+con un menor impacto ambiental durante todo su ciclo de vida.
           </div>
         </div>
       </section>
@@ -29,15 +26,93 @@
         </div>
         <div class="container-label-input">
           <div class="label-context-login">
+            Nombre completo
+          </div>
+          <div>
+            <input class="input-context-login" placeholder="Coloca aquí tu nombre completo" formControlName="name"
+              matInput type="text">
+          </div>
+        </div>
+        <div class="container-label-input">
+          <div class="label-context-login">
             Correo electrónico
           </div>
           <div>
-            <input
-              class="input-context-login"
-              placeholder="Coloca aquí tu correo electrónico"
-              formControlName="email"
-              matInput type="email"
-            >
+            <input class="input-context-login" placeholder="Coloca aquí tu correo electrónico" formControlName="email"
+              matInput type="text">
+          </div>
+        </div>
+        <div class="container-label-input">
+          <div class="label-context-login">
+            Institución o empresa
+          </div>
+          <div>
+            <input class="input-context-login" placeholder="Coloca aquí tu institución o empresa"
+              formControlName="institution" matInput type="text">
+          </div>
+        </div>
+        <div class="container-label-input-flex">
+          <div class="container-label-input">
+            <div class="label-context-login">
+              Tipo de usuario / sector
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general">
+                <mat-select formControlName="sector">
+                  <mat-option value="Academia">Academia</mat-option>
+                  <mat-option value="Iniciativa privada">Iniciativa privada</mat-option>
+                  <mat-option value="Sector público">Sector público</mat-option>
+                  <mat-option value="ONG">ONG</mat-option>
+                  <mat-option value="Otro">Otro</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="container-label-input">
+            <div class="label-context-login">
+              País
+            </div>
+            <div>
+              <mat-form-field appearance="outline" class="select-general">
+                <mat-select formControlName="country">
+                  <mat-option value="Antigua y Barbuda">Antigua y Barbuda</mat-option>
+                  <mat-option value="Argentina">Argentina</mat-option>
+                  <mat-option value="Bahamas">Bahamas</mat-option>
+                  <mat-option value="Barbados">Barbados</mat-option>
+                  <mat-option value="Belice">Belice</mat-option>
+                  <mat-option value="Bolivia">Bolivia</mat-option>
+                  <mat-option value="Brasil">Brasil</mat-option>
+                  <mat-option value="Canadá">Canadá</mat-option>
+                  <mat-option value="Chile">Chile</mat-option>
+                  <mat-option value="Colombia">Colombia</mat-option>
+                  <mat-option value="Costa Rica">Costa Rica</mat-option>
+                  <mat-option value="Cuba">Cuba</mat-option>
+                  <mat-option value="Dominica">Dominica</mat-option>
+                  <mat-option value="Ecuador">Ecuador</mat-option>
+                  <mat-option value="El Salvador">El Salvador</mat-option>
+                  <mat-option value="Estados Unidos">Estados Unidos</mat-option>
+                  <mat-option value="Granada">Granada</mat-option>
+                  <mat-option value="Guatemala">Guatemala</mat-option>
+                  <mat-option value="Guyana">Guyana</mat-option>
+                  <mat-option value="Haití">Haití</mat-option>
+                  <mat-option value="Honduras">Honduras</mat-option>
+                  <mat-option value="Jamaica">Jamaica</mat-option>
+                  <mat-option value="México">México</mat-option>
+                  <mat-option value="Nicaragua">Nicaragua</mat-option>
+                  <mat-option value="Panamá">Panamá</mat-option>
+                  <mat-option value="Paraguay">Paraguay</mat-option>
+                  <mat-option value="Perú">Perú</mat-option>
+                  <mat-option value="República Dominicana">República Dominicana</mat-option>
+                  <mat-option value="San Cristóbal y Nieves">San Cristóbal y Nieves</mat-option>
+                  <mat-option value="San Vicente y las Granadinas">San Vicente y las Granadinas</mat-option>
+                  <mat-option value="Santa Lucía">Santa Lucía</mat-option>
+                  <mat-option value="Surinam">Surinam</mat-option>
+                  <mat-option value="Trinidad y Tobago">Trinidad y Tobago</mat-option>
+                  <mat-option value="Uruguay">Uruguay</mat-option>
+                  <mat-option value="Venezuela">Venezuela</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
         </div>
         <div class="container-label-input">
@@ -45,27 +120,39 @@
             Contraseña
           </div>
           <div>
-            <input
-              class="input-context-login"
-              placeholder="Coloca aquí tu contraseña"
-              formControlName="password"
-              matInput type="password"
-            >
+            <input class="input-context-login" placeholder="Coloca aquí tu contraseña" formControlName="password"
+              matInput type="password">
+          </div>
+        </div>
+        <div class="container-label-input">
+          <div class="label-context-login">
+            Repetir contraseña
+          </div>
+          <div>
+            <input class="input-context-login" placeholder="Coloca aquí tu contraseña" formControlName="password2"
+              matInput type="password">
+          </div>
+        </div>
+        <div class="checks">
+          <div class="container-label-input">
+            <mat-checkbox class="margin-checkbox">
+              Deseo recibir información de EVAMED y eventuales actualizaciones de la herramienta
+            </mat-checkbox>
+          </div>
+          <div class="container-label-input">
+            <mat-checkbox class="margin-checkbox">
+              He leido y acepto los términos de referencia del manejo de la información
+            </mat-checkbox>
           </div>
         </div>
         <div class="container-label-button">
-          <button
-            [disabled]="form.invalid"
-            mat-raised-button
-            type="submit"
-            class="yellow-button-login"
-          >
+          <button [disabled]="form.invalid" mat-raised-button type="submit" class="yellow-button-login">
             Enviar registro
           </button>
         </div>
         <div class="container-label-button">
           <p class="p-context-login">
-            ¿Ya tienes cuenta? <a href="/auth/login">Iniciar sesión aquí</a>
+            ¿Ya tienes cuenta? <a (click)="login()">Iniciar sesión aquí</a>
           </p>
         </div>
       </form>
@@ -75,14 +162,13 @@
           Col. Lomas Altas, Del. Álvaro Obregón
         </div>
         <div class="phone">
-          550304-2123
+          +(55)5950-4000 Ext. 7736
         </div>
         <div class="cr">
-          2020 Copyright <br/>
-          hola@proyecto.com
+          evamed@ibero.mx
         </div>
         <div class="ap">
-          Aviso de privacidad <br/>
+          Aviso de privacidad <br />
           Términos y condiciones
         </div>
       </div>

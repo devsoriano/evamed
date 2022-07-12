@@ -1,28 +1,33 @@
 <nav class="nav-redirect">
   <h2 class="proyecto-title">{{nameProject}}</h2>
-  <a href="/" class="a-redirect"> < Regresar a proyectos </a>
+  <a href="/" class="a-redirect">
+    < Regresar a proyectos </a>
 </nav>
 <!--Principal container-->
 <div class="principal-container container-total">
   <nav class="nav-steps">
     <div class="mdl-stepper-horizontal-alternative">
       <div class="mdl-stepper-step step-one-selected">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToMaterialStage()"></div>
+        <div class="mdl-stepper-tag"> Producción </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-two">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToConstructionStage()"></div>
+        <div class="mdl-stepper-tag"> Construcción </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-three">
-        <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-circle" (click)="goToUsageStage()"></div>
+        <div class="mdl-stepper-tag"> Uso </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
       <div class="mdl-stepper-step step-four">
         <div class="mdl-stepper-circle"></div>
+        <div class="mdl-stepper-tag aux-yellow"> Fin de vida </div>
         <div class="mdl-stepper-bar-left"></div>
         <div class="mdl-stepper-bar-right"></div>
       </div>
@@ -32,26 +37,33 @@
   <section class="container-actions">
     <!--Section sheets-->
     <section class="container-sheets">
+      <div class="container-image" [ngSwitch]="selectedSheet">
+        <img *ngSwitchCase="'Cimentación'" src="../../../../assets/map/2.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Muros interiores'" src="../../../../assets/map/8.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Muros exteriores'" src="../../../../assets/map/9.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Pisos'" src="../../../../assets/map/7.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Techos'" src="../../../../assets/map/5.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Entrepiso'" src="../../../../assets/map/7.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Estructura'" src="../../../../assets/map/11.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Puertas'" src="../../../../assets/map/6.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Ventanas'" src="../../../../assets/map/4.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Inst. especiales'" src="../../../../assets/map/13.jpg" class="image-element" alt="" />
+        <img *ngSwitchCase="'Otros'" src="../../../../assets/map/14.jpg" class="image-element" alt="" />
+        <img *ngSwitchDefault src="../../../../assets/map/12.jpg" class="image-element" alt="" />
+      </div>
       <div class="list-elements">
-        <mat-selection-list
-          #sheets
-          [multiple]="false"
-          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)"
-        >
-          <mat-list-option
-            *ngFor="let sheet of sheetNames"
-            [value]="sheet"
-            class="item-yellow-extend"
-          >
+        <mat-selection-list #sheets [multiple]="false"
+          (selectionChange)="onGroupsChange(sheets.selectedOptions.selected)">
+          <mat-list-option *ngFor="let sheet of sheetNames" [value]="sheet" class="item-yellow-extend">
             {{sheet}}
           </mat-list-option>
         </mat-selection-list>
       </div>
     </section>
     <!--Formulario de energía consumida-->
-    <section class="container-systems">
+    <section class="container-systems" *ngIf="indexSheet!==undefined">
       <h3>1. Energía consumida durante el proceso deconstructivo</h3>
-      <div class="container-ec" *ngIf="indexSheet!==undefined">
+      <div class="container-ec">
         <div *ngFor="let data of dataArrayEC; let i=index;">
           <div class="Row top-0">
             <div class="Col col-small-space">
@@ -60,7 +72,7 @@
               </label>
               <mat-form-field appearance="outline">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select  [(ngModel)]="data.fuente" name="fuente{{i}}">
+                <mat-select [(ngModel)]="data.fuente" name="fuente{{i}}">
                   <mat-option *ngFor="let fuente of catalogoFuentes" [value]="fuente.id">
                     {{fuente.name_source_information}}
                   </mat-option>
@@ -72,13 +84,7 @@
                 Cantidad
               </label>
               <mat-form-field>
-                <input
-                  class="input-general"
-                  [(ngModel)]="data.cantidad"
-                  name="cantidad_{{i}}"
-                  matInput 
-                  type="number"
-                >
+                <input class="input-general" [(ngModel)]="data.cantidad" name="cantidad_{{i}}" matInput type="number">
               </mat-form-field>
             </div>
             <div class="Col col-small-space">
@@ -87,7 +93,7 @@
               </label>
               <mat-form-field appearance="outline">
                 <mat-label>Seleccione una opción</mat-label>
-                <mat-select  [(ngModel)]="data.unidad" name="fuente{{i}}">
+                <mat-select [(ngModel)]="data.unidad" name="fuente{{i}}">
                   <mat-option *ngFor="let unidad of catalogoUnidadEnergia" [value]="unidad.id">
                     {{unidad.name_energy_unit}}
                   </mat-option>
@@ -96,11 +102,7 @@
             </div>
             <div class="Col col-small-space">
               <div *ngIf="i!=0">
-                <button
-                  mat-button
-                  class="button-remove"
-                  (click)="removeFormEC(i)"
-                >
+                <button mat-button class="button-remove" (click)="removeFormEC(i)">
                   <mat-icon>remove_circle</mat-icon>
                 </button>
               </div>
@@ -108,79 +110,21 @@
           </div>
         </div>
         <!--Actions-->
-        <button
-          mat-button
-          (click)="addFormEC()"
-        >
+        <button mat-button (click)="addFormEC()">
           <mat-icon>add_circle</mat-icon>
         </button>
 
-        <button
-          mat-button
-          (click)="onSaveEC()"
-        >
+        <button mat-button (click)="onSaveEC()">
           <mat-icon>save</mat-icon>
         </button>
       </div>
-      <h3>2. Tratamiento de desechos generados</h3>
-      <div class="Row top-0">
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Vertedero
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="vertedero"
-              name="vertedero"
-              matInput 
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Reciclaje
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="reciclaje"
-              name="reciclaje"
-              matInput 
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-        <div class="Col col-small-space">
-          <label class="label-small-input">
-            Reuso
-          </label>
-          <mat-form-field>
-            <input
-              class="input-general"
-              [(ngModel)]="reuso"
-              name="reuso"
-              matInput 
-              type="number"
-            >
-          </mat-form-field>
-        </div>
-      </div>
-    </section>
-    <section class="container-details">
-      
     </section>
   </section>
 </div>
 
 <!--Section continue-->
 <div class="section-continue">
-  <button
-    mat-button
-    class="yellow-button"
-    (click)="saveStepFour()"
-  > 
-    Continuar 
+  <button mat-button class="yellow-button" (click)="continue()">
+    Guardar y continuar
   </button>
 </div>

@@ -12,12 +12,10 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from './../environments/environment';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LayoutComponent
-  ],
+  declarations: [AppComponent, LayoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,9 +26,10 @@ import { environment } from './../environments/environment';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    ChartsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

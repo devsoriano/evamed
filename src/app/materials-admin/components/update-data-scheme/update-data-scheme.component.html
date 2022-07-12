@@ -1,0 +1,81 @@
+
+<form [formGroup]="form" (ngSubmit)="updateScheme($event)">
+  <div class="header-modal">
+    <h1 mat-dialog-title class="title-standard-second-light">
+      Actualizar impacto ambiental
+    </h1>
+    <a (click)="onNoClick()" class="close-modal">
+      X
+    </a>
+  </div>
+
+  <div mat-dialog-content *ngIf="loading === false">
+    <mat-card  class="custom-card">
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field appearance="outline">
+              <mat-select 
+                placeholder="Potencial de impacto ambiental" 
+                formControlName="potential_type_id"
+                (selectionChange)="potentialSelected($event.value)" 
+              >
+                <mat-option *ngFor="let data of ListPotential" [value]="data.id">
+                  {{ data.name_complete_potential_type }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['potential_type_id'].hasError('required')">
+                Potencial es un campo <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+  
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <h2>Unidad: {{ unit_name }}</h2>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-radio-group [(ngModel)]="standard_id" [ngModelOptions]="{standalone: true}" class="margin-left" >
+              <mat-radio-button *ngFor="let data of ListStandards" name="opciones" [value]="data.id"  style="margin: 10px">
+                {{ data.name_standard }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-card-content>
+  
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field  appearance="outline" >
+              <input matInput placeholder="Valor" formControlName="value">
+              <mat-error *ngIf="form.controls['value'].hasError('required')">
+                El valor es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+  
+    </mat-card>
+  </div>
+
+  <div mat-dialog-content *ngIf="loading === true">
+    <mat-card-header>
+      <mat-card-title>Cargando...</mat-card-title>
+    </mat-card-header>
+  </div>
+
+  <div mat-dialog-actions class="center">
+    <button mat-raised-button color="primary" type="submit">Editar impacto ambiental</button>
+  </div>
+
+</form>

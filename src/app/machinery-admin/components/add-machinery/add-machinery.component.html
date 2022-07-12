@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="addMachinery($event)">
+  <div class="header-modal">
+    <h1 mat-dialog-title class="title-standard-second-light">
+      Agregar maquinaria
+    </h1>
+    <a (click)="onNoClick()" class="close-modal">
+      X
+    </a>
+  </div>
+
+  <div mat-dialog-content>
+    <mat-card  class="custom-card">
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field  appearance="outline" >
+              <input matInput placeholder="Nombre de maquinaria" formControlName="name_source_information">
+              <mat-error *ngIf="form.controls['name_source_information'].hasError('required')">
+                Maquinaria es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div mat-dialog-actions class="center">
+    <button mat-raised-button color="primary" type="submit">Agregar</button>
+  </div>
+</form>

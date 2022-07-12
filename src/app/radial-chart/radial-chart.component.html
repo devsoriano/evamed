@@ -1,0 +1,21 @@
+<div class="graficas-especificas">
+  <div  *ngFor="let item of inputProyect;let i = index">
+    <mat-card>
+      <mat-card-header>
+        {{item.Nombre}}
+        <br>
+        {{subtitulo}}
+      </mat-card-header>
+    </mat-card>
+    <div>
+      <canvas #MyChart='base-chart' #canvas baseChart
+      [datasets]="radarChartData[i]"
+      [options]="radarChartOptions"
+      [labels]="radarChartLabels"
+      [chartType]="radarChartType">
+      </canvas>
+    </div>
+  </div>
+  <div>
+  </div>
+</div>

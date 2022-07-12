@@ -1,7 +1,6 @@
-
 body {
-  margin: 0!important;
-  padding: 0!important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .row {
@@ -12,21 +11,16 @@ body {
   margin-left: 0%;
 }
 
-.side {
-  flex: 50%;
-  background-color:#ffffff;
-}
-
 .main {
   flex: 50%;
-  background-color: #FFFFFF;
+  background-color: #fff;
   justify-content: flex-start;
 }
 
 section.form-login {
   margin-left: 15%;
   margin-right: 20%;
-  margin-top: 20%;
+  margin-top: 4%;
   height: 70%;
 }
 
@@ -35,48 +29,60 @@ section.form-login {
   font-weight: bold;
   padding-bottom: 5px;
   width: fit-content;
-  border-bottom: 5px solid #EDC903;
+  border-bottom: 5px solid #edc903;
 }
 
 .input-context-login {
-  border: 2px solid #CBCBCB;
-  height: 36px;
+  border: 0px;
+  height: 32px;
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
-  padding-left: 16px!important;
+  padding-left: 16px;
+  background-color: #ededed;
+  border-radius: 5px;
+}
+
+::placeholder {
+  color: #cbcbcb !important;
 }
 
 .container-label-input {
-  margin-top: 20px;
+  margin-top: 2px;
 }
 
 .label-context-login {
-  color: #ACA8A8;
+  color: #767676;
+  font-weight: 700;
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 8px;
 }
 
+.container-label-button-second {
+  margin-top: 10px;
+  text-align: center;
+}
+
 .container-label-button {
-  margin-top: 70px;
+  margin-top: 20px;
   text-align: center;
 }
 
 .yellow-button-login {
-  background-color: #EDC903;
+  background-color: #edc903;
   width: 50%;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .p-context-login {
-  color: #ACA8A8;
+  color: #aca8a8;
   font-size: 16px;
 }
 
 .p-context-login a {
-  color: #A8D024;
+  color: #a8d024;
   padding-bottom: 3px;
   text-decoration: none;
   font-weight: bold;
@@ -89,7 +95,7 @@ section.form-login {
   bottom: 0;
   width: 50%;
   font-size: 10px;
-  background-color: #EDEDED;
+  background-color: #ededed;
   color: #767676;
   text-align: center;
   display: flex;
@@ -115,4 +121,25 @@ section.form-login {
     text-align: left;
     padding-left: 6px;
   }
+}
+
+.redirect-get-password {
+  color: #a8d024;
+  padding-bottom: 3px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container-label-input-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checks {
+  margin-top: 18px !important;
+}
+
+
+img.img-logo {
+  height: 300px;
 }

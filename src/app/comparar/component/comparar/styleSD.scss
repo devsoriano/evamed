@@ -1,0 +1,292 @@
+.div-second-tab {
+    width: 85%;
+    margin: auto;
+    p {
+      letter-spacing: 0px;
+      color: #707070;
+      opacity: 1;
+      font-size: 15px;
+      margin-top: 35px;
+    }
+  
+    .dot {
+      height: 2px;
+      width: 65px;
+      margin: auto;
+      background-color: #ffffff;
+    }
+    .linea-select{
+      height: 2px;
+      width: 65px;
+      margin: auto;
+      background-color: #e3c500;
+    }
+    .indicadores{
+      display: flex;
+      justify-content: space-between;
+      margin-left: 32px;
+    }
+  
+    .botones-elementos-contructivos {
+      display: inline-flex;
+      justify-content: space-between;
+      .espacio-sin-selecciomar {
+        //padding-top: 4px;
+        width: 144px;
+        height: 34px;
+        background: #efefef;
+        border-radius: 4px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+        border: 0;
+        .color-texto {
+          color: #767676;
+        }
+      }
+  
+      .espacio-seleccionado {
+        //padding-top: 4px;
+        width: 144px;
+        height: 34px;
+        background: #ffffff; 
+        border-radius: 4px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        //margin: 5px;
+        border: 1px solid #edc903;
+        box-shadow: 0px 3px 6px #00000029;
+        .color-texto {
+          color: #343434;
+        }
+      }
+  
+      .button-elemento-seleccionado {
+        //padding-top: 4px;
+        width: 130px;
+        height: 34px;
+        //color: #767676;
+        background: none;
+        text-align: left;
+        font-size: 13px;
+        //margin: 5px;
+        border: 0;
+      }
+      .button-icono {
+        width: 34px;
+        height: 34px;
+        background: none;
+        text-align: left;
+        border-radius: 50%;
+        padding: 0px;
+        border: none;
+        mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+          color: #aca8a8;
+          padding: 0px;
+          border-radius: 50%;
+          font-size: 18px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      .button-icono-seleccionado {
+        width: 34px;
+        height: 34px;
+        background: none;
+        text-align: left;
+        border-radius: 50%;
+        padding: 0px;
+        border: none;
+        mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+          color: #aca8a8;
+          padding: 0px;
+          border-radius: 50%;
+          font-size: 18px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+}
+
+.espacio-img{
+  display: flex;
+  width: auto;
+  height: 277px;
+  margin: 10px;
+  //background-color: red;
+  .edificio-individual{
+    height: 205px;
+    width: 300px;
+    background-color: #EDEDED;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    font-size: 13px;
+    margin: 5px;
+    border: 0;
+  }
+  .edificio-individual-seleccionado{
+    height: 205px;
+    width: 300px;
+    background: #ffffff; 
+    border-radius: 4px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    border: 1px solid #edc903;
+    box-shadow: 0px 3px 6px #00000029;
+  }
+  .complemento-edificio{
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 10px;
+    //background-color: yellow;
+  }
+
+  .child{
+    display: flex;
+    position: absolute;
+    margin-top: 48px;
+    padding-left: 16px;
+  }
+}
+
+.img-edificio {
+    display: inline-block;
+    //margin-top: 40px;
+    //margin-left: 52px;
+    //margin-bottom: 50px;
+    position: relative;
+    button {
+      width: 144px;
+      height: auto;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+      font-size: 13px;
+      margin: 5px;
+      border: 0;
+    }
+    /*
+    .cuadro-color{
+      margin: 0px;
+      padding: 0px;
+      background-color: black;
+      border: 0;
+      border-radius: 11px;
+      opacity: 1;
+      position:absolute;
+    }*/
+}
+  
+.img-edificio-seleccionado {
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 52px;
+    margin-bottom: 40px;
+    button {
+      width: 144px;
+      height: auto;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+      font-size: 13px;
+      margin: 5px;
+      border: 1px solid #edc903;
+      border-radius: 11px;
+      box-shadow: 0px 3px 6px #00000029;
+    }
+    /*img {
+      margin: 0px;
+      padding: 0px;
+      border: 1px solid #EDC903;
+      border-radius: 11px;
+      opacity: 1;
+      box-shadow: 0px 3px 6px #00000029;
+      width: 295px;
+      height: 232px;
+    }*/
+}
+
+.last-div-section-two {
+    display: inline-block;
+    .button-graph {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px;
+      margin-left: 56px;
+      margin-right: 56px;
+  
+      mat-icon.mat-icon.notranslate.material-icons.mat-icon-no-color {
+        font-size: 20px;
+        height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2px;
+      }
+    }
+    .seccion {
+      display: flex;
+      > div {
+        &:nth-child(1) {
+          width: 450px;
+        }
+        &:nth-child(2) {
+          width: 478px;
+        }
+      }
+    }
+  
+    .circulo-color-tabla {
+      height: 24px;
+      width: 29px;
+      border-radius: 50%;
+      padding-top: 7px;
+    }
+  
+    .graficas-dispercion {
+      width: 300px;
+    }
+  
+    p {
+      font-size: 15px;
+      letter-spacing: 0px;
+      color: #343434;
+      opacity: 1;
+    }
+  
+    .mat-column-no {
+      width: 32px;
+      padding-right: 24px;
+      text-align: center;
+      color: #aca8a8;
+    }
+  
+    .mat-column-porcentaje {
+      width: 32px;
+      padding-right: 12px;
+      padding-left: 12px;
+      text-align: center;
+      color: #aca8a8;
+    }
+  
+    .mat-column-numero {
+      width: 40px;
+      padding-right: 6px;
+      padding-left: 6px;
+      text-align: center;
+      color: #aca8a8;
+    }
+  
+    .mat-column-material {
+      color: #aca8a8;
+    }
+}

@@ -1,0 +1,338 @@
+.mat-expansion-panel-body {
+  padding: 0 0px 0px !important;
+}
+
+.principal-container.container-total {
+  background-color: #fff;
+  border-radius: 14px;
+  box-shadow: 0px 3px 6px #00000029;
+  width: 100%;
+  display: grid;
+  margin-top: 8px;
+}
+
+nav.nav-steps {
+  height: 5.2rem;
+  border-bottom: 1px solid #cbcbcb;
+}
+
+.space-row {
+  width: 100%;
+  height: 1.5rem;
+}
+
+section.container-actions {
+  width: 100%;
+  display: flex;
+  height: 26rem;
+}
+
+p.p-instrucciones {
+  color: #767676;
+  font-size: 14px;
+}
+
+.hidden {
+  color: #fff;
+}
+
+.left {
+  text-align: initial;
+  margin-left: 2rem;
+}
+
+.container-elements {
+  text-align: center;
+}
+
+.container-sheets {
+  width: 20%;
+  border-right: 1px solid #cbcbcb;
+}
+
+.container-systems {
+  width: 40%;
+  border-right: 1px solid #cbcbcb;
+}
+
+.container-details {
+  display: block !important;
+  height: 23.5rem;
+}
+
+.list-elements {
+  width: 100%;
+  overflow: auto;
+  height: 54.6%;
+}
+
+.container-systems {
+  overflow: auto;
+}
+
+/**Stepers**/
+.mdl-stepper-horizontal-alternative {
+  display: table;
+  width: 95%;
+  margin-top: 12px !important;
+}
+
+.aux-yellow {
+  color: #edc903 !important;
+}
+
+.mdl-stepper-tag {
+  position: absolute;
+  margin-top: -50px;
+  margin-left: 160px;
+  font-weight: 600;
+  color: #767676;
+  width: 100%;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step {
+  display: table-cell;
+  position: relative;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:active {
+  border-radius: 15% / 75%;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child:active {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child:active {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:first-child .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step:last-child .mdl-stepper-bar-right {
+  display: none;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-circle {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  background-color: #9e9e9e;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 2em;
+  font-size: 12px;
+  color: white;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-title,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+  text-align: center;
+  color: #000;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-optional {
+  font-size: 10px;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left,
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+  position: absolute;
+  top: 30px;
+  height: 1px;
+  border-top: 1px solid #bdbdbd;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-right {
+  right: 0;
+  left: 50%;
+  margin-left: 35px;
+}
+
+.mdl-stepper-horizontal-alternative .mdl-stepper-step .mdl-stepper-bar-left {
+  left: 0;
+  right: 50%;
+  margin-right: 35px;
+}
+
+/**Custom stepper**/
+div.step-one-selected div.mdl-stepper-circle {
+  background: url("./../../../../assets/images/Etapas/Produccion.png") no-repeat 50% 50%;
+  width: 60px !important;
+  height: 60px !important;
+}
+
+div.step-two div.mdl-stepper-circle {
+  background-color: #cbcbcb !important;
+  background: url("./../../../../assets/images/Etapas/Construcción_.png") no-repeat 50% 50%;
+  width: 60px !important;
+  height: 60px !important;
+}
+
+div.step-three div.mdl-stepper-circle {
+  background-color: #cbcbcb !important;
+  background: url("./../../../../assets/images/Etapas/Uso_.png") no-repeat 50% 50%;
+  width: 60px !important;
+  height: 60px !important;
+}
+
+div.step-four div.mdl-stepper-circle {
+  background-color: #cbcbcb !important;
+  background: url("./../../../../assets/images/Etapas/fin.png") no-repeat 50% 50%;
+  width: 60px !important;
+  height: 60px !important;
+}
+
+.mdl-stepper-circle {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/**css materials list**/
+
+.table-materials {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  div {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .col-material {
+    width: 70%;
+  }
+}
+
+.custom-error {
+  color: black !important;
+  width: 10px;
+}
+
+/**imagenes**/
+.container-image {
+  margin: 10px;
+
+  img.image-element {
+    max-width: 100%;
+  }
+}
+
+.form-update-material {
+  width: 88%;
+  margin-top: 10px;
+  margin-left: 15px;
+  display: inline-block;
+}
+
+/** Aditional CSS **/
+.select-middle {
+  width: 44% !important;
+}
+
+.form-search {
+  margin-top: 20px;
+  width: 96%;
+}
+
+.button-read {
+  border: 2px solid #97969c;
+  padding: 10px;
+  margin: 10px 10px 10px 0px;
+  border-radius: 10px;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.conditional-section {
+  width: 25.9rem;
+  overflow: auto;
+}
+
+.container-options {
+  display: none;
+
+  &:hover {
+    display: block;
+  }
+}
+
+.item-by-list {
+  &:hover+.container-options {
+    display: block;
+  }
+}
+
+.header-form {
+  margin-top: 4px;
+  margin-left: 14px;
+}
+
+span.return {
+  font-weight: 700;
+  font-size: 18px;
+  color: #92be00;
+  cursor: pointer;
+}
+
+span.title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.subtitle {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.item-material {
+  margin: 2px 15px;
+  border-bottom: 1px solid #cbcbcb;
+  padding: 5px;
+
+  &:hover {
+    background-color: #edc903;
+    cursor: pointer;
+  }
+}
+
+.logoList {
+  height: 16px;
+}
+
+table.mat-elevation-z8.data-info.mat-table {
+  width: max-content !important;
+  border: 1px solid #97969c !important;
+}
+
+.epic {
+  color: #92be00;
+  font-weight: 800;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+  padding-right: 24px !important;
+}
+
+.yellow-button {
+  width: auto !important;
+}

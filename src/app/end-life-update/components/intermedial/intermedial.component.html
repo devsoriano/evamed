@@ -1,0 +1,12 @@
+<div class="header-modal">
+  <h1 mat-dialog-title class="title-standard-second-light">
+    Asegurese de guardar los cambios antes de continuar
+  </h1>
+  <a (click)="onNoClick()" class="close-modal">
+    X
+  </a>
+</div>
+
+<div mat-dialog-actions class="center">
+  <button mat-raised-button color="primary" (click)="continueStep($event)">Ir al home</button>
+</div>

@@ -1,0 +1,123 @@
+<form [formGroup]="form" (ngSubmit)="saveMaterial($event)">
+  <mat-card  class="custom-card">
+    <mat-card-header>
+      <mat-card-title>Actualizar datos del material</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field  appearance="outline" >
+            <input matInput placeholder="Nombre" formControlName="name_material">
+            <mat-error *ngIf="form.controls['name_material'].hasError('required')">
+              El nombre es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Base de datos" formControlName="database_from">
+              <mat-option *ngFor="let data of ListDatabases" [value]="data.name">
+                {{ data.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['database_from'].hasError('required')">
+              Base de datos es <strong>requiredo</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field  appearance="outline" >
+            <textarea matInput placeholder="Descripción" formControlName="description"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <div class="Row">
+        <div class="Col">
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Unidad" formControlName="unit_id">
+              <mat-option *ngFor="let data of units" [value]="data.id">
+                {{ data.name_unit }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['unit_id'].hasError('required')">
+              Unidad es un campo <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content> 
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Editar Material</button>
+      <button
+      mat-raised-button
+        color="primary"
+        (click)="goToAddScheme($event)"
+      >
+        Agregar impactos ambientales
+      </button>
+      <button
+        mat-button
+        class="yellow-button"
+        (click)="goToMaterialList()"
+      >
+        Lista de materiales
+      </button>
+    </mat-card-actions>
+    <mat-card-content>
+
+      <table mat-table [dataSource]="ListSchemeData" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> Id. </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="potential_type_id">
+          <th mat-header-cell *matHeaderCellDef> Potencial </th>
+          <td mat-cell *matCellDef="let element"> {{getPotential(element.potential_type_id)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="standard_id">
+          <th mat-header-cell *matHeaderCellDef> Estandar </th>
+          <td mat-cell *matCellDef="let element"> {{getStandard(element.standard_id)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="unit_id">
+          <th mat-header-cell *matHeaderCellDef> Unidad </th>
+          <td mat-cell *matCellDef="let element"> {{getUnit(element.unit_id)}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef> Valor </th>
+          <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let element"> 
+            <a 
+              mat-raised-button 
+              (click)="openModalSchema($event, element)"
+            >Editar
+          </a>
+            <button mat-raised-button color="warn" (click)="deleteSchema($event, element.id)">Eliminar</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </mat-card-content>
+  </mat-card>
+</form>

@@ -3,19 +3,16 @@
     <div class="background-custom">
       <section class="part-side">
         <div class="container-title-standard">
-          <img src="assets/images/Logo.png" class="img-logo"/>
+          <img src="./../../../../assets/relevants/Logo EVAMED Final/Logo EVAMED Final/logo_white.png" class="img-logo" />
         </div>
         <div class="context-evamed">
           <div class="title-context-login">
             Bienvenido
           </div>
           <div class="text-context">
-            “Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
+            <strong>EVAEMED</strong> es una herramienta para ayudar a los actores interesados en el sector de la
+edificación, a tomar decisiones desde las primeras fases de diseño, para lograr edificios
+con un menor impacto ambiental durante todo su ciclo de vida.
           </div>
         </div>
       </section>
@@ -32,13 +29,8 @@
             Correo electrónico
           </div>
           <div>
-            <input
-              class="input-context-login"
-              placeholder="Coloca aquí tu correo electrónico"
-              formControlName="email"
-              matInput 
-              type="email"
-            >
+            <input class="input-context-login" placeholder="Coloca aquí tu correo electrónico" formControlName="email"
+              matInput type="email">
           </div>
         </div>
         <div class="container-label-input">
@@ -46,27 +38,17 @@
             Contraseña
           </div>
           <div>
-            <input
-              class="input-context-login"
-              placeholder="Coloca aquí tu contraseña"
-              formControlName="password"
-              matInput 
-              type="password"
-            >
+            <input class="input-context-login" placeholder="Coloca aquí tu contraseña" formControlName="password"
+              matInput type="password">
           </div>
         </div>
         <div class="container-label-button">
-          <button
-            [disabled]="form.invalid"
-            mat-raised-button
-            type="submit"
-            class="yellow-button-login"
-          >
+          <button [disabled]="form.invalid" mat-raised-button type="submit" class="yellow-button-login">
             Accede aquí
           </button>
         </div>
         <div class="container-label-button-second">
-          <a href="#" class="redirect-get-password">Olvidaste tu contraseña</a>
+          <a href="/auth/recover-password" class="redirect-get-password">Olvidaste tu contraseña</a>
         </div>
         <div class="container-label-button">
           <p class="p-context-login">
@@ -74,7 +56,7 @@
           </p>
         </div>
         <div class="container-label-button-second">
-          <a href="/auth/register" class="redirect-get-password">Regístrate aquí</a>
+          <a (click)="register()" class="redirect-get-password">Regístrate aquí</a>
         </div>
       </form>
       <div class="logos-ibero">
@@ -83,14 +65,13 @@
           Col. Lomas Altas, Del. Álvaro Obregón
         </div>
         <div class="phone">
-          550304-2123
+          +(55)5950-4000 Ext. 7736
         </div>
         <div class="cr">
-          2020 Copyright <br/>
-          hola@proyecto.com
+          evamed@ibero.mx
         </div>
         <div class="ap">
-          Aviso de privacidad <br/>
+          Aviso de privacidad <br />
           Términos y condiciones
         </div>
       </div>

@@ -34,12 +34,18 @@ section.form-login {
 }
 
 .input-context-login {
-  border: 2px solid #CBCBCB;
-  height: 36px;
+  border: 0px;
+  height: 32px;
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
   padding-left: 16px;
+  background-color: #EDEDED;
+  border-radius: 5px;
+}
+
+::placeholder {
+  color: #CBCBCB !important;
 }
 
 .container-label-input {
@@ -47,7 +53,8 @@ section.form-login {
 }
 
 .label-context-login {
-  color: #ACA8A8;
+  color: #767676;
+  font-weight: 700;
   font-size: 16px;
   margin-top: 10px;
   margin-bottom: 8px;
@@ -67,7 +74,7 @@ section.form-login {
   background-color: #EDC903;
   width: 50%;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .p-context-login {
@@ -122,4 +129,8 @@ section.form-login {
   padding-bottom: 3px;
   text-decoration: none;
   font-weight: bold;
+}
+
+img.img-logo {
+  height: 300px;
 }

@@ -1,0 +1,38 @@
+[
+    {
+        "nombre_caso": "Promedio del sector vivienda",
+        "valor_1":[0,28],
+        "color_1":"#009900",
+        "valor_2":[28.1,2895.4],
+        "color_2":"#01cc00",
+        "valor_3":[2895.5,5762.8],
+        "color_3":"#ffff01",
+        "valor_4":[5762.9,8630.2],
+        "color_4":"#ffc000",
+        "valor_5":[8630.3, 11497.6],
+        "color_5":"#e36b0a",
+        "valor_6":[11497.7,14365],
+        "color_6":"#FE6C00",
+        "valor_7":[14365.1],
+        "color_7":"#fe0000",
+        "descripcion": "Considera el promedio de las emisiones de CO2 eq/m2 año calculadas por diversos desarrolladores de vivienda mediante la herramienta DEEVI, como parte del programa SISEVIVE-ECOCASA. Estas emisiones consideran solamente la etapa operativa de la vivienda. Esta información es procesada y publicada por el Registro Único de Vivienda (RUV)."
+    },
+    {
+        "nombre_caso": "Vivienda sustentable",
+        "valor_1":[0,28],
+        "color_1":"#009900",
+        "valor_2":[28.1,50.4],
+        "color_2":"#01cc00",
+        "valor_3":[50.5,72.8],
+        "color_3":"#ffff01",
+        "valor_4":[72.9,95.2],
+        "color_4":"#ffc000",
+        "valor_5":[95.3,117.6],
+        "color_5":"#e36b0a",
+        "valor_6":[117.7,140],
+        "color_6":"#FE6C00",
+        "valor_7":[140.1],
+        "color_7":"#fe0000",
+        "descripcion": "Considera como límite superior, el promedio de las emisiones de CO2 eq/m2 año calculadas por diversos desarrolladores de vivienda mediante la herramienta DEEVI, como parte del programa SISEVIVE-ECOCASA. Estas emisiones consideran solamente la etapa operativa de la vivienda. Esta información es procesada y publicada por el Registro Único de Vivienda (RUV)."
+    }
+]

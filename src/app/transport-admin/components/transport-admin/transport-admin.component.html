@@ -1,0 +1,38 @@
+<h1>Administrador de Transportes</h1>
+
+<div>
+  <button mat-button class="yellow-button" (click)="addTransport($event)">
+    Agregar transporte
+  </button>
+  <button  mat-raised-button color="primary" (click)="goToAdmin()">
+    Regresar a Administrador
+  </button>
+</div>
+
+<table mat-table [dataSource]="transportList" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> Id. </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name_transport">
+    <th mat-header-cell *matHeaderCellDef> Nombre de transporte </th>
+    <td mat-cell *matCellDef="let element"> {{element.name_transport}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let element"> 
+      <a 
+        mat-raised-button 
+        [routerLink]="['update', element.id]"
+      >Editar </a>
+      <button mat-raised-button color="warn" (click)="deleteTransport($event, element.id)">Eliminar</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+

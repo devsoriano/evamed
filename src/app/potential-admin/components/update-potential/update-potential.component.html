@@ -1,0 +1,64 @@
+<form [formGroup]="form" (ngSubmit)="updatePotentialType($event)">
+
+  <div class="header-modal">
+    <h1 mat-dialog-title class="title-standard-second-light">
+      Agregar potencial de impacto ambiental
+    </h1>
+    <a (click)="onNoClick()" class="close-modal">
+      X
+    </a>
+  </div>
+
+  <div mat-dialog-content>
+    <mat-card  class="custom-card">
+
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field  appearance="outline" >
+              <input matInput placeholder="Abrebiatura" formControlName="name_potential_type">
+              <mat-error *ngIf="form.controls['name_potential_type'].hasError('required')">
+                La abrebiatura es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field  appearance="outline" >
+              <input matInput placeholder="Nombre" formControlName="name_complete_potential_type">
+              <mat-error *ngIf="form.controls['name_complete_potential_type'].hasError('required')">
+                El nombre es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content>
+        <div class="Row">
+          <div class="Col">
+            <mat-form-field appearance="outline">
+              <mat-select placeholder="Unidad" formControlName="unit_potential_type">
+                <mat-option *ngFor="let unit of units" [value]="unit.name_unit">
+                  {{ unit.name_unit }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['unit_potential_type'].hasError('required')">
+                Unidad es un campo <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+
+  <div mat-dialog-actions class="center">
+    <button mat-raised-button color="primary" type="submit">Agregar</button>
+  </div>
+</form>
