@@ -15,10 +15,7 @@ import { environment } from './../environments/environment';
 import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LayoutComponent
-  ],
+  declarations: [AppComponent, LayoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,9 +27,9 @@ import { ChartsModule } from 'ng2-charts';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireStorageModule,
-    ChartsModule
+    ChartsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

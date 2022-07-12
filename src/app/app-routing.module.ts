@@ -171,6 +171,20 @@ const routes: Routes = [
             (m) => m.PrincipalAdminModule
           ),
       },
+      {
+        path: 'about',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./about/about.module').then((m) => m.AboutModule),
+      },
+      {
+        path: 'user-manual',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./user-manual/user-manual.module').then(
+            (m) => m.UserManualModule
+          ),
+      },
     ],
   },
   {

@@ -107,12 +107,12 @@
                       <div *ngFor="let data of serchUseData(project.id)">
                         <div *ngIf="data.source === 'electric'">
                           <span class="dot" [ngStyle]="{'background-color': '#767676'}"></span>
-                          Mix eléctrico {{data.quantity  | number: '1.2-2' }} Kwh
+                          Red eléctrica nacional {{data.quantity  | number: '1.2-2' }} kWh
                         </div>
                         <div *ngIf="data.source === 'fuel'">
-                          <span class="dot" [ngStyle]="{'background-color': '#DFDFDF'}"></span>Combustible: {{data.quantity  | number: '1.2-2' }} Kwh</div>
+                          <span class="dot" [ngStyle]="{'background-color': '#DFDFDF'}"></span>Combustible: {{data.quantity  | number: '1.2-2' }} kWh</div>
                         <div *ngIf="data.source === 'panels'">
-                          <span class="dot" [ngStyle]="{'background-color': '#C3C3C3'}"></span>Combustible: {{data.quantity  | number: '1.2-2' }} Kwh</div>
+                          <span class="dot" [ngStyle]="{'background-color': '#C3C3C3'}"></span>Paneles fotovoltaicos: {{data.quantity  | number: '1.2-2' }} kWh</div>
                       </div>
                       <button
                           mat-button

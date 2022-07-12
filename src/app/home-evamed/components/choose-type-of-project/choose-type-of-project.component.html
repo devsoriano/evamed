@@ -18,10 +18,22 @@
       {{option}}
     </mat-radio-button>
   </mat-radio-group>
-  <div class="text-description">
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-    sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-    sed diam voluptua. At vero
+  <div class="text-description" *ngIf="data.optionSelected === 'Huella de carbono'">
+    Considera las emisiones de CO2 de los procesos de
+    producción de los materiales. Es necesario contar con la cuantificación de
+    materiales de construcción.
+  </div>
+  <div class="text-description" *ngIf="data.optionSelected === 'Uso'">
+    Considera los potenciales impactos ambientales debido al consumo
+    energético durante el uso del edificio, como la climatización y la iluminación
+    artificial. Es necesario conocer la demanda energética anual (kWh).
+  </div>
+  <div class="text-description" *ngIf="data.optionSelected === 'Ciclo de vida'">
+    Considera los potenciales impactos ambientales durante todo el
+    ciclo de vida. Es necesario contar con la cuantificación de materiales de
+    construcción, medios de transporte utilizados, y su tiempo de vida útil. De igual
+    forma, es necesario conocer la demanda energética anual, y el tipo de maquinaría
+    utilizado durante la construcción y la eventual de-construcción del edificio.
   </div>
   <!--Stepper-->
   <div class="mdl-card mdl-shadow--2dp">
