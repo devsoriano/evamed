@@ -28,10 +28,6 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl('/about');
   }
 
-  goToProjects() {
-    this.router.navigateByUrl('/');
-  }
-
   goToUserManual() {
     this.router.navigateByUrl('/user-manual');
   }

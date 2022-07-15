@@ -57,6 +57,7 @@ export class UsageStageComponent implements OnInit {
           catalogoUnidades.push(unidad);
         }
       });
+      console.log(catalogoUnidades);
       this.catalogoUnidadEnergia = catalogoUnidades;
     });
     this.catalogsService.getTypeEnergy().subscribe((data) => {
@@ -104,6 +105,7 @@ export class UsageStageComponent implements OnInit {
     this.unidad = 1;
     this.unidadCombustible = 1;
     this.unidadMixElectrico = 1;
+    console.log(this.catalogoUnidadEnergia);
   }
 
   changeCantidadME(cantidadMixElectrico) {
@@ -142,11 +144,19 @@ export class UsageStageComponent implements OnInit {
       .subscribe(async (data) => {
         await this.electricitConsumptionService
           .addECD({
-            quantity: this.cantidadCombustible,
-            percentage: this.porcentajeCombustible,
+            quantity:
+              this.cantidadCombustible === undefined
+                ? 0
+                : this.cantidadCombustible,
+            percentage:
+              this.porcentajeCombustible === undefined
+                ? 0
+                : this.porcentajeCombustible,
             annual_consumption_required_id: data.id,
-            unit_id: this.unidadCombustible,
-            type: this.tipoCombustible,
+            unit_id:
+              this.unidadCombustible === undefined ? 1 : this.unidadCombustible,
+            type:
+              this.tipoCombustible === undefined ? 11 : this.tipoCombustible,
             source: 'fuel',
           })
           .subscribe((data) => {
@@ -155,11 +165,21 @@ export class UsageStageComponent implements OnInit {
           });
         await this.electricitConsumptionService
           .addECD({
-            quantity: this.cantidadMixElectrico,
-            percentage: this.porcentajeMixElectrico,
+            quantity:
+              this.cantidadMixElectrico === undefined
+                ? 0
+                : this.cantidadMixElectrico,
+            percentage:
+              this.porcentajeMixElectrico === undefined
+                ? 0
+                : this.porcentajeMixElectrico,
             annual_consumption_required_id: data.id,
-            unit_id: this.unidadMixElectrico,
-            type: this.tipoMixElectrico,
+            unit_id:
+              this.unidadMixElectrico === undefined
+                ? 1
+                : this.unidadMixElectrico,
+            type:
+              this.tipoMixElectrico === undefined ? 1 : this.tipoMixElectrico,
             source: 'electric',
           })
           .subscribe((data) => {
@@ -168,10 +188,19 @@ export class UsageStageComponent implements OnInit {
           });
         await this.electricitConsumptionService
           .addECD({
-            quantity: this.cantidadPanelesFotovoltaicos,
-            percentage: this.porcentajePanelesFotovoltaicos,
+            quantity:
+              this.cantidadPanelesFotovoltaicos === undefined
+                ? 0
+                : this.cantidadPanelesFotovoltaicos,
+            percentage:
+              this.porcentajePanelesFotovoltaicos === undefined
+                ? 0
+                : this.porcentajePanelesFotovoltaicos,
             annual_consumption_required_id: data.id,
-            unit_id: this.unidadPanelesFotovoltaicos,
+            unit_id:
+              this.unidadPanelesFotovoltaicos === undefined
+                ? 1
+                : this.unidadPanelesFotovoltaicos,
             type: null,
             source: 'panels',
           })
@@ -191,14 +220,14 @@ export class UsageStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
-        if(result.save) {
+        if (result.save) {
           this.saveStepThree();
         }
         this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
           const schemaFilter = msp.filter(
             (schema) => schema.project_id === this.projectId
           );
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('materials-stage');
           } else {
@@ -221,14 +250,14 @@ export class UsageStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
-        if(result.save) {
+        if (result.save) {
           this.saveStepThree();
         }
         this.materialsService.getConstructionStage().subscribe((cse) => {
           const schemaFilter = cse.filter(
             (schema) => schema.project_id === this.projectId
           );
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('construction-stage');
           } else {
@@ -243,7 +272,6 @@ export class UsageStageComponent implements OnInit {
     });
   }
 
-
   goToUsageStage() {
     this.router.navigateByUrl('usage-stage');
   }
@@ -256,14 +284,14 @@ export class UsageStageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
-        if(result.save) {
+        if (result.save) {
           this.saveStepThree();
         }
         this.materialsService.getEDCP().subscribe((edcp) => {
           const schemaFilter = edcp.filter(
             (schema) => schema.project_id === this.projectId
           );
-    
+
           if (schemaFilter.length === 0) {
             this.router.navigateByUrl('end-life-stage');
           } else {
