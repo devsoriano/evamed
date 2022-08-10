@@ -8,11 +8,10 @@ export interface DialogData {
 @Component({
   selector: 'app-choose-type-of-project',
   templateUrl: './choose-type-of-project.component.html',
-  styleUrls: ['./choose-type-of-project.component.scss']
+  styleUrls: ['./choose-type-of-project.component.scss'],
 })
 export class ChooseTypeOfProjectComponent implements OnInit {
-
-  options: string[] = ['Huella de carbono', 'Uso', 'Ciclo de vida'];
+  options: string[] = ['Huella de carbono incorporado', 'Uso', 'Ciclo de vida'];
 
   constructor(
     public dialogRef: MatDialogRef<ChooseTypeOfProjectComponent>,
@@ -24,6 +23,4 @@ export class ChooseTypeOfProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
 }
-

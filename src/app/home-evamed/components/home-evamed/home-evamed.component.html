@@ -1,3 +1,8 @@
+<div class="welcome">
+  EVAEMED es una herramienta para ayudar a los actores interesados en el sector de la edificación, 
+  a tomar decisiones desde las primeras fases de diseño, para lograr edificios con un menor impacto 
+  ambiental durante todo su ciclo de vida. 
+</div>
 <div class="principal-container">
   <div class="content-container">
     <div class="content-header-container">
@@ -133,6 +138,12 @@
                     (click)="updateEndLife(project.id)"
                   >
                     <h2>{{section.name_section}}</h2>
+                    <ul class="listItems">
+                      <li *ngFor="let sc of searchDataEndLife(project.id, section.id)">
+                        {{sc.source_information}} <br />
+                        {{sc.quantity | number: '1.2-2' }} hrs
+                      </li>
+                    </ul>
                   </mat-card>
                 </section>
               </mat-tab>

@@ -1,6 +1,5 @@
 footer {
   background-color: white;
-  bottom: 0;
   position: absolute;
   width: 100%;
   display: flex;
@@ -15,9 +14,18 @@ footer {
     padding: 20px 0;
     color: #767676;
 
-    .middle-message {
-      padding-left:12px;
+    .img-footer {
+      display: flex;
+
+      .middle-message {
+        margin-left: 10px;
+      }
     }
+
   }
   
+}
+
+.phone {
+  text-align: right;
 }

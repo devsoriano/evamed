@@ -62,6 +62,7 @@ export class HomeEvamedComponent implements OnInit {
   ];
   auxDataProjectList: any;
   ConstructiveSystemElements: any;
+  ListDataEndLife: any;
   sourceInformation: any;
   ACR: any;
   ECD: any;
@@ -269,6 +270,16 @@ export class HomeEvamedComponent implements OnInit {
         this.ConstructiveSystemElements = CSE;
       });
 
+    this.endLifeService.getECDP().subscribe((data) => {
+      const ELSR = [];
+      data.map((item) => {
+        ELSR.push(item);
+      });
+      console.log('obteniendo datos de fin de vida');
+      console.log(ELSR);
+      this.ListDataEndLife = ELSR;
+    });
+
     this.catalogsService
       .getSourceInformation()
       .subscribe((sourceInformation) => {
@@ -324,16 +335,17 @@ export class HomeEvamedComponent implements OnInit {
     let listaBD = await this.analisis.getDB().toPromise();
     let auxBD = [];
     let auxbases = {};
-    listaBD.forEach(element => {
-      auxBD.push(element['name'])
-      auxbases[element['name']] = false
+    listaBD.forEach((element) => {
+      auxBD.push(element['name']);
+      auxbases[element['name']] = false;
     });
     this.auxDataProjectList = [];
-    this.projectsList.forEach((element,n) => {
+    this.projectsList.forEach((element, n) => {
       let calculosOperacionesDeFase = null;
       let auxCalculos = this.calculos.OperacionesDeFase(
         element.id,
-        this.DatosCalculos,auxbases
+        this.DatosCalculos,
+        auxbases
       );
       calculosOperacionesDeFase = auxCalculos[0];
 
@@ -402,10 +414,12 @@ export class HomeEvamedComponent implements OnInit {
           this.catologoOpcionesCarbono[0]
         ),
         valorCarbono: this.calculos
-          .determinaValorCarbono(calculosOperacionesDeFase,
+          .determinaValorCarbono(
+            calculosOperacionesDeFase,
             this.DatosCalculos.projectsList,
             element.id,
-            this.DatosCalculos.ULList)
+            this.DatosCalculos.ULList
+          )
           .toExponential(2),
         flagsCarbono: this.calculos.buscarValosCarbono(
           calculosOperacionesDeFase,
@@ -417,9 +431,9 @@ export class HomeEvamedComponent implements OnInit {
         descripcionCarbono: this.calculos.determinarDescripcionCarbono(
           this.catologoOpcionesCarbono[0]
         ),
-        errorCalculos:auxCalculos[1],
-        DBList:auxBD,
-        basesDatos:auxbases
+        errorCalculos: auxCalculos[1],
+        DBList: auxBD,
+        basesDatos: auxbases,
       };
       this.auxDataProjectList.push(auxDatos);
     });
@@ -523,6 +537,34 @@ export class HomeEvamedComponent implements OnInit {
     try {
       this.sections.map((section) => {
         this.ConstructiveSystemElements.map((cs) => {
+          if (
+            cs.project_id === projectId &&
+            cs.section_id === section.id &&
+            section.id === scId
+          ) {
+            this.sourceInformation.map((si) => {
+              if (si.id === cs.source_information_id) {
+                list.push({
+                  quantity: cs.quantity,
+                  source_information: si.name_source_information,
+                });
+              }
+            });
+          }
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    return list.filter(this.onlyUnique);
+  }
+
+  searchDataEndLife(projectId, scId) {
+    let list = [];
+    try {
+      this.sections.map((section) => {
+        this.ListDataEndLife.map((cs) => {
           if (
             cs.project_id === projectId &&
             cs.section_id === section.id &&
@@ -691,10 +733,28 @@ export class HomeEvamedComponent implements OnInit {
             city_id_origin: projectData.city_id_origin,
             distance: null,
           })
-          .subscribe((newProjectData) => {
-            localStorage.setItem('newProjectDataId', newProjectData.id);
+          .subscribe(async (newProjectData) => {
+            await localStorage.setItem('newProjectDataId', newProjectData.id);
+            // Duplicar fin de vida
+            await this.ListDataEndLife.map((dataEL) => {
+              if (dataEL.project_id === projectId) {
+                this.endLifeService
+                  .addECDP({
+                    quantity: dataEL.quantity,
+                    unit_id: dataEL.unit_id,
+                    source_information_id: dataEL.source_information_id,
+                    section_id: dataEL.section_id,
+                    project_id: newProjectData.id,
+                  })
+                  .subscribe((dataResultEndLife) => {
+                    console.log('resultado de fin de vida');
+                    console.log(dataResultEndLife);
+                  });
+              }
+            });
+
             // Duplicar construcción
-            this.ConstructiveSystemElements.map((cs) => {
+            await this.ConstructiveSystemElements.map((cs) => {
               if (cs.project_id === projectId) {
                 this.constructionStageService
                   .addConstructiveSistemElement({
@@ -795,6 +855,7 @@ export class HomeEvamedComponent implements OnInit {
                                               )
                                             )
                                             .subscribe((data) => {
+                                              console.log(data);
                                               location.reload();
                                             });
                                         });
@@ -841,11 +902,13 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[indexRecivido].impactoCompleteSelect,
       this.auxDataProjectList[indexRecivido].datos
     );
-    if(this.auxDataProjectList[indexRecivido].etapaSeleccionada != 'Ninguna'){
-      this.auxDataProjectList[indexRecivido].subetasMostrada = this.calculos.findSubetapas(
-        this.auxDataProjectList[indexRecivido].etapaSeleccionada,
-        this.auxDataProjectList[indexRecivido].impactoCompleteSelect,
-        this.auxDataProjectList[indexRecivido].datos);
+    if (this.auxDataProjectList[indexRecivido].etapaSeleccionada != 'Ninguna') {
+      this.auxDataProjectList[indexRecivido].subetasMostrada =
+        this.calculos.findSubetapas(
+          this.auxDataProjectList[indexRecivido].etapaSeleccionada,
+          this.auxDataProjectList[indexRecivido].impactoCompleteSelect,
+          this.auxDataProjectList[indexRecivido].datos
+        );
     }
   }
 
@@ -890,7 +953,11 @@ export class HomeEvamedComponent implements OnInit {
   }
 
   selectEtapa(etapa, i, id) {
-    let auxSubetapas = this.calculos.findSubetapas(etapa,this.auxDataProjectList[i].impactoCompleteSelect,this.auxDataProjectList[i].datos);
+    let auxSubetapas = this.calculos.findSubetapas(
+      etapa,
+      this.auxDataProjectList[i].impactoCompleteSelect,
+      this.auxDataProjectList[i].datos
+    );
     //console.log(auxSubetapas)
     this.auxDataProjectList[i].subetasMostrada = auxSubetapas;
     if (this.auxDataProjectList[i].etapaSeleccionada === etapa) {
@@ -937,7 +1004,7 @@ export class HomeEvamedComponent implements OnInit {
     }
   }
 
-  cargarDataBar(data, impactoU, etapasI,id,impactS,porcentajesMostrados) {
+  cargarDataBar(data, impactoU, etapasI, id, impactS, porcentajesMostrados) {
     let auxColor = [];
     let aux = [];
     let auxl: Label[] = [];
@@ -956,8 +1023,15 @@ export class HomeEvamedComponent implements OnInit {
             }
           });
           if (banderaEtapa) {
-            if (this.calculos.findSubetapas(ciclo,impactS,porcentajesMostrados).length > maxsubetapas)
-              maxsubetapas = this.calculos.findSubetapas(ciclo,impactS,porcentajesMostrados).length;
+            if (
+              this.calculos.findSubetapas(ciclo, impactS, porcentajesMostrados)
+                .length > maxsubetapas
+            )
+              maxsubetapas = this.calculos.findSubetapas(
+                ciclo,
+                impactS,
+                porcentajesMostrados
+              ).length;
           }
           banderaEtapa = true;
         });
@@ -1117,21 +1191,24 @@ export class HomeEvamedComponent implements OnInit {
     }
   }
 
-  ajusteUsoBaseDatos(seleccion,project){
-    Object.keys(this.auxDataProjectList[project]['basesDatos']).forEach(bd =>{
-      let flag=false;
-      seleccion.forEach(bdSelect => {
-        if(bdSelect===bd){
-          flag = true;
-        }
-      });
-      this.auxDataProjectList[project]['basesDatos'][bd] = flag;
-    });
+  ajusteUsoBaseDatos(seleccion, project) {
+    Object.keys(this.auxDataProjectList[project]['basesDatos']).forEach(
+      (bd) => {
+        let flag = false;
+        seleccion.forEach((bdSelect) => {
+          if (bdSelect === bd) {
+            flag = true;
+          }
+        });
+        this.auxDataProjectList[project]['basesDatos'][bd] = flag;
+      }
+    );
     let auxCalculos = this.calculos.OperacionesDeFase(
       this.auxDataProjectList[project]['id'],
-      this.DatosCalculos,this.auxDataProjectList[project]['basesDatos']
+      this.DatosCalculos,
+      this.auxDataProjectList[project]['basesDatos']
     );
-    let calculosOperacionesDeFase =  auxCalculos[0]
+    let calculosOperacionesDeFase = auxCalculos[0];
     this.auxDataProjectList[project]['datos'] = calculosOperacionesDeFase;
     let valorPorcentaje = this.calculos.ValoresProcentaje(
       calculosOperacionesDeFase,
@@ -1156,26 +1233,31 @@ export class HomeEvamedComponent implements OnInit {
       this.auxDataProjectList[project].datos
     );
     this.auxDataProjectList[project]['porcentajeSubepata'] = valorPorcentajeS;
-    if(this.auxDataProjectList[project].etapaSeleccionada != 'Ninguna'){
-      this.auxDataProjectList[project].subetasMostrada = this.calculos.findSubetapas(
-        this.auxDataProjectList[project].etapaSeleccionada,
-        this.auxDataProjectList[project].impactoCompleteSelect,
-        this.auxDataProjectList[project].datos);
+    if (this.auxDataProjectList[project].etapaSeleccionada != 'Ninguna') {
+      this.auxDataProjectList[project].subetasMostrada =
+        this.calculos.findSubetapas(
+          this.auxDataProjectList[project].etapaSeleccionada,
+          this.auxDataProjectList[project].impactoCompleteSelect,
+          this.auxDataProjectList[project].datos
+        );
     }
     this.auxDataProjectList[project]['valorCarbono'] = this.calculos
-    .determinaValorCarbono(calculosOperacionesDeFase,
-      this.DatosCalculos.projectsList,
-      this.auxDataProjectList[project].id,
-      this.DatosCalculos.ULList)
-    .toExponential(2);
+      .determinaValorCarbono(
+        calculosOperacionesDeFase,
+        this.DatosCalculos.projectsList,
+        this.auxDataProjectList[project].id,
+        this.DatosCalculos.ULList
+      )
+      .toExponential(2);
 
-    this.auxDataProjectList[project]['flagsCarbono'] = this.calculos.buscarValosCarbono(
-      calculosOperacionesDeFase,
-      this.auxDataProjectList[project].opcionCarbonoSeleccionada,
-      this.DatosCalculos.projectsList,
-      this.auxDataProjectList[project].id,
-      this.DatosCalculos.ULList
-    )
+    this.auxDataProjectList[project]['flagsCarbono'] =
+      this.calculos.buscarValosCarbono(
+        calculosOperacionesDeFase,
+        this.auxDataProjectList[project].opcionCarbonoSeleccionada,
+        this.DatosCalculos.projectsList,
+        this.auxDataProjectList[project].id,
+        this.DatosCalculos.ULList
+      );
   }
 
   openDialogANP() {
