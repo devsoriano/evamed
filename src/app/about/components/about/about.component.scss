@@ -1,38 +1,38 @@
 
 h1 {
-  font-size: 22px;
+  font-size: 18px;
   margin: 12px 0;
 }
 
 h2 {
-  font-size: 18px;
+  font-size: 14px;
   margin: 8px 0;
   font-weight: 500;
 }
 
 p {
-  font-size: 18px;
-  margin: 18px 0;
+  font-size: 14px;
+  margin: 14px 0;
 }
 
 img {
   display: block;
   margin: 34px auto;
-  width: 70%;
+  width: 50%;
 }
 
 .incisos {
   list-style-type: upper-alpha;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .numeros {
   list-style-type: decimal;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 li {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .imgs {
@@ -55,3 +55,6 @@ img.sm-img-3 {
   height: fit-content;
 }
 
+img.ibero {
+  
+}

@@ -450,18 +450,14 @@ export class UsageStageUpdateComponent implements OnInit {
   }
 
   goToMaterialStage() {
-    console.log('entra a material Stage-------------');
     const dialogRef = this.dialog.open(PassStepComponent, {
       width: '680px',
       data: {},
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('entra al after closed----------------');
-      console.log(result);
       if (result.continue) {
         if (result.save) {
-          console.log('entra al paso save!!!!!!!');
           this.saveUpdate();
         }
         this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
@@ -490,7 +486,7 @@ export class UsageStageUpdateComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result.continue) {
         if (result.save) {
-          this.saveStepThree();
+          this.saveUpdate();
         }
         this.materialsService.getConstructionStage().subscribe((cse) => {
           const schemaFilter = cse.filter(
