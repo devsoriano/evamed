@@ -3,14 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 
-
 @Component({
   selector: 'app-recover-password',
   templateUrl: './recover-password.component.html',
-  styleUrls: ['./recover-password.component.scss']
+  styleUrls: ['./recover-password.component.scss'],
 })
 export class RecoverPasswordComponent implements OnInit {
-
   form: FormGroup;
 
   constructor(
@@ -21,35 +19,37 @@ export class RecoverPasswordComponent implements OnInit {
     this.buildForm();
   }
 
-  ngOnInit(): void {
-  }
-  
+  ngOnInit(): void {}
+
   private buildForm() {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required]],
-      
     });
   }
-
 
   register() {
     this.router.navigate(['/auth/register']);
   }
 
   recovery(event: Event) {
-    event.preventDefault()
+    event.preventDefault();
     if (this.form.valid) {
       const value = this.form.value;
-      this.authService.resetPassword(value.email)
-      .then( () => {
-        alert('El correo para restablecer la contraseña se ha enviado corectamente');
-        this.router.navigate(['/']);
-      })
-      .catch( () => {
-        alert('Error! Intenta nuevamente la solicitud');
-      });
-     }
-   }
-  
-  
+      this.authService
+        .resetPassword(value.email)
+        .then(() => {
+          alert(
+            'El correo para restablecer la contraseña se ha enviado corectamente'
+          );
+          this.router.navigate(['/']);
+        })
+        .catch(() => {
+          alert('Error! Intenta nuevamente la solicitud');
+        });
+    }
+  }
+
+  about() {
+    this.router.navigate(['/auth/about']);
+  }
 }

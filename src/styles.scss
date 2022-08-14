@@ -76,11 +76,11 @@ body {
 
 .side {
   flex: 50%;
-  /*background: transparent url("./assets/images/edificio.png") 0% 0% no-repeat
-    padding-box;*/
+  background: transparent url("./assets/images/edificio.png") 0% 0% no-repeat
+    padding-box;
 
   .background-custom {
-    /**background: #A8D024 0% 0% no-repeat padding-box!important;**/
+    background: #A8D024 0% 0% no-repeat padding-box!important;
     mix-blend-mode: multiply;
     opacity: 1;
     /**display: table;**/
