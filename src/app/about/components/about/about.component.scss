@@ -4,8 +4,9 @@ h1 {
 }
 
 h2 {
-  font-size: 14px;
+  font-size: 18px;
   margin: 8px 0;
+  font-weight: 500;
 }
 
 p {
@@ -23,3 +24,33 @@ img {
   list-style-type: upper-alpha;
   font-size: 18px;
 }
+
+.numeros {
+  list-style-type: decimal;
+  font-size: 18px;
+}
+
+li {
+  font-size: 18px;
+}
+
+.imgs {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.sm-img-1 {
+  width: 160px;
+}
+
+.sm-img-2 {
+  width: 240px;
+  height: fit-content;
+}
+
+img.sm-img-3 {
+  width: 240px;
+  height: fit-content;
+}
+

@@ -28,9 +28,6 @@ export class LoginComponent implements OnInit {
       this.authService
         .login(value.email, value.password)
         .then(() => {
-          console.log('proceso de login');
-          console.log(this.authService);
-          console.log(this);
           //if (this.authService.isEmailVerified() == true) {
           localStorage.setItem('email-login', value.email);
           this.router.navigate(['/']);

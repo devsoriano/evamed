@@ -319,6 +319,64 @@ export class UsageStageUpdateComponent implements OnInit {
     }
   }
 
+  async saveUpdate() {
+    await this.electricitConsumptionService
+      .updateACR(this.CAID.toString(), {
+        id: this.CAID,
+        quantity: this.cantidad,
+        unit_id: this.unidad,
+      })
+      .subscribe((data) => {
+        console.log('Se editó el ACR');
+        console.log(data);
+      });
+
+    await this.ECD_IDS.map((item) => {
+      this.electricitConsumptionService.getECDById(item).subscribe((data) => {
+        console.log(data);
+        if (data.source === 'fuel') {
+          this.electricitConsumptionService
+            .updateECD(data.id, {
+              quantity: this.cantidadCombustible,
+              percentage: this.porcentajeCombustible,
+              annual_consumption_required_id: this.CAID,
+              unit_id: this.unidadCombustible,
+              type: this.tipoCombustible,
+            })
+            .subscribe((data) => {
+              console.log('update fuel');
+              console.log(data);
+            });
+        } else if (data.source === 'electric') {
+          this.electricitConsumptionService
+            .updateECD(data.id, {
+              quantity: this.cantidadMixElectrico,
+              percentage: this.porcentajeMixElectrico,
+              annual_consumption_required_id: this.CAID,
+              unit_id: this.unidadMixElectrico,
+              type: this.tipoMixElectrico,
+            })
+            .subscribe((data) => {
+              console.log('update electric');
+              console.log(data);
+            });
+        } else if (data.source === 'panels') {
+          this.electricitConsumptionService
+            .updateECD(data.id, {
+              quantity: this.cantidadPanelesFotovoltaicos,
+              percentage: this.porcentajePanelesFotovoltaicos,
+              annual_consumption_required_id: this.CAID,
+              unit_id: this.unidadPanelesFotovoltaicos,
+              type: null,
+            })
+            .subscribe((data) => {
+              console.log('update panels');
+              console.log(data);
+            });
+        }
+      });
+    });
+  }
   async saveStepThree() {
     await this.electricitConsumptionService
       .updateACR(this.CAID.toString(), {
@@ -392,15 +450,19 @@ export class UsageStageUpdateComponent implements OnInit {
   }
 
   goToMaterialStage() {
+    console.log('entra a material Stage-------------');
     const dialogRef = this.dialog.open(PassStepComponent, {
       width: '680px',
       data: {},
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log('entra al after closed----------------');
+      console.log(result);
       if (result.continue) {
         if (result.save) {
-          this.saveStepThree();
+          console.log('entra al paso save!!!!!!!');
+          this.saveUpdate();
         }
         this.materialsService.getMaterialSchemeProyects().subscribe((msp) => {
           const schemaFilter = msp.filter(
@@ -446,10 +508,6 @@ export class UsageStageUpdateComponent implements OnInit {
         });
       }
     });
-  }
-
-  goToUsageStage() {
-    this.router.navigateByUrl('usage-stage');
   }
 
   trunc(x, positions = 0) {

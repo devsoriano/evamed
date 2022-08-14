@@ -8,10 +8,9 @@ import { CatalogsService } from './../../../core/services/catalogs/catalogs.serv
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-
   form: FormGroup;
   catalogoPaises: any;
 
@@ -20,44 +19,39 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private user: UserService,
-    private catalogsService: CatalogsService,
+    private catalogsService: CatalogsService
   ) {
     this.buildForm();
-    this.catalogsService.countriesCatalog().subscribe(data => {
+    this.catalogsService.countriesCatalog().subscribe((data) => {
       this.catalogoPaises = data;
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   register(event: Event) {
     event.preventDefault();
 
     if (this.form.valid) {
-
       const value = this.form.value;
 
-      if ( value.password === value.password2 ) {
-        console.log('register');
-        console.log(value);
-        this.user.addUser(value).subscribe(data => {
-          console.log('register data');
-          console.log(data);
-        });
-        this.authService.createUser(value.email, value.password).then(() => {
-          this.authService.verifyEmail();
-          alert("Registro correcto");
-          this.router.navigate(['/auth/login']);
-          
-        }).catch(function(err)
-        {
-            alert("El correo ya esta registrado con otro usuario, registra un nuevo correo");
-        }); 
-        } else {
-           alert('las contraseñas deben de coincidir');
-         }
-
+      if (value.password === value.password2) {
+        this.user.addUser(value).subscribe((data) => {});
+        this.authService
+          .createUser(value.email, value.password)
+          .then(() => {
+            this.authService.verifyEmail();
+            alert('Registro correcto');
+            this.router.navigate(['/auth/login']);
+          })
+          .catch(function (err) {
+            alert(
+              'El correo ya esta registrado con otro usuario, registra un nuevo correo'
+            );
+          });
+      } else {
+        alert('las contraseñas deben de coincidir');
+      }
     }
   }
 
