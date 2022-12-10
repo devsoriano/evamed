@@ -16,7 +16,9 @@ export class ChooseTypeOfProjectComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ChooseTypeOfProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) {
+    data.optionSelected = 'Huella de carbono incorporado';
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

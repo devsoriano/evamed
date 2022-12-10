@@ -95,16 +95,20 @@ section.form-login {
   bottom: 0;
   width: 50%;
   font-size: 10px;
-  background-color: #ededed;
+  background-color: #EDEDED;
   color: #767676;
   text-align: center;
   display: flex;
   padding: 6px 0;
 
+  img {
+    margin: 0 20px;
+    width: 30%;
+  }
+
   .middle-message {
-    width: 50%;
-    text-align: right;
-    margin-right: 16px;
+    width: 26%;
+    text-align: left;
   }
 
   .phone {

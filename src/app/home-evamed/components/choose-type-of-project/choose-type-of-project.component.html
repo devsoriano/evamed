@@ -18,7 +18,7 @@
       {{option}}
     </mat-radio-button>
   </mat-radio-group>
-  <div class="text-description" *ngIf="data.optionSelected === 'Huella de carbono'">
+  <div class="text-description" *ngIf="data.optionSelected === 'Huella de carbono incorporado'">
     Considera las emisiones de CO2 de los procesos de
     producción de los materiales. Es necesario contar con la cuantificación de
     materiales de construcción.
@@ -40,39 +40,39 @@
     <div class="mdl-card__supporting-text">
       <div class="mdl-stepper-horizontal-alternative">
         <div class="mdl-stepper-step step-one-selected">
-          <div [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
-          <div class="mdl-stepper-title" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'title-type-project-selected' : 'title-type-project'">
+          <div [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'mdl-stepper-circle': 'mdl-stepper-circle-noSelected'"></div>
+          <div class="mdl-stepper-title" [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'title-type-project-selected' : 'title-type-project'">
             Etapa de producción
           </div>
           <div class="mdl-stepper-optional">
             <table class="table-container">
               <tr>
                 <td class="td-title">
-                  <b [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
                     A1
                   </b>
                 </td>
-                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
                   Extracción y actividades previas a producción
                 </td>
               </tr>
               <tr>
                 <td class="td-title">
-                  <b [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
                     A2
                   </b>
                 </td>
-                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
                   Transporte a la planta
                 </td>
               </tr>
               <tr>
                 <td class="td-title">
-                  <b [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
                     A3
                   </b>
                 </td>
-                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono incorporado' || data.optionSelected ==='Ciclo de vida' ? 'text-type-project-selected' : 'text-type-project'">
                   Manufactura
                 </td>
               </tr>
@@ -114,29 +114,29 @@
           <div class="mdl-stepper-bar-right"></div>
         </div>
         <div class="mdl-stepper-step step-three">
-          <div [ngClass]="data.optionSelected === 'Huella de carbono' ? 'mdl-stepper-circle-noSelected': 'mdl-stepper-circle'"></div>
-          <div class="mdl-stepper-title" [ngClass]="data.optionSelected === 'Huella de carbono' ? 'title-type-project' : 'title-type-project-selected'">
+          <div [ngClass]="data.optionSelected === 'Huella de carbono incorporado' ? 'mdl-stepper-circle-noSelected': 'mdl-stepper-circle'"></div>
+          <div class="mdl-stepper-title" [ngClass]="data.optionSelected === 'Huella de carbono incorporado' ? 'title-type-project' : 'title-type-project-selected'">
             Etapa de uso
           </div>
           <div class="mdl-stepper-optional">
             <table class="table-container">
-              <tr>
+              <tr>e
                 <td class="td-title">
-                  <b [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono incorporado' ? 'text-type-project' : 'text-type-project-selected'">
                     B4
                   </b>
                 </td>
-                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono incorporado' ? 'text-type-project' : 'text-type-project-selected'">
                   Reemplazo (Incluye producción, transporte y materiales)
                 </td>
               </tr>
               <tr>
                 <td class="td-title">
-                  <b [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                  <b [ngClass]="data.optionSelected === 'Huella de carbono incorporado' ? 'text-type-project' : 'text-type-project-selected'">
                     B6
                   </b>
                 </td>
-                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono' ? 'text-type-project' : 'text-type-project-selected'">
+                <td class="td-text" [ngClass]="data.optionSelected === 'Huella de carbono incorporado' ? 'text-type-project' : 'text-type-project-selected'">
                   Uso de energía operacional
                 </td>
               </tr>
