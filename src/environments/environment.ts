@@ -1,5 +1,5 @@
 // genear api
-const apiEvamed = 'http://172.16.3.134/api-projects/';
+const apiEvamed = 'http://18.215.148.254:8000/api-projects';
 // apis
 const projects = '/projects/';
 const transports = '/transports/';
