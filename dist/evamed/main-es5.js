@@ -274,7 +274,7 @@
       }); // genear api
 
 
-      var apiEvamed = 'http://172.16.3.134/api-projects/'; // apis
+      var apiEvamed = 'http://18.215.148.254:8000/api-projects'; // apis
 
       var projects = '/projects/';
       var transports = '/transports/';
